@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>用proxy_intercept_errors和recursive_error_pages代理多次302 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.
+302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="用proxy_intercept_errors和recursive_error_pages代理多次302" />
+<meta property="og:description" content="302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.
+
+302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。
+
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+
+上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html" /><meta property="article:published_time" content="2014-08-25T15:59:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-08-25T15:59:00&#43;00:00"/>
+
+<meta itemprop="name" content="用proxy_intercept_errors和recursive_error_pages代理多次302">
+<meta itemprop="description" content="302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.
+
+302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。
+
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+
+上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。
+
+">
+
+
+<meta itemprop="datePublished" content="2014-08-25T15:59:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-08-25T15:59:00&#43;00:00" />
+<meta itemprop="wordCount" content="2685">
+
+
+
+<meta itemprop="keywords" content="nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="用proxy_intercept_errors和recursive_error_pages代理多次302"/>
+<meta name="twitter:description" content="302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.
+
+302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。
+
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+
+上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">用proxy_intercept_errors和recursive_error_pages代理多次302</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-08-25 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.</p>
+
+<p>302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。</p>
+
+<p>比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。</p>
+
+<p>上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。</p>
+
+<p></p>
+
+<p>我们来看一个例子，打开一个网易视频播放页面，抓一下包，找到302状态的那个url。例如：</p>
+
+<pre><code>http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre>
+
+<p>我们把它复制到浏览器地址栏中，会发现地址栏迅速的变为了另外一个url，这个Url是不定的，有可能为：</p>
+
+<pre><code>http://14.18.140.83/f6c00af500000000-1408987545-236096587/data6/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre>
+
+<p>用curl工具会更清楚的看到整个过程：</p>
+
+<pre><code>curl -I &quot;http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
+HTTP/1.1 302 Moved Temporarily 
+Server: nginx 
+Date: Mon, 25 Aug 2014 14:49:43 GMT 
+Content-Type: text/html 
+Content-Length: 154 
+Connection: keep-alive 
+NG: CCN-SW-1-5L2 
+X-Mod-Name: GSLB/3.1.0 
+Location: http://119.134.254.9/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+  
+HTTP/1.1 302 Moved Temporarily 
+Server: nginx 
+Date: Mon, 25 Aug 2014 14:49:41 GMT 
+Content-Type: text/html 
+Content-Length: 154 
+Connection: keep-alive 
+X-Mod-Name: Mvod-Server/4.3.3 
+Location: http://119.134.254.7/cc89fdac00000000-1408983581-2095617481/data4/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+NG: CHN-SW-1-3Y1 
+  
+HTTP/1.1 200 OK 
+Server: nginx 
+Date: Mon, 25 Aug 2014 14:49:41 GMT 
+Content-Type: video/mp4 
+Content-Length: 3706468 
+Last-Modified: Mon, 25 Aug 2014 00:23:50 GMT 
+Connection: keep-alive 
+Cache-Control: no-cache 
+ETag: &quot;53fa8216-388e64&quot; 
+NG: CHN-SW-1-3g6 
+X-Mod-Name: Mvod-Server/4.3.3 
+Accept-Ranges: bytes 
+</code></pre>
+
+<p>可以看到，这中间经历了两次302。</p>
+
+<p>先暂时将这个例子放在一边，再来说说另一个重要的术语：proxy.我们通常会戏称，某些领导是302类型的，某些领导是proxy类型的。302类型的领导，一件事情经过他的手，会迅速的转给他人，而proxy类型的领导则会参与到事情中来，甚至把事情全部做完。</p>
+
+<p>回到上面的例子，如果访问一个url中途会有多个302，那如果需要用Nginx设计一个proxy，来隐藏掉中间所有的这些302，该怎么做呢？</p>
+
+<h3 id="1-原始proxy">1.原始Proxy</h3>
+
+<p>我们知道，Nginx本身就是一个优秀的代理服务器。因此，首先我们来架设一个Nginx正向代理，服务器IP为192.168.109.128（我的一个测试虚拟机）。</p>
+
+<p>初始配置简化如下：</p>
+
+<pre><code>server {  
+        listen 80;  
+        location / {  
+                rewrite_by_lua '  
+                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
+                ';  
+        }  
+  
+        location ~ /proxy-to/([^/]+)(.*) {  
+                proxy_pass http://$1$2$is_args$query_string;  
+  
+        }  
+}  
+</code></pre>
+
+<p>实现的功能是，当使用</p>
+
+<pre><code>http://192.168.109.128/xxxxxx  
+</code></pre>
+
+<p>访问该代理时，会proxy到xxxxxx所代表的真实服务器。</p>
+
+<p>测试结果如下：</p>
+
+<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
+HTTP/1.1 302 Moved Temporarily 
+Server: nginx/1.4.6 
+Date: Mon, 25 Aug 2014 14:50:54 GMT 
+Content-Type: text/html 
+Content-Length: 154 
+Connection: keep-alive 
+NG: CCN-SW-1-5L2 
+X-Mod-Name: GSLB/3.1.0 
+Location: http://183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+  
+HTTP/1.1 302 Moved Temporarily 
+Server: nginx 
+Date: Mon, 25 Aug 2014 14:50:55 GMT 
+Content-Type: text/html 
+Content-Length: 154 
+Connection: keep-alive 
+X-Mod-Name: Mvod-Server/4.3.3 
+Location: http://183.61.140.20/540966e500000000-1408983655-236096587/data1/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+NG: CHN-ZJ-4-3M4 
+  
+HTTP/1.1 200 OK 
+Server: nginx 
+Date: Mon, 25 Aug 2014 14:50:55 GMT 
+Content-Type: video/mp4 
+Content-Length: 3706468 
+Last-Modified: Mon, 25 Aug 2014 00:31:03 GMT 
+Connection: keep-alive 
+Cache-Control: no-cache 
+ETag: &quot;53fa83c7-388e64&quot; 
+NG: CHN-ZJ-4-3M4 
+X-Mod-Name: Mvod-Server/4.3.3 
+Accept-Ranges: bytes  
+</code></pre>
+
+<p>可见，虽然使用proxy，但过程与原始访问没有什么区别。访问过程为，当访问</p>
+
+<pre><code>http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre>
+
+<p>时，Nginx会将该请求proxy到</p>
+
+<pre><code>http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre>
+
+<p>而后者马上就会返回一个302，所以Nginx作为proxy，将该302传回到客户端，客户端重新发起请求，进而重复之前的多次302.这里说明一个问题，一旦Nginx的proxy的后端返回302后，客户端即与Nginx这个proxy脱离关系了，Nginx无法起到完整的代理的作用。</p>
+
+<h3 id="2-第1次修改">2. 第1次修改</h3>
+
+<p>将配置文件修改为：</p>
+
+<pre><code>server {  
+        listen 80;  
+        location / {  
+                rewrite_by_lua '  
+                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
+                ';  
+        }  
+  
+        location ~ /proxy-to/([^/]+)(.*) {  
+                proxy_pass http://$1$2$is_args$query_string;  
+                error_page 302 = @error_page_302;  
+  
+        }  
+        location @error_page_302 {  
+                rewrite_by_lua '  
+                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
+                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
+                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
+                ';  
+  
+        }  
+}  
+</code></pre>
+
+<p>与上面的区别在于，使用了一个error_page，目的是当发现proxy的后端返回302时，则用这个302的目的location继续proxy，而不是直接返回给客户端。并且这个逻辑里面包含着递归的意思，一路跟踪302，直到最终返回200的那个地址。测试结果如下：</p>
+
+<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
+HTTP/1.1 302 Moved Temporarily 
+Server: nginx/1.4.6 
+Date: Mon, 25 Aug 2014 15:01:17 GMT 
+Content-Type: text/html 
+Content-Length: 154 
+Connection: keep-alive 
+NG: CCN-SW-1-5L2 
+X-Mod-Name: GSLB/3.1.0 
+Location: http://183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+  
+HTTP/1.1 302 Moved Temporarily 
+Server: nginx 
+Date: Mon, 25 Aug 2014 15:01:17 GMT 
+Content-Type: text/html 
+Content-Length: 154 
+Connection: keep-alive 
+X-Mod-Name: Mvod-Server/4.3.3 
+Location: http://183.61.140.20/a90a952900000000-1408984277-236096587/data1/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+NG: CHN-ZJ-4-3M4 
+  
+HTTP/1.1 200 OK 
+Server: nginx 
+Date: Mon, 25 Aug 2014 15:01:17 GMT 
+Content-Type: video/mp4 
+Content-Length: 3706468 
+Last-Modified: Mon, 25 Aug 2014 00:31:03 GMT 
+Connection: keep-alive 
+Cache-Control: no-cache 
+ETag: &quot;53fa83c7-388e64&quot; 
+NG: CHN-ZJ-4-3M4 
+X-Mod-Name: Mvod-Server/4.3.3 
+Accept-Ranges: bytes  
+</code></pre>
+
+<p>可见，本次修改仍然没有成功！<br />
+为什么呢？分析一下，我们在@error_page_302这个location里已经加了一个头部打印语句，可是在测试中，该头部并没有打出来，可见流程并没有进入到@error_page_302这个location。</p>
+
+<p>原因在于</p>
+
+<pre><code>error_page 302 = @error_page_302;  
+</code></pre>
+
+<p>error_page默认是本次处理的返回码。作为proxy，本次处理，只要转发上游服务器的响应成功，应该状态码都是200.即，我们真正需要检查的，是proxy的后端服务器返回的状态码，而不是proxy本身返回的状态码。查一下Nginx的wiki,proxy_intercept_errors指令正是干这个的:</p>
+
+<pre><code>Syntax:	proxy_intercept_errors on | off;  
+Default:	  
+proxy_intercept_errors off;  
+Context:	http, server, location  
+Determines whether proxied responses with codes greater than or equal to 300 should be passed to a client or be redirected to nginx for processing with the error_page directive.  
+</code></pre>
+
+<h3 id="3-第二次修改">3. 第二次修改</h3>
+
+<pre><code>server {  
+        listen 80;  
+        proxy_intercept_errors on;  
+        location / {  
+                rewrite_by_lua '  
+                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
+                ';  
+        }  
+        location ~ /proxy-to/([^/]+)(.*) {  
+                proxy_pass http://$1$2$is_args$query_string;  
+                error_page 302 = @error_page_302;  
+  
+        }  
+        location @error_page_302 {  
+                rewrite_by_lua '  
+                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
+                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
+                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
+                ';  
+        }  
+}  
+</code></pre>
+
+<p>与上一次修改相比，区别仅仅在于增加了一个proxy_intercept_errors指令。测试结果如下：</p>
+
+<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L 
+HTTP/1.1 302 Moved Temporarily  
+Server: nginx/1.4.6  
+Date: Mon, 25 Aug 2014 15:05:54 GMT  
+Content-Type: text/html  
+Content-Length: 160  
+Connection: keep-alive  
+zzzz: /proxy-to/183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+</code></pre>
+
+<p>这次更神奇了，直接返回一个302状态完事，也不继续跳转了。<br />
+问题出在，虽然第一次302，请求成功的进入到@error_page_302，但后续的error_page指令却没起作用。也就是说，error_page只检查了第一次后端返回的状态码，而没有继续检查后续的后端状态码。</p>
+
+<p>查一下资料，这个时候，另一个指令 recursive_error_pages就派上用场了。</p>
+
+<h3 id="4-第3次修改">4. 第3次修改</h3>
+
+<pre><code>server {  
+        listen 80;  
+        proxy_intercept_errors on;  
+        recursive_error_pages on;  
+        location / {  
+                rewrite_by_lua '  
+                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
+                ';  
+        }  
+        location ~ /proxy-to/([^/]+)(.*) {  
+                proxy_pass http://$1$2$is_args$query_string;  
+                error_page 302 = @error_page_302;  
+  
+        }  
+        location @error_page_302 {  
+                rewrite_by_lua '  
+                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
+                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
+                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
+                ';  
+        }  
+}  
+</code></pre>
+
+<p>与上一次相比，仅仅增加了recursive_error_pages on这条指令。测试结果如下：</p>
+
+<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L 
+HTTP/1.1 200 OK 
+Server: nginx/1.4.6 
+Date: Mon, 25 Aug 2014 15:09:04 GMT 
+Content-Type: video/mp4 
+Content-Length: 3706468 
+Connection: keep-alive 
+zzzz: /proxy-to/14.18.140.83/f48bad0100000000-1408984745-236096587/data6/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
+Last-Modified: Mon, 25 Aug 2014 00:21:07 GMT 
+Cache-Control: no-cache 
+ETag: &quot;53fa8173-388e64&quot; 
+NG: CHN-MM-4-3FE 
+X-Mod-Name: Mvod-Server/4.3.3 
+Accept-Ranges: bytes  
+</code></pre>
+
+<p>可见，Nginx终于成功的返回200了。此时，Nginx才真正起到了一个Proxy的功能，隐藏了一个请求原本的多个302链路，只返回客户端一个最终结果。</p>
+
+<h3 id="5-小结">5. 小结</h3>
+
+<p>综上，通过proxy_pass、error_page、proxy_intercept_errors、recursive_error_pages这几个指令的配合使用，可以向客户端隐藏一条请求的跳转细节，直接返回用户一个状态码为200的最终结果。</p>
+
+<p>奇怪的是，在Nginx的官方wiki中并没有recursive_error_pages指令的相关说明。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-08-25</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/09/28/running-is-a-happy-sport.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">跑步是一件快乐的事情</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/08/24/what-i-talk-about-when-i-talk-about-running.html">
+            <span class="next-text nav-default">读《当我谈跑步时我谈些什么》有感</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

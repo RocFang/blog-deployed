@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>记一个here document的坑 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="1.here document here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
+ftp -n $HOST &amp;lt;&amp;lt;EOF quote USER $USER quote PASS $PASS binary put $FileName quit EOF  2.踩到的坑 在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2013/05/24/115.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="记一个here document的坑" />
+<meta property="og:description" content="1.here document
+
+here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
+
+ftp -n $HOST &lt;&lt;EOF
+quote USER $USER  
+quote PASS $PASS  
+binary  
+put $FileName  
+quit  
+EOF  
+
+
+2.踩到的坑
+
+在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2013/05/24/115.html" /><meta property="article:published_time" content="2013-05-23T16:49:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-05-23T16:49:00&#43;00:00"/>
+
+<meta itemprop="name" content="记一个here document的坑">
+<meta itemprop="description" content="1.here document
+
+here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
+
+ftp -n $HOST &lt;&lt;EOF
+quote USER $USER  
+quote PASS $PASS  
+binary  
+put $FileName  
+quit  
+EOF  
+
+
+2.踩到的坑
+
+在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。
+
+">
+
+
+<meta itemprop="datePublished" content="2013-05-23T16:49:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-05-23T16:49:00&#43;00:00" />
+<meta itemprop="wordCount" content="1281">
+
+
+
+<meta itemprop="keywords" content="程序员,shell," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="记一个here document的坑"/>
+<meta name="twitter:description" content="1.here document
+
+here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
+
+ftp -n $HOST &lt;&lt;EOF
+quote USER $USER  
+quote PASS $PASS  
+binary  
+put $FileName  
+quit  
+EOF  
+
+
+2.踩到的坑
+
+在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">记一个here document的坑</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-05-23 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <h1 id="1-here-document">1.here document</h1>
+
+<p>here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：</p>
+
+<pre><code>ftp -n $HOST &lt;&lt;EOF
+quote USER $USER  
+quote PASS $PASS  
+binary  
+put $FileName  
+quit  
+EOF  
+</code></pre>
+
+<h1 id="2-踩到的坑">2.踩到的坑</h1>
+
+<p>在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。</p>
+
+<p></p>
+
+<p>（1）shell脚本获取C程序输出</p>
+
+<p>我需要从C程序中获取的是一个固定格式的字符串，通过在C程序中将该字符串printf出来，在shell中采用a=$(program)的形式即可获取这个字符串输出。</p>
+
+<p>（2）获取这个字符串后，用here document方式，操作redis</p>
+
+<pre><code>redis-cli -h $host_ip -p $host_port&lt;&lt;EOF  
+set A $a  
+quit  
+EOF  
+</code></pre>
+
+<p>这个C程序和这个shell脚本运行一段时间都没出问题，直到有一天，我发现了这个C程序的bug，动手修改，在调试过程中加了一些打印语句，例如printf(&ldquo;XXXX&rdquo;);修改后，与脚本联合调试。发现对redis操作不成功。操作redis的here document代码块，整体返回值$?都是等于0的，无法判断其正确与否。单独调试了下C程序，也没发现问题。那么问题在哪里呢？</p>
+
+<p>其实上面两步都有问题：</p>
+
+<p>（1）在shell脚本中调用a=$(program)后，其实a的值就是program程序运行时所有的输出。如果能保证该程序只输出一个正确的字符串，当然不会发现任何问题。可是在改代码的过程中，，加了其他的printf语句，例如printf(&ldquo;XXXX&rdquo;),那么赋值后，a的值就变成了“XXXX YYYY”，（假设YYYY是正常需要的字符串）。原因就是在调用a=$(program）后，shell会把所有program程序执行过程中的输出都合并成一个字符串传递给a。这种情况不光发生在添加调试用的printf语句时，假设程序在某个条件判断分支出错，进入erro处理，如果要执行Printf，那么这个错误信息也会作为字符串传递给a.</p>
+
+<p>(2)  在用here document操作redis时，如果上一步执行正确，例如a为“hello&rdquo;,那么在here document中，执行set A &ldquo;hello&rdquo;,当然是不会有问题的。</p>
+
+<p>可是，如果第（1）步出现问题，不管是由于加入了多余printf语句，还是输出了错误信息，都会把合并后的字符串传递给a,在展开到set A $a中。假设a为”hello  haha&rdquo;,那么就会对redis执行 set A hello haha,很明显，格式不符合redis set命令的要求，会设置失败。如果是在redis的交互界面中，会显示出这一错误，但在here document中，并不会显示任何错误，而且在here document块执行完后，用$?来查看返回值，都会是0.因为shell认为这个代码块是正确执行的。</p>
+
+<p>发现这个问题是由于改了代码后，突然发现对redis的设置不成功了。进而一步步分析，才体会到这两个操作都后患无穷啊！</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-05-23</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/shell/">shell</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/06/27/116.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">好的设计真是一念之间吗？</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2013/05/06/114.html">
+            <span class="next-text nav-default">一张居住证的诞生</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

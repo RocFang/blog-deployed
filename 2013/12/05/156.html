@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2013/12/05/156.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex" />
+<meta property="og:description" content="FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2013/12/05/156.html" /><meta property="article:published_time" content="2013-12-05T15:33:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-12-05T15:33:00&#43;00:00"/>
+
+<meta itemprop="name" content="FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex">
+<meta itemprop="description" content="FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：
+
+">
+
+
+<meta itemprop="datePublished" content="2013-12-05T15:33:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-12-05T15:33:00&#43;00:00" />
+<meta itemprop="wordCount" content="1213">
+
+
+
+<meta itemprop="keywords" content="程序员,fastdfs," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex"/>
+<meta name="twitter:description" content="FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-12-05 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：</p>
+
+<p></p>
+
+<p><strong>1. tcprecvdata_ex</strong></p>
+
+<pre><code>int tcprecvdata_ex(int sock, void *data, const int size, \  
+		const int timeout, int *count)  
+{  
+	int left_bytes;  
+	int read_bytes;  
+	int res;
+	int ret_code;  
+	unsigned char* p;  
+#ifdef USE_SELECT  
+	fd_set read_set;  
+	struct timeval t;  
+#else  
+	struct pollfd pollfds;  
+#endif  
+  
+#ifdef USE_SELECT  
+	FD_ZERO(&amp;read_set);  
+	FD_SET(sock, &amp;read_set);  
+#else  
+	pollfds.fd = sock;  
+	pollfds.events = POLLIN;  
+#endif  
+  
+	read_bytes = 0;  
+	ret_code = 0;  
+	p = (unsigned char*)data;  
+	left_bytes = size;  
+	while (left_bytes &gt; 0)  
+	{  
+  
+#ifdef USE_SELECT  
+		if (timeout &lt;= 0)  
+		{  
+			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
+		}  
+		else  
+		{  
+			t.tv_usec = 0;  
+			t.tv_sec = timeout;  
+			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
+		}  
+#else  
+		res = poll(&amp;pollfds, 1, 1000 * timeout);  
+		if (pollfds.revents &amp; POLLHUP)  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+#endif  
+  
+		if (res &lt; 0)  
+		{  
+			ret_code = errno != 0 ? errno : EINTR;  
+			break;  
+		}  
+		else if (res == 0)  
+		{  
+			ret_code = ETIMEDOUT;  
+			break;  
+		}  
+	  
+		read_bytes = recv(sock, p, left_bytes, 0);  
+		if (read_bytes &lt; 0)  
+		{  
+			ret_code = errno != 0 ? errno : EINTR;  
+			break;  
+		}  
+		if (read_bytes == 0)  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+  
+		left_bytes -= read_bytes;  
+		p += read_bytes;  
+	}  
+  
+	if (count != NULL)  
+	{  
+		*count = size - left_bytes;  
+	}  
+  
+	return ret_code;  
+}  
+</code></pre>
+
+<p><strong>2.tcprecvdata_nb_ex</strong></p>
+
+<pre><code>int tcprecvdata_nb_ex(int sock, void *data, const int size, \  
+		const int timeout, int *count)  
+{  
+	int left_bytes;  
+	int read_bytes;  
+	int res;  
+	int ret_code;  
+	unsigned char* p;  
+#ifdef USE_SELECT  
+	fd_set read_set;  
+	struct timeval t;  
+#else  
+	struct pollfd pollfds;  
+#endif  
+  
+#ifdef USE_SELECT  
+	FD_ZERO(&amp;read_set);  
+	FD_SET(sock, &amp;read_set);  
+#else  
+	pollfds.fd = sock;  
+	pollfds.events = POLLIN;  
+#endif  
+  
+	read_bytes = 0;  
+	ret_code = 0;  
+	p = (unsigned char*)data;  
+	left_bytes = size;  
+	while (left_bytes &gt; 0)  
+	{  
+		read_bytes = recv(sock, p, left_bytes, 0);  
+		if (read_bytes &gt; 0)  
+		{  
+			left_bytes -= read_bytes;  
+			p += read_bytes;  
+			continue;  
+		}  
+  
+		if (read_bytes &lt; 0)  
+		{  
+  
+			if (!(errno == EAGAIN || errno == EWOULDBLOCK))  
+			{  
+				ret_code = errno != 0 ? errno : EINTR;  
+				break;  
+			}  
+		}  
+		else  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+  
+#ifdef USE_SELECT  
+		if (timeout &lt;= 0)  
+		{  
+			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
+		}  
+		else  
+		{  
+			t.tv_usec = 0;  
+			t.tv_sec = timeout;  
+			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
+		}  
+#else  
+		res = poll(&amp;pollfds, 1, 1000 * timeout);  
+		if (pollfds.revents &amp; POLLHUP)  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+#endif  
+  
+		if (res &lt; 0)  
+		{  
+			ret_code = errno != 0 ? errno : EINTR;  
+			break;  
+		}  
+		else if (res == 0)  
+		{  
+			ret_code = ETIMEDOUT;  
+			break;  
+		}  
+	}  
+  
+	if (count != NULL)  
+	{  
+		*count = size - left_bytes;  
+	}  
+  
+	return ret_code;  
+}  
+</code></pre>
+
+<p>乍一眼看上去，这两个不是一样吗？仔细看下就会发现区别所在：nonblock版本在循环里把recv操作放在了select/poll之前，而block版本在循环里把recv操作放在了select/poll之后。其他地方几乎都是一模一样的。</p>
+
+<p>其实，这两个函数处理的socket在调用他们之前，都已经被设置为nonblock了，这是一个前提条件。也就是说，我们这两个函数是对一个nonblock的socket在细分为block和nonblock，有点拗口，既然这个socket都已经是nonblock的了，为什么这里还会有block和nonblock的区别呢?</p>
+
+<p>他们的区别在于，tcprecvdata_nb_ex会调用select/poll从而阻塞的唯一场合就是在一个recv返回EAGAIN错误或 EWOULDBLOCK时，而tcprecvdata_nb在每一次recv调用钱都会调用可能引起阻塞的select/poll。</p>
+
+<p>在这两个函数中学到了一个技巧，该技巧与这两个函数的区别无关。就是如何在一个nonblock的socket连接中获取希望获取的字节数。由于socket是nonblock的，调用recv马上返回，如果出错且错误是EAGAIN或EWOULDBLOCK，那么我们希望能再重试一下。但如果只是用一个while循环来主动一遍一遍的重试的话，超时该如何处理呢？其实这才是这两个函数中用到select/poll的真正意义所在。即，在一个非阻塞的套接字连接里，达到阻塞接收指定大小的数据的效果，但同时又有超时机制来保证并不会真正的阻塞。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-12-05</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/fastdfs/">fastdfs</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/12/06/157.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">AF_INET与PF_INET的区别</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2013/12/04/155.html">
+            <span class="next-text nav-default">linux下获取本地ip的几种方法</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

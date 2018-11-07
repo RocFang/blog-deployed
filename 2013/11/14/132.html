@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="本文主要内容参考自：
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.
+以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：
+ [root@vps1 ~]# ls -l /usr/bin/python
+-rwxr-xr-x 2 root root 3592 Dec 7 2011 /usr/bin/python [root@vps1 ~]# ls -l /usr/bin/python2.6 -rwxr-xr-x 2 root root 3592 Dec 7 2011 /usr/bin/python2.6
+ 
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2013/11/14/132.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用" />
+<meta property="og:description" content="本文主要内容参考自：
+
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+
+使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.
+
+以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：
+
+
+[root@vps1 ~]# ls   -l /usr/bin/python
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2013/11/14/132.html" /><meta property="article:published_time" content="2013-11-14T11:20:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-11-14T11:20:00&#43;00:00"/>
+
+<meta itemprop="name" content="在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用">
+<meta itemprop="description" content="本文主要内容参考自：
+
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+
+使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.
+
+以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：
+
+
+[root@vps1 ~]# ls   -l /usr/bin/python
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6
+
+
+">
+
+
+<meta itemprop="datePublished" content="2013-11-14T11:20:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-11-14T11:20:00&#43;00:00" />
+<meta itemprop="wordCount" content="2929">
+
+
+
+<meta itemprop="keywords" content="程序员,python," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用"/>
+<meta name="twitter:description" content="本文主要内容参考自：
+
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+
+使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.
+
+以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：
+
+
+[root@vps1 ~]# ls   -l /usr/bin/python
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6
+
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-11-14 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>本文主要内容参考自：</p>
+
+<p><a href="http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691">http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691</a></p>
+
+<p>使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。</p>
+
+<p>这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.</p>
+
+<p>以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：</p>
+
+<blockquote>
+<p>[root@vps1 ~]# ls   -l /usr/bin/python<br />
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6</p>
+</blockquote>
+
+<p></p>
+
+<p>可以看到两个都不是软链接。通过计算一下md5值，可以发现这两者一模一样：</p>
+
+<blockquote>
+<p>958a320a8c3f4d352d398bb0ebc46ed8  /usr/bin/python<br />
+[root@vps1 ~]# md5sum  /usr/bin/python2.6
+958a320a8c3f4d352d398bb0ebc46ed8  /usr/bin/python2.6</p>
+</blockquote>
+
+<p>因此，/usr/bin/python实际上是/usr/bin/python2.6的一个拷贝。如果我们此时想安装一个python3.3，应该怎么做呢？首先绝对不要想着先去卸载已有的python，曾经apt-get remove python或者yum remove python的人肯定会会心一笑。最通常的做法，下载到python3.3的源码来编译。</p>
+
+<p>在CentOS下，通过./configure&amp;&amp;make&amp;&amp;make install安装后，python会被安装到/usr/local/bin目录下，可能同时有python,python3,python3.3。其中python3.3和python是两个一模一样h的可执行文件，而python3则是一个指向/usr/local/bin/python的软链接。这样带来的问题是，在/usr/bin和/usr/local/bin目录下，都有一个名为python的可执行文件。虽然通过环境变量的可以确定在shell中执行python时到底是执行了哪个目录下的python，但总归显的很麻烦，时间长了更容易引起混乱。</p>
+
+<p>这个仅仅是安装一个python时遇到的问题，现实情况下，你可能同时跑着两个版本的django，每个版本的django依赖的python又不同，通过分别指定路径、建立软连接等方式虽然能解决，但还是一个字，乱。不知什么时候，就会互相影响了。</p>
+
+<p>自从有了virtualenv，pythoner的生活就好起来了。</p>
+
+<p>virtualenv的目的就是让每个python应用程序和自己依赖的python解释器及python库，各自隔离开来，互相不影响，更不会破坏系统自带的python环境。</p>
+
+<p>下面就来详细的演示virtualenv的操作过程：</p>
+
+<p>1.系统环境说明：</p>
+
+<blockquote>
+<p>操作系统：CentOS6.2<br />
+# cat /etc/issue<br />
+CentOS release 6.2 (Final)<br />
+Kernel \r on an \m</p>
+</blockquote>
+
+<p>系统自带python环境：</p>
+
+<blockquote>
+<p># python -V<br />
+Python 2.6.6<br />
+|# whereis python<br />
+python: /usr/bin/python /usr/bin/python2.6 /usr/lib/python2.6 /usr/include/python2.6 /usr/share/man/man1/python.1.gz<br />
+# ls -l /usr/bin/python*<br />
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python<br />
+lrwxrwxrwx 1 root root    6 Nov 12 06:29 /usr/bin/python2 -&gt; python<br />
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6</p>
+</blockquote>
+
+<p>2.操作预期：</p>
+
+<p>分别安装最新版的python2.7和python3.3，并各自安装一个flask框架，互相隔离。</p>
+
+<p>3.操作过程：</p>
+
+<p>（1）方便起见，首先安装一些其它常用的组件：</p>
+
+<pre><code>yum groupinstall &quot;Development tools&quot;  
+yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel  
+</code></pre>
+
+<p>（2）下载和安装python2.7.6</p>
+
+<pre><code># mkdir -p /home/fangpeng/sources  
+# cd /home/fangpeng/sources/  
+# wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz  
+#tar xvfz Python-2.7.6.tgz  
+#cd Python-2.7.6  
+# ./configure --prefix=/usr/local  
+# make &amp;&amp; make altinstall  
+</code></pre>
+
+<p>注意，是make altinstall，而不是make install。这样可以避免造成系统存在多个名为python，实际版本却各异的文件。</p>
+
+<p>安装完毕后，/usr/bin下系统自带的几个python文件都没有任何影响。在/usr/local/bin目录下，则多了一个python2.7和python2.7-config。</p>
+
+<p>（3）下载和安装Python3.3.2</p>
+
+<pre><code># cd /home/fangpeng/sources  
+# wget http://www.python.org/ftp/python/3.3.2/Python-3.3.2.tgz  
+#tar xvfz Python-3.3.2.tgz  
+# cd Python-3.3.2  
+# ./configure --prefix=/usr/local  
+# make &amp;&amp; make altinstall  
+</code></pre>
+
+<p>同样注意，是make altinstall，而非make install。安装完成后，在/usr/local/bin目录下，多出三个文件，分别是python3.3m,python3.3和python3.3-config,其中python3.3和python3.3m是同一个文件的两份拷贝。对系统自带的python2.6.6和上一步安装的python2.7.6无影响。</p>
+
+<p>（4）下载distribute</p>
+
+<pre><code># cd /home/fangpeng/sources  
+# wget --no-check-certificate https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz  
+</code></pre>
+
+<p>（5）为python2.7.6安装easy_install</p>
+
+<pre><code># tar xvfz distribute-0.6.49.tar.gz  
+# cd distribute-0.6.49  
+# python2.7 setup.py  install  
+</code></pre>
+
+<p>（6）为python3.3.2安装easy_install</p>
+
+<pre><code># cd /home/fangpeng/sources/  
+# rm -rf distribute-0.6.49  
+# tar xvfz distribute-0.6.49.tar.gz  
+# cd distribute-0.6.49  
+# python3.3 setup.py install  
+</code></pre>
+
+<p>执行完（5）和（6）后，在/usr/local/bin目录下，会多出三个文件，分别是easy_install，easy_install-2.7和easy_install-3.3。其中，easy_install在两次安装时都会生成，因此会存在覆盖。我们直接使用easy_install-2.7和easy_install-3.3即可。</p>
+
+<p>（7）为python2.7安装virtualenv<br />
+终于到了virtualenv了，这才是我们今天的主角。</p>
+
+<pre><code>easy_install-2.7 virtualenv  
+</code></pre>
+
+<p>（8）为python3.3安装virtualenv</p>
+
+<pre><code># easy_install-3.3  virtualenv  
+</code></pre>
+
+<p>至此，我们分别为python2.7.6和python3.3.2安装了virtualenv。同样在/usr/local/bin目录下多出了三个文件，分别是virtualenv，virtualenv-2.7和virtualenv-3.3。其中，virtualenv在两次安装时都会生成，因此会存在覆盖。我们直接使用virtualenv-2.7和virtualenv-3.3即可。</p>
+
+<p>下面用web框架flask的安装，来演示virtualenv的使用。创建两个flask的沙盒，其中一个依赖的是python2.7.6,另一个依赖python3.3.2。</p>
+
+<p>（1）创建相应的工程目录</p>
+
+<pre><code># mkdir -p /home/fangpeng/project/hello_flask  
+# cd /home/fangpeng/project/hello_flask/  
+# mkdir python2.7 python3.3  
+</code></pre>
+
+<p>（2）创建基于python2.7的flask工程</p>
+
+<pre><code># cd /home/fangpeng/project/hello_flask/python2.7/  
+# virtualenv-2.7 --distribute env  
+Using base prefix '/usr/local'  
+New python executable in env/bin/python3.3  
+Also creating executable in env/bin/python  
+Installing Setuptools..................................................................................................................................done.  
+Installing Pip.............................................................................................................................................done.  
+# source env/bin/activate  
+(env)# 
+(env)# python -V  
+Python 2.7.6  
+# pip install flask  
+(env)# vim hello.py  
+</code></pre>
+
+<p>hello.py内容如下：</p>
+
+<pre><code>from flask import Flask  
+app=Flask(__name__)  
+  
+@app.route('/hello')  
+def hello():  
+        return &quot;Hello,Flask!&quot;  
+if __name__=='__main__':  
+        app.run(host='0.0.0.0',debug=True)  
+</code></pre>
+
+<p>执行hello.py:</p>
+
+<pre><code>(env)# python hello.py 
+ * Running on http://0.0.0.0:5000/  
+ * Restarting with reloader  
+</code></pre>
+
+<p>用浏览器或在另一个终端用curl访问该hello接口，如下：</p>
+
+<pre><code># curl 192.168.1.101:5000/hello  
+Hello,Flask!#  
+</code></pre>
+
+<p>（3）退出python2.7的virtualenv环境</p>
+
+<p>继续上一步，按ctr+c退出hello.py的执行。如下所示，此时还处于python2.7的virtualenv中，执行deactivate退出。</p>
+
+<pre><code>(env)# deactivate  
+# 
+</code></pre>
+
+<p>（4）创建基于python3.3的flask工程</p>
+
+<pre><code>#cd /home/fangpeng/project/hello_flask/python3.3/  
+# virtualenv-3.3 --distribute env  
+Using base prefix '/usr/local'  
+New python executable in env/bin/python3.3  
+Also creating executable in env/bin/python  
+Installing Setuptools.........................................................................................done.  
+Installing Pip....................................................................................................done.  
+# source env/bin/activate  
+(env)# 
+#（env) python -V  
+Python 3.3.2  
+(env)# pip  install flask  
+</code></pre>
+
+<p>hello.py的内容和上面完全一致，此处略去。<br />
+执行hello.py:</p>
+
+<pre><code>(env)# python hello.py 
+ * Running on http://0.0.0.0:5000/  
+ * Restarting with reloader  
+</code></pre>
+
+<p>用浏览器或在另一个终端用curl访问该hello接口，如下：</p>
+
+<pre><code># curl 192.168.1.101:5000/hello  
+Hello,Flask!#  
+</code></pre>
+
+<p>至此演示完毕。</p>
+
+<p>与上面的例子类似，以后如果要python2.7.6,则在创建应用程序前，先用virtualenv-2.7创建一个沙盘，要用python3.3.2,则用virtualenv-3.3创建一个沙盘。这样，依赖不同版本python的应用程序彼此完全隔离开来。在各自的virtualenv中，执行python命令就不用管版本问题了，更重要的是，系统自带的python环境也完全被隔离开来。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-11-14</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/python/">python</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/11/16/133.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">由《金蝉脱壳》到《习惯的力量》</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2013/11/13/131.html">
+            <span class="next-text nav-default">推倒重做</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

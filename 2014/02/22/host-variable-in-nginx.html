@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>关于nginx中的host变量 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
+ $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
+ 直白的翻译一下:host变量的值按照如下优先级获得： 1. 请求行中的host.
+2. 请求头中的Host头部.
+3. 与一条请求匹配的server name.
+很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/02/22/host-variable-in-nginx.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="关于nginx中的host变量" />
+<meta property="og:description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
+
+
+$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
+
+
+直白的翻译一下:host变量的值按照如下优先级获得：
+1. 请求行中的host.
+2. 请求头中的Host头部.
+3. 与一条请求匹配的server name.
+
+很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/02/22/host-variable-in-nginx.html" /><meta property="article:published_time" content="2014-02-21T19:51:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-02-21T19:51:00&#43;00:00"/>
+
+<meta itemprop="name" content="关于nginx中的host变量">
+<meta itemprop="description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
+
+
+$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
+
+
+直白的翻译一下:host变量的值按照如下优先级获得：
+1. 请求行中的host.
+2. 请求头中的Host头部.
+3. 与一条请求匹配的server name.
+
+很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。
+
+">
+
+
+<meta itemprop="datePublished" content="2014-02-21T19:51:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-02-21T19:51:00&#43;00:00" />
+<meta itemprop="wordCount" content="2527">
+
+
+
+<meta itemprop="keywords" content="程序员,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="关于nginx中的host变量"/>
+<meta name="twitter:description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
+
+
+$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
+
+
+直白的翻译一下:host变量的值按照如下优先级获得：
+1. 请求行中的host.
+2. 请求头中的Host头部.
+3. 与一条请求匹配的server name.
+
+很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">关于nginx中的host变量</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-02-21 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>关于变量host，在Nginx的官网wiki中是如下说明的：</p>
+
+<blockquote>
+<p>$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request</p>
+</blockquote>
+
+<p>直白的翻译一下:host变量的值按照如下优先级获得：
+1. 请求行中的host.<br />
+2. 请求头中的Host头部.<br />
+3. 与一条请求匹配的server name.</p>
+
+<p>很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。</p>
+
+<p></p>
+
+<p>为了表示语气的加强，再重复一遍，这个规则包含了<strong>三个</strong>步骤。</p>
+
+<p>但由于某种不知名的原因，网上能找到的大部分关于该变量的说明都只包含两点。</p>
+
+<p>例如这个：</p>
+
+<blockquote>
+<p>$host</p>
+
+<p>请求中的Host字段，如果请求中的Host字段不可用，则为服务器处理请求的服务器名称。</p>
+</blockquote>
+
+<p>再例如这个：</p>
+
+<blockquote>
+<p>$host, 请求信息中的&rdquo;Host&rdquo;，如果请求中没有Host行，则等于设置的服务器名;</p>
+</blockquote>
+
+<p><strong>这些说法都是错误的</strong>。它们将一个本来很有内涵的东西向读者隐藏起来，如果你只是一扫而过，在心里默念，哦，这个变量原来是这样的，很简单嘛，那就会错过很多东西。下面就来详细的说明一下该变量。</p>
+
+<h3 id="1-什么是请求行中的host">1.什么是请求行中的host?</h3>
+
+<p>我们知道，HTTP是一个文本协议，建立在一个可靠的传输层协议之上。这个传输层协议要是可靠的，面向连接的。由于TCP的普及程度，让它成了HTTP下层协议事实上的标准。但我们要知道，HTTP并不仅限于建立在TCP之上。只要是可靠的，面向连接的传输层协议，都可以用来传输HTTP。下面所说的HTTP，都是指搭载在TCP之上的HTTP。</p>
+
+<p>一个HTTP请求过程是这样的，客户端先与服务器建立起TCP连接，然后再与服务器端进行请求和回复的收发。请求包含请求行、请求头和请求体，其中，根据请求方法的不同，请求体是可选的。</p>
+
+<p>下面开始说请求行。</p>
+
+<p>在发送请求行之前，客户端与服务器已经建立了连接。所以此时请求行中并不需要有服务器的信息。例如，可以如下：</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.1</p>
+</blockquote>
+
+<p>这就是一个完整的HTTP请求行。虽然请求行中不需要有服务器的信息，但仍然可以在请求行中包含服务器的信息。例如：</p>
+
+<blockquote>
+<p>GET www.pureage.info/index.php HTTP/1.1</p>
+</blockquote>
+
+<p>两者一比较，就很容易理解什么叫请求行中的host了。第一个请求行中，就没有host，第二种请求行中，就带了host，为wwww.pureage.info。</p>
+
+<h3 id="2-host请求头与http-1-0-http-1-1">2.Host请求头与HTTP/1.0、HTTP/1.1</h3>
+
+<p>一个请求，请求行下面就是一些列的请求头。这些请求头，在HTTP/1.0中，都是可选的，且HTTP/1.0不支持Host请求头；而<strong>在HTTP/1.1中，Host请求头部必须存在</strong>。</p>
+
+<p>除了阅读RFC2616来确认这一点外，我们来看看Nginx中的代码：</p>
+
+<pre><code>ngx_int_t  
+ngx_http_process_request_header(ngx_http_request_t *r)  
+...(略)...  
+if (r-&gt;headers_in.host == NULL &amp;&amp; r-&gt;http_version &gt; NGX_HTTP_VERSION_10) {  
+        ngx_log_error(NGX_LOG_INFO, r-&gt;connection-&gt;log, 0,  
+                   &quot;client sent HTTP/1.1 request without \&quot;Host\&quot; header&quot;);  
+        ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);  
+        return NGX_ERROR;  
+...(略)...  
+</code></pre>
+
+<p>即，如果协议版本在HTTP/1.0之上，且请求头部没有Host的话，会直接返回一个Bad Request错误响应。</p>
+
+<h3 id="3-什么是与请求匹配的server-name">3.什么是与请求匹配的server name?</h3>
+
+<p>server name是指在Nginx配置文件中，在server块中，用server_name指令设置的值。一个server可以多次使用server_name指令，来实现俗称的“虚拟主机”。例如：</p>
+
+<pre><code>server {  
+    listen      80;  
+    server_name example.org www.example.org;  
+    ...  
+}  
+  
+server {  
+    listen      80;  
+    server_name example.net www.example.net;  
+    ...  
+}  
+  
+server {  
+    listen      80;  
+    server_name example.com www.example.com;  
+    ...  
+}  
+</code></pre>
+
+<p>关于虚拟主机的确定方法，还是引用Nginx的官方文档：</p>
+
+<blockquote>
+<p>在这个配置中，nginx仅仅检查请求的“Host”头以决定该请求应由哪个虚拟主机来处理。如果Host头没有匹配任意一个虚拟主机，或者请求中根本没有包含Host头，那nginx会将请求分发到定义在此端口上的默认虚拟主机。在以上配置中，第一个被列出的虚拟主机即nginx的默认虚拟主机——这是nginx的默认行为。而且，可以显式地设置某个主机为默认虚拟主机，即在&rdquo;listen&rdquo;指令中设置&rdquo;default_server&rdquo;参数：</p>
+
+<p>server {<br />
+   listen      80 default_server;<br />
+   server_name example.net www.example.net;<br />
+   &hellip;<br />
+}</p>
+</blockquote>
+
+<h3 id="4-整理一下">4.整理一下</h3>
+
+<p>上面所有的说明，都仅仅是解释了Nginx官方文档中关于host变量选择的三个来源值。不过，知道了这三个值是什么，怎么来的，以及HTTP/1.0与HTTP/1.1的区别，我们就能彻底搞清楚这个host变量是怎么确定的了。</p>
+
+<p>首先，无论是HTTP/1.0还是HTTP/1.1请求，只要请求行中带了主机信息，那么host变量就是该请求行中所带的host。需要注意的是，host变量是不带端口号的。</p>
+
+<p>所以，下面两条请求的host变量都是www.pureage.info:</p>
+
+<blockquote>
+<p>GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.php</a> HTTP/1.0<br />
+GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.php</a> HTTP/1.1</p>
+</blockquote>
+
+<p>其次，假设请求行中不带主机信息，那么我们就来看请求头部中的Host头。此时HTTP/1.0请求和HTTP/1.1请求的表现就大不相同了。有如下几种情况：</p>
+
+<p>1.HTTP/1.0请求，不带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.0</p>
+</blockquote>
+
+<p>此时，host变量为与该请求匹配的虚拟主机的主机名，及在nginx配置文件中与之匹配的server段中server_name指令设置的值。如果该server中没有使用<code>server_name</code>指令，那么host变量就是一个空值，不存在。</p>
+
+<p>2.HTTP/1.0请求，带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.0<br />
+Host: www.pureage.info</p>
+</blockquote>
+
+<p>此时，host变量即为www.pureage.info</p>
+
+<p>3.HTTP/1.1请求，不带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.1</p>
+</blockquote>
+
+<p>如前所述，HTTP/1.1请求必须携带Host头部。所以这种情况，请求会返回一个Bad Request错误响应。host变量当然就更不存在了。</p>
+
+<p>4.HTTP/1.1请求，带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.1<br />
+Host: www.pureage.info</p>
+</blockquote>
+
+<p>此时，host变量即为www.pureage.info</p>
+
+<p>通过上面的例子，可以看出，对于HTTP/1.1请求，host变量不会为空，它要么在请求行中指定，要么在Host头部指定，要么就是一条错误的请求；而对于HTTP/1.0请求，host变量有为空的情况，即请求行和请求头中没有指定host，且匹配的server也没有名称时。</p>
+
+<h3 id="5-验证">5.验证</h3>
+
+<p>可以搭建一台Nginx服务器，用telnet来验证上面的说法。此处略过，但这个操作很有必要。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-02-21</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/02/23/gift-not-sent-out.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">送礼要抓紧</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/01/27/176.html">
+            <span class="next-text nav-default">依赖一个RPM来制作新的RPM</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

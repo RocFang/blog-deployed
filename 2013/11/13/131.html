@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>推倒重做 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="这几个月一直在做一个基于FastDFS的分布式存储系统，从前期调研、测试到后面的设计、编码、测试等。其中设计部分，每个环节都和当时带我的一位哥们讨论过，时而愁眉不展，百思不得其解；时而一拍脑袋，找到一个很巧妙的设计方法。已经有两个月没有什么大的改动了，上周实在无聊，就把我当时赶工写的，现在看来不堪入目的代码进行了重构。
+一切看起来很美好的样子，只是看起来。
+部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2013/11/13/131.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="推倒重做" />
+<meta property="og:description" content="这几个月一直在做一个基于FastDFS的分布式存储系统，从前期调研、测试到后面的设计、编码、测试等。其中设计部分，每个环节都和当时带我的一位哥们讨论过，时而愁眉不展，百思不得其解；时而一拍脑袋，找到一个很巧妙的设计方法。已经有两个月没有什么大的改动了，上周实在无聊，就把我当时赶工写的，现在看来不堪入目的代码进行了重构。
+
+一切看起来很美好的样子，只是看起来。
+
+部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2013/11/13/131.html" /><meta property="article:published_time" content="2013-11-13T13:21:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-11-13T13:21:00&#43;00:00"/>
+
+<meta itemprop="name" content="推倒重做">
+<meta itemprop="description" content="这几个月一直在做一个基于FastDFS的分布式存储系统，从前期调研、测试到后面的设计、编码、测试等。其中设计部分，每个环节都和当时带我的一位哥们讨论过，时而愁眉不展，百思不得其解；时而一拍脑袋，找到一个很巧妙的设计方法。已经有两个月没有什么大的改动了，上周实在无聊，就把我当时赶工写的，现在看来不堪入目的代码进行了重构。
+
+一切看起来很美好的样子，只是看起来。
+
+部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。
+
+">
+
+
+<meta itemprop="datePublished" content="2013-11-13T13:21:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-11-13T13:21:00&#43;00:00" />
+<meta itemprop="wordCount" content="1720">
+
+
+
+<meta itemprop="keywords" content="程序员," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="推倒重做"/>
+<meta name="twitter:description" content="这几个月一直在做一个基于FastDFS的分布式存储系统，从前期调研、测试到后面的设计、编码、测试等。其中设计部分，每个环节都和当时带我的一位哥们讨论过，时而愁眉不展，百思不得其解；时而一拍脑袋，找到一个很巧妙的设计方法。已经有两个月没有什么大的改动了，上周实在无聊，就把我当时赶工写的，现在看来不堪入目的代码进行了重构。
+
+一切看起来很美好的样子，只是看起来。
+
+部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">推倒重做</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-11-13 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>这几个月一直在做一个基于FastDFS的分布式存储系统，从前期调研、测试到后面的设计、编码、测试等。其中设计部分，每个环节都和当时带我的一位哥们讨论过，时而愁眉不展，百思不得其解；时而一拍脑袋，找到一个很巧妙的设计方法。已经有两个月没有什么大的改动了，上周实在无聊，就把我当时赶工写的，现在看来不堪入目的代码进行了重构。</p>
+
+<p>一切看起来很美好的样子，只是看起来。</p>
+
+<p>部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。</p>
+
+<p></p>
+
+<p>问题就出在和后台对接上，昨天把我们组以及后台组的几个同事拉过来review我的代码时，发现现有的redis中设计的存储结构存在一定的缺陷。而这种设计的缺陷在公司现在一个主要的视频cdn产品中也有，所以后台组的同事们强烈要求在这个分布式存储系统中避免这个问题。</p>
+
+<p>意识到了问题后，昨天下午几个人就在一起把解决方案给讨论出来了。</p>
+
+<p>一切看起来还是很美好。</p>
+
+<p>经过多次血淋淋的教训，我知道肯定不能开始写代码，于是今天我又把这个新的设计拿出来，在纸上画了画，在大脑里细细的想了想。一个让我心惊的问题突然冒出来了，而以昨天讨论的方案，根本无法解决这个问题，吃一堑长一智，这次赶紧把几个主要人员叫到一块反映了这个问题。大家板着小板凳，围坐在小黑板前写写画画，一个小时后终于讨论出一种解决办法。与昨天的方案不同，这次的修改是大规模的，整个redis中的数据结构要完全重新设计。</p>
+
+<p>想起以前在华为时的开发场景，软件的架构都是架构师们设计好了，一般情况是没什么问题的，因为架构确定前会经过无数次的大大小小的会议评审。一旦架构、方案确定下来，下面的兄弟们就在各自从属的模块里垒着代码。你不用考虑任何架构方面的问题，你的代码对其他模块的影响也已经降到了最低，一方面是由低耦合的架构决定的，另一方面华为的软件质量体系也予以了保证，例如，可能外面的公司很难理解，华为的一个产品的开发周期内，会专门有一个从上到下的团队，负责版本的构建，通俗点说，就是操作svn，监控、测试着每一笔代码合入。这也是我离开华为的原因之一，螺丝钉感过于强烈。</p>
+
+<p>记得当时主管挽留我的时候，说华为的软件流程在外面是很难找到第二家的，而且这个流程已经深入到制度里了。不管项目多大，涉及到多少团队多少人，正是因为这个流程，这个制度，保证着都能在规定的时间内把东西做出来。</p>
+
+<p>当时我嘴上不说，心里嗤之以鼻，您继续忽悠，我都不想当螺丝钉了，您还给我讲论螺丝钉的光荣伟大。</p>
+
+<p>现在到了一个新的公司，做一个新的产品，写了些代码，对软件流程、大公司和小公司的区别有了一些思考。</p>
+
+<ol>
+<li>积淀、传承。这一点上大、小公司的差别太大。在华为，如果前一个项目的设计有缺陷，在下一个版本时，必然会将其当做重中之重，而不会出现我今天发现的问题。其实只要一个软件的质量够稳定，那么其架构肯定经过千锤百炼才设计出来的。而很可惜的是，再大的公司也不会把这个架构的历史变迁列出来给你看，只能靠自己慢慢深入体会。所以，如果有还在类似于华为的公司工作的同学，对现状不满，但是又不能决定离开时，可以从这一点入手，改变自己的心态，在华为能学到的东西不是没有，而是太多。<br /></li>
+<li>灵活性。这一点大公司当然完全不如小公司了。我今天发现了这个问题，毕竟只是一个小项目，即使完全重做，也没多少难度，但在大公司则很难如此轻松应对了。<br /></li>
+<li>主观能动性。如前所述，在华为做一个小兵其实不用操多少心，但在小公司，如果在你的同事或上级给你一个架构或方案，你当时发现了问题，一定要尽快如实的反馈，和稀泥的方式不会对你有任何帮助。那我今天的事情举例，当时这个redis的结构设计，是由那个带我入门的同事设计的，当时我也想到了这个问题，后来不知怎么就自己说服自己没问题了。大公司由于历史积淀深，新员工一般会对老员工带有一种学生膜拜老师的感觉，胆怯，不敢指出问题，而小公司相对而言，很可能里面的资深员工也只比你多工作一两年，年龄相似，发现问题嘻嘻哈哈把问题沟通下就行了。<br />
+想的不多，暂时写到这里吧。<br /></li>
+</ol>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-11-13</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/11/14/132.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2013/10/31/130.html">
+            <span class="next-text nav-default">关于proxy_pass的参数路径问题</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

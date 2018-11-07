@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Nginx踩坑记（一） - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="1. 预备知识 Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。
+配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。
+例如，如果有如下的配置：
+location /test1 { set $hello hello; rewrite /test1 /test2 last; } location /test2 { echo $hello; }  虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/04/26/pitfall-of-nginx.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="Nginx踩坑记（一）" />
+<meta property="og:description" content="1. 预备知识
+
+Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。
+
+配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。
+
+例如，如果有如下的配置：
+
+location /test1 {  
+        set $hello hello;  
+        rewrite /test1 /test2 last;
+
+}
+  
+location /test2 {  
+        echo $hello;  
+}  
+
+
+虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/04/26/pitfall-of-nginx.html" /><meta property="article:published_time" content="2014-04-26T13:18:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-04-26T13:18:00&#43;00:00"/>
+
+<meta itemprop="name" content="Nginx踩坑记（一）">
+<meta itemprop="description" content="1. 预备知识
+
+Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。
+
+配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。
+
+例如，如果有如下的配置：
+
+location /test1 {  
+        set $hello hello;  
+        rewrite /test1 /test2 last;
+
+}
+  
+location /test2 {  
+        echo $hello;  
+}  
+
+
+虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。
+
+">
+
+
+<meta itemprop="datePublished" content="2014-04-26T13:18:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-04-26T13:18:00&#43;00:00" />
+<meta itemprop="wordCount" content="1467">
+
+
+
+<meta itemprop="keywords" content="nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Nginx踩坑记（一）"/>
+<meta name="twitter:description" content="1. 预备知识
+
+Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。
+
+配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。
+
+例如，如果有如下的配置：
+
+location /test1 {  
+        set $hello hello;  
+        rewrite /test1 /test2 last;
+
+}
+  
+location /test2 {  
+        echo $hello;  
+}  
+
+
+虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Nginx踩坑记（一）</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-04-26 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <h2 id="1-预备知识">1. 预备知识</h2>
+
+<p>Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。</p>
+
+<p>配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。</p>
+
+<p>例如，如果有如下的配置：</p>
+
+<pre><code>location /test1 {  
+        set $hello hello;  
+        rewrite /test1 /test2 last;
+
+}
+  
+location /test2 {  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。</p>
+
+<p></p>
+
+<p>测试如下所示：<br />
+<img src="/img/nginx-1.png" alt="nginx-1.png" /></p>
+
+<h2 id="2-如果变量定义在server处">2. 如果变量定义在server处</h2>
+
+<p>例如，如果有如下的配置：</p>
+
+<pre><code>set $hello hello;  
+location /test1 {  
+        echo $hello;  
+}  
+  
+location /test2 {  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>那么很容易想到，无论是访问/test1还是/test2，都会输出在上层定义的变量$hello的值，测试如下：<br />
+<img src="/img/nginx-2.png" alt="nginx-2.png" /></p>
+
+<p>再进一步，假设配置如下：</p>
+
+<pre><code>set $hello hello;  
+location /test1 {  
+        set $hello bye;  
+        rewrite /test1 /test2 last;  
+}  
+  
+location /test2 {  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>则同样很容易想到，如果直接访问/test1，则会先把在server段定义的$hello变量由“hello&rdquo;改写为&rdquo;bye&rdquo;，再进行内部跳转到/test2后，则会输出新的修改过后的变量$hello；而如果直接访问/test2，则会输出在server段定义的变量。测试如下：<br />
+<img src="/img/nginx-3.png" alt="nginx-3.png" /></p>
+
+<h2 id="3-坑来了">3. 坑来了</h2>
+
+<p>到现在为止，一切都很正常，上述的知识点也是Nginx配置中的基础知识。但当和ngx_lua模块结合起来时，就时常会碰到比较诡异的事情。<br />
+假设配置如下：</p>
+
+<pre><code>set $hello hello;  
+  
+location /test1 {  
+        content_by_lua '  
+                ngx.var.hello = &quot;bye&quot;;  
+                ngx.exec(&quot;/test2&quot;);  
+        ';  
+}  
+  
+location /test2 {  
+        echo &quot;in test2&quot;;  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>我们来猜猜分别访问/test1和/test2，会输出什么。首先,server段已经定义了变量$hello为字符串&rdquo;hello&rdquo;，直接访问/test1时，会将其修改为&rdquo;bye&rdquo;，然后执行ngx.exec跳转到/test2，输出变量$hello。但经过测试，分别访问/test1和/test2的时候，结果如下所示：<br />
+<img src="/img/nginx-4.png" alt="nginx-4.png" /><br />
+是不是很奇怪？直接访问/test2输出hello是正常的，可是访问/test1居然也是输出hello，在/test1中对hello变量的更改似乎没起作用。</p>
+
+<p>到底/test1的content_by_lua段中，对变量$test的修改起作用没，我们可以测试一下，添加一行调试代码如下：</p>
+
+<pre><code>set $hello hello;  
+  
+location /test1 {  
+        content_by_lua '  
+                ngx.var.hello = &quot;bye&quot;;  
+                ngx.log(ngx.ERR, ngx.var.hello);  
+                ngx.exec(&quot;/test2&quot;);  
+        ';  
+}  
+  
+location /test2 {  
+        echo &quot;in test2&quot;;  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>再次访问/test1，我们会发现，在log中记录下来了此时的$hello变量为&rdquo;bye&rdquo;。可是为什么执行内部跳转到/test2后，输出的结果还是&rdquo;hello&rdquo;呢？</p>
+
+<p>我们再次改造一下配置：</p>
+
+<pre><code>location /test1 {  
+        set $hello hello;  
+        content_by_lua '  
+                ngx.var.hello = &quot;bye&quot;;  
+                ngx.log(ngx.ERR, ngx.var.hello);  
+                ngx.exec(&quot;/test2&quot;);  
+        ';  
+}  
+  
+location /test2 {  
+        echo &quot;in test2&quot;;  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>和上面的区别在于，这次将变量的定义从server段迁到了location /test1中，在/test1中的content_by_lua段对其进行修改，再执行内部跳转到/test2。测试结果如下：<br />
+<img src="/img/nginx-5.png" alt="nginx-5.png" /><br />
+这次的结果显然是符合我们的预期的。直接访问/test1，由于在content_by_lua中将$hello变量更改为&rdquo;bye&rdquo;了，所以当内部跳转到/test2时，输出$hello变量就会输出“bye&rdquo;；如果直接访问/test2，则由于此时并没有对$hello变量赋值，所以$hello变量为空。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-04-26</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">春哥关于Nginx踩坑记（一）的回复</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/04/17/svn-log.html">
+            <span class="next-text nav-default">svn log不显示当前提交</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

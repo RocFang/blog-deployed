@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>O_EXCL的作用 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="1.原始语义 与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
+2.使用场景 O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
+之所以能这么用的唯一理由是该操作是原子的。
+之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
+if( access(file, R_OK) == -1 ) /* 首先检查文件是否存在 */ open(file, O_RDWR | O_CREAT，0666); /* 如果不存在，那我创建一个这样的文件 */ ... /* 继续执行任务 */  
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2013/12/25/165.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="O_EXCL的作用" />
+<meta property="og:description" content="1.原始语义
+
+与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
+
+2.使用场景
+
+O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
+
+之所以能这么用的唯一理由是该操作是原子的。
+
+之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
+
+if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
+    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
+...  /* 继续执行任务 */  
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2013/12/25/165.html" /><meta property="article:published_time" content="2013-12-25T15:48:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-12-25T15:48:00&#43;00:00"/>
+
+<meta itemprop="name" content="O_EXCL的作用">
+<meta itemprop="description" content="1.原始语义
+
+与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
+
+2.使用场景
+
+O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
+
+之所以能这么用的唯一理由是该操作是原子的。
+
+之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
+
+if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
+    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
+...  /* 继续执行任务 */  
+
+
+">
+
+
+<meta itemprop="datePublished" content="2013-12-25T15:48:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-12-25T15:48:00&#43;00:00" />
+<meta itemprop="wordCount" content="1674">
+
+
+
+<meta itemprop="keywords" content="程序员," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="O_EXCL的作用"/>
+<meta name="twitter:description" content="1.原始语义
+
+与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
+
+2.使用场景
+
+O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
+
+之所以能这么用的唯一理由是该操作是原子的。
+
+之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
+
+if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
+    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
+...  /* 继续执行任务 */  
+
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">O_EXCL的作用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-12-25 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <h2 id="1-原始语义">1.原始语义</h2>
+
+<p>与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。</p>
+
+<h2 id="2-使用场景">2.使用场景</h2>
+
+<p>O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。</p>
+
+<p><strong>之所以能这么用的唯一理由是该操作是原子的</strong>。</p>
+
+<p>之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:</p>
+
+<pre><code>if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
+    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
+...  /* 继续执行任务 */  
+</code></pre>
+
+<p></p>
+
+<p>由于判断文件是否存在与创建文件是两个步骤，就会存在临界竞争的问题。试想下面的场景：</p>
+
+<ol>
+<li>某程序的进程A判断文件不存在，因此A认为自己是此时系统中该程序唯一的实例，准备继续执行创建指定的文件。<br /></li>
+<li>操作系统的调度策略恰好在此时起作用，进程A暂停执行。此时指定的文件还没有创建。<br /></li>
+<li>该程序的另一个进程B开始执行，同样，由于指定的文件不存在，B也认为自己是此时系统中该程序的唯一实例，准备继续执行创建指定的文件。<br /></li>
+<li>这样，进程A和进程B都能成功调用open并继续往下执行。<br /></li>
+<li>此时系统中就同时运行着该程序的两个实例，与仅运行一个进程的期望不符。<br />
+<br /></li>
+</ol>
+
+<p>所以说，O_EXCL与O_CREATE联合使用的前提就是该操作是原子的。</p>
+
+<h2 id="3-非原子操作如何达到同样目的">3.非原子操作如何达到同样目的</h2>
+
+<p>假设现在不能使用O_EXCL|O_CREATE，或者假设用O_EXCL|O_CREATE调用open并不是原子的，该如何达到上面关于“一个程序只能运行一个实例”的要求呢？</p>
+
+<p>可以用系统调用link来实现。</p>
+
+<p>link的原型如下:</p>
+
+<pre><code> #include &lt;unistd.h&gt;  
+  
+ int link(const char *oldpath, const char *newpath);  
+</code></pre>
+
+<p>link的作用是为oldpath指定的源文件创建一个newpath指定的链接文件(硬链接，hard link)。如果创建成功，则返回0，如果newpath路径指定的目标文件在调用link前已经存在，则link会错误返回。</p>
+
+<p>根据link的特点，可以达到上面的要求：<br />
+1. 首先确保文件系统中已经有一个源文件file1。<br />
+2. 某程序的一个进程A开始执行，调用link，试图创建一个file1的链接文件file2。<br />
+3. 如果A调用link成功，说明该程序此时只有进程A锁定了该文件，进程A可以继续往下执行。<br />
+4. 由于进程A为file1创建了一个链接文件file2,此时file1的链接数是2（用stat可获取链接数）。<br />
+5. 进程B调用link,同样试图创建file1的链接文件file2，但由于file2已经存在，link错误返回。可进一步调用stat系统调用，查看file1的链接数，确定该链接数是2。<br />
+6. 进程B退出。</p>
+
+<h2 id="4-o-excl-o-create确实有可能是非原子的">4.O_EXCL|O_CREATE确实有可能是非原子的</h2>
+
+<p>在NFS上，O_EXCL|O\CREATE确实有可能是非原子的：</p>
+
+<blockquote>
+<p>On NFS, O_EXCL is supported only when using NFSv3 or later on<br />
+              kernel 2.6 or later.  In NFS environments where O_EXCL support<br />
+              is not provided, programs that rely on it for performing<br />
+              locking tasks will contain a race condition.</p>
+</blockquote>
+
+<p>在这种情况下，上面讨论的使用link的方法就有了用武之地。如上引文所述，在最新的内核中，NFS中并不存在该问题，用O_EXCL|O_CREATE仍然能满足要求。</p>
+
+<h2 id="5-其它">5. 其它</h2>
+
+<p>O_EXCL一般只能和O_CREATE一起使用，不能单独使用，但有一个例外：在2.6即以后的内核中，如果open指定的文件是一个块设备文件，O_EXCL可以单独使用，此时，如果该块设备正在被使用（例如已经被挂在)，那么open将失败返回，错误码是EBUSY;除此之外，单独使用O_EXCL的后果无法预知：</p>
+
+<blockquote>
+<p>In general, the behavior of O_EXCL is undefined if it is used<br />
+             without O_CREAT.  There is one exception: on Linux 2.6 and<br />
+             later, O_EXCL can be used without O_CREAT if pathname refers<br />
+             to a block device.  If the block device is in use by the<br />
+             system (e.g., mounted), open() fails with the error EBUSY.</p>
+</blockquote>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-12-25</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/01/08/do-not-kiss-the-ass-of-your-boss.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">护主莫心急</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2013/12/23/161.html">
+            <span class="next-text nav-default">从emlog换到typecho</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

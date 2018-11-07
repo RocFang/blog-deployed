@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>lua-nginx使用自定义变量中需要说明的一点 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="在nginx中，有两种方式添加自定义的变量：
+ 在配置文件中用set指定添加 在自己编写的C模块中，调用ngx_http_add_variable接口来添加变量
+  第一种方法较简单，第二种方法有一处需要说明一下。
+当调用ngx_http_add_variable接口时，如果传入的flag参数中NGX_HTTP_VAR_NOHASH位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。
+在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。
+例如，某个C模块中用带有NGX_HTTP_VAR_NOHASH位的flag参数调用了ngx_http_add_variable，创建了变量A，则如果在lua代码中通过ngx.var.A只能得到一个nil值。
+而如果在配置文件中，先调用set命令:set $B $A;,那么在lua代码中，通过代码local A2 = ngx.var.B则可以间接访问到该变量。
+翻了一下邮件列表，发现该问题agentzh早有解答：
+&amp;gt;逆雪寒:
+&amp;gt;通过 ngx.var.fastcgi_script_name 是nil 。 但 set $fsn $fastcgi_script_name 然后 ngx.var.fsn 就能正常获取了。bug ? 还是我理解问题.
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/01/20/lua-nginx-variable.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="lua-nginx使用自定义变量中需要说明的一点" />
+<meta property="og:description" content="在nginx中，有两种方式添加自定义的变量：
+
+
+在配置文件中用set指定添加
+在自己编写的C模块中，调用ngx_http_add_variable接口来添加变量
+
+
+
+第一种方法较简单，第二种方法有一处需要说明一下。
+
+当调用ngx_http_add_variable接口时，如果传入的flag参数中NGX_HTTP_VAR_NOHASH位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。
+
+在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。
+
+例如，某个C模块中用带有NGX_HTTP_VAR_NOHASH位的flag参数调用了ngx_http_add_variable，创建了变量A，则如果在lua代码中通过ngx.var.A只能得到一个nil值。
+
+而如果在配置文件中，先调用set命令:set $B $A;,那么在lua代码中，通过代码local A2 = ngx.var.B则可以间接访问到该变量。
+
+翻了一下邮件列表，发现该问题agentzh早有解答：
+&gt;逆雪寒:
+&gt;通过 ngx.var.fastcgi_script_name 是nil 。 但 set $fsn $fastcgi_script_name 然后 ngx.var.fsn 就能正常获取了。bug ? 还是我理解问题.
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/01/20/lua-nginx-variable.html" /><meta property="article:published_time" content="2014-01-20T15:30:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-01-20T15:30:00&#43;00:00"/>
+
+<meta itemprop="name" content="lua-nginx使用自定义变量中需要说明的一点">
+<meta itemprop="description" content="在nginx中，有两种方式添加自定义的变量：
+
+
+在配置文件中用set指定添加
+在自己编写的C模块中，调用ngx_http_add_variable接口来添加变量
+
+
+
+第一种方法较简单，第二种方法有一处需要说明一下。
+
+当调用ngx_http_add_variable接口时，如果传入的flag参数中NGX_HTTP_VAR_NOHASH位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。
+
+在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。
+
+例如，某个C模块中用带有NGX_HTTP_VAR_NOHASH位的flag参数调用了ngx_http_add_variable，创建了变量A，则如果在lua代码中通过ngx.var.A只能得到一个nil值。
+
+而如果在配置文件中，先调用set命令:set $B $A;,那么在lua代码中，通过代码local A2 = ngx.var.B则可以间接访问到该变量。
+
+翻了一下邮件列表，发现该问题agentzh早有解答：
+&gt;逆雪寒:
+&gt;通过 ngx.var.fastcgi_script_name 是nil 。 但 set $fsn $fastcgi_script_name 然后 ngx.var.fsn 就能正常获取了。bug ? 还是我理解问题.
+
+">
+
+
+<meta itemprop="datePublished" content="2014-01-20T15:30:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-01-20T15:30:00&#43;00:00" />
+<meta itemprop="wordCount" content="760">
+
+
+
+<meta itemprop="keywords" content="程序员,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="lua-nginx使用自定义变量中需要说明的一点"/>
+<meta name="twitter:description" content="在nginx中，有两种方式添加自定义的变量：
+
+
+在配置文件中用set指定添加
+在自己编写的C模块中，调用ngx_http_add_variable接口来添加变量
+
+
+
+第一种方法较简单，第二种方法有一处需要说明一下。
+
+当调用ngx_http_add_variable接口时，如果传入的flag参数中NGX_HTTP_VAR_NOHASH位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。
+
+在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。
+
+例如，某个C模块中用带有NGX_HTTP_VAR_NOHASH位的flag参数调用了ngx_http_add_variable，创建了变量A，则如果在lua代码中通过ngx.var.A只能得到一个nil值。
+
+而如果在配置文件中，先调用set命令:set $B $A;,那么在lua代码中，通过代码local A2 = ngx.var.B则可以间接访问到该变量。
+
+翻了一下邮件列表，发现该问题agentzh早有解答：
+&gt;逆雪寒:
+&gt;通过 ngx.var.fastcgi_script_name 是nil 。 但 set $fsn $fastcgi_script_name 然后 ngx.var.fsn 就能正常获取了。bug ? 还是我理解问题.
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">lua-nginx使用自定义变量中需要说明的一点</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-01-20 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>在nginx中，有两种方式添加自定义的变量：</p>
+
+<ul>
+<li>在配置文件中用set指定添加</li>
+<li>在自己编写的C模块中，调用<code>ngx_http_add_variable</code>接口来添加变量<br />
+<br /></li>
+</ul>
+
+<p>第一种方法较简单，第二种方法有一处需要说明一下。</p>
+
+<p>当调用<code>ngx_http_add_variable</code>接口时，如果传入的flag参数中<code>NGX_HTTP_VAR_NOHASH</code>位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。</p>
+
+<p>在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。</p>
+
+<p>例如，某个C模块中用带有<code>NGX_HTTP_VAR_NOHASH</code>位的flag参数调用了<code>ngx_http_add_variable</code>，创建了变量A，则如果在lua代码中通过<code>ngx.var.A</code>只能得到一个nil值。</p>
+
+<p>而如果在配置文件中，先调用set命令:<code>set $B $A;</code>,那么在lua代码中，通过代码<code>local A2 = ngx.var.B</code>则可以间接访问到该变量。</p>
+
+<p>翻了一下邮件列表，发现该问题agentzh早有解答：<br />
+&gt;逆雪寒:<br />
+&gt;通过 <code>ngx.var.fastcgi_script_name</code> 是nil 。 但 <code>set $fsn $fastcgi_script_name</code> 然后 <code>ngx.var.fsn</code> 就能正常获取了。bug ? 还是我理解问题.</p>
+
+<p></p>
+
+<blockquote>
+<p>agenzh:</p>
+
+<p>这是 Nginx 标准的 <code>ngx_fastcgi</code> 模块的一个限制。<code>$fastcgi_script_name</code> 这个内建变量是这个 <code>ngx_fastcgi</code> 模块定义的，而且在定义时设置了 <code>NGX_HTTP_VAR_NOHASH</code> 这个标志位，从而阻止了 Perl、Lua等各种脚本语言在请求时按变量名动态获取这个变量的值。</p>
+
+<p>之所以你使用 set 指令进行过渡就可以工作是因为 set 指令定位 <code>$fastcgi_script_name</code> 这个变量是在配置加载时，而不是请求时。</p>
+
+<p>你可以自己修改 Nginx 源码树中的 <code>src/http/modules/ngx_http_fastcgi_module.c</code> 这个文件，从<code>ngx_http_fastcgi_vars</code> 这个全局数组的初始化定义中把 <code>NGX_HTTP_VAR_NOHASH</code> 这个标志去除。</p>
+
+<p>从 ngx_lua 模块的角度，是没办法绕过 Nginx 核心中的这个限制的。关于类似这样的问题，可以参见下面这个讨论：</p>
+
+<p><a href="http://forum.nginx.org/read.php?29,239402,239402,quote=1">http://forum.nginx.org/read.php?29,239402,239402,quote=1</a></p>
+</blockquote>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-01-20</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/01/21/reading-plan.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">2014年的读书计划</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/01/19/callyourfriends.html">
+            <span class="next-text nav-default">朋友</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

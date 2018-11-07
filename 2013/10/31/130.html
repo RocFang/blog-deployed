@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>关于proxy_pass的参数路径问题 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。
+这一搜，就掉进坑里了。
+这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&amp;ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。
+其实根本没这么复杂，只有两种情况：
+（1）目标地址中不带uri。即proxy_pass的参数形如&amp;rdquo;http://127.0.0.1:8090&amp;quot;。 此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。
+（2）目标地址中带uri。即proxy_pass的参数形如“http://127.0.0.1:8090/dir1/dir2&amp;quot;
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2013/10/31/130.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="关于proxy_pass的参数路径问题" />
+<meta property="og:description" content="由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。
+
+这一搜，就掉进坑里了。
+
+这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。
+
+其实根本没这么复杂，只有两种情况：
+
+（1）目标地址中不带uri。即proxy_pass的参数形如&rdquo;http://127.0.0.1:8090&quot;。
+此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。
+
+（2）目标地址中带uri。即proxy_pass的参数形如“http://127.0.0.1:8090/dir1/dir2&quot;
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2013/10/31/130.html" /><meta property="article:published_time" content="2013-10-31T04:16:00&#43;00:00"/>
+<meta property="article:modified_time" content="2013-10-31T04:16:00&#43;00:00"/>
+
+<meta itemprop="name" content="关于proxy_pass的参数路径问题">
+<meta itemprop="description" content="由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。
+
+这一搜，就掉进坑里了。
+
+这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。
+
+其实根本没这么复杂，只有两种情况：
+
+（1）目标地址中不带uri。即proxy_pass的参数形如&rdquo;http://127.0.0.1:8090&quot;。
+此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。
+
+（2）目标地址中带uri。即proxy_pass的参数形如“http://127.0.0.1:8090/dir1/dir2&quot;
+
+">
+
+
+<meta itemprop="datePublished" content="2013-10-31T04:16:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-10-31T04:16:00&#43;00:00" />
+<meta itemprop="wordCount" content="929">
+
+
+
+<meta itemprop="keywords" content="程序员,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="关于proxy_pass的参数路径问题"/>
+<meta name="twitter:description" content="由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。
+
+这一搜，就掉进坑里了。
+
+这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。
+
+其实根本没这么复杂，只有两种情况：
+
+（1）目标地址中不带uri。即proxy_pass的参数形如&rdquo;http://127.0.0.1:8090&quot;。
+此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。
+
+（2）目标地址中带uri。即proxy_pass的参数形如“http://127.0.0.1:8090/dir1/dir2&quot;
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">关于proxy_pass的参数路径问题</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2013-10-31 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。</p>
+
+<p>这一搜，就掉进坑里了。</p>
+
+<p>这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。</p>
+
+<p>其实根本没这么复杂，只有两种情况：</p>
+
+<p>（1）目标地址中不带uri。即proxy_pass的参数形如&rdquo;<a href="http://127.0.0.1:8090&quot;。">http://127.0.0.1:8090&quot;。</a>
+此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。</p>
+
+<p>（2）目标地址中带uri。即proxy_pass的参数形如“<a href="http://127.0.0.1:8090/dir1/dir2&quot;">http://127.0.0.1:8090/dir1/dir2&quot;</a></p>
+
+<p></p>
+
+<p>此时新的目标url中，匹配的uri部分将会被修改为该参数中的uri，如&rdquo;<a href="http://127.0.0.1:8888/dir1/dir2.&quot;">http://127.0.0.1:8888/dir1/dir2.&quot;</a></p>
+
+<p>有人说，你没有讨论ip和端口后带不带”/“的区别。其实是不需要的，因为&rdquo;/&ldquo;本身就是一种uri，很明显属于上面的第二种情况，只不过是把原来的uri修改为了现在的uri（”/&rdquo;)，看上去，像是删除了原url中匹配的部分。如果不理解这一点，就会总想着去牢记、区分结尾带不带&rdquo;/&ldquo;的情况。<br />
+官方文档也是这么叙述的，根本没有提及半句“/&ldquo;：</p>
+
+<blockquote>
+<p>A request URI is passed to the server as follows:</p>
+
+<p>If the proxy_pass directive is specified with a URI, then when a request is passed to the server, the part of a normalized request URI matching the location is replaced by a URI specified in the directive:<br />
+location /name/ {<br />
+    proxy_pass <a href="http://127.0.0.1/remote/">http://127.0.0.1/remote/</a>;<br />
+}<br />
+If proxy_pass is specified without a URI, the request URI is passed to the server in the same form as sent by a client when the original request is processed, or the full normalized request URI is passed when processing the changed URI:<br />
+location /some/path/ {<br />
+    proxy_pass <a href="http://127.0.0.1">http://127.0.0.1</a>;<br />
+}</p>
+</blockquote>
+
+<p>测试部分如下。</p>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                proxy_pass <a href="http://127.0.0.1:8090">http://127.0.0.1:8090</a>;<br />
+                }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test1/test2/echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/test1/test2  
+</code></pre>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                proxy_pass <a href="http://127.0.0.1:8090/">http://127.0.0.1:8090/</a>;<br />
+                }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/  
+</code></pre>
+
+<p>如果配置为：<br />
+&gt;server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                        proxy_pass <a href="http://127.0.0.1:8090/test1">http://127.0.0.1:8090/test1</a>;<br />
+                        }<br />
+            }</p>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test1echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/test1  
+</code></pre>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                        proxy_pass <a href="http://127.0.0.1:8090/test3/test4/test5">http://127.0.0.1:8090/test3/test4/test5</a>;<br />
+                        }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test3/test4/test5echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:80990/test3/test4/test5  
+</code></pre>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2013-10-31</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/11/13/131.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">推倒重做</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2013/10/08/129.html">
+            <span class="next-text nav-default">利用here document携带c代码</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="纯真年代" />
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/" />
+<link href="http://pureage.info/index.xml" rel="alternate" type="application/rss+xml" title="纯真年代" />
+  <link href="http://pureage.info/index.xml" rel="feed" type="application/rss+xml" title="纯真年代" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="纯真年代" />
+<meta property="og:description" content="纯真年代" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://pureage.info/" />
+<meta property="og:updated_time" content="2015-12-10T03:27:00&#43;00:00"/>
+
+<meta itemprop="name" content="纯真年代">
+<meta itemprop="description" content="纯真年代">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="纯真年代"/>
+<meta name="twitter:description" content="纯真年代"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          
+  <section id="posts" class="posts">
+    
+    
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/10/bugfix-of-nginx.html">Nginx紧急发布1.9.9修复bug</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-10 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。</p>
+
+<p>例如，Nginx 刚在12月8号发布了nginx-1.9.8, 马上就在nginx-1.9.9,这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。</p>
+
+<p>首先，看看changelog:</p>
+
+<blockquote>
+<p>Changes with nginx 1.9.9                                         09 Dec 2015</p>
+
+<p>*) Bugfix: proxying to unix domain sockets did not work when using<br />
+       variables; the bug had appeared in 1.9.8.</p>
+</blockquote>
+
+<p>再来看看是如何修复的，变更前的代码片段:</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/10/bugfix-of-nginx.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/08/connection-header-in-nginx.html">Nginx对Connection头的处理过程</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-08 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h3 id="1-标准">1. 标准</h3>
+
+<p>RFC2616 中，对 Connection 的说明如下：</p>
+
+<blockquote>
+<p>HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.</p>
+</blockquote>
+
+<p>综合<a href="https://tools.ietf.org/html/rfc2616#page-117">RFC2626 14.10</a>、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：<br />
+1. 控制不再转发给代理的首部字段
+2. 管理持久连接</p>
+
+<p>其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。</p>
+
+<p>第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/08/connection-header-in-nginx.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/07/guangzhou-marathon.html">2015广马小结</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-07 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>2015年12月6日，我的第二次半程马拉松之旅结束了。觉得应该记录一下，但跑完了却又没什么特别想说的了，就说几个点权当流水账吧。</p>
+
+<p>关于天气，用天公作美来形容再贴切不过了。广州经过多次试探，终于找到了入冬的节奏，气温骤降，还有阵阵小雨。本来以为这次会像三月份的清远马拉松一样冒雨奔跑，还在担心这寒冷的天气淋雨可能会吃不消，结果当天突然风和日丽，蓝天白云。真是一个惊喜。</p>
+
+<p>这次半马，我的准备工作其实是不足的。最近已经有两周没有跑步了，而且当天早上还没有任何进食，直接空腹开跑，但还好之前还是积累了一定的跑量，再加上之前已经有一次半马的经验了，所以心理上并没有什么压力。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/07/guangzhou-marathon.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/02/cram-in-the-bus.html">挤公交车二三事</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-02 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>毕业工作后，我其实一直都没有真正尝过挤公交车、地铁上班的滋味，因为我租的房子总在公司附近，况且还每天骑车上班。但是这种好景在今年九月份时结束了，新公司距离住的地方要坐一个小时的公交车。这几个月挤公交车的经历大概可以分为几个阶段。</p>
+
+<h3 id="1-噩梦般的挤车体验">1. 噩梦般的挤车体验</h3>
+
+<p>这个时期，我大概七点半起床，八点左右到达公交站，公交站里已经是人头攒动了。想挤上去绝对是个体力活。而且，大家似乎都有这么一种心理，当自己是往上挤的一方时，就希望车里的人往里面动一动，腾出点空间，可如果自己在里面站定了后，到了后面的站时，却又不愿意给后来人腾出地方了。这种情况就导致了车门口附近的区域变成噩梦一般的存在。</p>
+
+<p>必须得想办法了。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/02/cram-in-the-bus.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/11/28/some-books.html">最近在看的几本书</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-11-28 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>最近在这两本书：</p>
+
+<ul>
+<li>《自私的基因》<br /></li>
+<li>《机器人叛变》<br /></li>
+</ul>
+
+<p>事实上，这一轮我打算看的完整书单是：</p>
+
+<ul>
+<li>《自私的基因》<br /></li>
+<li>《机器人叛乱》<br /></li>
+<li>《超越智商》<br /></li>
+<li>《这才是心理学》<br /></li>
+<li>《思考，快与慢》<br /></li>
+</ul>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/11/28/some-books.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+  </section>
+  
+  <nav class="pagination">
+    
+      <a class="prev" href="/page/6/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    
+      <a class="next" href="/page/8/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

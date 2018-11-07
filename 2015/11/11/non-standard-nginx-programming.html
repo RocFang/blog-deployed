@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>不规范的 Nginx 开发 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。
+离主分支过远 Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。
+Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2015/11/11/non-standard-nginx-programming.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="不规范的 Nginx 开发" />
+<meta property="og:description" content="最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。
+
+离主分支过远
+
+Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。
+
+Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2015/11/11/non-standard-nginx-programming.html" /><meta property="article:published_time" content="2015-11-11T09:55:00&#43;00:00"/>
+<meta property="article:modified_time" content="2015-11-11T09:55:00&#43;00:00"/>
+
+<meta itemprop="name" content="不规范的 Nginx 开发">
+<meta itemprop="description" content="最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。
+
+离主分支过远
+
+Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。
+
+Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。
+
+">
+
+
+<meta itemprop="datePublished" content="2015-11-11T09:55:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-11-11T09:55:00&#43;00:00" />
+<meta itemprop="wordCount" content="1075">
+
+
+
+<meta itemprop="keywords" content="程序员,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="不规范的 Nginx 开发"/>
+<meta name="twitter:description" content="最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。
+
+离主分支过远
+
+Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。
+
+Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">不规范的 Nginx 开发</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2015-11-11 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。</p>
+
+<h2 id="离主分支过远">离主分支过远</h2>
+
+<p>Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。</p>
+
+<p>Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。</p>
+
+<p></p>
+
+<p>这不， 我就见过一个基于 Nginx 的某个上古版本(0.7.x)开发的系统， 随着业务的积累， 已经将 Nginx 原始代码改的不像样子了， 甚至连基础的进程架构都改了。 但业务需求越来越多， 这种方式明显跟不上节奏了， 一方面是新特性用不了， 另一方面是过多的改动导致潜在的 bug 很多。直到现在不得不痛下决心， 彻底更新 Nginx 版本， 去掉之前的那些核心改动。 虽然比较痛苦， 但方向是对的。当业界都在利用 Openresty 这一利器， 用 lua 开心的写着业务逻辑， 你还在一行一行的用 c 来写业务， 这项目怎么能维护得下去。</p>
+
+<p>提到 Openresty, 不得不赞叹章宜春的版本策略。首先 Openresty 是一个bundle，其核心是 ngx_lua 模块， 这个模块本身是不会依赖对 Nginx 核心的改动。 而且 Openresty 跟进 Nginx 版本的速度也很快， 当前 Openresty 的 release 已经到 Nginx-1.9.3 了。</p>
+
+<h2 id="真的是一定要动核心吗">真的是一定要动核心吗？</h2>
+
+<p>事实上，并不是。 很多时候， 所谓 “不得不” 进行的对核心的修改， 只是因为开发者对 Nginx 本身理解的不够透彻。</p>
+
+<p>例如， 一个简单的场景： 一个模块 A 需要为当前请求生成几个内部变量， 既然是与当前请求相关的， 很自然的会想到在 ngx_http_request_s 结构体里增加一个成员。 可是， Nginx 已经提供了请求上下文的的 ctx 机制了， 使用起来干净、简单。</p>
+
+<p>再例如， Nginx 的各模块之间本应互相独立的。 但出于代码复用等目的， 实际项目里会出现模块之间互相依赖的情况。 比方说， A 模块固定完成一个功能， 所有其他的业务模块， 都去操作当前请求的对应 A 模块的上下文 ctx， 而 A 模块只去根据 ctx 做相应的处理。 这种做法看上去很精明， 却毫不优雅。 导致了模块之间的耦合， 编译 B 模块就必须把 A 模块一起编译进来。 其实深入思考一下， 这些都可以用很好的方式来实现。</p>
+
+<h2 id="末尾">末尾</h2>
+
+<p>这篇文章似乎是在吐槽一些开发者， 但实际不是得。 从公司的角度， 不管使用什么办法， 能撑起业务来， 就是英雄， 相应的， 开发周期的制定里， 并不会去给那么多时间让开发者去透彻理解一个系统后再开始开发。</p>
+
+<p>所以，当我们看到这些 “老旧” 的系统， 虽然他们可能很难维护， 但我们还是应该对当初开发的人持有敬意。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2015-11-11</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2015/11/27/throw-that-book-away.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">扔掉那本书</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2015/10/23/preparing-for-guangzhou-marason.html">
+            <span class="next-text nav-default">跑步近况-准备广州马拉松</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>依赖一个RPM来制作新的RPM - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。
+在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。
+再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。
+最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/01/27/176.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="依赖一个RPM来制作新的RPM" />
+<meta property="og:description" content="项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。
+
+在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。
+
+再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。
+
+最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/01/27/176.html" /><meta property="article:published_time" content="2014-01-27T03:41:46&#43;00:00"/>
+<meta property="article:modified_time" content="2014-01-27T03:41:46&#43;00:00"/>
+
+<meta itemprop="name" content="依赖一个RPM来制作新的RPM">
+<meta itemprop="description" content="项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。
+
+在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。
+
+再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。
+
+最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。
+
+">
+
+
+<meta itemprop="datePublished" content="2014-01-27T03:41:46&#43;00:00" />
+<meta itemprop="dateModified" content="2014-01-27T03:41:46&#43;00:00" />
+<meta itemprop="wordCount" content="1517">
+
+
+
+<meta itemprop="keywords" content="shell," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="依赖一个RPM来制作新的RPM"/>
+<meta name="twitter:description" content="项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。
+
+在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。
+
+再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。
+
+最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">依赖一个RPM来制作新的RPM</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-01-27 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。</p>
+
+<p>在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。</p>
+
+<p>再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。</p>
+
+<p>最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。</p>
+
+<p></p>
+
+<p>第二个方法，制作一个子包。rpm包里有一个subpackage的概念，就是说可以同时生成一个main包和多个subpackage包。子包的制作也很简单，在A包原有的spec文件中，添加%subpackage foo的字样，同样将一下必要的标签，例如%file，都在其后加上foo即可。这个方法很不错，但有几个问题：</p>
+
+<ol>
+<li>但需要改动A软件的spec文件，我的原则是尽量不要动A原有的文件，最多在其源码路径SOURCE下添加一两个tar.gz包，而且这几个源码包在A的spec文件中是不会有所体现的。<br /></li>
+<li>虽然大部分标签例如%files,%pre,%post等都可以为每个subpackage单独添加，但最重要的标签，%prep,%build和%install确是一个spec文件中只能存在一份。一个解决方法是把业务逻辑的添加放到%post阶段添加。<br />
+<br /></li>
+</ol>
+
+<p>其实第二个方法已经可以解决我的问题了，但多少都会动A的spec文件，并且subpackage也加一个%files标签，与main package的%files重复，很占地方，导致以后每次main package更新%files标签的时候，subpackage部分的%files也要去更新。虽然查了一下，spec中可以有include命令，可以把公共部分提取到一个外部文件，再分别include进来，但如前所述，我希望尽可能少的去改A的spec文件。本来A只有一个spec文件，现在为了简洁要拆成两个，不能说没对其产生影响。</p>
+
+<p>最后只好采用了第三种方法。</p>
+
+<p>首先，将B的所有业务逻辑放到一个B.tar.gz包里，提交到A的SOURCE目录下，A的spec文件不会去操作这个源码包。注意，为了简便起见，在B.tar.gz中，要有一个Makefile文件，在里面完成install的操作。这样在spec文件中，只用一行语句调用该Makefile即可。</p>
+
+<p>其次，为B软件维护一个脚本。该脚本完成如下工作：将A的spec文件拷贝出来，用sed,awk等进行修改，主要是修改一些Release信息等。最主要的工作是在%install标签下，调用A.tar.gz中的Makefile。</p>
+
+<p>最后，该脚本会去用rpmbuild执行这个新生成的spec文件。在调用时将source目录定义到A的SOURCE目录，如前所属，B.tar.gz就放在这里。</p>
+
+<p>用这种方法，虽然需要维护一个脚本，但最少限度的动用A，又能完全自动的同步A软件包的更新，且生成的是一个B的独立rpm包。目前看来较好的满足的我的需求。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-01-27</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/shell/">shell</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/02/22/host-variable-in-nginx.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">关于nginx中的host变量</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/01/22/youdaonotes-order.html">
+            <span class="next-text nav-default">给有道云笔记的分类自定义排序</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

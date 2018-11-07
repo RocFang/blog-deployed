@@ -1,0 +1,2952 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 纯真年代</title>
+    <link>http://pureage.info/post/</link>
+    <description>Recent content in Posts on 纯真年代</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>strider</copyright>
+    <lastBuildDate>Tue, 23 Oct 2018 15:39:41 +0800</lastBuildDate>
+    
+	<atom:link href="http://pureage.info/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>openstack swift 中的 composite ring</title>
+      <link>http://pureage.info/post/composite-ring-of-swift/</link>
+      <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/composite-ring-of-swift/</guid>
+      <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>王小波和狄德罗</title>
+      <link>http://pureage.info/post/wangxiaobo-and-diderot/</link>
+      <pubDate>Sat, 20 Oct 2018 00:13:41 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/wangxiaobo-and-diderot/</guid>
+      <description>&lt;p&gt;在《似水流年》里，王二曾经很想把肚子划破，掏出肠子挂到敌人脖子上去。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;在和平年月里，生活只是挖坑种粮的竞争。虽然生的人高马大，我却比不过别人。这是因为：第一，我不是从小干惯了这种活计；第二，我有腰疼病，干农活没有腰不成。所以我盼望另一种竞争。在战场上，我的英勇会超过一切人。假如做了俘虏，我会偷偷捡块玻璃，把肚子划破，掏出肠子挂到敌人脖子上去。像我这样的兵员一定大为有用。但是不发生战争，我就像刘老先生一样没用。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;在经历了一系列的变故后，他逐渐放弃了这个想法。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>取名记</title>
+      <link>http://pureage.info/post/the-name-given-to-my-baby/</link>
+      <pubDate>Tue, 04 Sep 2018 18:15:20 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/the-name-given-to-my-baby/</guid>
+      <description>&lt;p&gt;2017年底，我的生活有了一个很大的变化，妻子怀孕了。怀孕这个事情本身是在我们计划之中，所以只有喜没有惊，算是顺利如意。&lt;/p&gt;
+
+&lt;p&gt;我和妻子两人对生育小孩这个事情一直比较重视，为小朋友的到来提前做了很多准备。比如提前整整一年一起在一家拳馆练习拳击，事后证明，这个决定是非常正确的。另外一件比较重要的事情就是给小朋友取名字了。&lt;/p&gt;
+
+&lt;p&gt;其实在几年前，我就已经开始把取名这个事情放在心里了，源自于对身边很多亲戚朋友给小孩取名无意义化、趋同化的震惊。大数据统计显示，“轩”、“梓”、“子”、“涵”等字处于白热化的扎堆状态，我对此很难理解。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>《如何阅读一本书》读书笔记</title>
+      <link>http://pureage.info/post/howto-read-a-book/</link>
+      <pubDate>Tue, 14 Nov 2017 13:45:01 +0000</pubDate>
+      
+      <guid>http://pureage.info/post/howto-read-a-book/</guid>
+      <description>&lt;p&gt;在几位前辈的推荐下，读完了由莫提默·J.艾德勒和查尔斯·范多伦合著的《如何阅读一本书》，受益良多。&lt;/p&gt;
+
+&lt;p&gt;如书名明示的那样，这是一本指导读者如何读书的书。时至今日，阅读的目标可以分为两种，一种是为获得资讯而阅读，另一种是为增进理解而阅读。这本书就是为希望从阅读中增进理解的读者而准备的。&lt;/p&gt;
+
+&lt;p&gt;在阅读一本书之前，我们或多或少对其有一些期许，认为作者有义务努力的把书写好。本书提出作为读者也有自己该履行的义务。书中有一个比喻，在一场阅读的过程中，作者与读者就像是棒球赛场中的一对投手和捕手。写作与阅读的东西就像那只球一样，是被主动、有活力的双方所共有的，由一方开始，另一方终结。
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>过时的技术</title>
+      <link>http://pureage.info/post/obsolescent-technology/</link>
+      <pubDate>Tue, 10 Oct 2017 15:01:38 +0000</pubDate>
+      
+      <guid>http://pureage.info/post/obsolescent-technology/</guid>
+      <description>&lt;p&gt;互联网技术的世界很奇怪。&lt;/p&gt;
+
+&lt;p&gt;大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。&lt;/p&gt;
+
+&lt;p&gt;但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。&lt;/p&gt;
+
+&lt;p&gt;这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。&lt;/p&gt;
+
+&lt;p&gt;举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。&lt;/p&gt;
+
+&lt;p&gt;这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>梁山一百单八将为何第一个出场的是他</title>
+      <link>http://pureage.info/2017/05/29/shijin.html</link>
+      <pubDate>Mon, 29 May 2017 03:46:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2017/05/29/shijin.html</guid>
+      <description>&lt;p&gt;我们都知道,《水浒传》中有一百零八员好汉聚义于梁山泊，从文学创作的角度来说，这么多性格各异的人物要讲清楚是一件难度非常大的事情,而施耐庵很好的完成了这个任务。如同程序里指针的使用一样，通过一人一事，引出另一人一事，逐渐将所有的人物串联起来，这种写作技巧其实是很高超的。&lt;/p&gt;
+
+&lt;p&gt;近些年火热的魔幻史诗小说《冰与火之歌》，让POV这种写作手法被粉丝们津津乐道，其实跟《水浒传》采用的技巧很类似，并无多大新意。&lt;/p&gt;
+
+&lt;p&gt;那么在这众多人物的出场中，第一个出场的人就很重要了。这被很多人忽略，但值得一品。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>青海湖骑行记</title>
+      <link>http://pureage.info/2016/08/28/goto-qinghai-lake.html</link>
+      <pubDate>Sun, 28 Aug 2016 03:46:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/08/28/goto-qinghai-lake.html</guid>
+      <description>&lt;p&gt;七月底，终于和婷在婚假里完成了“蓄谋”已久的青海湖之行，骑行路上花了五天，其中骑行四天，休息一天，全部行程约360公里，这里简单的记录一下流水账。&lt;/p&gt;
+
+&lt;h3 id=&#34;第一天行程-西海镇-江西沟&#34;&gt;第一天行程：西海镇-&amp;gt;江西沟&lt;/h3&gt;
+
+&lt;p&gt;在前一天下午到达西海镇，并将自行车租好之后，7月24号上午10点半，我们就正式从西海镇出发了。之所以这么晚才出发，是听说青海早晚温差大，早上起来早了会很冷。事后证明，这个出发时间是错误的，还是尽量早一点比较好。&lt;/p&gt;
+
+&lt;p&gt;第一天上午在路上是很兴奋的，到处是Windows经典桌面般的蓝天白云。路上骑车的人，或独自前行，或三五成群。耳边不断响起的，有鸟鸣，有风声，还有骑友们随车携带的小音箱里飘出来的民谣和彼此的加油打气声。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>代码中的谎言</title>
+      <link>http://pureage.info/2016/07/04/lies-in-code.html</link>
+      <pubDate>Mon, 04 Jul 2016 15:17:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/07/04/lies-in-code.html</guid>
+      <description>&lt;p&gt;俗话说，一个谎言，要用一百个谎言去圆。&lt;/p&gt;
+
+&lt;p&gt;在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。&lt;/p&gt;
+
+&lt;p&gt;但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。&lt;/p&gt;
+
+&lt;p&gt;今天我们就来以&lt;a href=&#34;https://github.com/arut/nginx-rtmp-module&#34;&gt;Nginx-RTMP&lt;/a&gt;这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>雨中午后</title>
+      <link>http://pureage.info/2016/06/11/a-rainy-afternoon.html</link>
+      <pubDate>Sat, 11 Jun 2016 09:30:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/06/11/a-rainy-afternoon.html</guid>
+      <description>&lt;p&gt;细雨中&lt;br /&gt;
+一辆自行车迎面而来&lt;br /&gt;
+车篮里&lt;br /&gt;
+一个小女孩伸开双手在飞翔&lt;br /&gt;
+卷发贴在额头&lt;br /&gt;
+脸蛋红成一个苹果&lt;/p&gt;
+
+&lt;p&gt;多年以后&lt;br /&gt;
+她也许还记得&lt;br /&gt;
+这个阳光明媚的下午&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>看小说与看代码的共通之处</title>
+      <link>http://pureage.info/2016/06/08/similarities-of-novels-and-codes.html</link>
+      <pubDate>Tue, 07 Jun 2016 16:10:47 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/06/08/similarities-of-novels-and-codes.html</guid>
+      <description>&lt;p&gt;看小说，是我从小的爱好，看代码写代码，是我谋生的技能。这是两件极不相干的事，但是最近忽然觉得，这两者却有相通之处。原来我一直是用看小说的方式来看代码。&lt;/p&gt;
+
+&lt;p&gt;我认为，一部好的小说，如果不是囫囵吞枣随意读完便罢的话，至少是要看三遍的。&lt;/p&gt;
+
+&lt;p&gt;第一遍，按顺序读完。&lt;/p&gt;
+
+&lt;p&gt;第二遍，以事件、时间为中心，再看一遍。&lt;/p&gt;
+
+&lt;p&gt;第三遍，以人物为中心，再看一遍。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>朋友李忠</title>
+      <link>http://pureage.info/2016/06/04/friend-lizhong.html</link>
+      <pubDate>Sat, 04 Jun 2016 11:19:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/06/04/friend-lizhong.html</guid>
+      <description>&lt;p&gt;《水浒传》是我在错误的年龄过早接触的一部古典名著。&lt;/p&gt;
+
+&lt;p&gt;六岁的时候，父亲给我买了个收音机，我主要用来听两个节目，一个是小喇叭广播讲西游记，另一个就是水浒传的评书，每天都不落下。兴致好的时候，我还会给长辈们复述一遍。所以，水浒传里的故事对于那时的我，真是耳熟能详。大概小学三年级的时候，一位念初中的表哥，买了一本一百二十回版本的《水浒全传》，被我借回来断断续续的看完了。因为故事梗概早已烂熟于胸，所以读起来并不费劲。升初中的那个暑假，更是将全书又仔细的读了一遍，那个时候对水浒传的细节掌握程度达到了顶峰。一百二十个章回题目，一百零八将的姓名、外号、星宿，都能完整的复述出来。从那之后，除了电视剧就再也没有如此仔细的接触水浒了。&lt;/p&gt;
+
+&lt;p&gt;后来，我才知道金圣叹&amp;rdquo;少不看水浒&amp;rdquo;的说法，对当年视为英雄的梁山好汉们的行为，也有了更全面的认识。而在这之前，在整个青少年时期，水浒对我的性格和价值观的形成产生着极大的影响。所以说现在客观的评价，我是在错误的年龄过早的接触了它。&lt;/p&gt;
+
+&lt;p&gt;到了现在这个年龄，偶尔再翻看一下水浒，却有完全不同的感受。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>《丈量世界》</title>
+      <link>http://pureage.info/2016/05/27/254.html</link>
+      <pubDate>Fri, 27 May 2016 15:29:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/05/27/254.html</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://book.douban.com/subject/26320883/&#34;&gt;《丈量世界》&lt;/a&gt;这本书已经读完两周了，按照之前的经验教训，如果想写点读后感而继续不动手的话，基本就永远也不会写了。所以这里赶紧补一篇。&lt;/p&gt;
+
+&lt;p&gt;这本书我很喜欢，所以基本上也是一气呵成看完的。主要讲了高斯和洪堡两个有着截然不同性格和经历的天才，用各自的方式来丈量世界。本书的文字很奇特，读起来有一种如梦似幻的感觉，这种感觉可能也有一部分来自我当时的阅读环境：捧着书看到深夜，直到困意渐渐袭来，然后毫无控制力的睡去。&lt;/p&gt;
+
+&lt;p&gt;高斯的大名我们当然如雷贯耳，小时候就知道他是个神童，是数学王子，到了大学微积分里面还有高斯定理。但这个名字对于我来说仅仅只是一个符号，我们并不了解他。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>第一次在线下活动中做技术分享</title>
+      <link>http://pureage.info/2016/04/26/253.html</link>
+      <pubDate>Tue, 26 Apr 2016 14:32:12 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/04/26/253.html</guid>
+      <description>&lt;p&gt;周日在广州的 OpenResty 社区 meetup 中做了一个主题为《巧用openresty结合nginx变量机制提供定制化web服务》的分享，说实话还挺紧张的，毕竟是第一次做这种线下的分享，但是到了现场之后慢慢就放松了。因为来参加活动的，大多都是跟身边的同事、同学一样的程序员，在这种气氛下，其实不用考虑会不会怯场、出丑之类的问题。大家都是同道中人，传说中的“演讲技巧”之类的也没有必要，简单的把自己觉得有用的东西分享给大家，对自己是一种锻炼，如果能对听者也能有点用处，那就更好了。&lt;/p&gt;
+
+&lt;p&gt;有几位前公司的同事事前听说我要参加这次分享，自掏门票过来就是为了捧个场，他们中有的工作跟 OpenResty/Nginx 压根没关系，想想挺感动的。都说职场是铁打的营盘流水的兵，能结识这些朋友真是有幸。活动结束后，大家一起去聚了个餐，看了电影《奇幻森林》，这场景太像毕业离别前的小聚，他们中确实有位要马上到另一个城市去了。希望他一切顺心。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>对一门编程语言的基本尊重</title>
+      <link>http://pureage.info/2016/03/27/basic-respect-to-a-programming-language.html</link>
+      <pubDate>Sun, 27 Mar 2016 03:15:27 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/03/27/basic-respect-to-a-programming-language.html</guid>
+      <description>&lt;p&gt;在大学里我们就知道一个著名的论断:程序=数据结构+算法，无数人奉为圭臬，衍生出很多变形体，比如&amp;rdquo;编程语言不重要，思想才重要&amp;rdquo;。&lt;/p&gt;
+
+&lt;p&gt;现在网络社群发达，一个实际上在某一个领域才刚入门没多久的人，在解决了新手提出的几个hello world 级别的问题之后，就会被称为大神。然后他就能开始散布一些言论了。&lt;/p&gt;
+
+&lt;p&gt;这些言论本身放在一定的限定条件之下是没有问题的，比如 “Python 可简单了，看一个下午手册就能开始干活了”，他至少得有几个限定条件，比如你之前熟悉过其编程语言。即使在这些限定条件之下，你也得踏踏实实花几个小时到半天的时间来看手册不是么。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于Nginx-1.9.11的动态模块</title>
+      <link>http://pureage.info/2016/02/14/nginx-dynamic-module.html</link>
+      <pubDate>Sun, 14 Feb 2016 14:57:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/02/14/nginx-dynamic-module.html</guid>
+      <description>&lt;p&gt;我们知道，原生 Nginx 增加、修改一个第三方模块，需要重新编译源代码，所有的模块都是用静态链接的形式组织起来的。而 Tengine 有一个增强的功能，即动态模块加载 DSO(Dynamic Shared Objects), 可以实现运行时动态加载模块，而不用每次都要重新编译Tengine。&lt;/p&gt;
+
+&lt;p&gt;在 2016 年农历春节期间，Nginx 官方发布了最新版本 Nginx-1.9.11，也增加了该功能。&lt;/p&gt;
+
+&lt;p&gt;Nginx-1.9.11 的Changelog 如下:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Changes with nginx 1.9.11                                        09 Feb 2016&lt;/p&gt;
+
+&lt;p&gt;*) Feature: TCP support in resolver.&lt;/p&gt;
+
+&lt;p&gt;*) Feature: dynamic modules.&lt;/p&gt;
+
+&lt;p&gt;*) Bugfix: the $request_length variable did not include size of request&lt;br /&gt;
+      headers when using HTTP/2.&lt;/p&gt;
+
+&lt;p&gt;*) Bugfix: in the ngx_http_v2_module.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;从使用的角度上来说，是增加了一个指令 &lt;a href=&#34;http://nginx.org/en/docs/ngx_core_module.html#load_module&#34;&gt;load_modules&lt;/a&gt; 指令，来加载编译为 so 形式的动态模块。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>移魂都市</title>
+      <link>http://pureage.info/2016/01/24/dark-city.html</link>
+      <pubDate>Sun, 24 Jan 2016 14:43:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/24/dark-city.html</guid>
+      <description>&lt;p&gt;《移魂都市》是一部非常好看的电影，会引发一些思考。同时我也非常喜欢詹妮弗·康纳利的表演。也许是因为她在《美国往事》里的处女秀太过惊艳，很多人认为詹妮弗·康纳利是可以归类到“长残”的童星中去。我不这么认为，尤其是那双眼睛，依稀还是当年的样子。&lt;/p&gt;
+
+&lt;p&gt;整个《移魂都市》观影体验非常好，一气呵成，畅快淋漓。值得一提的是，片尾一个海边的镜头让我马上想起了另一部电影《梦之安魂曲》，同一个演员，同一个场景。一查，发现原来《梦之安魂曲》里的这个镜头就是在向《移魂都市》致敬的，见&lt;a href=&#34;http://www.imdb.com/title/tt0180093/movieconnections&#34;&gt;http://www.imdb.com/title/tt0180093/movieconnections&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Jennifer Connelly&amp;rsquo;s shot at the beach is an homage to the same shot with her in &amp;ldquo;Dark City&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>离开益动，入驻悦跑圈</title>
+      <link>http://pureage.info/2016/01/22/leaving-edooon.html</link>
+      <pubDate>Fri, 22 Jan 2016 13:58:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/22/leaving-edooon.html</guid>
+      <description>&lt;p&gt;从2014年开始跑步起，我一直使用的 APP 是益动，最近换到悦跑圈了。&lt;/p&gt;
+
+&lt;p&gt;一个跑步相关的 APP，无外乎两个基本功能：数据记录、分析和社交。&lt;/p&gt;
+
+&lt;p&gt;先说社交。刚开始跑的时候，喜欢将跑步的记录分享到朋友圈、微博中，后来跑成习惯了之后就基本不去分享了，因为朋友圈里的人都知道我经常在跑步，我也没必要再去浪费这点带宽和存储资源。所以社交方面的功能并不是我选择一个 APP 的原因。&lt;/p&gt;
+
+&lt;p&gt;主要原因还是最基本的功能：数据记录、统计和分析。不管哪一款 APP，都不可能一次性就将这些功能做好做全，肯定是需要不断挖掘和完善。而这方面，益动的表现根本不像是一款互联网产品。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用ngx.header修改Accept-Ranges的问题</title>
+      <link>http://pureage.info/2016/01/17/modify-accept-ranges-header.html</link>
+      <pubDate>Sun, 17 Jan 2016 14:09:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/17/modify-accept-ranges-header.html</guid>
+      <description>&lt;p&gt;今天有位朋友在使用 OpenResty 时发现一个奇怪的事情。&lt;/p&gt;
+
+&lt;p&gt;他打算用 ngx.header 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 *_by_lua 脚本中写入ngx.header[&amp;ldquo;Accept-Ranges&amp;rdquo;] = &amp;ldquo;xxx&amp;rdquo;。在 OpenResty 中，这是一种经常被使用到的方法。&lt;/p&gt;
+
+&lt;p&gt;他发现的问题是，当他这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值，即 &amp;ldquo;bytes&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何绘制流程图和结构图</title>
+      <link>http://pureage.info/2016/01/12/flow-chart.html</link>
+      <pubDate>Tue, 12 Jan 2016 14:38:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/12/flow-chart.html</guid>
+      <description>&lt;p&gt;经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件&lt;/li&gt;
+&lt;li&gt;一些其他相对较小众的绘图软件，例如 Pencil&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;脑图工具，例如 Xmind&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>一场噩梦</title>
+      <link>http://pureage.info/2016/01/04/nightmare.html</link>
+      <pubDate>Mon, 04 Jan 2016 15:04:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/04/nightmare.html</guid>
+      <description>&lt;p&gt;昨晚上做了一个噩梦，现在想想还不寒而栗。&lt;/p&gt;
+
+&lt;p&gt;这个梦有很长的情节，醒来后还回忆了一下，觉得大概可以写成一部小说了。但是现在却只记得一个片段。&lt;/p&gt;
+
+&lt;p&gt;忘了因为什么原因，在一番恶斗后，我被一个恶人制服了，一双铁钳般的手扼住了我的脖子。在拼命的反抗中，我的一只手抓住了他的一只胳膊，像抓到了救命稻草一样，我奋力用手指、指甲去拧、去挠，但并没有挣脱出来。忽然我意识到，用指甲去挠他的胳膊时，我的另一只手臂却感受到了同步的疼痛，这个念头让我在梦里手脚冰凉。为了确认，我反复的掐、挠，果然我的意识是对的。无论我怎么将力量作用在他的那只胳膊上，这些力量其实都施加在我自己的另一只胳膊上。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>口琴与蛋炒饭</title>
+      <link>http://pureage.info/2016/01/03/keep-learning.html</link>
+      <pubDate>Sun, 03 Jan 2016 13:55:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/03/keep-learning.html</guid>
+      <description>&lt;p&gt;在&lt;a href=&#34;http://pureage.info/2016/01/01/first-day-of-2016.html&#34;&gt;2016第一天&lt;/a&gt;这篇日志里，我为自己的2016定下的关键词之一是&lt;strong&gt;学习&lt;/strong&gt;。学习这两个字内涵非常深，希望自己无论是在工作上，还是其他方面，都能保持学习心态。这句话似乎我们在读书时每年都会说，说了近二十年。现在再说出这句话来，却是发自内心的体会，人是确实需要持续学习，终身学习的。想到如果三年、五年、甚至十年，自己仍然跟今天一样，就会觉得害怕。我希望自己每一年回过头来，总能看到自己的变化。这也是为什么我作为一个程序员，在写技术文章之外，还要写那么多看起来无病呻吟的其他类文章的原因，希望这一篇篇文章，是我人生旅途的一个个刻度。&lt;/p&gt;
+
+&lt;p&gt;终身学习、活到老学到老等等俗语、谚语，看起来、说出来都是那么天经地义、理所当然。可现实是很多人一毕业就忘了怎么学习了。所以，李笑来提出来一个概念，叫“&lt;strong&gt;学习学习再学习&lt;/strong&gt;”，这三个学习不是简单的重复、递进关系，第一个学习是动词，第二个是名词，第三个是动词，简言之，就是学习如何学习这件事，再去保持持续的学习这个过程。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>一悲一喜</title>
+      <link>http://pureage.info/2016/01/02/ianmurdock-and-agentzh.html</link>
+      <pubDate>Sat, 02 Jan 2016 14:02:40 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/02/ianmurdock-and-agentzh.html</guid>
+      <description>&lt;p&gt;这几天，开源软件界有两件大事，一件是 Debian 创始人 Ian Murdock 自杀身亡，另一件是在锤子手机 T2 的发布会上，罗永浩宣布将门票收入捐给 OpenResty，可以说是一悲一喜。&lt;/p&gt;
+
+&lt;p&gt;2013年，Markdown 标记语言的设计者之一 Aaron Swartz 自杀，我以及无数的程序员们的博客书写时用的就是 Markdown; Debian 以及 Debian 的变种 Ubuntu，也是很多人使用过或正在使用的 Linux 发行版。他们的自杀前后的心理状态，我们肯定不可能去感同身受，我们可能会感叹一句，原来在黑客氛围浓厚的美国，这些著名的黑客在现实中却也遭遇着能敢于去自杀的痛苦。不管怎么样，他们在这个世界上留下了他们的足迹供后人怀念。祝 Ian Murdock 走好。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>2016第一天</title>
+      <link>http://pureage.info/2016/01/01/first-day-of-2016.html</link>
+      <pubDate>Fri, 01 Jan 2016 14:25:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2016/01/01/first-day-of-2016.html</guid>
+      <description>&lt;p&gt;以前从来没有把元旦当作新一年的开始，因为觉得这是农历春节的作用。如今这个观念要做出改变了。一年的时间实在过得太快，如果把春节作为新一年的开始，发现没过多久一年又过去一半。所以，今天就应该回顾一下过去的一年，展望下新的一年了。&lt;/p&gt;
+
+&lt;p&gt;过去的一年里，生活上最大的变化就是结婚了。结婚本身真是一件非常简单事，简单到之前漫长的等待、纠结都好似不曾存在一样。实际上婚姻相关的主题，占据了这一年大部分的时间，说在今天回顾一下过去的一年的得失，我竟只能想到结婚这两个字。回想一下，让人更觉得在那些没有意义的事情上的纠结，实在是浪费生命。与婚姻相关的痛苦和纠结，很多经历过的人都懂，就不在博客里细说了。反而，婚后的生活，异常的平静，一切更井井有条。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>人有自知之明，挺难的</title>
+      <link>http://pureage.info/2015/12/29/236.html</link>
+      <pubDate>Mon, 28 Dec 2015 17:04:05 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/29/236.html</guid>
+      <description>&lt;p&gt;这两天，金线冯唐火了，因为他的译本《飞鸟集》。&lt;/p&gt;
+
+&lt;p&gt;但我对这事没什么感受，因为不关心。但是却对他事后的一条反应比较感兴趣。当有读者批评他英文不过关，曲解原文意思的时候，他在微博上晒出了自己的托福成绩，说：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;此事如此简单，我们比比英文和中文，如果你胜，我洗耳恭听。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>雾霾感怀</title>
+      <link>http://pureage.info/2015/12/26/the-stars.html</link>
+      <pubDate>Sat, 26 Dec 2015 11:34:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/26/the-stars.html</guid>
+      <description>&lt;p&gt;过去的一周里，全国多个城市都遭受了雾霾的侵袭，北京不用说，就连远在南方的广州，都不例外。在高楼林立的广州东站旁边的某栋写字楼里，居然看不清对面的房子。&lt;/p&gt;
+
+&lt;p&gt;记得在小学时，跟着一位表姐，看了几本琼瑶的书。剧情到现在都已经记不清楚了，但有本书的名字却始终不曾忘记，那本书叫《烟锁重楼》。&lt;/p&gt;
+
+&lt;p&gt;此时此刻，用“烟锁重楼”四个字描述眼前的景观，真是别有一番滋味。&lt;/p&gt;
+
+&lt;p&gt;在现代城市的高楼间行走，很久都没有去怀念什么了。但是今天却想起了很多事情。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>accept与epoll惊群</title>
+      <link>http://pureage.info/2015/12/22/thundering-herd.html</link>
+      <pubDate>Tue, 22 Dec 2015 07:01:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/22/thundering-herd.html</guid>
+      <description>&lt;p&gt;今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-什么叫惊群现象&#34;&gt;1. 什么叫惊群现象&lt;/h2&gt;
+
+&lt;p&gt;首先，我们看看&lt;a href=&#34;http://en.wikipedia.org/wiki/Thundering_herd_problem&#34;&gt;维基百科对惊群的定义&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.&lt;/p&gt;
+
+&lt;p&gt;This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.&lt;/p&gt;
+
+&lt;p&gt;This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小聚，小感</title>
+      <link>http://pureage.info/2015/12/20/meet-an-old-friend.html</link>
+      <pubDate>Sun, 20 Dec 2015 15:35:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/20/meet-an-old-friend.html</guid>
+      <description>&lt;p&gt;大学室友涛从南京来深圳出差，今天特意抽空到我家来小聚了一下。从大学毕业，到现在已经有6年多没见了，大学四年同处一室的感情还是挺深的，尽管这么久没见面了，仍没有生疏感。朋友之间相处没有生疏感的表现就是，面对彼此都没有交流上的压力，我不用刻意找话题跟你聊天，你也不用刻意逢迎我的喜好，吃饭时我不用担心是否你酒没喝到，你也不用按照我的节奏来喝酒。有一茬没一茬的聊天，一杯半盏的喝酒，自由惬意。&lt;/p&gt;
+
+&lt;p&gt;说起来大学毕业都六年了。六年后再见面，我们都已经成家，他还有了一个刚满一岁的女儿。似水流年，流年似水，平日里丝毫不觉得，只有在带有旧日痕迹的事物放到面前时，感慨才会如此强烈。但不可避免的事实是，我们都是生活中的人了。不可能彻夜长谈，不可能一直回味过去。离别才是常态，小聚只是片段。所谓生活中的人，就是对生活本身习以为常，面对相聚别离，不会有太多悲喜。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跑步的意义</title>
+      <link>http://pureage.info/2015/12/18/lets-talk-about-running-again.html</link>
+      <pubDate>Fri, 18 Dec 2015 10:36:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/18/lets-talk-about-running-again.html</guid>
+      <description>&lt;p&gt;去年报名了清远马拉松半程赛之后，我写了一篇 Blog 记录了一下: &lt;a href=&#34;http://pureage.info/2014/12/30/qingyuan-marathon.html&#34;&gt;报名了清远马拉松&lt;/a&gt;。时间差不多过去了整整一年，今天我再次报名参加清远马拉松。&lt;/p&gt;
+
+&lt;p&gt;下面就说说，在即将过去的 2015 年里，关于跑步这件事儿上的一些片段和思考。&lt;/p&gt;
+
+&lt;p&gt;2015 年，跑了两次马拉松，拿了两个纪念牌，说明我百马人生的目标已经完成了百分之二。其实这个目标是怎么来的我都不记得了，但似乎有了这个说法之后，跑步这件事情顿时被赋予了一层特别的意义一样。&lt;/p&gt;
+
+&lt;p&gt;跑步的意义对我到底是什么，我思考了一段时间。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>继续留在Typecho</title>
+      <link>http://pureage.info/2015/12/16/still-using-typecho.html</link>
+      <pubDate>Wed, 16 Dec 2015 14:54:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/16/still-using-typecho.html</guid>
+      <description>&lt;p&gt;最近手心手背总时不时发痒，又开始想折腾博客玩了。&lt;/p&gt;
+
+&lt;p&gt;这个小小的个人博客，从 2011 年开始，几乎把主流的 Blog 系统折腾了个遍，从最初的 Wordpress,到 Typecho, Emlog, Textpattern 等等。其中，Typecho 被来回折腾了几次，因为 Typecho 自身也经历了两个大的阶段：从几年没有维护，到开始重构并默认支持 Markdown 编辑器。&lt;/p&gt;
+
+&lt;p&gt;每个阶段维护博客的心态也不一样。刚开始的时候，总到处想和人交换链接，把界面搞得好看点，各种插件都试一试。这个阶段确实还真认识了一些一起写博客的同学，大家经常互访互评，搞得还挺热闹。但是必须要知道的是，即使在 2011 年之前，个人博客也早已经开始没落了，这是大势所趋，曾经的那些博客，到现在也已经绝大多数打不开，还挺让人唏嘘的。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>尝鲜：Nginx-1.9.8推出的切片模块</title>
+      <link>http://pureage.info/2015/12/10/nginx-slice-module.html</link>
+      <pubDate>Thu, 10 Dec 2015 06:12:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/10/nginx-slice-module.html</guid>
+      <description>&lt;p&gt;熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;不支持多盘&lt;/li&gt;
+&lt;li&gt;不支持裸设备&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;大文件不会切片&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;大文件的 Range 请求表现不尽如人意&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Nginx 自身不支持合并回源
+&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx紧急发布1.9.9修复bug</title>
+      <link>http://pureage.info/2015/12/10/bugfix-of-nginx.html</link>
+      <pubDate>Thu, 10 Dec 2015 03:27:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/10/bugfix-of-nginx.html</guid>
+      <description>&lt;p&gt;有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。&lt;/p&gt;
+
+&lt;p&gt;例如，Nginx 刚在12月8号发布了nginx-1.9.8, 马上就在nginx-1.9.9,这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。&lt;/p&gt;
+
+&lt;p&gt;首先，看看changelog:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Changes with nginx 1.9.9                                         09 Dec 2015&lt;/p&gt;
+
+&lt;p&gt;*) Bugfix: proxying to unix domain sockets did not work when using&lt;br /&gt;
+       variables; the bug had appeared in 1.9.8.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;再来看看是如何修复的，变更前的代码片段:&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx对Connection头的处理过程</title>
+      <link>http://pureage.info/2015/12/08/connection-header-in-nginx.html</link>
+      <pubDate>Tue, 08 Dec 2015 07:04:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/08/connection-header-in-nginx.html</guid>
+      <description>&lt;h3 id=&#34;1-标准&#34;&gt;1. 标准&lt;/h3&gt;
+
+&lt;p&gt;RFC2616 中，对 Connection 的说明如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;综合&lt;a href=&#34;https://tools.ietf.org/html/rfc2616#page-117&#34;&gt;RFC2626 14.10&lt;/a&gt;、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：&lt;br /&gt;
+1. 控制不再转发给代理的首部字段
+2. 管理持久连接&lt;/p&gt;
+
+&lt;p&gt;其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。&lt;/p&gt;
+
+&lt;p&gt;第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>2015广马小结</title>
+      <link>http://pureage.info/2015/12/07/guangzhou-marathon.html</link>
+      <pubDate>Mon, 07 Dec 2015 14:58:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/07/guangzhou-marathon.html</guid>
+      <description>&lt;p&gt;2015年12月6日，我的第二次半程马拉松之旅结束了。觉得应该记录一下，但跑完了却又没什么特别想说的了，就说几个点权当流水账吧。&lt;/p&gt;
+
+&lt;p&gt;关于天气，用天公作美来形容再贴切不过了。广州经过多次试探，终于找到了入冬的节奏，气温骤降，还有阵阵小雨。本来以为这次会像三月份的清远马拉松一样冒雨奔跑，还在担心这寒冷的天气淋雨可能会吃不消，结果当天突然风和日丽，蓝天白云。真是一个惊喜。&lt;/p&gt;
+
+&lt;p&gt;这次半马，我的准备工作其实是不足的。最近已经有两周没有跑步了，而且当天早上还没有任何进食，直接空腹开跑，但还好之前还是积累了一定的跑量，再加上之前已经有一次半马的经验了，所以心理上并没有什么压力。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>挤公交车二三事</title>
+      <link>http://pureage.info/2015/12/02/cram-in-the-bus.html</link>
+      <pubDate>Wed, 02 Dec 2015 14:38:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/12/02/cram-in-the-bus.html</guid>
+      <description>&lt;p&gt;毕业工作后，我其实一直都没有真正尝过挤公交车、地铁上班的滋味，因为我租的房子总在公司附近，况且还每天骑车上班。但是这种好景在今年九月份时结束了，新公司距离住的地方要坐一个小时的公交车。这几个月挤公交车的经历大概可以分为几个阶段。&lt;/p&gt;
+
+&lt;h3 id=&#34;1-噩梦般的挤车体验&#34;&gt;1. 噩梦般的挤车体验&lt;/h3&gt;
+
+&lt;p&gt;这个时期，我大概七点半起床，八点左右到达公交站，公交站里已经是人头攒动了。想挤上去绝对是个体力活。而且，大家似乎都有这么一种心理，当自己是往上挤的一方时，就希望车里的人往里面动一动，腾出点空间，可如果自己在里面站定了后，到了后面的站时，却又不愿意给后来人腾出地方了。这种情况就导致了车门口附近的区域变成噩梦一般的存在。&lt;/p&gt;
+
+&lt;p&gt;必须得想办法了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>最近在看的几本书</title>
+      <link>http://pureage.info/2015/11/28/some-books.html</link>
+      <pubDate>Sat, 28 Nov 2015 15:30:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/11/28/some-books.html</guid>
+      <description>&lt;p&gt;最近在这两本书：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;《自私的基因》&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;《机器人叛变》&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;事实上，这一轮我打算看的完整书单是：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;《自私的基因》&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;《机器人叛乱》&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;《超越智商》&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;《这才是心理学》&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;《思考，快与慢》&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>扔掉那本书</title>
+      <link>http://pureage.info/2015/11/27/throw-that-book-away.html</link>
+      <pubDate>Fri, 27 Nov 2015 02:08:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/11/27/throw-that-book-away.html</guid>
+      <description>&lt;p&gt;这几天搬家，收拾东西基本就是一个扔东西的过程，伴随着阵阵惊呼：“我竟然还有这个东西，扔&amp;hellip;”&lt;/p&gt;
+
+&lt;p&gt;最重的东西，其实是书。&lt;/p&gt;
+
+&lt;p&gt;有些书，翻出来的时候还能清楚的记得当时将它保留下来时的心理活动，例如这本《射频模拟电路》，毕业前邮寄物品的时候，内心挣扎着：张玉兴老师的这本书写的这么好，一定要保留下来，以后还要好好学学。真实情况是，当时我就知道以后不会从事电子方面的工作，而且，我并不是真的喜欢学射频，学的也不好，张玉兴老师究竟有多牛，我也不知道。那为什么我觉得它好呢？恐怕真实原因是大家都说它好吧。同样类型的书，还有《电路基础》、《模拟电路》等等。&lt;/p&gt;
+
+&lt;p&gt;于是没有怎么犹豫，就把这类书都扔了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>不规范的 Nginx 开发</title>
+      <link>http://pureage.info/2015/11/11/non-standard-nginx-programming.html</link>
+      <pubDate>Wed, 11 Nov 2015 09:55:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/11/11/non-standard-nginx-programming.html</guid>
+      <description>&lt;p&gt;最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。&lt;/p&gt;
+
+&lt;h2 id=&#34;离主分支过远&#34;&gt;离主分支过远&lt;/h2&gt;
+
+&lt;p&gt;Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。&lt;/p&gt;
+
+&lt;p&gt;Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跑步近况-准备广州马拉松</title>
+      <link>http://pureage.info/2015/10/23/preparing-for-guangzhou-marason.html</link>
+      <pubDate>Fri, 23 Oct 2015 15:23:06 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/10/23/preparing-for-guangzhou-marason.html</guid>
+      <description>&lt;p&gt;最近这几周，具体是九月的一整月和十月初，都没怎么跑步。客观原因主要有两个：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;我换工作了&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;我结婚了
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;关于跑步的好消息也有一个，那就是报名十二月份的广州马拉松，中签了。广马麻烦的地方有两个：&lt;br /&gt;
+1. 需要抽签&lt;br /&gt;
+2. 报名有资格要求：必须有以往参加过马拉松比赛的经历&lt;/p&gt;
+
+&lt;p&gt;第一个条件很正常， 很多有名气的马拉松都是要抽签的，因为人满为患嘛。第二个条件却引起骂声一片，因为涉及到鸡生蛋还是蛋生鸡的问题，很多广州本地人，就想在自己的城市参加第一次马拉松，却没有资格。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>我们来拍拍肩吧，《百元之恋》观后感</title>
+      <link>http://pureage.info/2015/08/12/baiyuanzhilian.html</link>
+      <pubDate>Wed, 12 Aug 2015 12:56:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/08/12/baiyuanzhilian.html</guid>
+      <description>&lt;p&gt;《百元之恋》讲述了迷茫、堕落的一子，在经历各种屈辱、挫折之后，选择学习拳击的故事。&lt;/p&gt;
+
+&lt;p&gt;豆瓣对该电影的类型归纳为“剧情、喜剧、运动”，说是剧情和运动片无可厚非，但喜剧二字却让人啼笑皆非。电影前大半段都是弥漫着压抑、颓废甚至绝望的气氛，最后小半段转向奋进、激昂。跟喜剧八竿子打不着。&lt;/p&gt;
+
+&lt;p&gt;女性、拳击、失败，这些关键词不由让人们想到伊斯特伍德的《百万美元宝贝》，珠玉在前，其实这部电影想拍的出彩，还是挺难的。但看完电影之后，不得不说，它做到了。&lt;/p&gt;
+
+&lt;p&gt;那么，它吸引人的地方在哪里呢？我认为主要在于两个字，真实。&lt;/p&gt;
+
+&lt;p&gt;因为真实，所以能让观众产生很强的共鸣。&lt;/p&gt;
+
+&lt;p&gt;当一子在半夜骑着辆在路边顺来的自行车去超市时，我想到了，曾经有段时间我在床上一躺躺一整天，晚上饿的要晕了，晃晃悠悠爬起来去学校超市买东西吃。在昏黄的路灯下，没有什么比行尸走肉这个词更贴切了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>nginx proxy_cache与etag配合的问题</title>
+      <link>http://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</link>
+      <pubDate>Thu, 25 Jun 2015 13:07:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</guid>
+      <description>&lt;p&gt;&lt;strong&gt;首先谈谈遇到的问题:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;一个Nginx架在一个后端服务的前面，Nginx proxy_pass到它并开启proxy_cache,假设这个后端服务总是会吐Etag响应头。
+在应用中，我们发现当nginx 的proxy_cache成功将后端的页面cache住时,浏览器多次对该页面发起请求，会命中nginx的cache,但即使浏览器请求带了If-None-Match请求头，nginx却不会响应304，而是响应200.&lt;br /&gt;
+这样带来的问题是，即使nginx的cache将请求阻挡在后端应用之外，但是:&lt;br /&gt;
+（1）命中后每次响应200导致我们nginx所在的服务器和客户浏览器双方都有流量损耗&lt;br /&gt;
+（2）更重要的是增长了我们的服务响应时间。因为，如果是304的话，nginx不需要向浏览器吐数据，只用告诉浏览器用本地的缓存就好了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx中的进程间通信</title>
+      <link>http://pureage.info/2015/03/28/ipc-of-nginx.html</link>
+      <pubDate>Sat, 28 Mar 2015 12:39:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/03/28/ipc-of-nginx.html</guid>
+      <description>&lt;p&gt;我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;套接字（匿名套接字对）&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;共享内存&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;信号&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-nginx中的channel通信机制&#34;&gt;1. Nginx中的channel通信机制&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-1概述&#34;&gt;1.1概述&lt;/h3&gt;
+
+&lt;p&gt;首先简单的说一下Nginx中channel通信的机制。&lt;/p&gt;
+
+&lt;p&gt;Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。&lt;/p&gt;
+
+&lt;p&gt;我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>进程间传递文件描述符</title>
+      <link>http://pureage.info/2015/03/19/passing-file-descriptors.html</link>
+      <pubDate>Thu, 19 Mar 2015 08:46:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/03/19/passing-file-descriptors.html</guid>
+      <description>&lt;p&gt;首先，必须声明，“进程间传递文件描述符”这个说法是错误的。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。&lt;br /&gt;
+《深入理解Linux内核架构》&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>记在清远马拉松之后</title>
+      <link>http://pureage.info/2015/03/18/qingyuan-marathon-1.html</link>
+      <pubDate>Wed, 18 Mar 2015 10:23:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/03/18/qingyuan-marathon-1.html</guid>
+      <description>&lt;p&gt;3月15号上午8点开赛，现在是3月18号，想想还是写一篇文章记录一下吧，免得再拖就拖没了。&lt;/p&gt;
+
+&lt;p&gt;总体上说，比赛本身很顺利，一方面我不是很在乎具体成绩，能在关门前跑完就行；另一方面，我虽然报的是半马，但在平时的训练中，从来没有一次超过12km的，在这种情况下，能跑完且不受伤，就算是很顺利了。&lt;/p&gt;
+
+&lt;p&gt;但整个赛期安排略有坑爹。一方面，是清远首次举办马拉松比赛，经验不足，另一方面是我首次参加马拉松比赛，经验也不足。这一大一小两个菜鸟一碰撞，受苦的当然就是我这个小菜鸟了。&lt;/p&gt;
+
+&lt;p&gt;走的弯路主要有以下几点：&lt;/p&gt;
+
+&lt;p&gt;1)3月14号就到了清远，3月15号6点起床从住处往起点赶。因为马上要封路，路上并没有多少车往起点的方向去，我们心想这些完了，要走一个马拉松半程的距离了，时间恐怕不够了。不过幸运的是，半路上碰到一个出租车司机，他正好载着他的夫人和儿子往起点赶，于是愉快的坐了一趟顺风车。谢谢这位热情好客，助人为乐的清远的哥。&lt;/p&gt;
+
+&lt;p&gt;2)这次比赛从一开始到结束，雨就一直没停过。参赛前，觉得清远本来就是个山清水秀的地方，边跑步边欣赏美景是件很惬意的事情。可是由于天气的原因，全程能见度都只有几百米，跑的时候，有人说，这简直是在玩寂静岭啊。而且，由于下雨，开始大家都穿着雨衣跑。雨衣虽然能防水，但随着跑步的进行，体内的热气散发不出去，感觉又闷又燥，最后，跑到8千米的时候，我只好双手一把将雨衣潇洒的撕开，冒雨前进了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>与髂胫束综合症战斗</title>
+      <link>http://pureage.info/2015/03/11/fighting-with-iliotibial-band-friction-syndrome.html</link>
+      <pubDate>Wed, 11 Mar 2015 12:00:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/03/11/fighting-with-iliotibial-band-friction-syndrome.html</guid>
+      <description>&lt;p&gt;我想百分之九十的可能，我是被髂胫束综合症给缠上了。&lt;/p&gt;
+
+&lt;p&gt;具体表现就是跑步距离过长时，膝盖外侧疼痛，当爬楼梯时尤其疼痛难忍。但在跑步过程中，很容易受到忽视，不就是有点疼吗，坚持坚持就行了，然后才发现这种疼痛是越来越剧烈的。&lt;/p&gt;
+
+&lt;p&gt;不过自从决定将跑步作为一项终身运动后，心里就已经做好了与伤病共舞的准备了。还记得去年冬天去北京出差，那天刚好是广州马拉松比赛，在飞机上，我旁边坐着一位刚跑完全程的北京小伙，虽然年轻，但已经跑过很多次全马了。一路上，他与另一位中年大叔交谈，那位大叔因为脚伤中途退赛了。我记得那小伙子安慰大叔的话，“对于我们跑者来说，受伤未尝不是一个好事，因为它让我们更加了解自己的身体。”&lt;/p&gt;
+
+&lt;p&gt;无论如何，是不会因为这个髂胫束综合症就放弃跑步的，因为自从去年秋天开始跑步以来，收获的东西太多了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>受伤小记</title>
+      <link>http://pureage.info/2015/02/14/learning-from-injury.html</link>
+      <pubDate>Sat, 14 Feb 2015 09:33:52 +0000</pubDate>
+      
+      <guid>http://pureage.info/2015/02/14/learning-from-injury.html</guid>
+      <description>&lt;p&gt;千小心万小心，我还是受伤了。&lt;/p&gt;
+
+&lt;p&gt;一月中下旬的时候，由于各种事情挤在一起，有一周多的时间完全没有跑步，其中包括去北京参加公司年会等。于是在1月25号，我开始恢复训练。&lt;/p&gt;
+
+&lt;p&gt;那天是个周日，下午五点多的时候，我直接从住处沿公路跑到我经常跑步的公园并继续跑完6千多米。在跑之前，本是打算跑完一万米的，谁知由于前半程是在公路上跑的，路上各种变向绕开行人等动作，而且并没有做准备动作，导致腿部、膝盖等在跑完三千米的时候已经有不适了。&lt;/p&gt;
+
+&lt;p&gt;在这种情况下，我做了一个错误的决定，继续跑了三千米。跑完后，膝盖侧面有些不适，心里暗想糟糕，不会受伤了吧。&lt;/p&gt;
+
+&lt;p&gt;第二天，我又做出了一个更错误的决定，上完班后又跑了次一万米。这直接导致跑完后膝盖侧面非常疼痛，接下来的一周我已经完全不能跑步了，上下楼都很困难，不得已还只好放弃骑车上下班，改为步行。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>报名了清远马拉松</title>
+      <link>http://pureage.info/2014/12/30/qingyuan-marathon.html</link>
+      <pubDate>Tue, 30 Dec 2014 12:54:01 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/12/30/qingyuan-marathon.html</guid>
+      <description>&lt;p&gt;昨晚在网上提交了清远马拉松的报名资料，第一次参加马拉松，以我现在的实力只能报个半程马拉松。希望明年11月时，能参加广州马拉松的全马，虽然按照今年的情况来看，想抽到签实在太难。&lt;/p&gt;
+
+&lt;p&gt;将清远作为我的首个马拉松，自以为还是挺不错的。一方面清远离广州近，另一方面清远环境也挺好的。以后即使成为马拉松常客，北马什么的恐怕我也不会考虑。&lt;/p&gt;
+
+&lt;p&gt;报名中还有个小插曲，官网上的报名须知里写的是报名费100元，结果付款时扣了200元，第二天打电话咨询一下，才知道有100元是芯片押金。土了一把，不过官网上也确实没写清楚。&lt;/p&gt;
+
+&lt;p&gt;比赛时间是3月15号，是个星期天，正好可以周六过去住一晚，连假都不用请。&lt;/p&gt;
+
+&lt;p&gt;现在是12月30号，我平时的训练量还是一万米过一点，能不能跑完半马还是个问题，不过估计问题不大。成绩之类的暂时不在我考虑范围之内，能跑完就算成功。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跑步随感</title>
+      <link>http://pureage.info/2014/12/29/running-feelings.html</link>
+      <pubDate>Mon, 29 Dec 2014 14:07:15 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/12/29/running-feelings.html</guid>
+      <description>&lt;h3 id=&#34;1-节奏比速度重要&#34;&gt;1. 节奏比速度重要&lt;/h3&gt;
+
+&lt;p&gt;当然，这一条针对的是长跑。节奏比速度重要，一方面是因为找准自己的节奏，更容易完成自己的目标，我们普通人参加长跑运动，更多的是与自己的对话。另一方面，长跑没有节奏增大了受伤的几率，一旦受伤，实在得不偿失。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-长跑不需要成为多任务工作应用的场景&#34;&gt;2. 长跑不需要成为多任务工作应用的场景&lt;/h3&gt;
+
+&lt;p&gt;之前看过很多关于时间管理的书，关于多任务工作是这些书中重点讲述的内容。一种被普遍接受的观点是，一些重要的工作不适合多任务工作，要排除一切干扰静下心来去完成，这样效率较高。而对于那些不重要的，或者是一些机械重复的工作，可以多个工作同时进行，而这时，往往跑步会作为例子被提出，例如，可以在跑步时听歌，可以在跑步时思考等等。&lt;/p&gt;
+
+&lt;p&gt;总体上，我同意这种观点，但这个例子举得不对。&lt;/p&gt;
+
+&lt;p&gt;只要一定程度上接触过长跑的人都会知道，伤病是跑者的一大威胁。膝盖、小腿、脚部关节等等都一不小心就会受伤。而受伤的一大原因在于跑步姿势不对，跑步姿势不对的一大原因又在于跑步过程太过散漫。长跑的时候为了让自己保持正确的姿势，需要时刻以第三者的视角来观察自己，给自己纠错。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>豆瓣阅读《高效的学习技巧》笔记</title>
+      <link>http://pureage.info/2014/12/28/highly-effective-leargning.html</link>
+      <pubDate>Sun, 28 Dec 2014 08:28:25 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/12/28/highly-effective-leargning.html</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://read.douban.com/reader/ebook/7336813/&#34;&gt;高效学习技巧&lt;/a&gt;阅读笔记&lt;/p&gt;
+
+&lt;h3 id=&#34;1-学习过程中的挫败是件好事情&#34;&gt;1.学习过程中的挫败是件好事情&lt;/h3&gt;
+
+&lt;p&gt;在多年的学校生活中，我们很多人已经不能正视挫败了，很多成年人几乎得不到和失败交锋的经验。很多人在学校挂了一门课之后，就直接认定“我不是学习xx的料”，这种想法让他们免去了尝试的麻烦，让他们远离失败，当然也就阻止了他们的学习。&lt;br /&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跑步阶段性总结（一）</title>
+      <link>http://pureage.info/2014/11/11/running-report-1.html</link>
+      <pubDate>Tue, 11 Nov 2014 12:55:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/11/11/running-report-1.html</guid>
+      <description>&lt;p&gt;进入11月份，广州也开始降温了，白天都开始穿长裤衬衣了。所以跑步前还得去公司洗手间换上短袖短裤，这一个新的动作的引入，导致我匆匆出门时忘了带上导汗带。不过也没关系，我不是已经很久跑步时不戴MP3了么。&lt;/p&gt;
+
+&lt;p&gt;还是在天河公园绕圈，这条线路现在我已经太熟了。知乎上有个问题，&lt;a href=&#34;http://www.zhihu.com/question/25947722&#34;&gt;叫你跑步的时候在想什么？&lt;/a&gt;里面有各种令人忍俊不禁或是会心一笑的答案。今天，我大概想了这么几件事：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;今天能不能破一万米呢？&lt;/li&gt;
+&lt;li&gt;今天还是不按圈计了，改成按每千米来计吧。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;天冷了，跑步的人果然少了。看来能坚持的人也不是很多嘛！&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;到一千米了，三圈能刚好一万米吧？&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;又碰到前几天碰到的也来跑步的老外了。老外长得高，动作也轻盈舒展，不错。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;leetcode上的那道题是怎么回事?&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;不好，开始下雨了。希望别下太大。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;三千米了，这一圈快完了。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;又碰到那个老外了。（我们在反方向绕圈）&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;这雨要是变大了还跑步跑了？还是跑吧！&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;回忆一下动作要领！&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;又碰到那个老外了。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&amp;hellip;(略)&amp;hellip;&amp;hellip;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;终于跑完三圈了，可还没到一万米啊，怎么办？是继续跑一段再回来还是干脆再跑一圈？算了，继续马不停蹄往快餐店跑吧。&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx如何控制某个特性是否打开</title>
+      <link>http://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</link>
+      <pubDate>Fri, 17 Oct 2014 09:31:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</guid>
+      <description>&lt;p&gt;提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？&lt;/p&gt;
+
+&lt;p&gt;我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。&lt;/p&gt;
+
+&lt;p&gt;Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>跑步是一件快乐的事情</title>
+      <link>http://pureage.info/2014/09/28/running-is-a-happy-sport.html</link>
+      <pubDate>Sun, 28 Sep 2014 00:16:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/09/28/running-is-a-happy-sport.html</guid>
+      <description>&lt;p&gt;跑步是一件快乐的事情，这似乎是无庸置疑的，不然无法解释每年各地举办的马拉松比赛都爆满甚至要用抽签来决定参赛名单的现象。如果跑步不是一个快乐的事情，这些人怎么能忍受几个小时的枯燥乏味呢，更别说身体上的煎熬。&lt;/p&gt;
+
+&lt;p&gt;但对我来说，跑步真正是一件简单、快乐的事情，是最近才有的。&lt;/p&gt;
+
+&lt;p&gt;之前有过一年坚持每天跑步，但那个时候，“成就感”的驱动大于快乐的驱动。跑步已经不仅仅是一项运动了，它似乎变成了一种精神象征，只要我还在跑，那么我就没被打倒。但跑步本身的乐趣却被忽略。&lt;/p&gt;
+
+&lt;p&gt;这个转变是由两本书促成的，&lt;a href=&#34;http://book.douban.com/subject/3369600/&#34;&gt;《当我谈跑步时我谈些什么》&lt;/a&gt;和&lt;a href=&#34;http://book.douban.com/subject/22993407/&#34;&gt;《跑步，该怎么跑？》&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>用proxy_intercept_errors和recursive_error_pages代理多次302</title>
+      <link>http://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</link>
+      <pubDate>Mon, 25 Aug 2014 15:59:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</guid>
+      <description>&lt;p&gt;302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.&lt;/p&gt;
+
+&lt;p&gt;302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。&lt;/p&gt;
+
+&lt;p&gt;比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。&lt;/p&gt;
+
+&lt;p&gt;上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>读《当我谈跑步时我谈些什么》有感</title>
+      <link>http://pureage.info/2014/08/24/what-i-talk-about-when-i-talk-about-running.html</link>
+      <pubDate>Sun, 24 Aug 2014 15:01:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/08/24/what-i-talk-about-when-i-talk-about-running.html</guid>
+      <description>&lt;p&gt;从来都不会想到，村上会是一个生活极其规律，几十年如一日坚持跑步训练，长期参与世界各地的马拉松比赛，甚至是铁人三项比赛的人。&lt;/p&gt;
+
+&lt;p&gt;在看完这本书并了解到这一点后，我又很难想象这样一个人居然是《挪威的森林》的作者。&lt;/p&gt;
+
+&lt;p&gt;其实，村上在书中某一章详细的回忆了当初是如何开始跑步的。他跑步的初衷不能说不简单，就是保持身体健康，以能写出更多更好的小说来：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;打算作为小说家度过今后漫长的人生，就必须找到一个既能维持体力，又可将体重保持得恰到好处的方法。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;是的，这就是他跑步几十年最原始的动力。娓娓道来，平淡如水。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>重新开始跑步</title>
+      <link>http://pureage.info/2014/08/19/start-runngin-again.html</link>
+      <pubDate>Tue, 19 Aug 2014 00:57:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/08/19/start-runngin-again.html</guid>
+      <description>&lt;p&gt;大三那年，跑了整整一年步，风雨无阻。五年后，我再度下了这个决心。&lt;/p&gt;
+
+&lt;p&gt;巧得很，正当我下完决心后，发现自己手里捧着一本村上春树的《当我谈跑步时我谈些什么》。当然这只是一种主观的说法，到底是在看这本书书的时候下了决心还是在看书之前已经下了决心，我自己也搞不清了。&lt;/p&gt;
+
+&lt;p&gt;跑步其实不仅仅是跑步这项运动。跑步意味着生活的一切都开始逐渐规律化，平静化，意味着对自己的掌控。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>用git做本地备份</title>
+      <link>http://pureage.info/2014/08/14/local-backup-using-git.html</link>
+      <pubDate>Thu, 14 Aug 2014 01:48:16 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/08/14/local-backup-using-git.html</guid>
+      <description>&lt;p&gt;得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。&lt;/p&gt;
+
+&lt;p&gt;假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。&lt;/p&gt;
+
+&lt;p&gt;进一步想一下，这里有两种做法：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;在另外一个目录下新建一个裸仓库。执行git init &amp;ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ngx.var.arg与ngx.req.get_uri_args的区别</title>
+      <link>http://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</link>
+      <pubDate>Wed, 30 Jul 2014 10:30:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</guid>
+      <description>&lt;p&gt;ngx.var.arg_xx与ngx.req.get_uri_args[&amp;ldquo;xx&amp;rdquo;]两者都是为了获取请求uri中的参数，例如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为了获取输入参数strider，以下两种方法都可以：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;local strider = ngx.var.arg_strider&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;local strider = ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&amp;ldquo;xx&amp;rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;时，ngx.var.arg_strider的值为&amp;rdquo;1&amp;rdquo;,而ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]的值为table [&amp;ldquo;1&amp;rdquo;, &amp;ldquo;2&amp;rdquo;, &amp;ldquo;3&amp;rdquo;, &amp;ldquo;4&amp;rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>电影，其实是一件非常私人的东西</title>
+      <link>http://pureage.info/2014/07/12/movie-cannot-be-shared.html</link>
+      <pubDate>Sat, 12 Jul 2014 08:38:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/07/12/movie-cannot-be-shared.html</guid>
+      <description>&lt;p&gt;看电影，就像其他一切需要调动内心体验的行为，都是非常私人化的，这是无数次教训得出的宝贵经验。它告诉我，自己的看法，不要指望其他任何人能认同。&lt;/p&gt;
+
+&lt;p&gt;很多次沮丧的发现，自己给身边的人倾心推荐的电影，他们看完都表示没有什么感觉。有一个经验是，如果电影看到一半，对方萌萌的抬起头，弱弱的问道，这个电影到底是讲什么的啊？这个时候最聪明的做法是赶紧换别的活动，不要抱有任何也许后面的剧情会让他/她大为震撼的幻想。&lt;/p&gt;
+
+&lt;p&gt;刚开始的时候是心情是很不愉快的，明明这个电影我已经看了三遍了，恨不得次次都有泪点，为啥在您这就一无是处呢？后来，我逐渐领悟到，问题在我，而不在别人。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>两只金鱼</title>
+      <link>http://pureage.info/2014/05/29/two-fishes.html</link>
+      <pubDate>Thu, 29 May 2014 11:47:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/05/29/two-fishes.html</guid>
+      <description>&lt;p&gt;最近家里来了两个客人：两只金鱼，一只白色的，一只红色的，我给他们分别取了个名字，小红与小白。于是每天早上出门前，给他们喂点食料，晚上回来后趴在鱼缸前跟他们说两声Hello成了我的一大乐趣。&lt;/p&gt;
+
+&lt;p&gt;几天之后，我发现，当我凑近鱼缸跟他们say Hello的时候，他们会慢慢的游到水面，露头吐出两个泡泡然后迅速沉入水底，仿佛一脸娇羞。一脸娇羞，说明我是一个喜欢歪歪的人，放佛，有说明我并没有歪歪的那么放肆。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>RPM中的%config和%config(noreplace)</title>
+      <link>http://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</link>
+      <pubDate>Wed, 30 Apr 2014 15:43:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</guid>
+      <description>&lt;p&gt;打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？&lt;/p&gt;
+
+&lt;p&gt;答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。&lt;/p&gt;
+
+&lt;p&gt;对于spec文件中在%files段的某一个文件，我们要讨论三种情况：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;没有带%config指令。例如：%{_sbindir}/redis-server&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>春哥关于Nginx踩坑记（一）的回复</title>
+      <link>http://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</link>
+      <pubDate>Wed, 30 Apr 2014 02:42:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</guid>
+      <description>&lt;p&gt;对于&lt;a href=&#34;http://pureage.info/2014/04/26/pitfall-of-nginx.html&#34;&gt;Nginx踩坑记（一）&lt;/a&gt;，在openresty的google group上提了个问题：&lt;a href=&#34;https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ&#34;&gt;ngx.exec是如何处理上层定义的变量的&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;春哥的回复&lt;strong&gt;摘录&lt;/strong&gt;如下：&lt;br /&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx踩坑记（一）</title>
+      <link>http://pureage.info/2014/04/26/pitfall-of-nginx.html</link>
+      <pubDate>Sat, 26 Apr 2014 13:18:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/04/26/pitfall-of-nginx.html</guid>
+      <description>&lt;h2 id=&#34;1-预备知识&#34;&gt;1. 预备知识&lt;/h2&gt;
+
+&lt;p&gt;Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。&lt;/p&gt;
+
+&lt;p&gt;配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。&lt;/p&gt;
+
+&lt;p&gt;例如，如果有如下的配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;location /test1 {  
+        set $hello hello;  
+        rewrite /test1 /test2 last;
+
+}
+  
+location /test2 {  
+        echo $hello;  
+}  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>svn log不显示当前提交</title>
+      <link>http://pureage.info/2014/04/17/svn-log.html</link>
+      <pubDate>Thu, 17 Apr 2014 03:56:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/04/17/svn-log.html</guid>
+      <description>&lt;p&gt;关于svn log，我之前的工作方式一般都是这样：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。&lt;/p&gt;
+
+&lt;p&gt;在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>程序员中的标杆人物-章亦春</title>
+      <link>http://pureage.info/2014/04/12/agentzh.html</link>
+      <pubDate>Fri, 11 Apr 2014 16:02:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/04/12/agentzh.html</guid>
+      <description>&lt;p&gt;这标题，怎么读着这么别扭。&lt;/p&gt;
+
+&lt;p&gt;接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如Linus就不用多说了，身边的同学和同事中，技术牛人性格也一般比较桀骜。桀骜的表现之一就是不会浪费时间去回答一些基本的问题，最著名的就是那篇流传已久的论坛发帖指南了吧。&lt;/p&gt;
+
+&lt;p&gt;自己虽然算不上牛人，但在某些方面也会有同事来求助，碰到一些比较低端的问题，其实心里会有烦躁的。烦躁的程度与当时的心情、手里有多少活正在干等因素相关。&lt;/p&gt;
+
+&lt;p&gt;直到有一天我接触到了章哥。&lt;/p&gt;
+
+&lt;p&gt;章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>研发与销售的一些区别</title>
+      <link>http://pureage.info/2014/03/31/difference-of-rd-and-sales.html</link>
+      <pubDate>Mon, 31 Mar 2014 10:27:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/03/31/difference-of-rd-and-sales.html</guid>
+      <description>&lt;p&gt;身为一名开发人员，因为一些机会接触过一些销售，其中有些是非常优秀的销售。在与他们打交道的过程之中，能明显感觉到研发与销售的区别。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;销售们通常是外向型的&lt;/strong&gt;。当然，并不一定是说他们的性格本身就外向的，而是他们的工作方式、工作态度会给人一种他们很外向的印象。例如，某位金牌销售，每周都会在社交网络上写一些文章，分享、感悟之类。而我接触到的包括我自己在内的研发，基本上都是埋头干自己的事情。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;销售们通常比研发要更成熟&lt;/strong&gt;。工作中接触到的印象深刻的销售们，现在都是接近或已经是90后了。但他们在为人处世上比同龄的研发要厉害很多。这也很正常，跟学习、工作经历密不可分。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从HTTP Range请求谈标准是如何被破坏的</title>
+      <link>http://pureage.info/2014/02/26/how-standard-is-broken.html</link>
+      <pubDate>Tue, 25 Feb 2014 16:14:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/02/26/how-standard-is-broken.html</guid>
+      <description>&lt;p&gt;如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。&lt;/p&gt;
+
+&lt;p&gt;但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。&lt;/p&gt;
+
+&lt;h3 id=&#34;背景&#34;&gt;背景&lt;/h3&gt;
+
+&lt;p&gt;A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>送礼要抓紧</title>
+      <link>http://pureage.info/2014/02/23/gift-not-sent-out.html</link>
+      <pubDate>Sun, 23 Feb 2014 15:31:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/02/23/gift-not-sent-out.html</guid>
+      <description>&lt;p&gt;标题是故意夸张了，送礼的对象不是领导、上级，而是朋友，同学等。有时候，会忽然想起给身边亲近的或关系好的人送个小礼物，但我发现自己在这方面的拖延症患的不轻。&lt;/p&gt;
+
+&lt;p&gt;举两个例子。&lt;/p&gt;
+
+&lt;h3 id=&#34;一-海盗&#34;&gt;一.海盗&lt;/h3&gt;
+
+&lt;p&gt;我和女友在一个学校读研，我比她高一届，也就是说，我们一起在学校度过了两年的时光。我们经常在吃完晚饭后，去教研室之前，来到学校的超市里逛逛。有时候是一人一根冰激凌，有时候是一包薯片，然后坐在超市门口的长凳上消磨十几分钟的时光。长凳的一边是超市，另外一边是一家书店，名曰智博书店。其实除了去逛逛超市，我们更多会逛逛这个书店。但不管怎么样，我们总会在外面这个长凳上坐个十几分钟，当时能不能看到夕阳现在不记得了，但回忆起来总觉得有。&lt;/p&gt;
+
+&lt;p&gt;有时候我们会面朝书店，有时候会面朝超市。当我们面朝超市时，我们面前是超市的玻璃墙，里面是位于超市里的一个迷你的礼品店，透过玻璃能看到陈列的礼物，有几个小猪，有一个骷髅头，有几个类似于猪八戒背媳妇风格的娃娃，还有一个裹着红色头巾的海盗。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于nginx中的host变量</title>
+      <link>http://pureage.info/2014/02/22/host-variable-in-nginx.html</link>
+      <pubDate>Fri, 21 Feb 2014 19:51:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/02/22/host-variable-in-nginx.html</guid>
+      <description>&lt;p&gt;关于变量host，在Nginx的官网wiki中是如下说明的：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;直白的翻译一下:host变量的值按照如下优先级获得：
+1. 请求行中的host.&lt;br /&gt;
+2. 请求头中的Host头部.&lt;br /&gt;
+3. 与一条请求匹配的server name.&lt;/p&gt;
+
+&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>依赖一个RPM来制作新的RPM</title>
+      <link>http://pureage.info/2014/01/27/176.html</link>
+      <pubDate>Mon, 27 Jan 2014 03:41:46 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/01/27/176.html</guid>
+      <description>&lt;p&gt;项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。&lt;/p&gt;
+
+&lt;p&gt;在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。&lt;/p&gt;
+
+&lt;p&gt;再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。&lt;/p&gt;
+
+&lt;p&gt;最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>给有道云笔记的分类自定义排序</title>
+      <link>http://pureage.info/2014/01/22/youdaonotes-order.html</link>
+      <pubDate>Wed, 22 Jan 2014 15:05:43 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/01/22/youdaonotes-order.html</guid>
+      <description>&lt;p&gt;有时候换一个工具是很莫名其妙的，去年一直用的evernote，今年却习惯了使用有道云笔记。慢慢“我的笔记本”栏里笔记本的类别越来越多了。这些类别默认是按照类别的字母先后来排序的。这就导致有些你需要特别关注的类别不能处在一个显眼的位置。作为一个习惯了被黑，同时也慢慢习惯了自黑的处女座IT男，我硬是用鼠标在分类处拖动了很久，实在不行后，只好点开设置选项，期望能找到一个自定义排序的选项，又以失败告终。&lt;/p&gt;
+
+&lt;p&gt;绝望后，我念叨了一声，有道云笔记这怎么回事，做的也太垃圾了吧。旁边一位小帅哥见我这么抓狂，凑过来问。我告诉他，我现在想把这个“每日工作安排”放到所有分类的最前面。小帅哥扶了扶眼镜，然后拿过我的鼠标，把“每日工作安排”重命名为“001-每日工作安排”，然后飘然回到他的座位，整个操作过程没有说一句话，大有事了拂衣去，深藏功与名的架势。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>2014年的读书计划</title>
+      <link>http://pureage.info/2014/01/21/reading-plan.html</link>
+      <pubDate>Tue, 21 Jan 2014 15:33:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/01/21/reading-plan.html</guid>
+      <description>&lt;p&gt;2013年我读了太多好书，主要原因有两点：&lt;br /&gt;
+1. 作为一个宅男，看电影、看书本来就是我的爱好。
+2. 两年前就养成了看电子书的习惯了，但2013年看的更多了。工具从Kindle，到手机和Web端，平台主要是多看和豆瓣，技术类电子书主要是买图灵社区的PDF。&lt;/p&gt;
+
+&lt;p&gt;如果你也跟我一样算是个喜欢看书的宅男，那么一旦习惯了阅读电子书，就会发现阅读量比以前突飞猛进了。国内电子书市场刚刚起步，很多地方不尽如人意，比如多看，最近几个月出的新书的质量简直不忍直视。这也不能怪它，好书的版权难拿，只好多出一些杂七杂八的书了。换个角度想想，即使你走进购书中心，合你口味的书还是少数，所以能偶尔在上面找到一本好书就心满意足了，没什么好怨念的。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>lua-nginx使用自定义变量中需要说明的一点</title>
+      <link>http://pureage.info/2014/01/20/lua-nginx-variable.html</link>
+      <pubDate>Mon, 20 Jan 2014 15:30:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/01/20/lua-nginx-variable.html</guid>
+      <description>&lt;p&gt;在nginx中，有两种方式添加自定义的变量：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在配置文件中用set指定添加&lt;/li&gt;
+&lt;li&gt;在自己编写的C模块中，调用&lt;code&gt;ngx_http_add_variable&lt;/code&gt;接口来添加变量&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第一种方法较简单，第二种方法有一处需要说明一下。&lt;/p&gt;
+
+&lt;p&gt;当调用&lt;code&gt;ngx_http_add_variable&lt;/code&gt;接口时，如果传入的flag参数中&lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt;位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。&lt;/p&gt;
+
+&lt;p&gt;在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。&lt;/p&gt;
+
+&lt;p&gt;例如，某个C模块中用带有&lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt;位的flag参数调用了&lt;code&gt;ngx_http_add_variable&lt;/code&gt;，创建了变量A，则如果在lua代码中通过&lt;code&gt;ngx.var.A&lt;/code&gt;只能得到一个nil值。&lt;/p&gt;
+
+&lt;p&gt;而如果在配置文件中，先调用set命令:&lt;code&gt;set $B $A;&lt;/code&gt;,那么在lua代码中，通过代码&lt;code&gt;local A2 = ngx.var.B&lt;/code&gt;则可以间接访问到该变量。&lt;/p&gt;
+
+&lt;p&gt;翻了一下邮件列表，发现该问题agentzh早有解答：&lt;br /&gt;
+&amp;gt;逆雪寒:&lt;br /&gt;
+&amp;gt;通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是nil 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug ? 还是我理解问题.&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>朋友</title>
+      <link>http://pureage.info/2014/01/19/callyourfriends.html</link>
+      <pubDate>Sun, 19 Jan 2014 14:21:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/01/19/callyourfriends.html</guid>
+      <description>&lt;p&gt;其实工作了挺没劲的，以前的朋友们、同学们都散落在各自的城市，为了生活而奔波着。从一开始偶尔会在QQ群里热闹一下，到现在是几乎有老死不相往来的趋势了。&lt;/p&gt;
+
+&lt;p&gt;其实，说为了生活而奔波显得很诡异。大部分还是一休息就呆坐在电脑前，打游戏，看电影，死宅。互相不联系还是因为生活中没有交集。虽然谁都知道，真正需要倾诉的时候，还是得找这些个当年的铁哥们。&lt;/p&gt;
+
+&lt;p&gt;今天跟两个朋友各自聊了很久。其中一个是我主动联系的，另一个是他打过来的。&lt;/p&gt;
+
+&lt;p&gt;我主动联系的那个朋友叫XX伟，人称大伟，大学室友，形影不离的几个人之一。大学时我一个南方人，千里迢迢跑到哈尔滨读书，室友大部分都是东北人，最南的也是河北。可跟这几个家伙丝毫没有隔阂，每天在一起打游戏，上自习，看电视，骂娘，骂政府，当然，少不了一起看毛片。&lt;/p&gt;
+
+&lt;p&gt;大伟的年龄是我们中最大的，因为当初高考失利，复读了两次。这家伙比我们其他人都显得成熟，无论是相貌上，还是行为举止上，很有老大哥的风范。可诡异的是，他却是个扎扎实实的死宅男。每天在床上一躺就能是一整天，看各种电子书。本科毕业后，我去读研，他直接到一个县城工作了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Peaky Blinders（浴血黑帮）</title>
+      <link>http://pureage.info/2014/01/18/peaky-blinders.html</link>
+      <pubDate>Sat, 18 Jan 2014 03:49:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/01/18/peaky-blinders.html</guid>
+      <description>&lt;p&gt;这是一部BBC出品的黑帮剧，第一季只有六集，每一集时间大概一个小时。我连续看了两遍。这部电视剧，有下面一些地方可以说道说道的。&lt;/p&gt;
+
+&lt;p&gt;这首先是一部黑帮片，但其中并没有多少黑帮火并的场面。有且仅有的几场火并戏，与以往我们看惯了的黑帮剧，简直是小孩过家家。但美轮美奂的音乐和画面，让我们在观看的时候会忘了这一点。也许等每一集看完后，你会冒出一句，不就是几个人打架吗，有必要搞的这么文艺范吗？&lt;/p&gt;
+
+&lt;p&gt;浴血黑帮讲述的是一个战后归来的年轻人，如何带领小小的家族势力在复杂的局势下生存与崛起的。虽然在他们的片区内，每个人都对他们噤若寒蝉，但客观的说，他们的势力确实很弱小。这些势力涉及到警察代表的政府、神秘的爱尔兰共和军、同样是家族势力的李家以及拥有合法身份的，更高层次的黑帮头目金波。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>护主莫心急</title>
+      <link>http://pureage.info/2014/01/08/do-not-kiss-the-ass-of-your-boss.html</link>
+      <pubDate>Wed, 08 Jan 2014 12:38:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2014/01/08/do-not-kiss-the-ass-of-your-boss.html</guid>
+      <description>&lt;p&gt;很早就关注了冯大辉，从他的微博、微信公共号里经常会看到他对阿里的评论。大概得出的印象是阿里系的员工更喜欢对外维护公司和老板的形象，如果有人骂了马云，会有一大批人出来给你骂回来。&lt;/p&gt;
+
+&lt;p&gt;冯大辉是个有个性的人，有时候会直接回骂，旁敲侧击的也不少，例如下面几条。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;纯银发了个网易内部邮件出来，居然没被丁磊约架，没被网易员工在内网和微博上骂，顿时感觉不科学，好失落…唉&lt;/p&gt;
+
+&lt;p&gt;网易之所以是一家有趣的公司，就是无论你是调侃还是喷网易，都不会有网易员工冒出来跟你对喷或是对骂；如果你不小心夸了网易，也不会有员工出来对你跪舔。简单一句话：这家公司的员工有独立的人格。&lt;/p&gt;
+
+&lt;p&gt;几家大厂里面，我比较喜欢网易的员工，人格独立，三观端正。当然其他几家大公司这种标准的也很多，只是平均一下就不成了。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>O_EXCL的作用</title>
+      <link>http://pureage.info/2013/12/25/165.html</link>
+      <pubDate>Wed, 25 Dec 2013 15:48:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/25/165.html</guid>
+      <description>&lt;h2 id=&#34;1-原始语义&#34;&gt;1.原始语义&lt;/h2&gt;
+
+&lt;p&gt;与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。&lt;/p&gt;
+
+&lt;h2 id=&#34;2-使用场景&#34;&gt;2.使用场景&lt;/h2&gt;
+
+&lt;p&gt;O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;之所以能这么用的唯一理由是该操作是原子的&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
+    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
+...  /* 继续执行任务 */  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从emlog换到typecho</title>
+      <link>http://pureage.info/2013/12/23/161.html</link>
+      <pubDate>Mon, 23 Dec 2013 13:04:44 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/23/161.html</guid>
+      <description>&lt;p&gt;typecho终于迎来大的更新了，从2012年5月8号官网放出一篇名为&lt;a href=&#34;http://typecho.org/archives/65/&#34;&gt;《Its about time》&lt;/a&gt;的日志后，让各路淫民翘首以待，谁都没想到一翘就翘了一年多。&lt;/p&gt;
+
+&lt;p&gt;从两年前买了域名+空间后，试过了各种博客程序，wordpress,typecho,emlog,textpattern等等，但最喜欢的还是emlog和typecho，后来一直用的是emlog。说实在话，对emlog很满意的，emlog的社区也做的不错，但这次typecho的更新太吸引人了，还是转了过来。更换程序是很彻底的，我丝毫没有考虑如何在url上做文章，对这个网站和搜索引擎而言，意味着N多死链，但幸好对我自己而言，不意味任何东西。&lt;/p&gt;
+
+&lt;p&gt;这个博客一直放在一个虚拟空间里，除了用ftp上传网站代码外，几乎没有任何权限。虽然早已有一个vps，但仍然没有把它迁过来，让它安静的躺在这里吧。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>誓要去,入刀山</title>
+      <link>http://pureage.info/2013/12/09/158.html</link>
+      <pubDate>Mon, 09 Dec 2013 14:17:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/09/158.html</guid>
+      <description>&lt;p&gt;周末，成都的一个朋友陪他的一个哥们来广州玩，原因是他这个哥们跟女朋友闹别扭了心里难受，他陪他出来转转。中午把他们接到后，吃了顿饭，到我的住处坐坐，然后就去订了几张电影票，看了《扫毒》。&lt;/p&gt;
+
+&lt;p&gt;《扫毒》是个怀旧的电影，但如何个怀旧法，每个人的感受不同。诚然，跟很多人一样，我也认为影片本身香港八九十年代兄弟情的主题确实是怀旧的一大因素，但对我而言，最能体现怀旧情绪的，是主题曲《誓要去，入刀山》。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>AF_INET与PF_INET的区别</title>
+      <link>http://pureage.info/2013/12/06/157.html</link>
+      <pubDate>Fri, 06 Dec 2013 08:24:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/06/157.html</guid>
+      <description>&lt;p&gt;在一些开源项目的socket相关代码中，会同时看到AF_IENT和PF_INET，这两者有什么区别呢？&lt;/p&gt;
+
+&lt;p&gt;其实这两个东西就是当年设计上的误差而已。AF=Adress Family;PF=Protocal Family，原来的设计是设想一个AF会支持多个PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux源代码为证：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/* Protocol families, same as address families. */  
+#define PF_UNSPEC	AF_UNSPEC  
+#define PF_UNIX	 AF_UNIX  
+#define PF_LOCAL	AF_LOCAL  
+#define PF_INET	 AF_INET  
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</title>
+      <link>http://pureage.info/2013/12/05/156.html</link>
+      <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/05/156.html</guid>
+      <description>&lt;p&gt;FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>linux下获取本地ip的几种方法</title>
+      <link>http://pureage.info/2013/12/04/155.html</link>
+      <pubDate>Wed, 04 Dec 2013 08:06:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/04/155.html</guid>
+      <description>&lt;h2 id=&#34;1-调用getifaddrs&#34;&gt;1.调用getifaddrs&lt;/h2&gt;
+
+&lt;blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>梦境</title>
+      <link>http://pureage.info/2013/12/02/154.html</link>
+      <pubDate>Mon, 02 Dec 2013 15:29:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/02/154.html</guid>
+      <description>&lt;p&gt;很奇怪的一个梦。&lt;/p&gt;
+
+&lt;p&gt;开始我似乎在一个黑暗的监狱里，浑身发抖，抱着膝盖蜷在墙角，像一条瑟瑟发抖的狗。忽然一道月光照下来，我慢慢站起来，展开双臂，发现臂下连着一双乌黑的翅膀。迎着月光，纵身一跃，化身为蝙蝠侠，滑翔在城市的夜空。滑翔了几分钟之后，猛然振翅向更高更亮处飞去，突然发现自己已经不是蝙蝠侠了，这次变成了阿凡达。&lt;/p&gt;
+
+&lt;p&gt;梦是什么时候醒的不知道了，这段时间，特别是午休时，经常从噩梦中惊醒，或是在噩梦中挣扎着想醒来却动弹不得。能做一下美梦，挺好的，而且梦里几个镜头的衔接简直太漂亮了，闭上眼睛依然能有强烈的画面感在脑中回想。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>strider教你巧记五度圈</title>
+      <link>http://pureage.info/2013/12/01/153.html</link>
+      <pubDate>Sun, 01 Dec 2013 09:32:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/12/01/153.html</guid>
+      <description>&lt;p&gt;五度圈在乐理中有很重要的地位，在布鲁斯口琴而言，最直接的用处就是确定不同把位之间调性的转换关系。在这篇文章里不会设计五度圈的来历、作用，仅仅是教您如何牢固的记忆五度圈，这样可以在调性转换的时候直接用到。&lt;/p&gt;
+
+&lt;p&gt;如果你已经能够很顺利的将五度圈画下来，不管是通过什么方法，哪怕是死记硬背来的，这篇文章就不适合您。&lt;/p&gt;
+
+&lt;p&gt;我假设您已经知道十二平均律是怎么回事，其实，只需要知道3,4和7,1之间是半音，其他各音之间是全音就可以了。一个八度内的音程被分成了12个半音，所以称为十二平均律。&lt;/p&gt;
+
+&lt;p&gt;我们来看看五度圈是个什么样子：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://pureage.info/img/wuduquan-1.jpg&#34; alt=&#34;wuduquan-1.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于布鲁斯口琴</title>
+      <link>http://pureage.info/2013/11/16/134.html</link>
+      <pubDate>Sat, 16 Nov 2013 07:12:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/11/16/134.html</guid>
+      <description>&lt;p&gt;大概四年前迷上了布鲁斯口琴这个小玩意，一发不可收拾，从最初的Huang103，到horhner,suzuki等，手上的琴也有了几把；从最最初钟情于一些爱尔兰民谣和动漫音乐，到后来乃至现在热爱布鲁斯音乐。这几年身边发生了很多事情，但每次只要拿起这大概10公分长的小乐器，就会暂时忘掉各种烦恼。曾经有一段时间迷恋到每天看视频网站必须看看Bluesimon，张晓松等大神，嗜血安尔乐、晓月等后起之秀有没有更新，每天翻墙到Youtube上看看关注的各路大神的最新动态，不亦乐乎。&lt;/p&gt;
+
+&lt;p&gt;喜欢一个乐器一般是从喜欢某首它演奏的曲子开始的，在国内，很多布鲁斯口琴爱好者都是从《星之所在》、《天空之城》、《爱尔兰画眉》、《素敌》等曲子开始的，我也一样。&lt;/p&gt;
+
+&lt;p&gt;但你总会开始接触到布鲁斯风格，让布鲁斯口琴焕发生命光彩的风格。其实布鲁斯口琴最初并不是用来演奏布鲁斯音乐的，而是欧洲的一些民谣。但随着布鲁斯口琴传入到了美国，开始发生了一些变化。那时的美国，是牛仔的美国。口琴的轻便让它可以随时放在口袋里，那时候它仍然不是布鲁斯的。直到有一天，美国的黑人，赋予了口琴第二次生命。压音、超吹、把位变换等等，他们不断的压榨着它的性能，用它尽情的演奏布鲁斯音乐。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>由《金蝉脱壳》到《习惯的力量》</title>
+      <link>http://pureage.info/2013/11/16/133.html</link>
+      <pubDate>Sat, 16 Nov 2013 04:09:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/11/16/133.html</guid>
+      <description>&lt;p&gt;最近看了施瓦辛格的两部电影，《背水一战》和《金蝉脱壳》。&lt;/p&gt;
+
+&lt;p&gt;施瓦辛格的电影之前能叫的上名字的，只有《终结者》系列，和一部想不起剧情和名字，关于大力神的电影。一直以来对他的印象就是肌肉男+前州长。但看完《背水一战》却让我眼前一亮，因为年老的施瓦辛格脸上竟然有些许伊斯特伍德的影子。爱屋及乌，也对这个虽然年轻十七岁，但也有六十六高龄的老头子忽然心生好感和敬意。&lt;/p&gt;
+
+&lt;p&gt;说了这么多施瓦辛格，但史泰龙才是这部电影的男一号，论年龄，他还比州长大了一岁。史泰龙在电影里扮演的是一个越狱专家，他无时无刻不在观察着周围的环境，寻找哪怕是最隐蔽的薄弱点，然后用各种技能逃生。在他所有的技能中，最出色的的一项是对人的观察，就像一架机器一样不偏不倚的从周围人们的行为中找出他们的习惯，找到了这些习惯，也就意味着找到了逃出生天的法门了。&lt;/p&gt;
+
+&lt;p&gt;习惯的力量有这么大吗？电影毕竟只是电影，很多地方经不起推敲。&lt;/p&gt;
+
+&lt;p&gt;很巧的是，我刚好在昨天看完了一本书，叫《习惯的力量》，这是一本值得一看的书。并没有类似习惯决定性格，性格决定命运的老套警句，而是以大量的科学实验为依据，讲述了习惯的产生的原理，习惯对人的影响，以及怎么养成或破坏一个习惯。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</title>
+      <link>http://pureage.info/2013/11/14/132.html</link>
+      <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/11/14/132.html</guid>
+      <description>&lt;p&gt;本文主要内容参考自：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&#34;&gt;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。&lt;/p&gt;
+
+&lt;p&gt;这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.&lt;/p&gt;
+
+&lt;p&gt;以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;[root@vps1 ~]# ls   -l /usr/bin/python&lt;br /&gt;
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>推倒重做</title>
+      <link>http://pureage.info/2013/11/13/131.html</link>
+      <pubDate>Wed, 13 Nov 2013 13:21:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/11/13/131.html</guid>
+      <description>&lt;p&gt;这几个月一直在做一个基于FastDFS的分布式存储系统，从前期调研、测试到后面的设计、编码、测试等。其中设计部分，每个环节都和当时带我的一位哥们讨论过，时而愁眉不展，百思不得其解；时而一拍脑袋，找到一个很巧妙的设计方法。已经有两个月没有什么大的改动了，上周实在无聊，就把我当时赶工写的，现在看来不堪入目的代码进行了重构。&lt;/p&gt;
+
+&lt;p&gt;一切看起来很美好的样子，只是看起来。&lt;/p&gt;
+
+&lt;p&gt;部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于proxy_pass的参数路径问题</title>
+      <link>http://pureage.info/2013/10/31/130.html</link>
+      <pubDate>Thu, 31 Oct 2013 04:16:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/10/31/130.html</guid>
+      <description>&lt;p&gt;由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。&lt;/p&gt;
+
+&lt;p&gt;这一搜，就掉进坑里了。&lt;/p&gt;
+
+&lt;p&gt;这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&amp;ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。&lt;/p&gt;
+
+&lt;p&gt;其实根本没这么复杂，只有两种情况：&lt;/p&gt;
+
+&lt;p&gt;（1）目标地址中不带uri。即proxy_pass的参数形如&amp;rdquo;&lt;a href=&#34;http://127.0.0.1:8090&amp;quot;。&#34;&gt;http://127.0.0.1:8090&amp;quot;。&lt;/a&gt;
+此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。&lt;/p&gt;
+
+&lt;p&gt;（2）目标地址中带uri。即proxy_pass的参数形如“&lt;a href=&#34;http://127.0.0.1:8090/dir1/dir2&amp;quot;&#34;&gt;http://127.0.0.1:8090/dir1/dir2&amp;quot;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>利用here document携带c代码</title>
+      <link>http://pureage.info/2013/10/08/129.html</link>
+      <pubDate>Tue, 08 Oct 2013 03:23:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/10/08/129.html</guid>
+      <description>&lt;p&gt;假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tmp_src_filename=fdfs_check_bits.c  
+cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_filename  
+#include &amp;lt;stdio.h&amp;gt;  
+#include &amp;lt;unistd.h&amp;gt;  
+#include &amp;lt;fcntl.h&amp;gt;  
+int main()  
+{  
+        printf(&amp;quot;%d\n&amp;quot;, (int)sizeof(long));  
+        printf(&amp;quot;%d\n&amp;quot;, (int)sizeof(off_t));  
+        return 0;  
+}  
+EOF  
+  
+gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
+output=$(./a.out)  
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>emlog的一键备份</title>
+      <link>http://pureage.info/2013/10/01/128.html</link>
+      <pubDate>Tue, 01 Oct 2013 03:31:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/10/01/128.html</guid>
+      <description>&lt;p&gt;不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱）&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;用ftp备份content目录
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果你想简化操作，并且和我一样苦逼的用着虚拟主机，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>漫谈logrotate与crond</title>
+      <link>http://pureage.info/2013/09/10/127.html</link>
+      <pubDate>Tue, 10 Sep 2013 15:11:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/09/10/127.html</guid>
+      <description>&lt;h1 id=&#34;什么是logrotate&#34;&gt;什么是logrotate&lt;/h1&gt;
+
+&lt;p&gt;logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。&lt;/p&gt;
+
+&lt;h1 id=&#34;lorotate的切割方式&#34;&gt;lorotate的切割方式&lt;/h1&gt;
+
+&lt;p&gt;以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。&lt;/p&gt;
+
+&lt;p&gt;当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。&lt;/p&gt;
+
+&lt;p&gt;当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>uniq、sort不得不注意的尾部空格（trailing whitespaces)</title>
+      <link>http://pureage.info/2013/09/09/126.html</link>
+      <pubDate>Mon, 09 Sep 2013 13:38:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/09/09/126.html</guid>
+      <description>&lt;h1 id=&#34;问题产生背景&#34;&gt;问题产生背景&lt;/h1&gt;
+
+&lt;p&gt;自己写的一个基于FastDFS的客户端软件的日志格式如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
+[2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
+[2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
+[2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
+[2013-09-06 08:57:01] 1734272 group6/M00/00/28/Kj4ZK1IpKL-AZF8OABp2gDqh-sA949.mp3 ;fuckgfw.com/mp3k18/a2/1429_9466.mp3  
+[2013-09-06 08:57:01] 2453888 group6/M00/00/2D/Kj4ZKlIpKL6AOkQ-ACVxgMD1aRE474.mp3 ;fuckgfw.com/mp3k18/a2/1429_9460.mp3  
+[2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3  
+[2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
+[2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
+[2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>nil、null与ngx.null</title>
+      <link>http://pureage.info/2013/09/02/125.html</link>
+      <pubDate>Mon, 02 Sep 2013 14:06:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/09/02/125.html</guid>
+      <description>&lt;h1 id=&#34;问题概述&#34;&gt;问题概述&lt;/h1&gt;
+
+&lt;p&gt;今天第一次在nginx+lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，实现对保存在redis中的任务插入、删除、查询等。虽然nginx，lua等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。&lt;/p&gt;
+
+&lt;p&gt;在Redis中记录的任务其实很简单，每插入一个任务，就在redis中增加一个HASH结构，每次查询返回该SET的各个Field和对应的Value值，例如md5，filesize等。由于任务类型的不同，有的Field可能在该任务中不存在，此时在以json格式将查询结果返回时不应显示该Field。&lt;/p&gt;
+
+&lt;p&gt;以md5域为例，在对当前任务以md5域执行hget后，应该对返回结果做一个判断，如果该HASH结构并没有设置md5这个域，则跳过，继续执行后面的逻辑，如果设置了md5域，则把该域的Value取出来，插入到结果table中，后续再作为json格式返回结果的一部分，返回给后台。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>无题</title>
+      <link>http://pureage.info/2013/08/30/124.html</link>
+      <pubDate>Thu, 29 Aug 2013 16:14:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/08/30/124.html</guid>
+      <description>&lt;p&gt;躺在水底&lt;/p&gt;
+
+&lt;p&gt;仰望&lt;/p&gt;
+
+&lt;p&gt;光影摇曳&lt;/p&gt;
+
+&lt;p&gt;扑朔迷离&lt;/p&gt;
+
+&lt;p&gt;就像&lt;/p&gt;
+
+&lt;p&gt;俯瞰众生&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>怎样可以连续做一百个俯卧撑</title>
+      <link>http://pureage.info/2013/08/23/123.html</link>
+      <pubDate>Fri, 23 Aug 2013 11:27:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/08/23/123.html</guid>
+      <description>&lt;p&gt;我一直有一个目标：连续做俯卧撑一百个。&lt;/p&gt;
+
+&lt;p&gt;我最早开始接触俯卧撑是在初中，那时在校外借宿，每天中午拿着饭盒到宿舍后，做的第一件事情就是做三十个俯卧撑再吃饭，最多的时候能连续做七十个。也就是从那个时候起，我的胸肌一直处于比一般同龄人大一圈的状态，但到了高中之后，就没有再坚持下去了。到了大学，偶尔心血来潮会试一下，快速的能做个三四十个，慢速的做十个都很费劲。这个状态，虽然与自己巅峰状态相去甚远，但跟身边的人比，也差不到哪里去。毕竟大家基本上都是死宅男，除了真三（那时候dota还没那么流行），就是武藤兰，剩下几个搞电子设计、算法竞赛的，一天到晚在实验室呆着。&lt;/p&gt;
+
+&lt;p&gt;但也有例外，正是在大学里，我才知道有人真的能连续慢速俯卧撑一百下，而且还是自己的同班同学。很多事情，其实你很早就知道不是什么稀奇的事，而一旦在你身边发生了，那感觉还是不一样的。但很遗憾，没有在大学里向他看齐，只是在心里埋下了一粒种子：其实我也可以做一百个，这东西并没有想象中那么遥远。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>bash中while循环的一个大坑</title>
+      <link>http://pureage.info/2013/08/22/122.html</link>
+      <pubDate>Thu, 22 Aug 2013 03:06:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/08/22/122.html</guid>
+      <description>&lt;p&gt;起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&amp;lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。&lt;/p&gt;
+
+&lt;p&gt;如果就这么过去了，多没意思，我觉得有必要深究一下while的运行机制。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>久旱逢甘雨----读《国家》有感</title>
+      <link>http://pureage.info/2013/08/13/121.html</link>
+      <pubDate>Tue, 13 Aug 2013 12:53:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/08/13/121.html</guid>
+      <description>&lt;p&gt;读完《易中天中华史之国家》，真有一种久旱逢甘雨的畅快之感。&lt;/p&gt;
+
+&lt;p&gt;历史书本来可以用三类来概括的，正史、野史和人教版课本。前两者历史久远，最后一个实在臭名昭著，从小学、初中、高中、大学、研究生，都只在说一件事情：没我哪有你。&lt;/p&gt;
+
+&lt;p&gt;但是现在，又有一类历史类书籍异常火爆，就是借历史上的一些故事来讲如何混社会。这种书我是绝不敢在公共场合下看的，怕我憨厚木讷的脸上突然多了四个字：老奸巨猾。&lt;/p&gt;
+
+&lt;p&gt;正儿八斤的历史类著作，读过吕思勉先生的《中国通史》和斯塔夫里阿诺斯的《全球通史》等。但这些书在读的时候总有一种中国与世界割裂开来的感觉，单纯的中国历史书籍自然不说，世界史类书籍也是如此。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>sort命令中-k、-t选项的用法</title>
+      <link>http://pureage.info/2013/08/05/120.html</link>
+      <pubDate>Mon, 05 Aug 2013 12:56:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/08/05/120.html</guid>
+      <description>&lt;h1 id=&#34;需求&#34;&gt;需求：&lt;/h1&gt;
+
+&lt;p&gt;假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
+group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
+......(略）......  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？&lt;/p&gt;
+
+&lt;h1 id=&#34;方法&#34;&gt;方法：&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&amp;hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&amp;hellip;groupn的顺序排列。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>bash下如何实现perl中seek的功能？</title>
+      <link>http://pureage.info/2013/07/21/119.html</link>
+      <pubDate>Sun, 21 Jul 2013 15:23:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/07/21/119.html</guid>
+      <description>&lt;p&gt;因为日志处理需要，接触到perl,虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。&lt;/p&gt;
+
+&lt;p&gt;假设有这样的应用场景：客户通过ftp客户端上传文件到接入端ftp服务器，接入端ftp服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端ftp服务器要做的工作就是定时分析ftp server（假设是vsftpd,则日志为xferlog)的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog的记录条数也随之增长。&lt;/p&gt;
+
+&lt;p&gt;perl中通过seek函数可以很方便的做到，每一次脚本执行时，都将上一次脚本执行时xferlog的大小作为本次读操作的偏移量，用这个偏移量来调用seek，本次处理完后再将该偏移量更新后存入到一个文件供下次脚本执行时读取。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>再不判断异常分支就剁手</title>
+      <link>http://pureage.info/2013/07/13/117.html</link>
+      <pubDate>Sat, 13 Jul 2013 06:02:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/07/13/117.html</guid>
+      <description>&lt;p&gt;一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？&lt;/p&gt;
+
+&lt;p&gt;可是今天还是犯了一个这样的错误。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>好的设计真是一念之间吗？</title>
+      <link>http://pureage.info/2013/06/27/116.html</link>
+      <pubDate>Thu, 27 Jun 2013 14:45:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/06/27/116.html</guid>
+      <description>&lt;h2 id=&#34;背景描述&#34;&gt;背景描述&lt;/h2&gt;
+
+&lt;p&gt;近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。&lt;/p&gt;
+
+&lt;h2 id=&#34;分工明确化&#34;&gt;分工明确化&lt;/h2&gt;
+
+&lt;p&gt;从始至终我们持有的一个观点就是，这个worker的功能要极度简化，就是去从tasklist中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个tasklist怎么来的，里面的任务是由谁来插入，worker一概不管。这样的话，有几个好处：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;worker的角色明确，目标清晰。直接的好处就是代码容易编写。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;设计思想比较通用&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;tasklist的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的log中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;关于重试&#34;&gt;关于重试&lt;/h2&gt;
+
+&lt;p&gt;worker从tasklist中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。关于这个异常处理，在这里多说两句，讲一个亲身经历的例子：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>记一个here document的坑</title>
+      <link>http://pureage.info/2013/05/24/115.html</link>
+      <pubDate>Thu, 23 May 2013 16:49:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/05/24/115.html</guid>
+      <description>&lt;h1 id=&#34;1-here-document&#34;&gt;1.here document&lt;/h1&gt;
+
+&lt;p&gt;here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ftp -n $HOST &amp;lt;&amp;lt;EOF
+quote USER $USER  
+quote PASS $PASS  
+binary  
+put $FileName  
+quit  
+EOF  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;2-踩到的坑&#34;&gt;2.踩到的坑&lt;/h1&gt;
+
+&lt;p&gt;在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>一张居住证的诞生</title>
+      <link>http://pureage.info/2013/05/06/114.html</link>
+      <pubDate>Mon, 06 May 2013 08:06:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/05/06/114.html</guid>
+      <description>&lt;p&gt;4月19日从前一家公司离职，下一家公司的报道日期是5月7号。报到时需要带的材料中，有一项是“居住证”。&lt;/p&gt;
+
+&lt;p&gt;在网上找了广州市办理居住证的流程，发现各种说法不一，没有找到一个官方的说法。于是拉着一个在广州打工多年的亲戚带着我办。从亲戚口中得知，正常的流程应该是房东出具一份证明，拿着这份证明到居住地的社区继续弄齐材料，然后再到更高一级的机构去办理居住证。&lt;/p&gt;
+
+&lt;p&gt;我问那亲戚，是不是需要先把房子租了才能去办呢，他说他和他房东关系不错，跟房东说一声，直接先开到他的住处就可以了，房子慢慢再找，现在先去社区摸清楚到底什么流程，毕竟每年政策可能不一样。我们在城中村里综合交错的小巷子里找了很久，才找到社区工作站A的位置。&lt;/p&gt;
+
+&lt;p&gt;可是社区工作站的大门是紧锁着的。那天是5月3号，星期五，五一假期刚过，属于正常工作日。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>一个名字毁掉一本书--《全中国最穷的小伙子发财日记》</title>
+      <link>http://pureage.info/2013/04/26/113.html</link>
+      <pubDate>Fri, 26 Apr 2013 15:34:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/04/26/113.html</guid>
+      <description>&lt;p&gt;现在，一个年轻人说自己读成功学的书时，会觉得难以启齿吧？但曾经，在成功学还没被现在的某些大师搞臭时，还是能给人一些正面的力量的。老罗曾经在演讲里说过，他当年曾把各种成功学的书一斤一斤的堆在家里，当熬不下去的时候就随机发开一本，打打鸡血，继续干活，每次都能管一段时间。&lt;/p&gt;
+
+&lt;p&gt;我对于成功学的了解，大概分为如下几个时期:&lt;/p&gt;
+
+&lt;h2 id=&#34;初窥-好奇&#34;&gt;初窥&amp;mdash;-好奇&lt;/h2&gt;
+
+&lt;p&gt;最早看的一本成功学的书，是《方与圆》，顾名思义，全书就是教育读者想要出人头地的话，就要做到“外圆内方”。那时我还读小学，给我看这本书的是我的一个舅舅。&lt;/p&gt;
+
+&lt;p&gt;我的这个舅舅是一个很有才华的人，但正因为他不够圆，从世俗的角度来看，他并不成功，颇有怀才不遇之感。很奇怪的是，他既然很多年前就知道自己不够圆，这么多年过去了，却并没有多大改变。简单分析一下，会有两个原因，一是他深知自己想要获得世俗的成功，就必须改变自己，但是他并不知道如何去实践。二是他内心里对这种改变抱有抵触。就他所处的实际情况而言，我认为主要是第一个原因。&lt;/p&gt;
+
+&lt;p&gt;因此，《方与圆》这类书籍，代表了一类低端的成功学的书籍，它们一方面很难从内心说服你为什么要做出改变，另一方面可操作性极差。但是它们往往喜欢结合中国社会的具体国情，会让你觉得它的观点无可辩驳，你很难说服别人说”外圆内方更容易成功“这个观点是错的。&lt;br /&gt;
+它的立足点就有问题，方圆之说，无法操作，无法度量。最终结果是，要么依然外方内方，要么就是外圆内圆，如果它从头到尾都在教育人们外圆内圆，我会对其更有好感。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>咱们墩敦伟大友谊如何？</title>
+      <link>http://pureage.info/2013/04/11/112.html</link>
+      <pubDate>Thu, 11 Apr 2013 15:55:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/04/11/112.html</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://pureage.info/img/great-friendship.jpg&#34; alt=&#34;great-friendship&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;到了这么一个奔三的不尴不尬的年龄，想提笔写篇主题明确的文章真的不容易。明明是想提笔写一篇《寻找无双》的读后感，却由于在多看上买了一整套《王小波全集》从而结束了东一本《万寿寺》.txt西一本《革命时期的爱情》.txt的状况而又想给多看做一回自带干粮的五毛，可偏偏手贱刚才忍不住又把《黄金时代》看了一遍，于是写了这么个《咱们墩敦伟大友谊如何？》的标题并在网上找到了当年课文《伟大的友谊》里的插画，然后就忽然决定怒转和菜头的一篇文章。但不能否认，《寻找无双》仍是我目前为止最喜欢的，以后再补上吧！&lt;/p&gt;
+
+&lt;h3 id=&#34;打屁股和爱情&#34;&gt;打屁股和爱情&lt;/h3&gt;
+
+&lt;p&gt;波哥的小说《黄金时代》最后两段是这么写的:&lt;br /&gt;
+　　 　　&lt;br /&gt;
+“陈清扬说她真实的罪孽，是指在清平山上。那时她被架在我的肩上，穿着紧裹住双腿的筒裙，头发低垂下去，直到我的腰际。天上白云匆匆，深山里只有我们两个人。我刚在她屁股上打了两下，打得非常之重，火烧火撩的感觉正在飘散。打过之后我就不管别的事，继续往山上攀登。&lt;br /&gt;
+　　 　　&lt;br /&gt;
+陈清扬说，那一刻她感到浑身无力，就瘫软下来，挂在我肩上。那一刻她觉得如春藤绕树，小鸟依人，她再也不想理会别的事，而且在那一瞬间把一切全部遗忘。在那一瞬间她爱上了我，而且这件事永远不能改变。”&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>记在《霍比特人》观影前</title>
+      <link>http://pureage.info/2013/02/24/110.html</link>
+      <pubDate>Sun, 24 Feb 2013 15:44:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/02/24/110.html</guid>
+      <description>&lt;p&gt;如果说有什么电影是我非看不可的话，那就是伊斯特伍德的新片和《指环王》系列了。&lt;/p&gt;
+
+&lt;p&gt;伊斯特伍德老爷子已经是83岁高龄了，电影是看一部少一部，不需要多说。而看到《霍比特人》，则让我想起那些情迷中土的黄金岁月。&lt;/p&gt;
+
+&lt;p&gt;附上一段自己在2006年写的一点东西，以资纪念。既然是纪念，原文中的错别字也一并保留了。&lt;br /&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Space Cowboys</title>
+      <link>http://pureage.info/2012/11/18/108.html</link>
+      <pubDate>Sat, 17 Nov 2012 19:13:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/11/18/108.html</guid>
+      <description>&lt;p&gt;在看完Nineteen Eighty-Four之后，唯有这类老男人重出江湖拯救地球的故事能治愈我的悲伤了。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Fly me to the moon
+And let me play among the stars&lt;br /&gt;
+Let me see what Spring is like On Jupiter and Mars&lt;br /&gt;
+In other words,hold my hand&lt;br /&gt;
+In other words,baby kiss me&lt;br /&gt;
+Fill my heart with song&lt;br /&gt;
+And let me sing forever more&lt;br /&gt;
+You are all I long for All I worship and adore&lt;br /&gt;
+In other words,please be true&lt;br /&gt;
+In other words,I love you&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>牛仔消失在优酷里</title>
+      <link>http://pureage.info/2012/11/15/107.html</link>
+      <pubDate>Wed, 14 Nov 2012 16:34:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/11/15/107.html</guid>
+      <description>&lt;p&gt;一个即将步入83岁高龄的异国老戏子，在调侃了一阵他们国家的领导人之后，竟然被远隔重阳的中国的最大的 视频内容服务商给屏蔽了。&lt;br /&gt;
+其实这个事情已经过去两个多月了，今天心血来潮又试了一次：&lt;br /&gt;
+（1）在任何一款浏览器的地址栏里输入优酷网的地址：www.youku.com&lt;br /&gt;
+&lt;img src=&#34;http://pureage.info/img/youku-1.jpg&#34; alt=&#34;youku-1.jpg&#34; /&gt;&lt;br /&gt;
+（2）在搜索栏里输入“伊斯特伍德”，然后点击搜索。&lt;br /&gt;
+&lt;img src=&#34;http://pureage.info/img/youku-2.jpg&#34; alt=&#34;youku-2&#34; /&gt;&lt;br /&gt;
+（3）然后，你就看到这样的画面了。&lt;br /&gt;
+&lt;img src=&#34;http://pureage.info/img/youku-3.jpg&#34; alt=&#34;youku-3&#34; /&gt;&lt;br /&gt;
+哈哈哈哈&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>新时代的留守儿童</title>
+      <link>http://pureage.info/2012/10/24/103.html</link>
+      <pubDate>Wed, 24 Oct 2012 13:41:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/10/24/103.html</guid>
+      <description>&lt;p&gt;做为一名曾经的留守儿童，看到某公司的一个帖子，一向波澜不惊的心被触动了，把主帖和一些回复摘录一下。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;主题帖&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;刚才两岁的女儿在视频上说，爸爸太远了，笑笑抱不到。不过接着结结巴巴地又说，等爸爸回来，笑笑给爸爸大大的抱抱。当爹的眼泪快下来了。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>动物庄园</title>
+      <link>http://pureage.info/2012/10/20/102.html</link>
+      <pubDate>Sat, 20 Oct 2012 05:04:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/10/20/102.html</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://pureage.info/img/orwell.jpg&#34; alt=&#34;orwell.jpg&#34; /&gt;&lt;br /&gt;
+总有些人，视线如同海上的灯塔，穿破时代的迷雾，闪耀在后人的心里。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>罗生门</title>
+      <link>http://pureage.info/2012/10/02/100.html</link>
+      <pubDate>Mon, 01 Oct 2012 17:10:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/10/02/100.html</guid>
+      <description>&lt;p&gt;伟大的电影一般都要涉及到对人性的恶的剖析，但在此基础上，是回归到善，还是一恶到底，既取决于导演，也取决于观众。而这部电影，既能满足那些对人性仍抱有希望的人，也能满足那些对其充满绝望的人。&lt;/p&gt;
+
+&lt;p&gt;武士，武士的妻子，樵夫，强盗，路人，和尚，女巫。就这么几个人，来来回回的将一个故事放了N个版本，真相到底是什么呢？&lt;/p&gt;
+
+&lt;p&gt;真相就是没有真相，正如这些年来在西南某个城市里发生的事情一样。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>挪威的森林</title>
+      <link>http://pureage.info/2012/09/23/98.html</link>
+      <pubDate>Sun, 23 Sep 2012 05:46:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/09/23/98.html</guid>
+      <description>&lt;p&gt;《挪威的森林》，在高中时就看到还在读初中的表弟在看这本书，还有一本《再袭面包店》。当时我还不知道村上春树，接触到的信息远远没有生活在广州的表弟那么丰富。但正如我对他天天哼唱的《双截棍》表示不屑一顾一样，我也对《挪威的森林》没太在意，本能的觉得那是年轻小孩爱看的哀伤青春之类的东西，那时的我，大概就像永泽一样：“不是说我不相信现代文学。我只是不愿意在阅读未经过时间洗礼的书籍方面浪费时间。人生短暂。”&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>扯皮的艺术</title>
+      <link>http://pureage.info/2012/09/12/97.html</link>
+      <pubDate>Wed, 12 Sep 2012 14:55:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/09/12/97.html</guid>
+      <description>&lt;p&gt;晚上九点多，某司的班车上，黑灯瞎火，众人昏昏欲睡。一人手机铃声响起。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;“喂，我现在快到上地七街了，你们跟XX那边讨论的怎么样了？&lt;br /&gt;
+&amp;hellip;&amp;hellip;.&lt;br /&gt;
+他要你改，你就跟他说，我们这边如果改的话，就要改架构、测试等等，这些都是风险，跟领导用邮件沟通一下，到时候即使出问题了，把邮件拿出来甩在他们面前。&lt;br /&gt;
+&amp;hellip;&amp;hellip;.&lt;br /&gt;
+风险估计？你就说如果要我们这边改的话，交接日期就要到十月中旬或者十月下旬。这个风险我们现在是能预知的，到时候过不了点了，我们不负责任。&lt;br /&gt;
+&amp;hellip;&amp;hellip;.&lt;br /&gt;
+总而言之，你就说我们如果要改就要改架构，让他们那边去改吧。&lt;br /&gt;
+
+好的，就这样吧，拜拜!”&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>铁拳男人（Cinderella Man ）</title>
+      <link>http://pureage.info/2012/09/09/96.html</link>
+      <pubDate>Sun, 09 Sep 2012 15:16:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/09/09/96.html</guid>
+      <description>&lt;p&gt;磨难无法击倒一个朝它微笑的男人。&lt;br /&gt;
+&lt;img src=&#34;http://pureage.info/img/cinderellaman.jpg&#34; alt=&#34;cinderellaman.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>正午（High Noon）</title>
+      <link>http://pureage.info/2012/09/08/94.html</link>
+      <pubDate>Sat, 08 Sep 2012 14:42:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/09/08/94.html</guid>
+      <description>&lt;p&gt;这部电影，看着看着我想起了《双旗镇刀客》，最后的长街，正午的太阳，怯懦的镇民，怎么看都不可战胜的敌人，最重要的是，那如巨石压在心头散不去的恐惧和压力。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://pureage.info/img/high-noon-1.jpg&#34; alt=&#34;high-noon-1.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;两者的不同在于，《双旗镇刀客》里，孩哥站起来一步一步走向一刀仙，那一刻他才成长为一个英雄，即使没有最后的那阵风沙，他倒在了一刀仙刀下，他也是一个英雄。但《正午》里的警长，早已过了那一关，早已是一个英雄。所以，在结婚和卸任的当天，当听到Frank回来后，他并没有犹豫多久就做出了自己的选择。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>南京知青之歌</title>
+      <link>http://pureage.info/2012/08/21/91.html</link>
+      <pubDate>Tue, 21 Aug 2012 12:30:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/08/21/91.html</guid>
+      <description>&lt;p&gt;&lt;strong&gt;南京知青之歌（词曲：任毅）&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;蓝蓝的天上，&lt;br /&gt;
+白云在飞翔，&lt;br /&gt;
+美丽的扬子江畔,&lt;br /&gt;
+是可爱的南京古城，&lt;br /&gt;
+我的家乡。
+啊，彩虹般的大桥，&lt;br /&gt;
+横跨了长江，&lt;br /&gt;
+雄伟的钟山脚下,&lt;br /&gt;
+是我可爱的家乡。&lt;br /&gt;
+告别了妈妈，&lt;br /&gt;
+再见吧家乡，&lt;br /&gt;
+金色的学生时代,&lt;br /&gt;
+已伴随着青春史册，&lt;br /&gt;
+一去不复返。&lt;br /&gt;
+啊，未来的道路多么艰难，&lt;br /&gt;
+曲折又漫长．&lt;br /&gt;
+生活的脚印,&lt;br /&gt;
+深浅在偏僻的异乡。&lt;br /&gt;
+跟着太阳出，&lt;br /&gt;
+伴着月亮归，&lt;br /&gt;
+沉重地修理地球,&lt;br /&gt;
+是光荣神圣的天职，我的命运。&lt;br /&gt;
+啊，用我的双手绣红了地球,　&lt;br /&gt;
+绣红了宇宙，&lt;br /&gt;
+幸福的明天，&lt;br /&gt;
+相信吧, 一定会到来。&lt;br /&gt;
+告别了你呀，&lt;br /&gt;
+亲爱的姑娘，&lt;br /&gt;
+揩干了你的泪水，&lt;br /&gt;
+洗掉心中忧愁，&lt;br /&gt;
+洗掉悲伤。&lt;br /&gt;
+啊，心中的人儿告别去远方，&lt;br /&gt;
+离开了家乡，&lt;br /&gt;
+爱情的星辰永远放射光芒。&lt;br /&gt;
+寂寞的往情，&lt;br /&gt;
+何处无知音，&lt;br /&gt;
+昔日的友情，&lt;br /&gt;
+而今各奔前程，&lt;br /&gt;
+各自一方。&lt;br /&gt;
+啊，别离的情景历历在目，&lt;br /&gt;
+怎能不伤心，&lt;br /&gt;
+相逢奔向那自由之路。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>他人的生活(一)</title>
+      <link>http://pureage.info/2012/07/30/90.html</link>
+      <pubDate>Sun, 29 Jul 2012 17:00:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/07/30/90.html</guid>
+      <description>&lt;p&gt;两周前的一天,作为刚入职的新员工,我和几位新同事早早的来到了公司,却发现工卡没有实验室门禁的权限,于是一行人就在实验室门口等着老员工来开门.&lt;/p&gt;
+
+&lt;p&gt;五分钟过后,一位约摸五十多岁的清洁阿姨路过,我们问了句:&amp;ldquo;阿姨,这个门怎么才能打开阿?&amp;ldquo;阿姨停了下来,回答道:&amp;ldquo;这个门只有你们实验室的员工才能打开,我们平时搞卫生都是要你们开门才能进去的.&amp;ldquo;一来二去,我和她聊了起来.同行的几位同学或是上洗手间,或是打电话去了.&lt;/p&gt;
+
+&lt;p&gt;不痛不痒的聊着,我正觉得这阿姨的口音很耳熟时,阿姨问,你们实验室没有武汉的人吗？我恍然大悟，说，“阿姨，您是武汉人吧，我也是湖北人，孝感的！”阿姨顿时仿佛遇到了故知，跟我攀谈起来。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>从百草路到百草园</title>
+      <link>http://pureage.info/2012/07/22/89.html</link>
+      <pubDate>Sun, 22 Jul 2012 15:16:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/07/22/89.html</guid>
+      <description>&lt;p&gt;警告：本文只是一篇流水账，为避免浪费您的时间，请谨慎阅读。&lt;/p&gt;
+
+&lt;p&gt;昨天（2012年7月２日）离开学习和生活了三年的成都,来到了深圳.我将这个过程为从百草路到百草园，从一个城乡结合部到了另一个城乡结合部。&lt;/p&gt;
+
+&lt;p&gt;我读研所在的学校是一个很偏僻的学校。到底有多偏僻，通过几件事情可以看出一二。三年前刚到成都时，在机场打的，问的哥到XXXX大学清水河校区多少钱，的哥用一口标准的川普羞涩的表示他不知道这个地方怎么走；学校通往外界几乎只有三个途径，第一是在西门花1块钱乘坐116号公交车到九里堤公交站，第二是在校外的顺江小区乘坐96号公交车到金沙公交站，第三是在校门口乘坐“黑的”，而“黑的”本身也能说明学校的偏僻。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>雨中送友人</title>
+      <link>http://pureage.info/2012/06/25/86.html</link>
+      <pubDate>Mon, 25 Jun 2012 09:00:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/06/25/86.html</guid>
+      <description>&lt;p&gt;他说,我走了!&lt;br /&gt;
+我说,送送你吧。&lt;br /&gt;
+走过那段走了三年的楼梯，下楼到门口，成都连续放晴的天竟然下起来了雨。&lt;br /&gt;
+他掏出烟盒，抽出两根烟，点上。&lt;br /&gt;
+是不是我要走了，连老天都感动得哭了？他笑道。&lt;/p&gt;
+
+&lt;p&gt;酒总有喝完的时候，烟也总有抽完的时候。&lt;br /&gt;
+走吧，把你送上校车吧。&lt;br /&gt;
+妈的你没看见在下雨吗？你回去吧。&lt;br /&gt;
+这点雨算个屁。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Unforgiven:不可饶恕</title>
+      <link>http://pureage.info/2012/06/07/85.html</link>
+      <pubDate>Thu, 07 Jun 2012 03:40:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/06/07/85.html</guid>
+      <description>&lt;p&gt;直到昨晚才看了的这部电影，作为伊斯特伍德的影迷，实在有些“不可饶恕”了，但我有个很好的理由。这部电影最显著的一个标签就是“反西部片”，如果没有足够的“西部片”的沉淀，看“反西部片”又能看出个什么门道呢。而现在稍微有点名气的西部片几乎都被我看遍了，也该看看这部让伊斯特伍德第一次获得奥斯卡最佳导演奖的电影了。&lt;/p&gt;
+
+&lt;p&gt;2个多小时很快就过去了，很是酣畅淋漓，看完后想说点什么，却又一时不知道该从何说起。想来大部分影评都会着眼于这部电影如何打破了西部片的传统，如何模糊了善与恶的界限，如何颠覆了西部大漠英雄的经典形象等等，翻看了一些影评，发现也确实如此，意料之中又有些失望。在西部片中模糊善恶对立，突出人性的复杂的做法，《不可饶恕》既非空前，《虎豹小霸王》、《落日黄沙》等更早期的一些电影的革新意义更明显；也非绝后，《无枪侠》、《决斗尤马镇》等后来的一些西部片在这一方面大有赶超前人之势。固然《不可饶恕》在革新上做的很出色，但亮点也绝不仅在此。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>杀死这个爱尔兰人</title>
+      <link>http://pureage.info/2012/05/30/77.html</link>
+      <pubDate>Wed, 30 May 2012 13:33:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/30/77.html</guid>
+      <description>&lt;p&gt;影片讲述的是丹尼·格林(Danny Greene)传奇的一生，是近年来难得一见的优秀黑帮电影,演员音乐都很好。可是,本来是冲着方·基默(Val Kilmer)去的，结果才发现原来他是打酱油的。&lt;br /&gt;
+&lt;img src=&#34;http://pureage.info/img/kill-the-irish.jpg&#34; alt=&#34;kill-the-irish.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>“透明”与“非透明”之间的歧义</title>
+      <link>http://pureage.info/2012/05/25/75.html</link>
+      <pubDate>Fri, 25 May 2012 13:35:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/25/75.html</guid>
+      <description>&lt;p&gt;在准备答辩之余,翻了翻以前看过的书。发现了一些想起来会会心一笑的地方。&lt;/p&gt;
+
+&lt;p&gt;比如，在《用TCP/IP进行网际互连》第一卷HTTP的那一章，对代理服务器有如下阐述：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;有两种形式的代理服务器存在：非透明的(nontransparent)和透明的（transparent)。正如它们的名字所暗示的，非透明服务器对用户来说是可见的，也就是说，用户必须配置浏览器来联络一个代理，而不是与原始资源所在的服务器联络。透明代理不需要对浏览器的配置进行任何改动。事实上，透明代理会检查所有通过代理的TCP连接，并拦截到达80端口的任何连接。无论是哪一种情况，代理都会将万维网页面进行缓存，然后从缓存中取出页面，以回答后来的请求。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>The Monkey Trap：猴子陷阱</title>
+      <link>http://pureage.info/2012/05/24/74.html</link>
+      <pubDate>Thu, 24 May 2012 06:32:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/24/74.html</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Upon trying to tackle their increasing population of monkey&amp;rsquo;s, villagers had placed rice grains inside the hollows of coconuts which were tethered to a chain. The desired result was that the monkeys would then trap themselves, and the villagers would then dispose of the monkeys.&lt;/p&gt;
+
+&lt;p&gt;In essence, the monkey&amp;rsquo;s would grab the grains of rice, and upon trying to remove their hand from the coconut hole, the monkey&amp;rsquo;s would subsequently become trapped by their own fist. Since the hole was just big enough so that the monkey can put his hand in, and too small for his fist to come out after it has grabbed the rice, the monkey&amp;rsquo;s ended up trapping themselves. Rather than letting the grains of rice go and escaping, they chose instead the rice to their own peril.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;道理是好的,如果是企业培训,则是教育人们不要仅仅被眼前的蝇头小利蒙蔽了双眼,如果是大师讲禅,则是告诉人们要放下贪婪,有舍才有得。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在枯燥中寻找乐趣</title>
+      <link>http://pureage.info/2012/05/22/73.html</link>
+      <pubDate>Tue, 22 May 2012 07:55:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/22/73.html</guid>
+      <description>&lt;p&gt;枯燥的工作是一件让人很头疼的事。而对于一个学生而言，很少有事情会比写毕业论文更枯燥的了，毕业设计中最有意思的事情在于设计的过程，而将其整理为符合当今高校要求的论文则实在毫无乐趣可言。而且，写完论文还不是尽头，比这更枯燥的是要在准备答辩前论文内容再度整理成PPT以供答辩使用。&lt;/p&gt;
+
+&lt;p&gt;在这个时间段，你其实没有什么太大的工作上的压力，压力仅仅来自心理上对答辩的焦虑。焦虑之余，你还会懊恼：时间就这么白白的过去了，这么些时间我本应该可以去学更多东西。&lt;/p&gt;
+
+&lt;p&gt;但是，换个心态，也许过程和结果都会完全不一样。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>有好的长文可读,真好</title>
+      <link>http://pureage.info/2012/05/18/72.html</link>
+      <pubDate>Fri, 18 May 2012 07:46:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/18/72.html</guid>
+      <description>&lt;p&gt;昨晚睡觉前看完了乐嘉的最新博文:《写给10岁的女儿》，抱着分享的的态度，今天把这篇文章贴在了学校论坛的情感专区。少有回帖，回帖的百分之九十是表示文章太长，看不下去。如“懒得看，太长了，我向来没有 人的情感能完善到能解决所有的问题”（念着不通顺吧，原话就是这样）、“太长了，更像是出版物”、“太长，更像是写给观众看的”（说实话，这句没看明白）等等。&lt;/p&gt;
+
+&lt;p&gt;当然，并不全是此类留言。也有极少数留言表明这些同学是看完了这篇文章的，如“不错。。。”、“我觉得 我们父母心中也有很多话语想跟我们说，只是不知道应该怎样说吧，也许他们说的也不一定是对的”、“看完 了，写得不错”等等。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>似水流年</title>
+      <link>http://pureage.info/2012/05/14/71.html</link>
+      <pubDate>Mon, 14 May 2012 01:59:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/14/71.html</guid>
+      <description>&lt;h2 id=&#34;节选一&#34;&gt;节选一&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;在似水流年里，有件事叫我日夜不安。在此之前首先要解释一下什么叫似水流年。普鲁斯特写了一本书，谈到自己身上发生过的来。这些事看起来就如一个人中了邪躺在河底，眼看潺潺流水，粼粼流光，落叶，浮木，空玻璃瓶，一样一样从身上流过去。这个书名怎么译，翻译家大费周章。最近的译法是追忆似水年华。听上去普鲁斯特写书时已经死了多时，又诈了尸。而且这也不好念。&lt;/p&gt;
+
+&lt;p&gt;照我看普鲁斯持的书，译作似水流年就对了。这是个好名字。现在这名字没主，我先要了，将来普鲁斯特来要，我再还给他，我尊敬死掉的老前辈。&lt;/p&gt;
+
+&lt;p&gt;似水流年是一个人所有的一切，只有这个东西，才真正归你所有。其余的一切，都是片刻的欢娱和不幸，转眼间就已跑到那似水流年里去了。我所认识的人，都不珍视自己的似水流年。他们甚至不知道，自己还有这么一件东西，所以一个个像丢了魂一样。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>风雨中，倒掉了一排车</title>
+      <link>http://pureage.info/2012/05/13/70.html</link>
+      <pubDate>Sun, 13 May 2012 11:30:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/13/70.html</guid>
+      <description>&lt;p&gt;风雨中&lt;br /&gt;
+倒掉了一排车&lt;br /&gt;
+有人说&lt;br /&gt;
+这是外力的暴行&lt;br /&gt;
+也有人说&lt;br /&gt;
+这是内力的反应&lt;br /&gt;
+孰重孰轻&lt;br /&gt;
+而我在想&lt;br /&gt;
+更适合回答这个问题的&lt;br /&gt;
+是物理学家&lt;br /&gt;
+还是&lt;br /&gt;
+历史学家&lt;br /&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>他人的足迹</title>
+      <link>http://pureage.info/2012/05/11/68.html</link>
+      <pubDate>Fri, 11 May 2012 02:32:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/11/68.html</guid>
+      <description>&lt;p&gt;最近发现了一个个人网站，在路上(www.zailushang.com)，是很少见的纯粹的个人网站了。&lt;/p&gt;
+
+&lt;p&gt;这里记录了他1998年到2008年的行程，这里（是他的最新行程更新情况），这里记录了他到过的地方。现在还保持这种简洁风格的个人网站，真是太少了，让人眼前一亮。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>热烈庆祝自己成功逃离人人网三年有余</title>
+      <link>http://pureage.info/2012/05/10/67.html</link>
+      <pubDate>Thu, 10 May 2012 01:45:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/05/10/67.html</guid>
+      <description>&lt;p&gt;粗略算来,从把校内网的帐号注销到现在,已经过去三年多了，甚至一度我都不知道校内网已更名为人人网。&lt;/p&gt;
+
+&lt;p&gt;其实远离人人网并不是对它有多么不满意，曾经我也喜欢疯狂的在上面刷新页面，观看同学们的各种分享，虚荣心来了的时候也会 写几篇自以为文艺实质很二逼的日志，然后神经质似的刷新来访列表，看到有评论来了心里也挺美滋滋的。有一段时间疯魔到了每 次开电脑第一件事就是打开网址收藏夹里的校内主页。渐渐的，我发现自己是被它给绑架了，于是在某天一咬牙将所有的日志、留言都删掉，然后注销了帐号，直到今天。&lt;/p&gt;
+
+&lt;p&gt;其实，现在想想，当你沉迷一个东西，然后在某个阶段顿悟，狠狠的骂它绑架了你，这个逻辑很强盗。在我们一路走来的这么多年 里，在每个阶段总会有一件或几件事物非常流行，让很多人沉迷其中不能自拔。就像小时候的游戏厅，初中时的古惑仔，高中时的 传奇。不管校内出现不出现，在大学那个带着些空虚的时间里，总有让你为之着迷的东西。当我们沉迷于某个事物，然后在某个时 刻觉醒了，然后怒骂其绑架了自己并决绝而去的做法实质是在承认自己内心的软弱。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>牛屎山的传说</title>
+      <link>http://pureage.info/2012/04/29/66.html</link>
+      <pubDate>Sun, 29 Apr 2012 08:45:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/04/29/66.html</guid>
+      <description>&lt;p&gt;这是昨晚做的一个梦，趁还记得一点，记录一下。&lt;/p&gt;
+
+&lt;p&gt;风平浪静的武林中开始流传一个故事：在一个遥远的地方，有座高耸入云的山，叫牛屎山，在这座山里藏着一个关于天下第一的秘密。&lt;/p&gt;
+
+&lt;p&gt;其实这座山已经存在了好多年了，牛屎山这个名字不知从哪个年代就已经开始流传了，人们都觉得是因为它外形像一坨巨大的牛屎 而得名，但几乎所有的山看上去都像一坨牛屎啊。武林中人都忙着做生意泡妓院，搞学术的也都忙着申请专利，虎拳、螳螂拳等所 有与动物相关的专利都已经被申请了，现在抢得最热的专利是蟑螂拳。总而言之就是大家的时间都很宝贵，所以没有人去深究牛屎 山为什么叫牛屎山以及别的更像牛屎的山为什么不叫牛屎山。&lt;/p&gt;
+
+&lt;p&gt;直到有一天，人们开始流传牛屎山不简单。一个穿着奇装异服的人到处散播，牛屎山之所以叫牛屎山，是因为这座山牛的要屎。这 位自称是从公元2012年穿越回来的人说，他是来自未来的地星人，所以懂的比较多。有人问，什么叫牛的要屎？地球人说，哎呀， 就是牛的要死了！人们还是不懂，为什么牛的要死就是牛的要屎，也不明白牛的要死是啥意思。于是接着不断有人问，是我们的牛 都要死了吗？地球人最后不耐烦了，用通俗的语言告诉大家：“牛的要屎就是说这座山无与匹敌，你们是武林时代，无与匹敌就是 意味着天下第一，这座山就是天下第一山。”&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>A good place to memorize English words</title>
+      <link>http://pureage.info/2012/04/22/64.html</link>
+      <pubDate>Sun, 22 Apr 2012 02:32:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/04/22/64.html</guid>
+      <description>&lt;p&gt;I found a good place to memorize English words:ShanBay&lt;/p&gt;
+
+&lt;p&gt;There are 3 features fit me well.&lt;/p&gt;
+
+&lt;p&gt;Firstly,it has many word books for different kinds of people and you can chose one or severl books from it,for example,a GRE word book.This is nearly all you have to do.Eveyday when you log in,it will automatically push some new words to you,and throuth reading,writing,listing,and guessing,you can learn them well.&lt;br /&gt;
+Secondly,you can build your own word storage. As for me,I am a programmer,so evry day i have to read more or less some english material.When i see a new IT word,I can add it to my word storage.I think this function will also help you,so long as you have to read english material.&lt;br /&gt;
+
+I guess you might think this function sounds normal.What make it fantastic is that the words you add in to your storage can also be pushed to you ,which force you to memorize them.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>那些关于饥饿的往事和今事</title>
+      <link>http://pureage.info/2012/04/20/63.html</link>
+      <pubDate>Fri, 20 Apr 2012 15:53:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/04/20/63.html</guid>
+      <description>&lt;h2 id=&#34;1-罗嗦一下&#34;&gt;1.罗嗦一下&lt;/h2&gt;
+
+&lt;p&gt;今天老板过来给我们的论文签字。我和另外一位同学的论文题目做了较大改动,除了正常的签字外,还需要重新填写一份论文的开题报告和文献综述给老板签字。老板一周只来一次，甚至两周来一次，来了大家都是很给面子的，打dota的开始看 论文了，看NBA的打开了一份天线理论的pdf，我们两个则苦逼的埋头改开题报告。转眼间到了11：30，老师一如既往端坐不动，几位同学相互抛了个眼色，齐刷刷站起来，说：“ 老师，我们去吃饭了！”，然后就起身离开了实验室。我们两个改开题报告的还没改完，心想老师下午很早就要走，赶紧把开题报告弄起来好让他签字。于是我们俩继续奋起直 copy。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Twenty years from now</title>
+      <link>http://pureage.info/2012/04/19/62.html</link>
+      <pubDate>Thu, 19 Apr 2012 01:52:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/04/19/62.html</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Mark Twain:&lt;br /&gt;
+Twenty years from now you will be more disappointed by the things you didn&amp;rsquo;t do than by the ones you did do. So throw off the bowlines. Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover.&lt;/p&gt;
+
+&lt;p&gt;20年后，让你觉得更失望的不是你做过的事情，而是你没有做过的事情。所以，解开帆索，从安全的港湾里扬帆出行吧。乘着信风，去探索，去梦想，去发现！&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>日落黄沙(The Wild Bunch)</title>
+      <link>http://pureage.info/2012/04/07/60.html</link>
+      <pubDate>Sat, 07 Apr 2012 08:33:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/04/07/60.html</guid>
+      <description>&lt;h1 id=&#34;1-关于杀戮&#34;&gt;1.关于杀戮&lt;/h1&gt;
+
+&lt;p&gt;影片开头，匪徒们化装成军人，雄赳赳气昂昂的走进银行大门。一群小孩趴在地上，他们中有年龄大点的，有很小的，有男孩，有女孩。他们把一只蝎子放进了一堆蚂蚁中，看着这只蝎子被无数只黄里透红的蚂蚁慢慢吞噬，所有人的眼睛里闪烁着兴奋。最后，当蝎子差不多已经死去的时候，他们拿起一把干草，盖在蚂蚁窝上，点燃，然后期待的注视着。伴随着青烟，一阵阵噼噼啪啪的声音传出，刚才还如波涛般汹涌着淹没蝎子的蚂蚁们，转眼间都化为乌有。与马上开始的匪徒与早已埋伏在银行周围的众赏金猎人之间的火爆枪战相比，暴力程度有过之而无不及。&lt;/p&gt;
+
+&lt;p&gt;杀戮，似乎是人的天性，也许这才是暴力美学如此被欣赏的终极原因。&lt;br /&gt;
+作为一个在农村长大的孩子，农村广阔的田野和众多的生物，都给我们提供了很多可以杀戮的机会。南方很多水塘里都有一种吸血虫子，名叫蚂蟥。当牛在池塘里喝水或者解暑后，腿上都会爬上很多蚂蟥，它们用它们身体两端的吸盘牢牢地吸在牛身上。此时不能硬扯，因为越扯它们吸的越紧，当强行扯下后，牛腿就会流血不止。当然，它们并非只吸牛血，人血也是它们的至爱。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Bury My Heart at Wounded Knee(魂归伤膝谷）</title>
+      <link>http://pureage.info/2012/04/01/58.html</link>
+      <pubDate>Sun, 01 Apr 2012 13:25:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/04/01/58.html</guid>
+      <description>&lt;p&gt;如果历史老人能够站到我们面前的话，我们一定会看到他长着一张这个世界上最冷酷无情的脸.当你在为某次历史事件中逝去的生命 而叹息，为旧文明被新文明取代中的血流成河而落泪时，他会不悲不喜的告诉你，这就是规律。你仰面问他，为什么弱者信奉的神 灵神灵不庇护他们？他告诉你，孩子，你以为你在看《阿凡达》呢？&lt;/p&gt;
+
+&lt;h2 id=&#34;规律与尊严孰轻孰重&#34;&gt;规律与尊严孰轻孰重&lt;/h2&gt;
+
+&lt;p&gt;最初面对白人的入侵，酋长“卧牛”是一个坚定的反抗者，是部落的精神领袖，带领着族人打了一次次胜仗，当然，这种反抗只是 苟延残喘。不得已，他带队逃到了加拿大。可那始终是寄人篱下，时刻会因为族人的一些越界行为而遭到驱逐。同时，恶劣的生存 环境也威胁着族人的生存。当不断有小孩死去，当充饥的食物变成了水煮老鼠时，越来越多的族人选择回到美国，接受白人的游戏 规则。最后他也回到美国，成为最后一位放下枪的印第安人。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>门前的落花</title>
+      <link>http://pureage.info/2012/03/20/57.html</link>
+      <pubDate>Tue, 20 Mar 2012 08:39:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/03/20/57.html</guid>
+      <description>&lt;p&gt;不知道&lt;br /&gt;
+你们在什么时候开放&lt;br /&gt;
+也不知道&lt;br /&gt;
+你们在什么时候凋落&lt;br /&gt;
+是你们&lt;br /&gt;
+花期太短暂&lt;br /&gt;
+还是我&lt;br /&gt;
+行色太匆匆&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>3.15罢餐与3.15心愿</title>
+      <link>http://pureage.info/2012/03/15/56.html</link>
+      <pubDate>Thu, 15 Mar 2012 07:23:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/03/15/56.html</guid>
+      <description>&lt;p&gt;面对声势较为浩大，但结果未知的罢餐，有如下几点想法：&lt;/p&gt;
+
+&lt;h1 id=&#34;1-罢餐的意义&#34;&gt;1.罢餐的意义&lt;/h1&gt;
+
+&lt;p&gt;罢得再厉害，食堂也是学校广大学子的唯一稳定的进食场所，所以有人说，你今天罢了，明天还得去吃，有意义吗？&lt;/p&gt;
+
+&lt;p&gt;罢餐不是为了不吃饭，不是荷尔蒙在飞，而是与学生的切身利益相关。罢餐的意义不在于让食堂垮台，而在于让学校、让后禽集团重视我们的呼声。平时，你在饭里面吃出虫子、清洁球钢丝、阴毛疑似物等，维权意识不强的也就拿出来扔了继续把饭吃了，维权意识强点的顶多会去叫换一份菜，但解决不了问题。明天你依然可能吃到虫子、清洁球钢丝、阴毛疑似物。&lt;/p&gt;
+
+&lt;p&gt;学生跟后禽集团之间就像有根无形的绳子，你用力一下，他就过来一点，你撒手不管，他就拉着你到处看阴毛飞。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>小学一年级就该懂的道理：明天还有明天的事</title>
+      <link>http://pureage.info/2012/03/06/55.html</link>
+      <pubDate>Tue, 06 Mar 2012 11:53:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/03/06/55.html</guid>
+      <description>&lt;p&gt;写论文写不下去了，于是随手点开PPS，心说，明天再写吧，反正也快写完了。正常情况下，这个晚上就应该是在看电影中度过的。但这时候一个神奇的事情发生了，我居然想到了小学一年级的一篇课文《明天还有明天的事》，找来看看，顿时心生惭愧，赶紧面壁去，不，赶紧赶论文去。再不抓紧时间写，哪来的时间搞毕业旅游，哪来的时间看更多的电影。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;h2 id=&#34;明天还有明天的事&#34;&gt;明天还有明天的事&lt;/h2&gt;
+
+&lt;p&gt;暑假里的一天下午，燕燕、杨力和小勇在屋子里做作业。&lt;br /&gt;
+窗户开着。湖边柳树上的知了叫得多么热闹。杨力往窗外一看，有几个小朋友正在湖里游泳。他坐不住了，说：“多热啊！湖水不深，咱们也去游泳吧。”燕燕说：“等一会儿 ，还没做完作业呢。”&lt;/p&gt;
+
+&lt;p&gt;过了一会儿，杨力又说：“真热，怎么这么热啊！咱们到柳树底下去凉快一会儿再做吧！”小勇说：“是啊，真热。”燕燕抬起头来看了看他们，说：“不， 咱们还是安下心来 ，把作业做完再去。”杨力说：“今天的作业做不完，明天做不行吗？”燕燕说：“ 明天还有明天的事。”大家都不说话了，低着头做作业。&lt;/p&gt;
+
+&lt;p&gt;又过了一会儿，作业都做完了。杨力一边收拾书本，一边说：“现在可以去游泳了吧。”燕燕说：“你们以为我不喜欢游泳吗？我比你们还喜欢呢。走，咱们一块儿去！”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何在豆瓣认领自己的博客？</title>
+      <link>http://pureage.info/2012/02/29/52.html</link>
+      <pubDate>Wed, 29 Feb 2012 12:26:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/02/29/52.html</guid>
+      <description>&lt;p&gt;1.先到豆瓣九点的这个页面&lt;a href=&#34;http://9.douban.com/reader/&#34;&gt;http://9.douban.com/reader/&lt;/a&gt; 点击右侧“添加订阅”，输入你的博客地址，然后豆瓣就会开始抓取你的博客，稍微等会儿，就添加进去了。&lt;/p&gt;
+
+&lt;p&gt;2.点下方的“管理订阅列表”，进入页面后，点你博客的名字，进入你的博客九点页面，再点击图片右侧的“认领这个博客”，豆瓣会给出一串字符（如doubanclaim9434b54d244e5b6f）要求你写进你的博客日志里，写好之后回到这个页面，点击“重抓”，过个10分钟左右等豆瓣验证好了，你就拥有这个博客了，然后那行写在日志里的字符也可以删了。&lt;/p&gt;
+
+&lt;p&gt;3.等在九点拥有博客之后，在你的豆瓣个人页面的头像下面就会显示你的博客地址和名称，你的主页上会显示你最新的博客日志并且会自动更新，自动显示你的广播里，你的友邻也都会看见。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>How The West Was Won:《西部开拓史》</title>
+      <link>http://pureage.info/2012/02/27/51.html</link>
+      <pubDate>Mon, 27 Feb 2012 12:29:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/02/27/51.html</guid>
+      <description>&lt;p&gt;故事讲述一家三代在各种时代背景下的艰难曲折，通过这个家庭从19世纪早期到1880年代半个世纪的迁徙经历，描述美国西部历史。他们从纽约出发，经历了内战，淘金热，路遇印第安人和西南部的流放者，经历各种艰难险阻，终于到达西部，并联合其他开拓者在平原上修建了铁路，把法律与正义也带到了边疆。&lt;/p&gt;
+
+&lt;p&gt;作为一部美国主旋律电影，如果说从这部电影里有什么收获的话，那就是跟看完《壮志凌云》一样，感慨一下Rome was not built in a day。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>爱情 爱情</title>
+      <link>http://pureage.info/2012/02/20/50.html</link>
+      <pubDate>Mon, 20 Feb 2012 07:44:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/02/20/50.html</guid>
+      <description>&lt;p&gt;本文由荆轲友情投递&lt;/p&gt;
+
+&lt;p&gt;这几年看了不少同类型电视剧，《奋斗》，《蜗居》，《裸婚时代》，《你是我爱人》等等，积累了很久的情绪在看到这部《北京爱情故事》终于不得不抒。&lt;/p&gt;
+
+&lt;p&gt;不去讨论喜欢谁讨厌谁，谁好谁坏，只在下面列出我想要思考的问题，有些我心里已经有了答案，有些我仍然犹豫。我只是作为一个类型的群体&amp;ndash;未出校门的学生&amp;ndash;其中的普通一员来表达自己的想法。&lt;/p&gt;
+
+&lt;p&gt;简单介绍一下剧情。&lt;/p&gt;
+
+&lt;p&gt;男主角：穷矮丑&amp;ndash;石小猛，高帅富&amp;ndash;程峰，经济适用男&amp;ndash;吴狄&lt;br /&gt;
+女主角：春姑娘&amp;ndash;杨紫曦，夏姑娘&amp;ndash;林夏，秋姑娘&amp;ndash;伍楣，冬姑娘&amp;ndash;沈冰&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>总丢东西怎么办？How not to lose things！</title>
+      <link>http://pureage.info/2012/02/17/49.html</link>
+      <pubDate>Thu, 16 Feb 2012 16:22:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/02/17/49.html</guid>
+      <description>&lt;p&gt;你有和我一样爱丢饭卡、水杯的坏习惯吗？如果我们同是沦落人，那么你就知道这个“爱”字说的有多心酸了。我的辉煌战绩如下：本科时代丢过10+个水杯，研究生阶段丢过近10次饭卡。&lt;/p&gt;
+
+&lt;p&gt;每次丢完东西总是面临巨大压力，一方面这些东西虽小，但都是必需品，总让你心烦意乱，另一方面虽然它们廉价，但积少成多，也是一种浪费，the last but not the least,每次丢完东西都要承受同学们“你又丢XX了？”的疑问和目光，多少感觉自己像个异类，心理压力不可小觑。&lt;/p&gt;
+
+&lt;p&gt;但我始终相信，丢东西只是习惯问题。养成了丢东西的习惯，就要再养成不丢东西的习惯来使前面的习惯被抹去。找来一篇文章，感觉对自己有帮助，也许对无数次捶胸顿足的你同样有用。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>那些失散多年的朋友们，你们好吗？</title>
+      <link>http://pureage.info/2012/02/12/48.html</link>
+      <pubDate>Sun, 12 Feb 2012 07:01:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/02/12/48.html</guid>
+      <description>&lt;p&gt;大年初二的晚上，我做了一个梦，梦见了一个多年不见的朋友A。&lt;/p&gt;
+
+&lt;p&gt;在梦里，我和他在学校食堂偶遇，双方寒暄完毕，聊起各自的生活和工作。他告诉我，大学退学，他在社会上摸爬滚打了几年，现在已经年薪二十万了，过得很好。我激动的热泪盈眶，可是醒来后才知道那是一场梦。&lt;/p&gt;
+
+&lt;p&gt;那个晚上接下来的时间我一直没有睡着，一直在想着他。有几件事这么多年一直无法忘记。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>新年第一篇</title>
+      <link>http://pureage.info/2012/02/07/47.html</link>
+      <pubDate>Mon, 06 Feb 2012 18:33:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/02/07/47.html</guid>
+      <description>&lt;p&gt;2011早已过去，但由于长年以来都把春节作为新的一年的开始，所以现在来确定一下新学期的几个目标吧。&lt;/p&gt;
+
+&lt;h2 id=&#34;一-基本目标&#34;&gt;一.基本目标&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;尽快完成论文，通过答辩，顺利毕业。以期五一能有时间过个充实有意义的节日。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;坚持每天跑步，俯卧撑，其重要性无需多解释。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;减少花在寝室或教研室做无意义事情的时间。&lt;br /&gt;
+所谓无意义的事情，需要自己以旁观者的角度客观评判，例如每天阅读本是有意义且必要的，但如果在正常学习时间去阅读其他课外书，则是无意义的；看看经典的电影是有意义的，但同上，如果在正常的学习时间去看电影，则是无意义的；每天练习口琴是有意义的，但如果没有带着学习的目的去练而只是纯粹的打发时间则是无意义的；写 博客本是有意义的事情，但如果为写而写则是无意义的；等等等等&amp;hellip;&amp;hellip;&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;坚持本博客的更新，当然，不能为写而写。&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>岁月的痕迹</title>
+      <link>http://pureage.info/2012/01/12/44.html</link>
+      <pubDate>Thu, 12 Jan 2012 12:13:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/12/44.html</guid>
+      <description>&lt;p&gt;喜欢看电影，仿佛平日里不及感知的时间，突然变成手中的一把沙子，触手可及，又随风飘散。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>打破相对论的怪圈----《怪诞行为学》节选</title>
+      <link>http://pureage.info/2012/01/12/39.html</link>
+      <pubDate>Thu, 12 Jan 2012 05:44:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/12/39.html</guid>
+      <description>&lt;p&gt;我来举一个例子，这是两位优秀的研究人员—阿摩斯·特维斯基和丹尼尔·卡尼汉做的一个实验。加入你今天有两件事要做：第一件是买支新钢笔，第二件是买上班穿的套装。在一家文具店你看到一支不错的笔标价25美元，你正要买，突然记起同样的笔15分钟路程以外的另一家店促销价18美元。你怎么办呢？你决定为了节省这7美元而多跑15分钟的路程吗？在这两者之间，很多表示他们宁可跑远路节省这7美元。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>第一章 历史---从第一支口琴到第一张口琴唱片</title>
+      <link>http://pureage.info/2012/01/08/38.html</link>
+      <pubDate>Sun, 08 Jan 2012 11:55:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/08/38.html</guid>
+      <description>&lt;p&gt;口琴发声的原理是利用气流震动簧片，当我们的祖先还在穴居时代时，中国人就掌握了这一原理。利用这一原理制作的竹制乐器在远东仍然被广泛使用，如中国的笙和泰国的khan。&lt;/p&gt;
+
+&lt;p&gt;通常认为口琴是一个叫Friedrich Buschmann的柏林人在14岁时发明的（后来他还发明了六角风琴(concertina），但是有理由相信，在同一时期，中欧的一些其他手工乐器制作者彼此独立的掌握了制作口琴的原理。Buschmann家族历来都是钟表匠、音乐家和乐器制作者，在Friedrich Buschmann发明口琴时，他已经是一个技艺高超的手艺人了。他的父亲Johann曾经发明了很多包含木质簧片的乐器，这些乐器的发声原理类似于手风琴，利用皮革条带摩擦簧片发出声音。Friedrich用金属簧片建立了他的第一个模型，用来研究气流对声音的影响。他将他的第一个成果命名为aura，aura只有吹气簧片，并且这些簧片按照半音阶排序，很快他发现，在上面吹奏曲子时，声音非常迷人。就这样，这种原始口琴在19世纪前半期赢得了一定的名气，但由于aura的制作非常耗费精力，并且每个都必须单独制作且造价昂贵，它的广泛普及受到了阻碍。当时，它的质量大概也不能保证。尽管有这么多不足，许多制造商从事着口琴制造，这些厂商主要分布在奥地利（Austria）的维也纳(Vienna)，萨克森（Saxony）的克林根塔尔（klingenthal）和德国南部的乌腾堡（wurttemberg）。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>博客心理学之 “写博客如做人，都要能抵制诱惑”</title>
+      <link>http://pureage.info/2012/01/07/37.html</link>
+      <pubDate>Sat, 07 Jan 2012 14:31:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/07/37.html</guid>
+      <description>&lt;p&gt;这个博客开了一个多月，在google中搜索“纯真年代”已经能排在第一页了。昨天发表了一篇带有google过滤词的文章，很快的，再搜索“纯真年代”，点了几十页都没看到这个博客的影子。&lt;/p&gt;
+
+&lt;p&gt;在带着些许失意不断翻页时，我忽然愣住了。然后苦笑一下，关掉了google。&lt;/p&gt;
+
+&lt;p&gt;回想一下，我为什么要开始写博客呢？主要有两个目的：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;给自己一个练习写文章的地方。&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;在时间的推移中，总结、思考一些东西。&lt;br /&gt;
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;所以，从一开始，我就毫不理会什么SEO之类的东西，就当每年花个一百多块钱买个日记本了。我一直以为我都是这么做的。如果没有发生本文开头提到的事情，我甚至都不会意识到，原来我经常（几乎每天）都有在google中搜索“纯真年代”的习惯。想到了一个笑话，某人宣称：“我最讨厌三种人，一种是种族主义者，一种是黑人”。顿时心里涌起一阵寒意。原来尽管我总是自己告诉自己，我丝毫不关心任何访问量的问题，但实际上却在每天干着关心访问量的事，而且是无意识的。反思之后，我又是一阵喜悦，因为我大概又成熟一点了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Son of a bitch 的给力翻译</title>
+      <link>http://pureage.info/2012/01/06/36.html</link>
+      <pubDate>Fri, 06 Jan 2012 12:39:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/06/36.html</guid>
+      <description>&lt;p&gt;自从学英语开始，很多骂人的单词都是从英文电影里学会的，尤其是f字母打头的那个单词更是满天飞，据有人统计，一部《低俗小说》里“fuck&amp;rdquo;出现的次数是271次。除了fuck外，另外一个常见的骂人的短语就是”son of a bitch&amp;rdquo;了，经常被翻译为“狗娘养的”、“婊子养的”、“王八羔子”等等。那么除此之外呢？看看下面的两张电影截图吧：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>那些西部电影中中国劳工的身影</title>
+      <link>http://pureage.info/2012/01/06/33.html</link>
+      <pubDate>Fri, 06 Jan 2012 06:44:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/06/33.html</guid>
+      <description>&lt;p&gt;在西部电影中，经常可以看到中国劳工的身影，基本都是以两种形象出现：1.洗衣工，2.铁路工人。在电影中，他们地位低下，不记得是哪部电影中有这么一个场景：一个铁路老板对他的手下说，下次多雇点黑鬼，这些中国人干活太差劲了。&lt;/p&gt;
+
+&lt;p&gt;我的一些截图：&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>本书简介(The Harp Handbook)</title>
+      <link>http://pureage.info/2012/01/05/26.html</link>
+      <pubDate>Thu, 05 Jan 2012 09:21:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/05/26.html</guid>
+      <description>&lt;p&gt;全音阶布鲁斯口琴，也叫10孔单音Richter口琴，可以说是一种奇怪的乐器。口琴是一个庞大的家族，包括低音口琴（Bass）、和弦口琴（Chord）、半音阶口琴（Chromatic Harmonica）、复音口琴（Tremolo）、重音口琴（Octave-tuned Harmonica）以及其它许多新奇的乐器，当然布鲁斯口琴也是其中之一。毫无疑问，其中布鲁斯口琴是其中分布最广的乐器。&lt;/p&gt;
+
+&lt;p&gt;尽管布鲁斯口琴现在的模样已经诞生了至少150年，而且在各种音乐环境中被成功使用，但它从来就没有被真正视作一种严肃的乐器。当你说你是一个布鲁斯口琴手时，那些演奏“正规乐器”的“真正的音乐家”会对你嗤之以鼻。&lt;/p&gt;
+
+&lt;p&gt;这种态度也并不是完全没有道理。一方面布鲁斯口琴有着它与生俱来的局限性，另一方面，理论背景、教学资料以及从好的老师身上学习的机会的缺少，应该为口琴目前的这种可疑的地位负相当程度的责任。在听到布鲁斯口琴能够演奏出动人的音乐后，很多人仍然会觉得相当惊奇，因为他们一直以为这东西只能发出噪音。尽管也有很多相反的争论，但布鲁斯口琴的应用经常被一种陈词滥调所局限，按照这些说法，口琴适合演奏的仅仅是“篝火音乐、特效音乐、布鲁斯音乐”等，而不是真正的音乐。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>两个奔跑的男人--------3:10 to Yuma(决战犹马镇）观后感</title>
+      <link>http://pureage.info/2012/01/04/25.html</link>
+      <pubDate>Wed, 04 Jan 2012 07:21:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2012/01/04/25.html</guid>
+      <description>&lt;p&gt;我看电影向来慢一拍，这部2007年的电影到现在才看也算正常，如果不是最近扫荡各种西部片扫到它了，也不知道什么时候会看。&lt;/p&gt;
+
+&lt;p&gt;对整部电影的印象都定格在两个在枪林弹雨中奔跑的男人身上。&lt;/p&gt;
+
+&lt;p&gt;最后，在车站里，Dan对Ben说，我其实并没有那么顽固，死守着那块没有希望的荒地，只是因为我的小儿子两岁时得了肺结核，离不开干燥的天气。Ben问，你为什么要对我说这些呢？Dan回答说我也不知道，可能是只想让你知道我没那么顽固吧。这时候他心里想的是什么呢？也许是什么都没想，也许是因为自己让Ben走上绞刑架而心有愧疚吧。Ben接着说，既然大家都那么开诚布公，那么我也告诉你，我曾经在犹马镇待过两次，两次都逃掉了。其实是想让Dan放心，即使到了犹马镇我也死不了,你无需自责。然后两人相视一笑。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>停止坐井观天，是时候让“我个人认为”见鬼去了！</title>
+      <link>http://pureage.info/2011/12/30/24.html</link>
+      <pubDate>Fri, 30 Dec 2011 06:24:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/30/24.html</guid>
+      <description>&lt;p&gt;不知道从什么时候开始，在互联网BBS上、在和同学交流一些涉及到强烈个人立场或看法时，我都习惯性的在每句话的前面或后面加上一句：“我个人认为&amp;hellip;”。今天反思一下这个习惯是怎么养成的以及这个习惯有没有存在的必要。&lt;/p&gt;
+
+&lt;p&gt;跟任何习惯一样，它也是经历一个从无到有的过程。这个过程其实是一个从“我就是这个世界”到“这个世界并不是围绕着我转的”的认识的转变过程，如果我们能把这个过程中的每一次心理活动都记录下来的话，我们一定会同意这是一个相当痛苦的过程。&lt;/p&gt;
+
+&lt;p&gt;在我们一出生来到这个世界时，饿了就会哭，大人瞪我们一眼我们也会哭，总而言之就是希望这个世界所有的事情都必须符合我们的意愿，让我们舒服。我总是很清晰的记得小时候的一件事：一次过年时在外婆家时，我拿着爸爸新买给我的火药枪（一种塑料做的左轮玩具手枪，去商店买配套的弹药，火药是装在一个塑料圆圈的十几个小洞里，圆圈刚好能装到左轮上，手枪的撞针打到那些小洞上时就会发出砰砰的枪声）到大人正在打麻将的屋子里玩，这时候我爸爸骂了我一句。我已经记不得他是怎么训我的了，但我显然是无法接受这种训斥，蹲在门外，越想越难受，于是拿起一块砖头把那把玩具手枪给砸了个稀巴烂。这大概是那个年龄小孩以自我为中心的一种典型表现。后随着年龄的增长，我们逐步开始了解周遭的人和事，了解到他们并不是围绕着我们转的，于是我们就开始变乖了，至少是在他们面前变乖了。同样，在漫长的成长过程中，我们渐渐意识到自己的想法并不一定就是别人的想法，即使你确信你的想法是对的，你也无法去说服每一个人都同意，另外也许在过于张扬的表达自己的看法时，就会有另外一些同学受到伤害。于是我就学会了在说话时加一个“我觉得吧&amp;hellip;”。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>把懒惰当朋友</title>
+      <link>http://pureage.info/2011/12/29/23.html</link>
+      <pubDate>Wed, 28 Dec 2011 16:22:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/29/23.html</guid>
+      <description>&lt;p&gt;早上走在通向教研室的楼梯上时，忽然意识到，已经走楼梯走了一个多月了。其实只有三层楼，算不得高，但想起这一个月每天早中晚在这个楼梯里来回，也还是挺欣喜的；回头再想想自己居然坐了近两年的电梯，顿时一阵忏悔。&lt;/p&gt;
+
+&lt;p&gt;回忆一下这个习惯是怎么养成的，我想这个过程其实是对自己惰性的一种解剖。其实很简单，无论用什么崇高的理由，只要让自己坚持走一个星期的楼梯，那么一个星期后，再经过电梯时，甚至都不会看它一眼。&lt;/p&gt;
+
+&lt;p&gt;两年来，不是没有想过舍弃坐电梯，也不是不知道走楼梯比坐电梯好，尤其对于我们这种IT一族。但每次看到电梯门开了，总是不由自主的走了进去，有时是因为赶时间，有时是因为身边有同学一起，不好意思那么个性。于是，从第一天坚持走楼梯到后来偶尔走走楼梯再往后就慢慢变成了不走楼梯。这样，坐电梯就变成了一种习惯，一种懒惰的习惯。&lt;br /&gt;
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>那猫那狗那火</title>
+      <link>http://pureage.info/2011/12/27/22.html</link>
+      <pubDate>Tue, 27 Dec 2011 05:14:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/27/22.html</guid>
+      <description>&lt;p&gt;无意中看到一幅画:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://pureage.info/img/cat_and_dog.jpg&#34; alt=&#34;那猫那狗那火.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;忽然想起了一首诗。&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;问刘十九&lt;br /&gt;
+白居易&lt;/p&gt;
+
+&lt;p&gt;绿蚁新醅酒，红泥小火炉。&lt;br /&gt;
+晚来天欲雪，能饮一杯无？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://pureage.info/img/songliushijiu.jpg&#34; alt=&#34;问刘十九.jpg&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>便宜卖了，一块钱一斤，两块钱三斤！-----生活中的非理性</title>
+      <link>http://pureage.info/2011/12/26/19.html</link>
+      <pubDate>Mon, 26 Dec 2011 12:11:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/26/19.html</guid>
+      <description>&lt;p&gt;《怪诞行为学》里第一章讲讲述了这么一个关于经济学人杂志订阅的案例。订阅者有如下几种选择：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;单订电子版：59美元&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;单订印刷版：125美元&lt;/li&gt;
+&lt;li&gt;合订印刷版加电子版套餐：125美元&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;《怪诞行为学》的作者在麻省理工学院的斯隆商学院的100个学生中做出调查，结果如下：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;单订电子版59元：16人&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;单订印刷版125美元：0人&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;印刷版加电子版套餐125美元：84人&lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>人人都是民族主义者</title>
+      <link>http://pureage.info/2011/12/25/18.html</link>
+      <pubDate>Sat, 24 Dec 2011 17:20:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/25/18.html</guid>
+      <description>&lt;p&gt;对不起，我起了一个骇人听闻的题目，有夸张的嫌疑。因为要得出这个结论，必须对地球上每一个活着的人进行调查，确定他们都是民族主义者才行，但它确实代表了我的一种真实的情绪，姑且就非理性一次。加上一些修饰语可能会好一些：在一定范围内，人人都是民族主义者。&lt;/p&gt;
+
+&lt;p&gt;促使我得出这个结论的在一次校园事件中“人民群众”的表现，当然，人民群众就是各位同学了。&lt;/p&gt;
+
+&lt;p&gt;在前两天，我所在的大学的图书馆发生了一起桃色事件：“研修门”事件。简单的说一下事情经过，我们学校的图书馆除了公共自习室之外，还有一些包间，这些包间称为“研修室”，顾名思义，学校设立研修室的本意当然是给那些学习起来、研究起来特别能吃苦，特别能战斗的同学使用的。客观的说，我们学校的学风相当好，自然这些包间供不应求，因此你要用到这个包间，就必须每天很早起来到图书馆排队申请。就是在一个这样的研修室内，前天晚上七点多，一对情侣在里面嘿咻起来，为了避免被看到，他们用了一把伞把窗户挡了起来。这样，在同一楼层，基本是看不到什么的。但是，由于图书馆构造，在楼上，可以根据雨伞后面若隐若现的男主角的动作想象出窗户里发生的事情。由于那把雨伞的作用，你大概只能看到一个男生的头发和他光着的脚，女生应该是躺在课桌上，但全身被伞遮住。于是当场在图书馆引起轰动，自然有人拿出手机拍下了一段视频。于是当晚一直到昨天晚上，学校内部论坛都充斥着对这件事情的讨论。大部分同学的观点还是在声讨这两个当事者做事不分场合不分地点的。另外还有很多好心者呼吁要保护当事人，希望快点平息此事。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>成功者并不遥远　多向身边的人学习</title>
+      <link>http://pureage.info/2011/12/21/17.html</link>
+      <pubDate>Wed, 21 Dec 2011 14:50:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/21/17.html</guid>
+      <description>&lt;p&gt;曾经，成功学的书席卷大江南北，在各地校园的书摊上、各机场书店里，各种标有拿破仑*希尔、卡耐基、陈安之、唐骏、李开复等等带有各种闪耀光环的名字的书被各种人群所亲睐。其实不难理解，每个人都渴望获得成功，大部分人都会不满于现状，尤其在这么一个浮躁的年代，“成功”即意味着摆脱“蜗居”的生活，摆脱被人随意欺凌的命运，摆脱富家子弟对你瞟来的“你是农民”的目光。越来越多的人开始意识到，只有成功，才能体体面面有尊严的活着。&lt;/p&gt;
+
+&lt;p&gt;哪里有需求，哪里就有市场：你还记得《我的成功可以复制》、《世界因你而不同》、《做最好的自己》的风行吗？当然，这些都是有来历的书，没来历的那就更是汗牛充栋了：《大格局》、《10天改变一生：终极突破》、《6秒钟改变你的情商》、《30天改变你的人生》、《35岁前要做的33件事》、《20几岁，决定女人的一生》、《20几岁决定男人的一生》，《20几岁，可以改变女人的一生》，《20几岁了，别再犯迷糊了》&amp;hellip;.看出什么了吗？大部分此类书籍都是针对思想并不成熟的、还在懵懂状态的年轻人群（当然，我也是此类人群）。这些人急切的需要一些偶像来给予自己精神力量，于是，时势造英雄，各种大学生教父出现了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>只是一段听力练习：金凯瑞致伊斯特伍德</title>
+      <link>http://pureage.info/2011/12/19/14.html</link>
+      <pubDate>Mon, 19 Dec 2011 06:40:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/19/14.html</guid>
+      <description>&lt;h2 id=&#34;前奏&#34;&gt;前奏&lt;/h2&gt;
+
+&lt;p&gt;长时间不练英语，水平日下。闲来无事，找到一段视频尝试翻译一下，该视频应该是1996年美国电影学会为伊斯特伍德颁发终身成就奖的一小段内容。本来作为听力练习，听懂大意就可以了，但刚好金凯瑞和伊斯特伍德又都是我喜欢的演员，就尽量精听一下吧，权当借机做些整理。当然，由于水平所限，还有几个地方或者几个单词一直没听出来，就随便安一个词先混过去。&lt;/p&gt;
+
+&lt;p&gt;先对本致辞中涉及到的一些名词做个简单介绍：&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;AFI=American Film Institute&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;美国电影艺术学院，简称AFI，美国电影学会。1967年，美国电影工业已经具有超过75年的历史，许多具有开创性的早期电影的胶片正在快速老化、无法得到保存。为了保护民族遗产，成立了两年的国家艺术基金会（National Endowment for the Arts）联同美国电影协会（MPAA）和福特基金会（the Ford Foundation）一起创立了美国电影学会（AFI）。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>远离电脑，开始看书吧</title>
+      <link>http://pureage.info/2011/12/14/11.html</link>
+      <pubDate>Wed, 14 Dec 2011 11:50:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/14/11.html</guid>
+      <description>&lt;p&gt;连续三天了，晚上十点半从实验室回到寝室后，没有打开电脑，而是捧起了书本（或是新买的kindle）看到十二点。我能真切的体会到一种无以名状的感觉在心里慢慢复苏，久违了！&lt;/p&gt;
+
+&lt;p&gt;记得刚上大学时，我还保持着看书的习惯，在身边同学都在准备各种编程大赛、各种电子设计大赛的时候，我整天从图书馆抱回一堆一堆的中外文学书籍。印象中，都是在哈尔滨的冬天，下午或者晚上，我一个人在宿舍楼道里的窗台上，捧着本不知什么书，或许是《The Age of Innocence》，或许是《The Great Gatsby》，看看书眼睛看累了，就抬头看看看窗外纷扬的大雪，偶尔在深夜会遇见对面寝室的技术狂人出来边抽烟边看DSP的书，似乎就这个情景一过就过了四年。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>谁杀死了你？----《妙想天开》观后感</title>
+      <link>http://pureage.info/2011/12/12/10.html</link>
+      <pubDate>Mon, 12 Dec 2011 11:14:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/12/10.html</guid>
+      <description>&lt;p&gt;周五晚上熄灯后把电脑抱到床上，打开了这部电影。其实，对于这部电影的内容及其导演生平我本是一无所知，能够找到它仅仅是因为在我手上的一份不知何时的imdb top250名单里《妙想天开》排名接近垫底，很好识别。&lt;/p&gt;
+
+&lt;p&gt;对于电影和imdb排名我抱着这么一个想法，imdb排名虽然众口难调，但能进top250的从概率上讲应该都是值得一看的电影。而为了避免自己陷入先入为主的泥淖，对于一部陌生的电影，在看之前绝对不看内容简介，不上豆瓣时光等网站看影评。所以，根据片名，我甚至以为我即将看到的是一部喜剧片。我完全错了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>走出黑暗的洞穴---选自《苏菲的世界》</title>
+      <link>http://pureage.info/2011/12/08/9.html</link>
+      <pubDate>Thu, 08 Dec 2011 09:14:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/08/9.html</guid>
+      <description>&lt;p&gt;柏拉图用一个神话故事来说明这点。我们称之为&amp;rdquo;洞穴神话&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;现在就让我用自己的话再说一次这个故事.&lt;/p&gt;
+
+&lt;p&gt;假设有些人住在地下的洞穴中。他们背向洞口，坐在地上，手脚都被绑着，因此他们只能看到洞穴的后壁。在他们的身后是一堵高墙，墙后面有一些人形的生物走过，手中举着各种不同形状的人偶，由于人偶高过墙头，同时墙与洞穴间还有一把火炬，因此它们在洞穴的后壁上投下明明灭灭的影子。在这种情况下，穴中居民所看到的唯一事物就是这种“皮影戏”。他们自出生以来就像这样坐着，因此他们认为世间唯一存在的便只有这些影子了。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>卖身记</title>
+      <link>http://pureage.info/2011/12/05/8.html</link>
+      <pubDate>Mon, 05 Dec 2011 13:50:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/05/8.html</guid>
+      <description>&lt;p&gt;这是一篇写给自己的文章，不写没法交差，也可以说是为写而写。其实，我一直觉得应该对自己的人生轨迹做一个阶段性总结，所谓雁过留声，或是供日后凭吊。但按照某人的说法：“道理谁都懂，XXXX”，XXXX代表各种借口。果然这次也不例外。从八月末九月初开始正式准备找工作到十月九号签约，这一个月的时间里我不止一次的说要把白天的经历简单的记录一下，到时候归纳出一篇面经来，事实上我也确实干了这么一项工作，打开我的电脑里一篇名为“找工作日记”的txt文档，内容如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;2011.09.20  星期三&lt;/p&gt;
+
+&lt;p&gt;早上七点起床 去中兴面试，两轮，自我感觉良好。&lt;/p&gt;
+
+&lt;p&gt;2011.09.21  星期三&lt;/p&gt;
+
+&lt;p&gt;华为open day 去时打的，回来做了三个小时公交车&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;忽略空白行的话，这4行文字就是我这一个月来所有的记录。简直是在嘲笑我的言出不行。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>理性消费</title>
+      <link>http://pureage.info/2011/12/05/7.html</link>
+      <pubDate>Mon, 05 Dec 2011 03:29:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/05/7.html</guid>
+      <description>&lt;p&gt;前天为了买一个无线网卡，登陆了京东商城，无意发现多了两张优惠券。才记起这是“世纪光棍节”那天买书送的，两张50元的所谓东券只能分两次使用，且每次必须购买金额大于200元的图书。一般而言，京东、当当所谓的优惠活动都是这个样子的，印象中似乎只有京东在五一的时候实打实的来过一次满两百减一百的活动。正常情况下所有的优惠券都是要在下一次使用生效，而且必须满足一定的金额才能使用。&lt;/p&gt;
+
+&lt;p&gt;又想起在光棍节那天，登陆淘宝首页（不是淘宝商城）时，在banner上有一条显眼的标语：淘宝商城全场5折。我想起了我渴望已久的hohner goden melody，于是心动了。点击那条广告，顺利链接进入淘宝商城，输入goden melody，抑制不住内心的兴奋，我期待着130元的字样出现。片刻，我揉揉眼睛，似乎不太相信，因为口琴还是那个优雅的金黄色船型口琴，但价格还是那个260元。在经历巨大的失望后，我有一种强烈的受骗的感觉。但我想淘宝不至于做这种无耻的虚假广告吧，一定是我自己看错了，为了说服自己，我又回到了淘宝首页那个banner上，我没看错，火红的大字写着淘宝商城全场五折，不是淘宝商场全场五折起。我继续点击进入淘宝商城首页，寻找可能的蛛丝马迹来证明淘宝没有做虚假广告，终于，花了大概十分钟，我在一个小角落里看到了这样几行字：“1.XXXX（略）2.活动页面商品全场五折，全国包邮（港澳台除外）。”知道问题在哪了了吗亲，我终于证明了没有虚假广告，只怪自己眼神不好。因为人家说的是&amp;rdquo;活动页面&amp;rdquo;全场五折，也就是说，仅仅在指定的一个页面的商品是五折。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>澡堂十秒钟所想</title>
+      <link>http://pureage.info/2011/12/05/6.html</link>
+      <pubDate>Mon, 05 Dec 2011 03:27:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/12/05/6.html</guid>
+      <description>&lt;p&gt;昨夜洗澡，照例拿了把全身脱的只剩下一条内裤和秋衣，拿着另外一件干净的内裤就走进了澡房，按照惯例，在洗完后我会仅仅穿着一条新内裤并端着装有脏内裤和秋衣的盆子经过长长的走廊回到宿舍，这是后话暂且不表。现在说洗澡中发生的事。&lt;/p&gt;
+
+&lt;p&gt;澡房是隔间的，每个间里有三个挂钩，我需要挂的有三件：两条内裤，一件秋衣，正好。迅速脱掉秋衣，挂在了第一个挂钩上，这时候突然惊恐了，因为我发现自己的两条内裤是一摸一样的。也就是说，我需要把这两个一摸一样的内裤挂到剩下的两个挂钩上。问题来了：我洗完后怎么记得哪一件是脏的，哪一件是干净的呢？照理说，记个位置是很简单的事情，可是自从上大学后，记忆力严重下降，以至于经常下了楼会突然想起门是不是没关，所以我潜意识里对于记住两个内裤的相对位置表示不自信。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>香港武侠电影十大金曲</title>
+      <link>http://pureage.info/2011/11/29/5.html</link>
+      <pubDate>Tue, 29 Nov 2011 02:52:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2011/11/29/5.html</guid>
+      <description>&lt;p&gt;&lt;embed src=&#34;http://player.youku.com/player.php/sid/XMzI2MzEzMDI0/v.swf&#34; quality=&#34;high&#34; width=&#34;480&#34; height=&#34;400&#34; align=&#34;middle&#34; allowscriptaccess=&#34;always&#34; type=&#34;application/x-shockwave-flash&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

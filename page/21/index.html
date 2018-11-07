@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="纯真年代" />
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/" />
+<link href="http://pureage.info/index.xml" rel="alternate" type="application/rss+xml" title="纯真年代" />
+  <link href="http://pureage.info/index.xml" rel="feed" type="application/rss+xml" title="纯真年代" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="纯真年代" />
+<meta property="og:description" content="纯真年代" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://pureage.info/" />
+<meta property="og:updated_time" content="2013-05-23T16:49:00&#43;00:00"/>
+
+<meta itemprop="name" content="纯真年代">
+<meta itemprop="description" content="纯真年代">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="纯真年代"/>
+<meta name="twitter:description" content="纯真年代"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          
+  <section id="posts" class="posts">
+    
+    
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2013/05/24/115.html">记一个here document的坑</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-05-23 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h1 id="1-here-document">1.here document</h1>
+
+<p>here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：</p>
+
+<pre><code>ftp -n $HOST &lt;&lt;EOF
+quote USER $USER  
+quote PASS $PASS  
+binary  
+put $FileName  
+quit  
+EOF  
+</code></pre>
+
+<h1 id="2-踩到的坑">2.踩到的坑</h1>
+
+<p>在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/05/24/115.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2013/05/06/114.html">一张居住证的诞生</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-05-06 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>4月19日从前一家公司离职，下一家公司的报道日期是5月7号。报到时需要带的材料中，有一项是“居住证”。</p>
+
+<p>在网上找了广州市办理居住证的流程，发现各种说法不一，没有找到一个官方的说法。于是拉着一个在广州打工多年的亲戚带着我办。从亲戚口中得知，正常的流程应该是房东出具一份证明，拿着这份证明到居住地的社区继续弄齐材料，然后再到更高一级的机构去办理居住证。</p>
+
+<p>我问那亲戚，是不是需要先把房子租了才能去办呢，他说他和他房东关系不错，跟房东说一声，直接先开到他的住处就可以了，房子慢慢再找，现在先去社区摸清楚到底什么流程，毕竟每年政策可能不一样。我们在城中村里综合交错的小巷子里找了很久，才找到社区工作站A的位置。</p>
+
+<p>可是社区工作站的大门是紧锁着的。那天是5月3号，星期五，五一假期刚过，属于正常工作日。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/05/06/114.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2013/04/26/113.html">一个名字毁掉一本书--《全中国最穷的小伙子发财日记》</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-04-26 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>现在，一个年轻人说自己读成功学的书时，会觉得难以启齿吧？但曾经，在成功学还没被现在的某些大师搞臭时，还是能给人一些正面的力量的。老罗曾经在演讲里说过，他当年曾把各种成功学的书一斤一斤的堆在家里，当熬不下去的时候就随机发开一本，打打鸡血，继续干活，每次都能管一段时间。</p>
+
+<p>我对于成功学的了解，大概分为如下几个时期:</p>
+
+<h2 id="初窥-好奇">初窥&mdash;-好奇</h2>
+
+<p>最早看的一本成功学的书，是《方与圆》，顾名思义，全书就是教育读者想要出人头地的话，就要做到“外圆内方”。那时我还读小学，给我看这本书的是我的一个舅舅。</p>
+
+<p>我的这个舅舅是一个很有才华的人，但正因为他不够圆，从世俗的角度来看，他并不成功，颇有怀才不遇之感。很奇怪的是，他既然很多年前就知道自己不够圆，这么多年过去了，却并没有多大改变。简单分析一下，会有两个原因，一是他深知自己想要获得世俗的成功，就必须改变自己，但是他并不知道如何去实践。二是他内心里对这种改变抱有抵触。就他所处的实际情况而言，我认为主要是第一个原因。</p>
+
+<p>因此，《方与圆》这类书籍，代表了一类低端的成功学的书籍，它们一方面很难从内心说服你为什么要做出改变，另一方面可操作性极差。但是它们往往喜欢结合中国社会的具体国情，会让你觉得它的观点无可辩驳，你很难说服别人说”外圆内方更容易成功“这个观点是错的。<br />
+它的立足点就有问题，方圆之说，无法操作，无法度量。最终结果是，要么依然外方内方，要么就是外圆内圆，如果它从头到尾都在教育人们外圆内圆，我会对其更有好感。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/04/26/113.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2013/04/11/112.html">咱们墩敦伟大友谊如何？</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-04-11 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p><img src="/img/great-friendship.jpg" alt="great-friendship" /></p>
+
+<p>到了这么一个奔三的不尴不尬的年龄，想提笔写篇主题明确的文章真的不容易。明明是想提笔写一篇《寻找无双》的读后感，却由于在多看上买了一整套《王小波全集》从而结束了东一本《万寿寺》.txt西一本《革命时期的爱情》.txt的状况而又想给多看做一回自带干粮的五毛，可偏偏手贱刚才忍不住又把《黄金时代》看了一遍，于是写了这么个《咱们墩敦伟大友谊如何？》的标题并在网上找到了当年课文《伟大的友谊》里的插画，然后就忽然决定怒转和菜头的一篇文章。但不能否认，《寻找无双》仍是我目前为止最喜欢的，以后再补上吧！</p>
+
+<h3 id="打屁股和爱情">打屁股和爱情</h3>
+
+<p>波哥的小说《黄金时代》最后两段是这么写的:<br />
+　　 　　<br />
+“陈清扬说她真实的罪孽，是指在清平山上。那时她被架在我的肩上，穿着紧裹住双腿的筒裙，头发低垂下去，直到我的腰际。天上白云匆匆，深山里只有我们两个人。我刚在她屁股上打了两下，打得非常之重，火烧火撩的感觉正在飘散。打过之后我就不管别的事，继续往山上攀登。<br />
+　　 　　<br />
+陈清扬说，那一刻她感到浑身无力，就瘫软下来，挂在我肩上。那一刻她觉得如春藤绕树，小鸟依人，她再也不想理会别的事，而且在那一瞬间把一切全部遗忘。在那一瞬间她爱上了我，而且这件事永远不能改变。”</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/04/11/112.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2013/02/24/110.html">记在《霍比特人》观影前</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2013-02-24 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>如果说有什么电影是我非看不可的话，那就是伊斯特伍德的新片和《指环王》系列了。</p>
+
+<p>伊斯特伍德老爷子已经是83岁高龄了，电影是看一部少一部，不需要多说。而看到《霍比特人》，则让我想起那些情迷中土的黄金岁月。</p>
+
+<p>附上一段自己在2006年写的一点东西，以资纪念。既然是纪念，原文中的错别字也一并保留了。<br />
+</p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/02/24/110.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+  </section>
+  
+  <nav class="pagination">
+    
+      <a class="prev" href="/page/20/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    
+      <a class="next" href="/page/22/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

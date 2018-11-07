@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何绘制流程图和结构图 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:
+ Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件 一些其他相对较小众的绘图软件，例如 Pencil
+ 脑图工具，例如 Xmind
+ Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片
+ 利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯
+  上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2016/01/12/flow-chart.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="如何绘制流程图和结构图" />
+<meta property="og:description" content="经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:
+
+
+Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件
+一些其他相对较小众的绘图软件，例如 Pencil
+脑图工具，例如 Xmind
+Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片
+利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯
+
+
+上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2016/01/12/flow-chart.html" /><meta property="article:published_time" content="2016-01-12T14:38:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-01-12T14:38:00&#43;00:00"/>
+
+<meta itemprop="name" content="如何绘制流程图和结构图">
+<meta itemprop="description" content="经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:
+
+
+Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件
+一些其他相对较小众的绘图软件，例如 Pencil
+脑图工具，例如 Xmind
+Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片
+利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯
+
+
+上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。
+
+">
+
+
+<meta itemprop="datePublished" content="2016-01-12T14:38:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-01-12T14:38:00&#43;00:00" />
+<meta itemprop="wordCount" content="522">
+
+
+
+<meta itemprop="keywords" content="程序员,nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何绘制流程图和结构图"/>
+<meta name="twitter:description" content="经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:
+
+
+Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件
+一些其他相对较小众的绘图软件，例如 Pencil
+脑图工具，例如 Xmind
+Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片
+利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯
+
+
+上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何绘制流程图和结构图</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-01-12 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:</p>
+
+<ul>
+<li>Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件</li>
+<li>一些其他相对较小众的绘图软件，例如 Pencil<br /></li>
+<li>脑图工具，例如 Xmind<br /></li>
+<li>Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片<br /></li>
+<li>利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯<br /></li>
+</ul>
+
+<p>上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。</p>
+
+<p></p>
+
+<p>今天试用了一下一个叫做&rdquo;扫描全能王&rdquo;的手机端 APP, 感觉还不错，本质上是就是用手机给你绘制在纸上的图片拍一张照片，但它会做一些图像增强方面的处理。</p>
+
+<p>例如，我想表示 Nginx 是如何使用 ngx_array_t, ngx_buf_t, ngx_chain_t 等基础数据结构来描述 MP4 这种复杂的文件结构时，画了下面一张图:</p>
+
+<p><img src="/img/nginx-mp4.jpg" alt="nginx-mp4.jpg" /></p>
+
+<p>用手绘的好处是，画图过程中的效率真的很高，画图的过程也能增强自己的理解，打开思路。看看以后能不能用这种方式来处理文章中的流程图、结构图。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2016-01-12</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2016/01/17/modify-accept-ranges-header.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">使用ngx.header修改Accept-Ranges的问题</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2016/01/04/nightmare.html">
+            <span class="next-text nav-default">一场噩梦</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

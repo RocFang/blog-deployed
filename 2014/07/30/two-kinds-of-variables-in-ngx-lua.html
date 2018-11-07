@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>ngx.var.arg与ngx.req.get_uri_args的区别 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="ngx.var.arg_xx与ngx.req.get_uri_args[&amp;ldquo;xx&amp;rdquo;]两者都是为了获取请求uri中的参数，例如
+http://pureage.info?strider=1  为了获取输入参数strider，以下两种方法都可以：
+ local strider = ngx.var.arg_strider
+ local strider = ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]
+  差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&amp;ldquo;xx&amp;rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：
+http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4  时，ngx.var.arg_strider的值为&amp;rdquo;1&amp;rdquo;,而ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]的值为table [&amp;ldquo;1&amp;rdquo;, &amp;ldquo;2&amp;rdquo;, &amp;ldquo;3&amp;rdquo;, &amp;ldquo;4&amp;rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="ngx.var.arg与ngx.req.get_uri_args的区别" />
+<meta property="og:description" content="ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数，例如
+
+http://pureage.info?strider=1  
+
+
+为了获取输入参数strider，以下两种方法都可以：
+
+
+local strider = ngx.var.arg_strider
+
+local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]
+
+
+差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&ldquo;xx&rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：
+
+http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
+
+
+时，ngx.var.arg_strider的值为&rdquo;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html" /><meta property="article:published_time" content="2014-07-30T10:30:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-07-30T10:30:00&#43;00:00"/>
+
+<meta itemprop="name" content="ngx.var.arg与ngx.req.get_uri_args的区别">
+<meta itemprop="description" content="ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数，例如
+
+http://pureage.info?strider=1  
+
+
+为了获取输入参数strider，以下两种方法都可以：
+
+
+local strider = ngx.var.arg_strider
+
+local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]
+
+
+差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&ldquo;xx&rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：
+
+http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
+
+
+时，ngx.var.arg_strider的值为&rdquo;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。
+
+">
+
+
+<meta itemprop="datePublished" content="2014-07-30T10:30:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-07-30T10:30:00&#43;00:00" />
+<meta itemprop="wordCount" content="672">
+
+
+
+<meta itemprop="keywords" content="nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ngx.var.arg与ngx.req.get_uri_args的区别"/>
+<meta name="twitter:description" content="ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数，例如
+
+http://pureage.info?strider=1  
+
+
+为了获取输入参数strider，以下两种方法都可以：
+
+
+local strider = ngx.var.arg_strider
+
+local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]
+
+
+差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&ldquo;xx&rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：
+
+http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
+
+
+时，ngx.var.arg_strider的值为&rdquo;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">ngx.var.arg与ngx.req.get_uri_args的区别</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-07-30 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数，例如</p>
+
+<pre><code>http://pureage.info?strider=1  
+</code></pre>
+
+<p>为了获取输入参数strider，以下两种方法都可以：</p>
+
+<ol>
+<li><p>local strider = ngx.var.arg_strider</p></li>
+
+<li><p>local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]</p></li>
+</ol>
+
+<p>差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&ldquo;xx&rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：</p>
+
+<pre><code>http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
+</code></pre>
+
+<p>时，ngx.var.arg_strider的值为&rdquo;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。</p>
+
+<p></p>
+
+<p>ngx.var.arg_的实现是直接使用nginx原生的变量支持，nginx相关代码为：</p>
+
+<pre><code>ngx_http_variable_value_t *  
+ngx_http_get_variable(ngx_http_request_t *r, ngx_str_t *name, ngx_uint_t key)  
+{  
+....(略）....  
+if (ngx_strncmp(name-&gt;data, &quot;arg_&quot;, 4) == 0) {  
+  
+        if (ngx_http_variable_argument(r, vv, (uintptr_t) name) == NGX_OK) {  
+            return vv;  
+        }  
+  
+        return NULL;  
+    }  
+  
+    vv-&gt;not_found = 1;  
+  
+    return vv;  
+}  
+  
+static ngx_int_t  
+ngx_http_variable_argument(ngx_http_request_t *r, ngx_http_variable_value_t *v,  
+    uintptr_t data)  
+{  
+    ngx_str_t *name = (ngx_str_t *) data;  
+  
+    u_char *arg;  
+    size_t len;  
+    ngx_str_t value;  
+  
+    len = name-&gt;len - (sizeof(&quot;arg_&quot;) - 1);  
+    arg = name-&gt;data + sizeof(&quot;arg_&quot;) - 1;  
+  
+    if (ngx_http_arg(r, arg, len, &amp;value) != NGX_OK) {  
+        v-&gt;not_found = 1;  
+        return NGX_OK;  
+    }  
+  
+    v-&gt;data = value.data;  
+    v-&gt;len = value.len;  
+    v-&gt;valid = 1;  
+    v-&gt;no_cacheable = 0;  
+    v-&gt;not_found = 0;  
+  
+    return NGX_OK;  
+}  
+  
+ngx_int_t  
+ngx_http_arg(ngx_http_request_t *r, u_char *name, size_t len, ngx_str_t *value)  
+{  
+    u_char *p, *last;  
+  
+    if (r-&gt;args.len == 0) {  
+        return NGX_DECLINED;  
+    }  
+  
+    p = r-&gt;args.data;  
+    last = p + r-&gt;args.len;  
+  
+    for ( /* void */ ; p &lt; last; p++) {  
+  
+        /* we need '=' after name, so drop one char from last */  
+  
+        p = ngx_strlcasestrn(p, last - 1, name, len - 1);  
+  
+        if (p == NULL) {  
+            return NGX_DECLINED;  
+        }  
+  
+        if ((p == r-&gt;args.data || *(p - 1) == '&amp;') &amp;&amp; *(p + len) == '=') {  
+  
+            value-&gt;data = p + len + 1;  
+  
+            p = ngx_strlchr(p, last, '&amp;');  
+  
+            if (p == NULL) {  
+                p = r-&gt;args.data + r-&gt;args.len;  
+            }  
+  
+            value-&gt;len = p - value-&gt;data;  
+  
+            return NGX_OK;  
+        }  
+    }  
+  
+    return NGX_DECLINED;  
+}  
+</code></pre>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-07-30</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/08/14/local-backup-using-git.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">用git做本地备份</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/07/12/movie-cannot-be-shared.html">
+            <span class="next-text nav-default">电影，其实是一件非常私人的东西</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

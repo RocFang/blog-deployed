@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>代码中的谎言 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="俗话说，一个谎言，要用一百个谎言去圆。
+在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。
+但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。
+今天我们就来以Nginx-RTMP这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2016/07/04/lies-in-code.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="代码中的谎言" />
+<meta property="og:description" content="俗话说，一个谎言，要用一百个谎言去圆。
+
+在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。
+
+但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。
+
+今天我们就来以Nginx-RTMP这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2016/07/04/lies-in-code.html" /><meta property="article:published_time" content="2016-07-04T15:17:00&#43;00:00"/>
+<meta property="article:modified_time" content="2016-07-04T15:17:00&#43;00:00"/>
+
+<meta itemprop="name" content="代码中的谎言">
+<meta itemprop="description" content="俗话说，一个谎言，要用一百个谎言去圆。
+
+在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。
+
+但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。
+
+今天我们就来以Nginx-RTMP这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。
+
+">
+
+
+<meta itemprop="datePublished" content="2016-07-04T15:17:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-07-04T15:17:00&#43;00:00" />
+<meta itemprop="wordCount" content="2721">
+
+
+
+<meta itemprop="keywords" content="nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="代码中的谎言"/>
+<meta name="twitter:description" content="俗话说，一个谎言，要用一百个谎言去圆。
+
+在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。
+
+但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。
+
+今天我们就来以Nginx-RTMP这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">代码中的谎言</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-07-04 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>俗话说，一个谎言，要用一百个谎言去圆。</p>
+
+<p>在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。</p>
+
+<p>但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。</p>
+
+<p>今天我们就来以<a href="https://github.com/arut/nginx-rtmp-module">Nginx-RTMP</a>这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。</p>
+
+<p></p>
+
+<p>在ngx_rtmp.c中，存在一个全局变量ngx_rtmp_init_queue，通过阅读它的相关使用场景，我们可以知道这是一个队列性质的全局变量，与ngx_posted_accept_events、ngx_posted_events这两个变量类似。它们的用法是，将一类事件通过调用ngx_post_event注册到与其对应的队列中，当然这个注册是可以发生在不同的时间和场景下，然后在将来某个时刻，通过调用ngx_event_process_posted来耗尽这个任务队列，即遍历该任务队列中的每个事件，并执行事件的handler回调函数。</p>
+
+<p>我们继续来看ngx_rtmp_init_queue这个事件队列的具体情况。</p>
+
+<p>(1) ngx_rtmp_init_queue的初始化</p>
+
+<p>ngx_rtmp_init_queue的初始化发生在ngx_rtmp_module模块的init_process中，通过调用ngx_rtmp_init_queue来完成。</p>
+
+<p>(2) ngx_rtmp_init_queue的事件注册</p>
+
+<p>在Nginx-RTMP中，只有两个地方往ngx_rtmp_init_queue中注册了事件，他们分别是ngx_rtmp_exec_module模块和ngx_rtmp_relay_module模块的init_process钩子。注册的事件具有相同的属性：希望在进程启动的时候就执行的事件。例如在ngx_rtmp_relay_module模块中，正常的pull回源处理逻辑，是当有播放器接入进来之后才会被触发。而配置了属性为static的pull，当worker进程刚启动时就会去上上层拉取指定的流，而不会等播放器播放行为来触发。ngx_rtmp_exec_module模块中的使用也是如此。</p>
+
+<p>(3) ngx_rtmp_init_queue的消耗</p>
+
+<p>上面第二点说明了在什么场景、什么时候，程序会往ngx_rtmp_init_queue这个全局队列中注册事件。我们接下来应该关心的是，这个事件队列中的事件，什么时候会得到执行。</p>
+
+<p>通过查阅代码，我们会发现在ngx_rtmp_stat_module模块的init_process钩子中，ngx_rtmp_init_queue队列中的事件会通过调用ngx_event_process_posted被耗尽。</p>
+
+<p>至此，从逻辑上来说，我们已经完全清楚了ngx_rtmp_init_queue这个全局变量存在的意义。</p>
+
+<p>但是这还不够，我们深入思考一下，就会有如下的疑问：</p>
+
+<p>(1) 为什么在RTMP模块中注册的事件，要在一个HTTP模块(ngx_rtmp_stat_module其实是一个HTTP模块)中执行?ngx_rtmp_stat_module模块的作用是统计流的信息，从逻辑上来说，我们可以选择不编译这个模块，而由于上述ngx_rtmp_init_queue的使用逻辑，却不能这样做，因为这些静态功能(static_pull, static_exec)在依赖它。即使模块之间有时候不能完全避免耦合，但RTMP里的功能却要依赖一个HTTP模块，这说不过去。</p>
+
+<p>(2) 我们知道任务队列的作用主要是延迟事件的执行。但是这里如此使用的意义在哪里？通过前面的分析，我们知道无论是往ngx_rtmp_init_queue中注册事件，还是消耗ngx_rtmp_init_queue里的事件，都是发生在相关模块的init_process钩子中。而当一个worker进程启动后，马上就会通过一个简单的for循环来遍历执行所有模块的init_process钩子，这显然并没有起到任何延时的意义。</p>
+
+<p>既然不应该让RTMP模块去依赖一个HTTP模块，也不用考虑事件的延迟执行，我们为什么不去掉ngx_rtmp_init_queue，改为直接在各涉事RTMP模块的init_process钩子中直接去执行自己对应的事件呢？这样程序逻辑更清楚且不会有额外的损失。</p>
+
+<p>答案是因为定时器。</p>
+
+<p>这些在init_process中注册到ngx_rtmp_init_queue中的事件，都需要用到定时器来检查这些事件是否执行正常，进而决定是否再次执行相应的逻辑。</p>
+
+<p>而在RTMP模块的init_process钩子中是不能使用定时器的，严格的说，是使用定时器不会达到定时器的效果。</p>
+
+<p>所以作者才会创造这么一个ngx_rtmp_init_queue，让本应在相关RTMP模块的init_process钩子中自顾自执行的逻辑，放到统计模块这个HTTP模块的init_process中一股脑执行，因为在HTTP模块的init_process钩子中，可以使用定时器。</p>
+
+<p>为什么？</p>
+
+<p>因为定时器的初始化是在ngx_event_core_module模块的init_process钩子中进行的，ngx_event_core_module是一个NGX_EVENT_MODULE类型的模块。而由于Nginx-RTMP项目config文件的写法，会导致所有RTMP类型的模块在全局模块数组ngx_modules中的位置，处于ngx_event_core_module模块的前面。从当前最新的config版本，我们能清楚的看到这一事实：<br />
+<a href="https://github.com/arut/nginx-rtmp-module/blob/e08959247dc840bb42cdf3389b1f5edb5686825f/config">config</a>。所以，ngx_event_core_module的init_process会在各RTMP模块的init_process之后执行，那么在RTMP模块的init_process钩子中添加的定时器，会在ngx_event_core_module的init_process中被毫不留情的初始化掉。</p>
+
+<p>错误其实在一开始就铸成，从一开始作者就在config文件中将RTMP模块放在了ngx_event_core_module模块之前。我们可以查看config文件的<a href="https://github.com/arut/nginx-rtmp-module/commit/eb6a14fb6cc9ece398b8b2b5aae5d91b694c32d3">第二次提交</a>来确认这一点。</p>
+
+<p>弄清楚了整个来龙去脉之后，我们当然就知道该如何去掉ngx_rtmp_init_queue，这也是应该的，既然问题都不存在了，为了解决这个问题的奇技淫巧当然也不应该存在。</p>
+
+<p>开源软件的魅力就在于此，你仿佛能穿越时空，通过代码与作者对话，感受他的聪明、狡黠与纠结。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2016-07-04</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2016/08/28/goto-qinghai-lake.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">青海湖骑行记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2016/06/11/a-rainy-afternoon.html">
+            <span class="next-text nav-default">雨中午后</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

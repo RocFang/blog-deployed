@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: http://pureage.info/sitemap.xml

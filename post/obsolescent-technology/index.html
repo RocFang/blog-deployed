@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>过时的技术 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="互联网技术的世界很奇怪。
+大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。
+但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。
+这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。
+举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。
+这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/post/obsolescent-technology/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="过时的技术" />
+<meta property="og:description" content="互联网技术的世界很奇怪。
+
+大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。
+
+但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。
+
+这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。
+
+举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。
+
+这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/post/obsolescent-technology/" /><meta property="article:published_time" content="2017-10-10T15:01:38&#43;00:00"/>
+<meta property="article:modified_time" content="2017-10-10T15:01:38&#43;00:00"/>
+
+<meta itemprop="name" content="过时的技术">
+<meta itemprop="description" content="互联网技术的世界很奇怪。
+
+大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。
+
+但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。
+
+这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。
+
+举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。
+
+这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。
+
+">
+
+
+<meta itemprop="datePublished" content="2017-10-10T15:01:38&#43;00:00" />
+<meta itemprop="dateModified" content="2017-10-10T15:01:38&#43;00:00" />
+<meta itemprop="wordCount" content="1374">
+
+
+
+<meta itemprop="keywords" content="程序员," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="过时的技术"/>
+<meta name="twitter:description" content="互联网技术的世界很奇怪。
+
+大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。
+
+但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。
+
+这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。
+
+举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。
+
+这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">过时的技术</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-10-10 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>互联网技术的世界很奇怪。</p>
+
+<p>大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。</p>
+
+<p>但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。</p>
+
+<p>这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。</p>
+
+<p>举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。</p>
+
+<p>这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。</p>
+
+<p></p>
+
+<p>在HTML5流行之前，web上的视频播放，是Adobe Flash的天下。这个时候，mp4点播服务的伪流化大概是这样的：Flash播放器会将一次拖拽操作，变成一个带着start、end参数的请求发给服务端，服务端根据传入的start、end参数和原始mp4文件的moov数据，生成一个新的mp4封装发给播放器。除了mp4，其他封装的视频格式比如flv，大概也是如此。</p>
+
+<p>互联网上的视频点播服务诞生了多久，这种技术就用了多久。掐指一算，十几年是有的了。</p>
+
+<p>根据上面的描述，可以看到，伪流化功能主要是在服务端实现的，比如Nginx的ngx_http_mp4_module模块。非官方的还有一个nginx_mod_h264_streaming模块，使用Nginx提供mp4服务的，八九不离十就是在这两个模块上面改。其他web server，比如lighttpd，也是类似。</p>
+
+<p>我们可以并且应该思考一下，这个功能如果放在播放器上来做会怎样呢？这个功能只需要客户端能拿到原始moov和根据计算之后的偏移量指定的数据即可。你一定想到了，http range不就是干这个的吗？</p>
+
+<p>事实却是如此，一些客户端播放器，比如VLC，正是这么实现拖拽的。</p>
+
+<p>但是在web上，就没这么简单了，因为这个领域事实上的标准是Adobe Flash Player。所以流行的web server不管愿意不愿意，都要去兼容Flash Player的行为，在服务端实现伪流化。</p>
+
+<p>随着html5开始流行，事情才开始不一样了。mp4的播放和伪流化，变成了一个浏览器内置的功能。不难想象，伪流化这一部分，仍是基于http range。这种场景下，服务器上的原始视频文件只要提供静态文件服务并且支持range请求就行了。</p>
+
+<p>多美好的事情。况且现在连flv都有flv.js这种在浏览器上不依赖Adobe Flash Player的开源方案了。</p>
+
+<p>但是如果恰好是一个CDN服务商，你会发现，在点播服务上等到html5普及，还不知道要等到猴年马月呢。</p>
+
+<p>可能你会问了，用Adobe Flash Player播放器的，就沿用以前的方案不就OK了吗，没什么好纠结的啊？问题在于其他领域的技术都在不断更新，而独这一块维持不变的话，就会引入一些额外的不必要的工作。</p>
+
+<p>比如说缓存服务。不管你用的是哪种cache server(squid、ats等)，要实现一遍cache中的mp4伪流化吧？</p>
+
+<p>而现在分片缓存流行了（譬如nginx的slice module)，又要让你的cache server中的mp4伪流化支持分片缓存的场景吧？</p>
+
+<p>我个人也是在一年多以前就实现了这个功能，当时nginx的slice分片模块还没出来多久。现在看来这个功能应该是CDN服务的标配了。</p>
+
+<p>但这确实是个必然要被淘汰的东西啊。想到这里，还真令人惆怅。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2017-10-10</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/post/howto-read-a-book/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">《如何阅读一本书》读书笔记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2017/05/29/shijin.html">
+            <span class="next-text nav-default">梁山一百单八将为何第一个出场的是他</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

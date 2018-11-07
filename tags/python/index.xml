@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on 纯真年代</title>
+    <link>http://pureage.info/tags/python/</link>
+    <description>Recent content in Python on 纯真年代</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>strider</copyright>
+    <lastBuildDate>Thu, 14 Nov 2013 11:20:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://pureage.info/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</title>
+      <link>http://pureage.info/2013/11/14/132.html</link>
+      <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
+      
+      <guid>http://pureage.info/2013/11/14/132.html</guid>
+      <description>&lt;p&gt;本文主要内容参考自：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&#34;&gt;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。&lt;/p&gt;
+
+&lt;p&gt;这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.&lt;/p&gt;
+
+&lt;p&gt;以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;[root@vps1 ~]# ls   -l /usr/bin/python&lt;br /&gt;
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>用git做本地备份 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。
+假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。
+进一步想一下，这里有两种做法：
+ 在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。
+ 在另外一个目录下新建一个裸仓库。执行git init &amp;ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。
+  
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/08/14/local-backup-using-git.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="用git做本地备份" />
+<meta property="og:description" content="得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。
+
+假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。
+
+进一步想一下，这里有两种做法：
+
+
+在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。
+
+在另外一个目录下新建一个裸仓库。执行git init &ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/08/14/local-backup-using-git.html" /><meta property="article:published_time" content="2014-08-14T01:48:16&#43;00:00"/>
+<meta property="article:modified_time" content="2014-08-14T01:48:16&#43;00:00"/>
+
+<meta itemprop="name" content="用git做本地备份">
+<meta itemprop="description" content="得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。
+
+假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。
+
+进一步想一下，这里有两种做法：
+
+
+在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。
+
+在另外一个目录下新建一个裸仓库。执行git init &ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。
+
+
+">
+
+
+<meta itemprop="datePublished" content="2014-08-14T01:48:16&#43;00:00" />
+<meta itemprop="dateModified" content="2014-08-14T01:48:16&#43;00:00" />
+<meta itemprop="wordCount" content="431">
+
+
+
+<meta itemprop="keywords" content="程序员," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="用git做本地备份"/>
+<meta name="twitter:description" content="得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。
+
+假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。
+
+进一步想一下，这里有两种做法：
+
+
+在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。
+
+在另外一个目录下新建一个裸仓库。执行git init &ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。
+
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">用git做本地备份</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-08-14 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。</p>
+
+<p>假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。</p>
+
+<p>进一步想一下，这里有两种做法：</p>
+
+<ol>
+<li><p>在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。</p></li>
+
+<li><p>在另外一个目录下新建一个裸仓库。执行git init &ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。</p></li>
+</ol>
+
+<p></p>
+
+<p>参考：</p>
+
+<ol>
+<li><a href="http://treeleafmedia.be/blog/2011/03/creating-a-new-git-repository-on-a-local-file-system/">http://treeleafmedia.be/blog/2011/03/creating-a-new-git-repository-on-a-local-file-system/</a><br /></li>
+</ol>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-08-14</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/08/19/start-runngin-again.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">重新开始跑步</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/07/30/two-kinds-of-variables-in-ngx-lua.html">
+            <span class="next-text nav-default">ngx.var.arg与ngx.req.get_uri_args的区别</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

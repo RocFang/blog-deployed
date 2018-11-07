@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="纯真年代" />
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/" />
+<link href="http://pureage.info/index.xml" rel="alternate" type="application/rss+xml" title="纯真年代" />
+  <link href="http://pureage.info/index.xml" rel="feed" type="application/rss+xml" title="纯真年代" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="纯真年代" />
+<meta property="og:description" content="纯真年代" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://pureage.info/" />
+<meta property="og:updated_time" content="2015-12-22T07:01:00&#43;00:00"/>
+
+<meta itemprop="name" content="纯真年代">
+<meta itemprop="description" content="纯真年代">
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="纯真年代"/>
+<meta name="twitter:description" content="纯真年代"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          
+  <section id="posts" class="posts">
+    
+    
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/22/thundering-herd.html">accept与epoll惊群</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-22 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。</p>
+
+<h2 id="1-什么叫惊群现象">1. 什么叫惊群现象</h2>
+
+<p>首先，我们看看<a href="http://en.wikipedia.org/wiki/Thundering_herd_problem">维基百科对惊群的定义</a>:</p>
+
+<blockquote>
+<p>The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.</p>
+
+<p>This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.</p>
+
+<p>This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).</p>
+</blockquote>
+
+<p>简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/22/thundering-herd.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/20/meet-an-old-friend.html">小聚，小感</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-20 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>大学室友涛从南京来深圳出差，今天特意抽空到我家来小聚了一下。从大学毕业，到现在已经有6年多没见了，大学四年同处一室的感情还是挺深的，尽管这么久没见面了，仍没有生疏感。朋友之间相处没有生疏感的表现就是，面对彼此都没有交流上的压力，我不用刻意找话题跟你聊天，你也不用刻意逢迎我的喜好，吃饭时我不用担心是否你酒没喝到，你也不用按照我的节奏来喝酒。有一茬没一茬的聊天，一杯半盏的喝酒，自由惬意。</p>
+
+<p>说起来大学毕业都六年了。六年后再见面，我们都已经成家，他还有了一个刚满一岁的女儿。似水流年，流年似水，平日里丝毫不觉得，只有在带有旧日痕迹的事物放到面前时，感慨才会如此强烈。但不可避免的事实是，我们都是生活中的人了。不可能彻夜长谈，不可能一直回味过去。离别才是常态，小聚只是片段。所谓生活中的人，就是对生活本身习以为常，面对相聚别离，不会有太多悲喜。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/20/meet-an-old-friend.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/18/lets-talk-about-running-again.html">跑步的意义</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-18 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>去年报名了清远马拉松半程赛之后，我写了一篇 Blog 记录了一下: <a href="http://pureage.info/2014/12/30/qingyuan-marathon.html">报名了清远马拉松</a>。时间差不多过去了整整一年，今天我再次报名参加清远马拉松。</p>
+
+<p>下面就说说，在即将过去的 2015 年里，关于跑步这件事儿上的一些片段和思考。</p>
+
+<p>2015 年，跑了两次马拉松，拿了两个纪念牌，说明我百马人生的目标已经完成了百分之二。其实这个目标是怎么来的我都不记得了，但似乎有了这个说法之后，跑步这件事情顿时被赋予了一层特别的意义一样。</p>
+
+<p>跑步的意义对我到底是什么，我思考了一段时间。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/18/lets-talk-about-running-again.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/16/still-using-typecho.html">继续留在Typecho</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-16 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>最近手心手背总时不时发痒，又开始想折腾博客玩了。</p>
+
+<p>这个小小的个人博客，从 2011 年开始，几乎把主流的 Blog 系统折腾了个遍，从最初的 Wordpress,到 Typecho, Emlog, Textpattern 等等。其中，Typecho 被来回折腾了几次，因为 Typecho 自身也经历了两个大的阶段：从几年没有维护，到开始重构并默认支持 Markdown 编辑器。</p>
+
+<p>每个阶段维护博客的心态也不一样。刚开始的时候，总到处想和人交换链接，把界面搞得好看点，各种插件都试一试。这个阶段确实还真认识了一些一起写博客的同学，大家经常互访互评，搞得还挺热闹。但是必须要知道的是，即使在 2011 年之前，个人博客也早已经开始没落了，这是大势所趋，曾经的那些博客，到现在也已经绝大多数打不开，还挺让人唏嘘的。</p>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/16/still-using-typecho.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/2015/12/10/nginx-slice-module.html">尝鲜：Nginx-1.9.8推出的切片模块</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2015-12-10 </span>
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：</p>
+
+<ul>
+<li>不支持多盘</li>
+<li>不支持裸设备<br /></li>
+<li>大文件不会切片<br /></li>
+<li>大文件的 Range 请求表现不尽如人意<br /></li>
+<li>Nginx 自身不支持合并回源
+<br />
+<br /></li>
+</ul>
+
+<p></p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/12/10/nginx-slice-module.html" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    
+  </section>
+  
+  <nav class="pagination">
+    
+      <a class="prev" href="/page/5/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    
+      <a class="next" href="/page/7/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+  </nav>
+
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

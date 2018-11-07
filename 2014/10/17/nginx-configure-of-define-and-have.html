@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Nginx如何控制某个特性是否打开 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？
+我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。
+Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.
+
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="Nginx如何控制某个特性是否打开" />
+<meta property="og:description" content="提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？
+
+我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。
+
+Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html" /><meta property="article:published_time" content="2014-10-17T09:31:00&#43;00:00"/>
+<meta property="article:modified_time" content="2014-10-17T09:31:00&#43;00:00"/>
+
+<meta itemprop="name" content="Nginx如何控制某个特性是否打开">
+<meta itemprop="description" content="提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？
+
+我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。
+
+Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.
+
+">
+
+
+<meta itemprop="datePublished" content="2014-10-17T09:31:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-10-17T09:31:00&#43;00:00" />
+<meta itemprop="wordCount" content="1882">
+
+
+
+<meta itemprop="keywords" content="nginx," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Nginx如何控制某个特性是否打开"/>
+<meta name="twitter:description" content="提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？
+
+我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。
+
+Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Nginx如何控制某个特性是否打开</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2014-10-17 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
+
+<p>我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。</p>
+
+<p>Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.</p>
+
+<p></p>
+
+<p>它们的内容极其简单，分别如下：
+1.auto/have:</p>
+
+<pre><code># Copyright (C) Igor Sysoev
+# Copyright (C) Nginx, Inc.  
+  
+  
+cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+  
+#ifndef $have  
+#define $have 1  
+#endif  
+  
+END  
+</code></pre>
+
+<p>2.auto/define</p>
+
+<pre><code># Copyright (C) Igor Sysoev  
+# Copyright (C) Nginx, Inc.  
+  
+  
+cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+  
+#ifndef $have  
+#define $have $value  
+#endif  
+  
+END  
+</code></pre>
+
+<p>可见，两个脚本只有一处不同，是将have变量定义成value变量还是将其定义为1，所以后面仅仅以have脚本为例进行说明。</p>
+
+<p>have脚本的用法：</p>
+
+<pre><code>have=XXXX  . auto/have  
+</code></pre>
+
+<p>就会在$NGX_AUTO_CONFIG_H所代表的文件里（默认为objs/ngx_auto_config.h)追加如下内容：</p>
+
+<pre><code>#ifndef XXXX  
+#define XXXX 1  
+#endif  
+</code></pre>
+
+<p>这样，就可以用XXXX宏是否定义来控制编译的过程。</p>
+
+<p>下面以ngx_memalign这个Nginx内部接口为例来进行详细的说明。<br />
+ngx_memalign是Nginx里最基本的接口之一，经常会被调用。从接口的名字就可以看出，这个接口是用来处理内存分配和对齐的。其定义在ngx_alloc.h中：</p>
+
+<pre><code>#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
+void *ngx_memalign(size_t alignment, size_t size, ngx_log_t *log); 
+#else 
+#define ngx_memalign(alignment, size, log) ngx_alloc(size, log) 
+#endif  
+</code></pre>
+
+<p>上面代码的意图是，如果定义了NGX_HAVE_POSIX_MEMALIGN宏或者NGX_HAVE_MEMALIGN宏，则声明函数ngx_memalign，否则，简单的对ngx_alloc进行一下封装（ngx_alloc是对malloc的简单封装）。</p>
+
+<p>我们在来看函数ngx_memalign在ngx_alloc.c中的定义：</p>
+
+<pre><code>#if (NGX_HAVE_POSIX_MEMALIGN)  
+  
+void *  
+ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)  
+{  
+    void *p;  
+    int err;  
+  
+    err = posix_memalign(&amp;p, alignment, size);  
+  
+    if (err) {  
+        ngx_log_error(NGX_LOG_EMERG, log, err,  
+                      &quot;posix_memalign(%uz, %uz) failed&quot;, alignment, size);  
+        p = NULL;  
+    }  
+  
+    ngx_log_debug3(NGX_LOG_DEBUG_ALLOC, log, 0,  
+                   &quot;posix_memalign: %p:%uz @%uz&quot;, p, size, alignment);  
+  
+    return p;  
+}  
+  
+#elif (NGX_HAVE_MEMALIGN)  
+  
+void *  
+ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)  
+{  
+    void *p;  
+  
+    p = memalign(alignment, size);  
+    if (p == NULL) {  
+        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,  
+                      &quot;memalign(%uz, %uz) failed&quot;, alignment, size);  
+    }  
+  
+    ngx_log_debug3(NGX_LOG_DEBUG_ALLOC, log, 0,  
+                   &quot;memalign: %p:%uz @%uz&quot;, p, size, alignment);  
+  
+    return p;  
+}  
+  
+#endif  
+</code></pre>
+
+<p>上面代码的意图为，如果定义了NGX_HAVE_POSIX_MEMALIGN，那么ngx_memalign就是对posix_memalign的简单封装，否则，如果定义了NGX_HAVE_MEMALIGN，则ngx_memalign是对memalign的简单封装。</p>
+
+<p>那么NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN又是什么时候被定义呢？</p>
+
+<p>过程如下：<br />
+在auto/unix脚本，列出需要检查的接口，这里就是memalign和posix_memalign了，交给auto/feature脚本来逐一处理，auto/feature脚本会对针对每一个带检查的接口，生成一个最基本的临时c源文件，该源文件会调用该接口。feature脚本然后对该源文件进行编译并判断最终生成的目标文件的可执行性。用这种动态检测的方法来判断该接口在当前系统中是否支持。</p>
+
+<p>如果feature脚本验证出posix_memalign和memalign接口在当前系统中都可用后，则会逐一调用have脚本：</p>
+
+<pre><code>have=$ngx_have_feature . auto/have  
+</code></pre>
+
+<p>这里，变量ngx_have_feature即是NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN。</p>
+
+<p>最终，have在configure、auto/unix、auto/feature、auto/have各个脚本的通力合作下，在objs/ngx_auto_config.h中就有了对NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN的定义，进而影响到ngx_memalign接口的实现。</p>
+
+<p>让我们从需求出发，将接口ngx_memalign的需求描述一遍：<br />
+1. 如果系统支持posix_memalign，则ngx_memalign是对posix_memalign的简单封装。<br />
+2. 如果系统不支持posix_memalign，但支持memalign，则ngx_memalign是对memalign的简单封装。<br />
+3. 如果系统竟然对posix_memalign和memalign都不支持，则ngx_memalign是对malloc的简单封装。</p>
+
+<p>实现需求很简单，但如何实现的优雅，则是另一回事。Nginx向我们展示了，一个在C上尽力把服务器性能做到极致的项目，是如何在脚本上也尽最大努力做得漂亮。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2014-10-17</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/11/11/running-report-1.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">跑步阶段性总结（一）</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2014/09/28/running-is-a-happy-sport.html">
+            <span class="next-text nav-default">跑步是一件快乐的事情</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

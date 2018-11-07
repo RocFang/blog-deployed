@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>“透明”与“非透明”之间的歧义 - 纯真年代</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="strider" />
+  <meta name="description" content="在准备答辩之余,翻了翻以前看过的书。发现了一些想起来会会心一笑的地方。
+比如，在《用TCP/IP进行网际互连》第一卷HTTP的那一章，对代理服务器有如下阐述：
+ 有两种形式的代理服务器存在：非透明的(nontransparent)和透明的（transparent)。正如它们的名字所暗示的，非透明服务器对用户来说是可见的，也就是说，用户必须配置浏览器来联络一个代理，而不是与原始资源所在的服务器联络。透明代理不需要对浏览器的配置进行任何改动。事实上，透明代理会检查所有通过代理的TCP连接，并拦截到达80端口的任何连接。无论是哪一种情况，代理都会将万维网页面进行缓存，然后从缓存中取出页面，以回答后来的请求。
+ 
+" />
+
+  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.50" />
+
+
+<link rel="canonical" href="http://pureage.info/2012/05/25/75.html" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
+
+
+
+
+<meta property="og:title" content="“透明”与“非透明”之间的歧义" />
+<meta property="og:description" content="在准备答辩之余,翻了翻以前看过的书。发现了一些想起来会会心一笑的地方。
+
+比如，在《用TCP/IP进行网际互连》第一卷HTTP的那一章，对代理服务器有如下阐述：
+
+
+有两种形式的代理服务器存在：非透明的(nontransparent)和透明的（transparent)。正如它们的名字所暗示的，非透明服务器对用户来说是可见的，也就是说，用户必须配置浏览器来联络一个代理，而不是与原始资源所在的服务器联络。透明代理不需要对浏览器的配置进行任何改动。事实上，透明代理会检查所有通过代理的TCP连接，并拦截到达80端口的任何连接。无论是哪一种情况，代理都会将万维网页面进行缓存，然后从缓存中取出页面，以回答后来的请求。
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/2012/05/25/75.html" /><meta property="article:published_time" content="2012-05-25T13:35:00&#43;00:00"/>
+<meta property="article:modified_time" content="2012-05-25T13:35:00&#43;00:00"/>
+
+<meta itemprop="name" content="“透明”与“非透明”之间的歧义">
+<meta itemprop="description" content="在准备答辩之余,翻了翻以前看过的书。发现了一些想起来会会心一笑的地方。
+
+比如，在《用TCP/IP进行网际互连》第一卷HTTP的那一章，对代理服务器有如下阐述：
+
+
+有两种形式的代理服务器存在：非透明的(nontransparent)和透明的（transparent)。正如它们的名字所暗示的，非透明服务器对用户来说是可见的，也就是说，用户必须配置浏览器来联络一个代理，而不是与原始资源所在的服务器联络。透明代理不需要对浏览器的配置进行任何改动。事实上，透明代理会检查所有通过代理的TCP连接，并拦截到达80端口的任何连接。无论是哪一种情况，代理都会将万维网页面进行缓存，然后从缓存中取出页面，以回答后来的请求。
+
+
+">
+
+
+<meta itemprop="datePublished" content="2012-05-25T13:35:00&#43;00:00" />
+<meta itemprop="dateModified" content="2012-05-25T13:35:00&#43;00:00" />
+<meta itemprop="wordCount" content="925">
+
+
+
+<meta itemprop="keywords" content="程序员," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="“透明”与“非透明”之间的歧义"/>
+<meta name="twitter:description" content="在准备答辩之余,翻了翻以前看过的书。发现了一些想起来会会心一笑的地方。
+
+比如，在《用TCP/IP进行网际互连》第一卷HTTP的那一章，对代理服务器有如下阐述：
+
+
+有两种形式的代理服务器存在：非透明的(nontransparent)和透明的（transparent)。正如它们的名字所暗示的，非透明服务器对用户来说是可见的，也就是说，用户必须配置浏览器来联络一个代理，而不是与原始资源所在的服务器联络。透明代理不需要对浏览器的配置进行任何改动。事实上，透明代理会检查所有通过代理的TCP连接，并拦截到达80端口的任何连接。无论是哪一种情况，代理都会将万维网页面进行缓存，然后从缓存中取出页面，以回答后来的请求。
+
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">纯真年代</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">“透明”与“非透明”之间的歧义</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2012-05-25 </span>
+        
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>在准备答辩之余,翻了翻以前看过的书。发现了一些想起来会会心一笑的地方。</p>
+
+<p>比如，在《用TCP/IP进行网际互连》第一卷HTTP的那一章，对代理服务器有如下阐述：</p>
+
+<blockquote>
+<p>有两种形式的代理服务器存在：非透明的(nontransparent)和透明的（transparent)。正如它们的名字所暗示的，非透明服务器对用户来说是可见的，也就是说，用户必须配置浏览器来联络一个代理，而不是与原始资源所在的服务器联络。透明代理不需要对浏览器的配置进行任何改动。事实上，透明代理会检查所有通过代理的TCP连接，并拦截到达80端口的任何连接。无论是哪一种情况，代理都会将万维网页面进行缓存，然后从缓存中取出页面，以回答后来的请求。</p>
+</blockquote>
+
+<p></p>
+
+<p>其实这段话本来很浅显易懂，本意就是说代理服务器作为浏览器和目标服务器的中介，根据用户是否可以察觉或者是否必须显式配置可以将其分为两类：透明的和非透明的。</p>
+
+<p>但当年读到这里时，总会觉得很别扭。总要停下来想想到底是“透明的”表示对用户可见还是“非透明的”表示对用户可见，以及为什么要这么命名。因为书中的“透明的”和我意识中的“透明的”意思刚好相反，在书中，“透明的”就好像是空气，所以用户看不见；而我看到“透明的”总会本能的想起一句“整个选举过程公开、透明&hellip;”，在这个语境里，“透明”的意思（注意，这里说的是本意，不涉及实际情况如何）刚好是整个选举过程是对人民可见的，所以潜意识里我就将“透明的”和“可见”绑定在一起了。进而导致每次无论我把HTTP看的多么顺畅，到“透明代理”这里总会卡一下，好奇为什么要把”对用户可见“说成是非透明的。忍俊不禁啊。</p>
+
+<p>其实两者都没错，关键是“可见”这个词是针对谁而言。”透明“或”不透明“一般是用来修饰一个介质的，如果我们把这个介质比作一个箱子的话，那么对选举而言，“可见”与否针对的是这个箱子里面的东西，如果是透明的，那么里面的东西自然就会被大家看到，如果箱子是不透明的，那么就是所谓的“黑箱操作”了；对代理服务器而言，“可见”与否针对的是这个箱子本身而不是箱子里面的东西（箱子里面的东西当然就是目标服务器了），如果是这个箱子是透明的，那么这个箱子对我们就是不可见的，如果它是非透明的，自然这个箱子就是可见的。</p>
+    </div>
+
+    
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2012-05-25</span>
+  </p>
+  
+  
+</div>
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2012/05/30/77.html">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">杀死这个爱尔兰人</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/2012/05/24/74.html">
+            <span class="next-text nav-default">The Monkey Trap：猴子陷阱</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  <a href="http://pureage.info/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2011 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">strider</span>
+  </span>
+</div>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
