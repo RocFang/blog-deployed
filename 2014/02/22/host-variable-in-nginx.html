@@ -16,28 +16,24 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
+<meta name="author" content="strider" /><meta name="description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
  $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
  直白的翻译一下:host变量的值按照如下优先级获得： 1. 请求行中的host.
 2. 请求头中的Host头部.
 3. 与一条请求匹配的server name.
 很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2014/02/22/host-variable-in-nginx.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -45,15 +41,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="关于nginx中的host变量" />
@@ -94,7 +83,7 @@ $host：in this order of precedence: host name from the request line, or host na
 
 <meta itemprop="datePublished" content="2014-02-21T19:51:00&#43;00:00" />
 <meta itemprop="dateModified" content="2014-02-21T19:51:00&#43;00:00" />
-<meta itemprop="wordCount" content="2527">
+<meta itemprop="wordCount" content="2553">
 
 
 
@@ -183,15 +172,8 @@ $host：in this order of precedence: host name from the request line, or host na
         <span class="post-time"> 2014-02-21 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -257,25 +239,57 @@ $host：in this order of precedence: host name from the request line, or host na
 <p>一个请求，请求行下面就是一些列的请求头。这些请求头，在HTTP/1.0中，都是可选的，且HTTP/1.0不支持Host请求头；而<strong>在HTTP/1.1中，Host请求头部必须存在</strong>。</p>
 
 <p>除了阅读RFC2616来确认这一点外，我们来看看Nginx中的代码：</p>
-
-<pre><code>ngx_int_t  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">ngx_int_t  
 ngx_http_process_request_header(ngx_http_request_t *r)  
 ...(略)...  
 if (r-&gt;headers_in.host == NULL &amp;&amp; r-&gt;http_version &gt; NGX_HTTP_VERSION_10) {  
         ngx_log_error(NGX_LOG_INFO, r-&gt;connection-&gt;log, 0,  
-                   &quot;client sent HTTP/1.1 request without \&quot;Host\&quot; header&quot;);  
+                   &#34;client sent HTTP/1.1 request without \&#34;Host\&#34; header&#34;);  
         ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);  
         return NGX_ERROR;  
-...(略)...  
-</code></pre>
-
+...(略)...  </pre></td></tr></table>
+</div>
+</div>
 <p>即，如果协议版本在HTTP/1.0之上，且请求头部没有Host的话，会直接返回一个Bad Request错误响应。</p>
 
 <h3 id="3-什么是与请求匹配的server-name">3.什么是与请求匹配的server name?</h3>
 
 <p>server name是指在Nginx配置文件中，在server块中，用server_name指令设置的值。一个server可以多次使用server_name指令，来实现俗称的“虚拟主机”。例如：</p>
-
-<pre><code>server {  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">server {  
     listen      80;  
     server_name example.org www.example.org;  
     ...  
@@ -291,9 +305,9 @@ server {
     listen      80;  
     server_name example.com www.example.com;  
     ...  
-}  
-</code></pre>
-
+}  </pre></td></tr></table>
+</div>
+</div>
 <p>关于虚拟主机的确定方法，还是引用Nginx的官方文档：</p>
 
 <blockquote>
@@ -362,7 +376,6 @@ Host: www.pureage.info</p>
 <p>可以搭建一台Nginx服务器，用telnet来验证上面的说法。此处略过，但这个操作很有必要。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -374,30 +387,18 @@ Host: www.pureage.info</p>
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
           <a href="/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2014/02/23/gift-not-sent-out.html">
+        <a class="prev" href="/2014/02/23/gift-not-sent-out.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">送礼要抓紧</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2014/01/27/176.html">
+        <a class="next" href="/2014/01/27/176.html">
             <span class="next-text nav-default">依赖一个RPM来制作新的RPM</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -407,9 +408,6 @@ Host: www.pureage.info</p>
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -433,8 +431,7 @@ Host: www.pureage.info</p>
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -442,8 +439,6 @@ Host: www.pureage.info</p>
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -451,12 +446,10 @@ Host: www.pureage.info</p>
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

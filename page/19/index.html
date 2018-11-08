@@ -16,22 +16,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="纯真年代" />
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+<meta name="author" content="strider" /><meta name="description" content="纯真年代" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/" />
-<link href="http://pureage.info/index.xml" rel="alternate" type="application/rss+xml" title="纯真年代" />
+  <link href="http://pureage.info/index.xml" rel="alternate" type="application/rss+xml" title="纯真年代" />
   <link href="http://pureage.info/index.xml" rel="feed" type="application/rss+xml" title="纯真年代" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,15 +36,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="纯真年代" />
@@ -121,17 +111,12 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          
-  <section id="posts" class="posts">
-    
-    
-    
-      <article class="post">
+          <section id="posts" class="posts">
+    <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2013/09/09/126.html">uniq、sort不得不注意的尾部空格（trailing whitespaces)</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2013-09-09 </span>
-      
       
     </div>
   </header>
@@ -141,8 +126,21 @@
       <h1 id="问题产生背景">问题产生背景</h1>
 
 <p>自己写的一个基于FastDFS的客户端软件的日志格式如下：</p>
-
-<pre><code>[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
 [2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
@@ -151,9 +149,9 @@
 [2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3  
 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
-[2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
-</code></pre>
-
+[2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  </pre></td></tr></table>
+</div>
+</div>
 <p></p>
     </div>
     <div class="read-more">
@@ -162,13 +160,11 @@
   </div>
 </article>
 
-    
-      <article class="post">
+    <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2013/09/02/125.html">nil、null与ngx.null</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2013-09-02 </span>
-      
       
     </div>
   </header>
@@ -191,13 +187,11 @@
   </div>
 </article>
 
-    
-      <article class="post">
+    <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2013/08/30/124.html">无题</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2013-08-29 </span>
-      
       
     </div>
   </header>
@@ -224,13 +218,11 @@
   </div>
 </article>
 
-    
-      <article class="post">
+    <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2013/08/23/123.html">怎样可以连续做一百个俯卧撑</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2013-08-23 </span>
-      
       
     </div>
   </header>
@@ -251,13 +243,11 @@
   </div>
 </article>
 
-    
-      <article class="post">
+    <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/2013/08/22/122.html">bash中while循环的一个大坑</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2013-08-22 </span>
-      
       
     </div>
   </header>
@@ -276,22 +266,18 @@
   </div>
 </article>
 
-    
-  </section>
+    </section>
   
   <nav class="pagination">
-    
-      <a class="prev" href="/page/18/">
+    <a class="prev" href="/page/18/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text">Prev</span>
       </a>
-    
-      <a class="next" href="/page/20/">
+    <a class="next" href="/page/20/">
         <span class="next-text">Next</span>
         <i class="iconfont icon-right"></i>
       </a>
   </nav>
-
         </div>
         
 
@@ -317,8 +303,7 @@
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -326,8 +311,6 @@
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -335,12 +318,10 @@
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

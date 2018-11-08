@@ -16,25 +16,21 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
+<meta name="author" content="strider" /><meta name="description" content="如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
 但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
 背景 A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2014/02/26/how-standard-is-broken.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -42,15 +38,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="从HTTP Range请求谈标准是如何被破坏的" />
@@ -81,7 +70,7 @@ A是中国目前最大的互联网公司之一，它的视频当然流量也很�
 
 <meta itemprop="datePublished" content="2014-02-25T16:14:00&#43;00:00" />
 <meta itemprop="dateModified" content="2014-02-25T16:14:00&#43;00:00" />
-<meta itemprop="wordCount" content="1649">
+<meta itemprop="wordCount" content="1773">
 
 
 
@@ -165,15 +154,8 @@ A是中国目前最大的互联网公司之一，它的视频当然流量也很�
         <span class="post-time"> 2014-02-25 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -188,10 +170,14 @@ A是中国目前最大的互联网公司之一，它的视频当然流量也很�
 <p></p>
 
 <p>最近，运维发现服务器上有很多416请求。416是Range错误的响应码，除去一些正常的416外，运维还发现有一类416请求的Range头是:</p>
-
-<pre><code>Range: byptes=XXXX-0
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">Range: byptes=XXXX-0</pre></td></tr></table>
+</div>
+</div>
 <p>XXXX是个非0的数。很明显，这是一个错误的Range请求，之所以会出现这样的Range，是因为对方的播放器bug导致。但A公司要求，把XXX-0按照xxx-来处理。</p>
 
 <p>我们知道，在HTTP协议中规定的是，一个Range头可以有如下形式（假设文件大小为1000个字节）：</p>
@@ -216,8 +202,117 @@ bytes=0-0,-1（第一个字节和最后一个字节）</p>
 <h3 id="实现">实现</h3>
 
 <p>以Nginx为例，我们来看看代码中是如何处理的。</p>
-
-<pre><code>static ngx_int_t  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">static ngx_int_t  
 ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,  
     ngx_uint_t ranges)  
 {  
@@ -235,26 +330,26 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
         end = 0;  
         suffix = 0;  
   
-        while (*p == ' ') { p++; }  
+        while (*p == &#39; &#39;) { p++; }  
   
-        if (*p != '-') {  
-            if (*p &lt; '0' || *p &gt; '9') {  
+        if (*p != &#39;-&#39;) {  
+            if (*p &lt; &#39;0&#39; || *p &gt; &#39;9&#39;) {  
                 return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
             }  
   
-            while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
-                start = start * 10 + *p++ - '0';  
+            while (*p &gt;= &#39;0&#39; &amp;&amp; *p &lt;= &#39;9&#39;) {  
+                start = start * 10 + *p++ - &#39;0&#39;;  
             }  
   
-            while (*p == ' ') { p++; }  
+            while (*p == &#39; &#39;) { p++; }  
   
-            if (*p++ != '-') {  
+            if (*p++ != &#39;-&#39;) {  
                 return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
             }  
   
-            while (*p == ' ') { p++; }  
+            while (*p == &#39; &#39;) { p++; }  
   
-            if (*p == ',' || *p == '\0') {  
+            if (*p == &#39;,&#39; || *p == &#39;\0&#39;) {  
                 end = content_length;  
                 goto found;  
             }  
@@ -264,17 +359,17 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
             p++;  
         }  
   
-        if (*p &lt; '0' || *p &gt; '9') {  
+        if (*p &lt; &#39;0&#39; || *p &gt; &#39;9&#39;) {  
             return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
         }  
   
-        while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
-            end = end * 10 + *p++ - '0';  
+        while (*p &gt;= &#39;0&#39; &amp;&amp; *p &lt;= &#39;9&#39;) {  
+            end = end * 10 + *p++ - &#39;0&#39;;  
         }  
   
-        while (*p == ' ') { p++; }  
+        while (*p == &#39; &#39;) { p++; }  
   
-        if (*p != ',' &amp;&amp; *p != '\0') {  
+        if (*p != &#39;,&#39; &amp;&amp; *p != &#39;\0&#39;) {  
             return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
         }  
   
@@ -308,7 +403,7 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
             }  
         }  
   
-        if (*p++ != ',') {  
+        if (*p++ != &#39;,&#39;) {  
             break;  
         }  
     }  
@@ -322,12 +417,32 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
     }  
   
     return NGX_OK;  
-}  
-</code></pre>
-
+}  </pre></td></tr></table>
+</div>
+</div>
 <p>其中，</p>
-
-<pre><code> found:  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"> found:  
   
         if (start &lt; end) {  
             range = ngx_array_push(&amp;ctx-&gt;ranges);  
@@ -343,9 +458,9 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
             if (ranges-- == 0) {  
                 return NGX_DECLINED;  
             }  
-        }  
-</code></pre>
-
+        }  </pre></td></tr></table>
+</div>
+</div>
 <p>表明，只有start&lt;end的，才会后续进行range处理。这里的start，是指bytes=a-b中的a，end指的是b+1。</p>
 
 <p>所以，在HTTP服务器的典型实现上，Range: bytes=500-0也是错误的请求。</p>
@@ -361,7 +476,6 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
 <p>更没人会记得，罪魁祸首是某个倒霉的播放器程序猿。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -373,28 +487,17 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2014/03/31/difference-of-rd-and-sales.html">
+        <a class="prev" href="/2014/03/31/difference-of-rd-and-sales.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">研发与销售的一些区别</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2014/02/23/gift-not-sent-out.html">
+        <a class="next" href="/2014/02/23/gift-not-sent-out.html">
             <span class="next-text nav-default">送礼要抓紧</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -404,9 +507,6 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -430,8 +530,7 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -439,8 +538,6 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -448,12 +545,10 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

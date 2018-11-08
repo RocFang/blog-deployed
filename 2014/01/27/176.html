@@ -16,26 +16,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。
+<meta name="author" content="strider" /><meta name="description" content="项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。
 在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。
 再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。
 最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2014/01/27/176.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -43,15 +39,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="依赖一个RPM来制作新的RPM" />
@@ -166,15 +155,8 @@
         <span class="post-time"> 2014-01-27 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -209,7 +191,6 @@
 <p>用这种方法，虽然需要维护一个脚本，但最少限度的动用A，又能完全自动的同步A软件包的更新，且生成的是一个B的独立rpm包。目前看来较好的满足的我的需求。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -221,28 +202,17 @@
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/shell/">shell</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2014/02/22/host-variable-in-nginx.html">
+        <a class="prev" href="/2014/02/22/host-variable-in-nginx.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">关于nginx中的host变量</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2014/01/22/youdaonotes-order.html">
+        <a class="next" href="/2014/01/22/youdaonotes-order.html">
             <span class="next-text nav-default">给有道云笔记的分类自定义排序</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -252,9 +222,6 @@
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -278,8 +245,7 @@
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -287,8 +253,6 @@
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -296,12 +260,10 @@
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

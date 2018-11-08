@@ -16,25 +16,21 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="问题概述 今天第一次在nginx&#43;lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，实现对保存在redis中的任务插入、删除、查询等。虽然nginx，lua等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。
+<meta name="author" content="strider" /><meta name="description" content="问题概述 今天第一次在nginx&#43;lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，实现对保存在redis中的任务插入、删除、查询等。虽然nginx，lua等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。
 在Redis中记录的任务其实很简单，每插入一个任务，就在redis中增加一个HASH结构，每次查询返回该SET的各个Field和对应的Value值，例如md5，filesize等。由于任务类型的不同，有的Field可能在该任务中不存在，此时在以json格式将查询结果返回时不应显示该Field。
 以md5域为例，在对当前任务以md5域执行hget后，应该对返回结果做一个判断，如果该HASH结构并没有设置md5这个域，则跳过，继续执行后面的逻辑，如果设置了md5域，则把该域的Value取出来，插入到结果table中，后续再作为json格式返回结果的一部分，返回给后台。
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2013/09/02/125.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -42,15 +38,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="nil、null与ngx.null" />
@@ -81,7 +70,7 @@
 
 <meta itemprop="datePublished" content="2013-09-02T14:06:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-09-02T14:06:00&#43;00:00" />
-<meta itemprop="wordCount" content="2374">
+<meta itemprop="wordCount" content="2389">
 
 
 
@@ -165,15 +154,8 @@
         <span class="post-time"> 2013-09-02 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -188,40 +170,66 @@
 <p></p>
 
 <p>测试时，却发现在某些域未设置时，查询结果中却仍然会把该域返回给查询调用者，但其Value部分是null。例如,执行下面的测试用例：</p>
-
-<pre><code>curl -d &quot;{\&quot;queryfile\&quot;:[{\&quot;url\&quot;:\&quot;/www.baidu.com/img/bdlogo.gif\&quot; }]}&quot; &quot;127.0.0.1/cjson&quot;  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">curl -d &#34;{\&#34;queryfile\&#34;:[{\&#34;url\&#34;:\&#34;/www.baidu.com/img/bdlogo.gif\&#34; }]}&#34; &#34;127.0.0.1/cjson&#34;  </pre></td></tr></table>
+</div>
+</div>
 <p>尽管对该任务而言，在插入时并没有设置md5域，但返回结果包含了md5域：</p>
-
-<pre><code>{&quot;result&quot;:[{&quot;url&quot;:&quot;\/www.baidu.com\/img\/bdlogo.gif&quot;,&quot;result&quot;:0,&quot;md5&quot;:null,&quot;putflag&quot;:&quot;remote&quot;}]}  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">{&#34;result&#34;:[{&#34;url&#34;:&#34;\/www.baidu.com\/img\/bdlogo.gif&#34;,&#34;result&#34;:0,&#34;md5&#34;:null,&#34;putflag&#34;:&#34;remote&#34;}]}  </pre></td></tr></table>
+</div>
+</div>
 <h1 id="问题分析">问题分析</h1>
 
 <p>看到这个现象，首先想到的当然是lua脚本中对执行hget md5操作的返回值判断失效了，我第一次是这么写的：</p>
-
-<pre><code>local md5,err=red:hget(tasklist,&quot;md5&quot;)  
-if md5 and  md5 ~= &quot;&quot;  then  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">local md5,err=red:hget(tasklist,&#34;md5&#34;)  
+if md5 and  md5 ~= &#34;&#34;  then  
     tb.md5=md5  
-end  
-</code></pre>
-
+end  </pre></td></tr></table>
+</div>
+</div>
 <p>从后面的结果看，当md5值为空时，该判断条件并没有将其过滤掉，依然执行了tb.md5=md5。由于redis模块也是调用春哥的lua-resty-redis，因此猜测是否春哥把redis查询结果中的空值用“null”字符串返回了，于是将上面的几行代码改为：</p>
-
-<pre><code>local md5,err=red:hget(tasklist,&quot;md5&quot;)  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">local md5,err=red:hget(tasklist,&#34;md5&#34;)  
 if md5 and  md5 ~= “null”  then  
     tb.md5=md5  
-end  
-</code></pre>
-
+end  </pre></td></tr></table>
+</div>
+</div>
 <p>仍然过滤失败，忽然眼前一亮，发现查询结果中显示的是&rdquo;md5&rdquo;:null,而非&rdquo;md5&rdquo;:&ldquo;null&rdquo;，上面这种猜测不攻自破。</p>
 
 <p>red:hget(tasklist,&ldquo;md5&rdquo;)肯定是返回了一个跟null相关的结果，但这个结果既不是nil，又不是空字符串，也不是&rdquo;null&rdquo;。再次猜测，该值类型可能不是string,虽然这个猜测看上去很奇怪，因为在设置了md5的情况下，其类型的确是string。于是在判断语句前面加了一句打印信息：</p>
-
-<pre><code>ngx.say(&quot;type of null is &quot;..type(md5))  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">ngx.say(&#34;type of null is &#34;..type(md5))  </pre></td></tr></table>
+</div>
+</div>
 <p>果然，这个”空值“并不是string类型，而是userdata类型，userdata类型当然跟字符串类型不会相等，所以上面的过滤条件不管设置成什么样子，都不会生效，永远会执行tb.md5=md5。</p>
 
 <p>这样是找到原因了，但还未最终解决。既然当hget操作返回一个空值时，lua-resty-redis将其设置为一个userdata类型，那我们在代码里该如何过滤这种情况呢?本质问题就是，red:hget当查询resdis结果为空时，到底返回了什么？（不为空时，是string)</p>
@@ -229,13 +237,20 @@ end
 <p>这时候开源的好处就体现出来了，在<a href="https://github.com/agentzh/lua-resty-redis里扫了下redis.lua文件，发现返回的是ngx.null。">https://github.com/agentzh/lua-resty-redis里扫了下redis.lua文件，发现返回的是ngx.null。</a></p>
 
 <p>恩，问题到这就解决了，将上面的过滤代码改为：</p>
-
-<pre><code>local md5,err=red:hget(tasklist,&quot;md5&quot;)  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">local md5,err=red:hget(tasklist,&#34;md5&#34;)  
 if md5 and md5 ~= null and md5 ~= ngx.null  then  
     tb.md5=md5  
-end  
-</code></pre>
-
+end  </pre></td></tr></table>
+</div>
+</div>
 <p>就能保证返回结果里不会包含值为null的域了。</p>
 
 <h1 id="眼高手低">眼高手低</h1>
@@ -271,7 +286,6 @@ A non-nil Redis &ldquo;bulk reply&rdquo; results in a Lua string as the return v
 但lua中，只要一个变量不是nil类型或者是boolean类型中的false,则对它进行逻辑判断，结果是真，即使该值是一个数字0，或者是一个空字符串。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -283,30 +297,18 @@ A non-nil Redis &ldquo;bulk reply&rdquo; results in a Lua string as the return v
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
           <a href="/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2013/09/09/126.html">
+        <a class="prev" href="/2013/09/09/126.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">uniq、sort不得不注意的尾部空格（trailing whitespaces)</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2013/08/30/124.html">
+        <a class="next" href="/2013/08/30/124.html">
             <span class="next-text nav-default">无题</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -316,9 +318,6 @@ A non-nil Redis &ldquo;bulk reply&rdquo; results in a Lua string as the return v
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -342,8 +341,7 @@ A non-nil Redis &ldquo;bulk reply&rdquo; results in a Lua string as the return v
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -351,8 +349,6 @@ A non-nil Redis &ldquo;bulk reply&rdquo; results in a Lua string as the return v
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -360,12 +356,10 @@ A non-nil Redis &ldquo;bulk reply&rdquo; results in a Lua string as the return v
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

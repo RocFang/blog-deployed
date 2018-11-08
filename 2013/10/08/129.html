@@ -16,22 +16,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：
-tmp_src_filename=fdfs_check_bits.c cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_filename #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;fcntl.h&amp;gt; int main() { printf(&amp;quot;%d\n&amp;quot;, (int)sizeof(long)); printf(&amp;quot;%d\n&amp;quot;, (int)sizeof(off_t)); return 0; } EOF gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename output=$(./a.out) " />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+<meta name="author" content="strider" /><meta name="description" content="假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  tmp_src_filename=fdfs_check_bits.c cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_filename #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;fcntl.h&amp;gt; int main() { printf(&amp;#34;%d\n&amp;#34;, (int)sizeof(long)); printf(&amp;#34;%d\n&amp;#34;, (int)sizeof(off_t)); return 0; } EOF gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename output=$(./a.out)   " /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2013/10/08/129.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,19 +35,30 @@ tmp_src_filename=fdfs_check_bits.c cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_fil
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="利用here document携带c代码" />
 <meta property="og:description" content="假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：
+
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+
 
 tmp_src_filename=fdfs_check_bits.c  
 cat &lt;&lt;EOF &gt; $tmp_src_filename  
@@ -60,14 +67,15 @@ cat &lt;&lt;EOF &gt; $tmp_src_filename
 #include &lt;fcntl.h&gt;  
 int main()  
 {  
-        printf(&quot;%d\n&quot;, (int)sizeof(long));  
-        printf(&quot;%d\n&quot;, (int)sizeof(off_t));  
+        printf(&#34;%d\n&#34;, (int)sizeof(long));  
+        printf(&#34;%d\n&#34;, (int)sizeof(off_t));  
         return 0;  
 }  
 EOF  
   
 gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
 output=$(./a.out)  
+
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://pureage.info/2013/10/08/129.html" /><meta property="article:published_time" content="2013-10-08T03:23:00&#43;00:00"/>
@@ -76,6 +84,24 @@ output=$(./a.out)
 <meta itemprop="name" content="利用here document携带c代码">
 <meta itemprop="description" content="假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：
 
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+
+
 tmp_src_filename=fdfs_check_bits.c  
 cat &lt;&lt;EOF &gt; $tmp_src_filename  
 #include &lt;stdio.h&gt;  
@@ -83,20 +109,21 @@ cat &lt;&lt;EOF &gt; $tmp_src_filename
 #include &lt;fcntl.h&gt;  
 int main()  
 {  
-        printf(&quot;%d\n&quot;, (int)sizeof(long));  
-        printf(&quot;%d\n&quot;, (int)sizeof(off_t));  
+        printf(&#34;%d\n&#34;, (int)sizeof(long));  
+        printf(&#34;%d\n&#34;, (int)sizeof(off_t));  
         return 0;  
 }  
 EOF  
   
 gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
 output=$(./a.out)  
+
 ">
 
 
 <meta itemprop="datePublished" content="2013-10-08T03:23:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-10-08T03:23:00&#43;00:00" />
-<meta itemprop="wordCount" content="131">
+<meta itemprop="wordCount" content="146">
 
 
 
@@ -105,6 +132,24 @@ output=$(./a.out)
 <meta name="twitter:title" content="利用here document携带c代码"/>
 <meta name="twitter:description" content="假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：
 
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+
+
 tmp_src_filename=fdfs_check_bits.c  
 cat &lt;&lt;EOF &gt; $tmp_src_filename  
 #include &lt;stdio.h&gt;  
@@ -112,14 +157,15 @@ cat &lt;&lt;EOF &gt; $tmp_src_filename
 #include &lt;fcntl.h&gt;  
 int main()  
 {  
-        printf(&quot;%d\n&quot;, (int)sizeof(long));  
-        printf(&quot;%d\n&quot;, (int)sizeof(off_t));  
+        printf(&#34;%d\n&#34;, (int)sizeof(long));  
+        printf(&#34;%d\n&#34;, (int)sizeof(off_t));  
         return 0;  
 }  
 EOF  
   
 gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
 output=$(./a.out)  
+
 "/>
 
 <!--[if lte IE 9]>
@@ -189,42 +235,52 @@ output=$(./a.out)
         <span class="post-time"> 2013-10-08 </span>
         
         
-        
       </div>
     </header>
 
     
-    
-
-    
-    
-
-    
     <div class="post-content">
       <p>假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：</p>
-
-<pre><code>tmp_src_filename=fdfs_check_bits.c  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">tmp_src_filename=fdfs_check_bits.c  
 cat &lt;&lt;EOF &gt; $tmp_src_filename  
 #include &lt;stdio.h&gt;  
 #include &lt;unistd.h&gt;  
 #include &lt;fcntl.h&gt;  
 int main()  
 {  
-        printf(&quot;%d\n&quot;, (int)sizeof(long));  
-        printf(&quot;%d\n&quot;, (int)sizeof(off_t));  
+        printf(&#34;%d\n&#34;, (int)sizeof(long));  
+        printf(&#34;%d\n&#34;, (int)sizeof(off_t));  
         return 0;  
 }  
 EOF  
   
 gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
-output=$(./a.out)  
-</code></pre>
-
+output=$(./a.out)  </pre></td></tr></table>
+</div>
+</div>
 <p>
 上面的代码摘自FastDFS的make.sh。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -236,30 +292,18 @@ output=$(./a.out)
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
           <a href="/tags/shell/">shell</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2013/10/31/130.html">
+        <a class="prev" href="/2013/10/31/130.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">关于proxy_pass的参数路径问题</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2013/10/01/128.html">
+        <a class="next" href="/2013/10/01/128.html">
             <span class="next-text nav-default">emlog的一键备份</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -269,9 +313,6 @@ output=$(./a.out)
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -295,8 +336,7 @@ output=$(./a.out)
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -304,8 +344,6 @@ output=$(./a.out)
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -313,12 +351,10 @@ output=$(./a.out)
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

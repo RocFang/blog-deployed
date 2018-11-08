@@ -16,28 +16,24 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="背景描述 近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。
+<meta name="author" content="strider" /><meta name="description" content="背景描述 近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。
 分工明确化 从始至终我们持有的一个观点就是，这个worker的功能要极度简化，就是去从tasklist中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个tasklist怎么来的，里面的任务是由谁来插入，worker一概不管。这样的话，有几个好处：
  worker的角色明确，目标清晰。直接的好处就是代码容易编写。
  设计思想比较通用
  tasklist的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的log中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。
   关于重试 worker从tasklist中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。关于这个异常处理，在这里多说两句，讲一个亲身经历的例子：
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2013/06/27/116.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -45,15 +41,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="好的设计真是一念之间吗？" />
@@ -198,15 +187,8 @@ worker从tasklist中领取到一个任务来后，就开始执行相关的操作
         <span class="post-time"> 2013-06-27 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -254,7 +236,6 @@ worker从tasklist中领取到一个任务来后，就开始执行相关的操作
 通过这个例子可以看到啊，好的设计之所以好，很可能是因为它简单明了。而如何要达到简单明了，则是功力所在了。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -266,28 +247,17 @@ worker从tasklist中领取到一个任务来后，就开始执行相关的操作
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2013/07/13/117.html">
+        <a class="prev" href="/2013/07/13/117.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">再不判断异常分支就剁手</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2013/05/24/115.html">
+        <a class="next" href="/2013/05/24/115.html">
             <span class="next-text nav-default">记一个here document的坑</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -297,9 +267,6 @@ worker从tasklist中领取到一个任务来后，就开始执行相关的操作
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -323,8 +290,7 @@ worker从tasklist中领取到一个任务来后，就开始执行相关的操作
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -332,8 +298,6 @@ worker从tasklist中领取到一个任务来后，就开始执行相关的操作
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -341,12 +305,10 @@ worker从tasklist中领取到一个任务来后，就开始执行相关的操作
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

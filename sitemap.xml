@@ -1179,6 +1179,19 @@
   </url>
   
   <url>
+    <loc>http://pureage.info/post/</loc>
+    <lastmod>2018-10-23T15:39:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://pureage.info/tags/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://pureage.info/tags/fastdfs/</loc>
     <lastmod>2013-12-05T15:33:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -1193,13 +1206,6 @@
   </url>
   
   <url>
-    <loc>http://pureage.info/post/</loc>
-    <lastmod>2018-10-23T15:39:41+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://pureage.info/tags/python/</loc>
     <lastmod>2013-11-14T11:20:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -1209,13 +1215,6 @@
   <url>
     <loc>http://pureage.info/tags/shell/</loc>
     <lastmod>2014-04-30T15:43:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://pureage.info/tags/</loc>
-    <lastmod>2013-12-05T15:33:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>

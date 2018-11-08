@@ -16,23 +16,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="对于Nginx踩坑记（一），在openresty的google group上提了个问题：ngx.exec是如何处理上层定义的变量的
+<meta name="author" content="strider" /><meta name="description" content="对于Nginx踩坑记（一），在openresty的google group上提了个问题：ngx.exec是如何处理上层定义的变量的
 春哥的回复摘录如下：
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -40,15 +36,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="春哥关于Nginx踩坑记（一）的回复" />
@@ -69,7 +58,7 @@
 
 <meta itemprop="datePublished" content="2014-04-30T02:42:00&#43;00:00" />
 <meta itemprop="dateModified" content="2014-04-30T02:42:00&#43;00:00" />
-<meta itemprop="wordCount" content="363">
+<meta itemprop="wordCount" content="364">
 
 
 
@@ -148,15 +137,8 @@
         <span class="post-time"> 2014-04-30 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -171,10 +153,14 @@ server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执�
 块中的“set $hello hello”并不会在跳转后重新运行一遍，因为 server-rewrite 阶段在跳转后被直接跳过。</p>
 
 <p>注意，rewrite 配置指令的特殊行为也可以通过下面这一行 ngx_lua 配置来复现：</p>
-
-<pre><code> rewrite_by_lua 'ngx.req.set_uri(&quot;/test2&quot;, true)'; 
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"> rewrite_by_lua &#39;ngx.req.set_uri(&#34;/test2&#34;, true)&#39;; </pre></td></tr></table>
+</div>
+</div>
 <p>而ngx.exec() 调用（以及其他接口，比如 echo_exec 配置指令）发起的内部跳转的标准行为是从  server-rewrite<br />
 阶段重新开始执行，所以你的“set $hello hello”会被重新执行一遍，从而改写掉 $hello  变量原先的取值（即&rdquo;bye&rdquo;）。</p>
 
@@ -182,7 +168,6 @@ server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执�
 </blockquote>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -194,28 +179,17 @@ server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执�
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2014/04/30/noreplace-in-rpm-spec-file.html">
+        <a class="prev" href="/2014/04/30/noreplace-in-rpm-spec-file.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">RPM中的%config和%config(noreplace)</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2014/04/26/pitfall-of-nginx.html">
+        <a class="next" href="/2014/04/26/pitfall-of-nginx.html">
             <span class="next-text nav-default">Nginx踩坑记（一）</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -225,9 +199,6 @@ server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执�
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -251,8 +222,7 @@ server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执�
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -260,8 +230,6 @@ server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执�
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -269,12 +237,10 @@ server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执�
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

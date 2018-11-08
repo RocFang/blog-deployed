@@ -16,26 +16,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
+<meta name="author" content="strider" /><meta name="description" content="什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
 lorotate的切割方式 以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。
 当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。
 当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2013/09/10/127.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -43,15 +39,8 @@ lorotate的切割方式 以nginx为例，假设其错误日志放在/data/proclo
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="漫谈logrotate与crond" />
@@ -90,7 +79,7 @@ lorotate的切割方式
 
 <meta itemprop="datePublished" content="2013-09-10T15:11:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-09-10T15:11:00&#43;00:00" />
-<meta itemprop="wordCount" content="2497">
+<meta itemprop="wordCount" content="2577">
 
 
 
@@ -178,15 +167,8 @@ lorotate的切割方式
         <span class="post-time"> 2013-09-10 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -211,53 +193,96 @@ lorotate的切割方式
 <h1 id="logrotate与crond">logrotate与crond</h1>
 
 <p>logrotate默认会放在cron.daily目录下，每天自动运行。 执行：</p>
-
-<pre><code>vim /etc/cron.daily/logrotate  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">vim /etc/cron.daily/logrotate  </pre></td></tr></table>
+</div>
+</div>
 <p>看到该文件内容如下：</p>
-
-<pre><code>#!/bin/sh  
-  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"><span class="cp">#!/bin/sh  
+</span><span class="cp"></span>  
 /usr/sbin/logrotate /etc/logrotate.conf  
-EXITVALUE=$?  
-if [ $EXITVALUE != 0 ]; then  
-    /usr/bin/logger -t logrotate &quot;ALERT exited abnormally with [$EXITVALUE]&quot;  
-fi  
-</code></pre>
-
+<span class="nv">EXITVALUE</span><span class="o">=</span><span class="nv">$?</span>  
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$EXITVALUE</span> !<span class="o">=</span> <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+    /usr/bin/logger -t logrotate <span class="s2">&#34;ALERT exited abnormally with [</span><span class="nv">$EXITVALUE</span><span class="s2">]&#34;</span>  
+<span class="k">fi</span>  </pre></td></tr></table>
+</div>
+</div>
 <p>上面的shell脚本主要是执行/usr/sbin/logrotate程序，并检查执行状态，如果执行出错，则通过logger程序向系统日志中发送一条错误消息。</p>
 
 <p>注意，现在说道的logrotate有两个，一个是shell脚本，位于/etc/cron.daily下，一个是可执行文件，位于/usr/sbin目录下。</p>
 
 <p>继续看上面的logrotate脚本，其中错误处理语句中，logger程序是怎么运行的呢？我们可以做个小测试。 执行：</p>
-
-<pre><code>/usr/bin/logger -t strider &quot;Good Morning&quot;  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">/usr/bin/logger -t strider &#34;Good Morning&#34;  </pre></td></tr></table>
+</div>
+</div>
 <p>屏幕没有任何打印信息，但我们可以查看/var/log/message:</p>
-
-<pre><code>tail /var/log/messages  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">tail /var/log/messages  </pre></td></tr></table>
+</div>
+</div>
 <p>观察最后一条信息：</p>
-
-<pre><code>Sep 10 06:53:55 localhost strider: Good Morning  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">Sep 10 06:53:55 localhost strider: Good Morning  </pre></td></tr></table>
+</div>
+</div>
 <p>可见logrotate脚本的错误信息通过通过logger程序送到系统日志中去了。</p>
 
 <h1 id="etc-cron-daily-etc-crontab">/etc/cron.daily、/etc/crontab</h1>
 
 <p>上面我们说到，logrotate脚本放在/etc/cron.daily目录下，所以它会每天定期执行一次。为什么放在cron.daily目录下就会有此效果呢？而且，到底是在每天的什么时候执行呢？<br />
 linux下的定时任务是由系统服务crond来管理的。crond的配置文件是/etc/crontab,可以打开观察一下：</p>
-
-<pre><code>vim /etc/crontab  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">vim /etc/crontab  </pre></td></tr></table>
+</div>
+</div>
 <p>会看到如下内容：</p>
-
-<pre><code>SHELL=/bin/bash  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">SHELL=/bin/bash  
 PATH=/sbin:/bin:/usr/sbin:/usr/bin  
 MAILTO=root  
 HOME=/  
@@ -266,90 +291,159 @@ HOME=/
 01 * * * * root run-parts /etc/cron.hourly  
 02 4 * * * root run-parts /etc/cron.daily  
 22 4 * * 0 root run-parts /etc/cron.weekly  
-42 4 1 * * root run-parts /etc/cron.monthly  
-</code></pre>
-
+42 4 1 * * root run-parts /etc/cron.monthly  </pre></td></tr></table>
+</div>
+</div>
 <p>其中，SHELL字段、PATH字段等内容不用多说，重点看下下面的字段。如果你用crontab -e指令来写过crontab定时任务的话，一定会觉得跟crontab中的格式一模一样。其实这是错觉，/etc/crontab的配置中，每一行都多了一个root，表示以什么用户来执行，而crontab -e配置中，则没有这一个用户名字段。</p>
 
 <p>虽然有这一点区别，其他地方意义还是一样的，例如：</p>
-
-<pre><code>02 4 * * * root run-parts /etc/cron.daily  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">02 4 * * * root run-parts /etc/cron.daily  </pre></td></tr></table>
+</div>
+</div>
 <p>就表明，每天凌晨的4:02时刻，以root身份执行run-parts /etc/cron.daily命令。我们大概也能猜出来了，run-parts的作用就是执行后面目录下的所有脚本，所以放在cron.daily目录下的脚本，会每天被执行一次。cron.hourly、cron.weekly、cron.monthly等也是如此。</p>
 
 <h1 id="run-parts">run-parts</h1>
 
 <p>那么run-parts到底是怎么做的呢？我们可以确定一下，执行：</p>
-
-<pre><code>whereis run-parts  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">whereis run-parts  </pre></td></tr></table>
+</div>
+</div>
 <p>输出：</p>
-
-<pre><code>run-parts: /usr/bin/run-parts  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">run-parts: /usr/bin/run-parts  </pre></td></tr></table>
+</div>
+</div>
 <p>查看run-parts类型，执行：</p>
-
-<pre><code>file /usr/bin/run-parts  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">file /usr/bin/run-parts  </pre></td></tr></table>
+</div>
+</div>
 <p>输出：</p>
-
-<pre><code>/usr/bin/run-parts: Bourne-Again shell script text executable  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">/usr/bin/run-parts: Bourne-Again shell script text executable  </pre></td></tr></table>
+</div>
+</div>
 <p>可见run-parts是一个bash脚本，其内容及注释如下：</p>
-
-<pre><code>#!/bin/bash  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"><span class="cp">#!/bin/bash  
+</span><span class="cp"></span>  
+<span class="c1"># run-parts - concept taken from Debian  
+</span><span class="c1"></span>  
+<span class="c1"># keep going when something fails  
+</span><span class="c1">#当shell中某些命令或子shell执行错误时，该脚本让然能够执行下去。  
+</span><span class="c1"></span><span class="nb">set</span> +e  
   
-# run-parts - concept taken from Debian  
+<span class="c1">#如果参数小于1，则打印用法信息，并退出  
+</span><span class="c1"></span><span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -lt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+        <span class="nb">echo</span> <span class="s2">&#34;Usage: run-parts &lt;dir&gt;&#34;</span>  
+        <span class="nb">exit</span> <span class="m">1</span>  
+<span class="k">fi</span>  
   
-# keep going when something fails  
-#当shell中某些命令或子shell执行错误时，该脚本让然能够执行下去。  
-set +e  
+<span class="c1">#如果所带参数不是一个目录，则报错，并退出  
+</span><span class="c1"></span><span class="k">if</span> <span class="o">[</span> ! -d <span class="nv">$1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+        <span class="nb">echo</span> <span class="s2">&#34;Not a directory: </span><span class="nv">$1</span><span class="s2">&#34;</span>  
+        <span class="nb">exit</span> <span class="m">1</span>  
+<span class="k">fi</span>  
   
-#如果参数小于1，则打印用法信息，并退出  
-if [ $# -lt 1 ]; then  
-        echo &quot;Usage: run-parts &lt;dir&gt;&quot;  
-        exit 1  
-fi  
+<span class="c1"># Ignore *~ and *, scripts  
+</span><span class="c1">#忽略该目录下，文件名中带有~和,的脚本  
+</span><span class="c1"></span><span class="k">for</span> i in <span class="nv">$1</span>/*<span class="o">[</span>^~,<span class="o">]</span> <span class="p">;</span> <span class="k">do</span>  
+        <span class="c1">#忽略子目录  
+</span><span class="c1"></span>        <span class="o">[</span> -d <span class="nv">$i</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
   
-#如果所带参数不是一个目录，则报错，并退出  
-if [ ! -d $1 ]; then  
-        echo &quot;Not a directory: $1&quot;  
-        exit 1  
-fi  
+        <span class="c1">#忽略rpmsave、rpmorig、rpmnew、swp、v格式的文件  
+</span><span class="c1"></span>        <span class="c1"># Don&#39;t run *.{rpmsave,rpmorig,rpmnew,swp} scripts  
+</span><span class="c1"></span>        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.rpmsave</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.rpmorig</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.rpmnew</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.swp</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%,v</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
   
-# Ignore *~ and *, scripts  
-#忽略该目录下，文件名中带有~和,的脚本  
-for i in $1/*[^~,] ; do  
-        #忽略子目录  
-        [ -d $i ] &amp;&amp; continue  
+        <span class="c1">#如果该文件可执行，则执行之  
+</span><span class="c1"></span>        <span class="k">if</span> <span class="o">[</span> -x <span class="nv">$i</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+                <span class="nv">$i</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> awk -v <span class="s2">&#34;progname=</span><span class="nv">$i</span><span class="s2">&#34;</span> <span class="se">\ </span> 
+                              <span class="s1">&#39;progname {  
+</span><span class="s1">                                   print progname &#34;:\n&#34;  
+</span><span class="s1">                                   progname=&#34;&#34;;  
+</span><span class="s1">                               }  
+</span><span class="s1">                               { print; }&#39;</span>  
+        <span class="k">fi</span>  
+<span class="k">done</span>  
   
-        #忽略rpmsave、rpmorig、rpmnew、swp、v格式的文件  
-        # Don't run *.{rpmsave,rpmorig,rpmnew,swp} scripts  
-        [ &quot;${i%.rpmsave}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%.rpmorig}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%.rpmnew}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%.swp}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%,v}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-  
-        #如果该文件可执行，则执行之  
-        if [ -x $i ]; then  
-                $i 2&gt;&amp;1 | awk -v &quot;progname=$i&quot; \  
-                              'progname {  
-                                   print progname &quot;:\n&quot;  
-                                   progname=&quot;&quot;;  
-                               }  
-                               { print; }'  
-        fi  
-done  
-  
-exit 0  
-</code></pre>
-
+<span class="nb">exit</span> <span class="m">0</span>  </pre></td></tr></table>
+</div>
+</div>
 <h1 id="etc-crontab和crontab-e">/etc/crontab和crontab -e</h1>
 
 <p>与前面所说的logrotate一样，也有两个都叫crontab的文件，一个是/etc/crontab，是crond的配置文件，另一个是一个程序，是用户与crond交互的外部接口。</p>
@@ -357,32 +451,50 @@ exit 0
 <p>一面已经提到,/etc/crontab与 crontab的配置格式是不一样的，例如：</p>
 
 <p>/etc/crontab中：</p>
-
-<pre><code>...(略）  
-02 4 * * * root run-parts /etc/cron.daily  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">...(略）  
+02 4 * * * root run-parts /etc/cron.daily  </pre></td></tr></table>
+</div>
+</div>
 <p>与程序crontab对比一下，执行crontab -u root -l，可得到：</p>
-
-<pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
-* * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
+* * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh </pre></td></tr></table>
+</div>
+</div>
 <p>可见，通过crontab程序设置crond时，是不需要添加用户的。原因很简单，crontab必须在执行时指定用户名（如果不指定，则默认为当前登录的用户），执行crontab -u username -e设置完规则后，这些规则会保存在/var/spool/cron/username文件中,每个用户的crontab配置都会保存在属于该用户的文件中。例如：</p>
-
-<pre><code>vim /var/spool/cron/root  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">vim /var/spool/cron/root  </pre></td></tr></table>
+</div>
+</div>
 <p>输出：</p>
-
-<pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
-* * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
+* * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh </pre></td></tr></table>
+</div>
+</div>
 <p>与cront -u root -l回显一致。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -394,30 +506,18 @@ exit 0
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
           <a href="/tags/shell/">shell</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2013/10/01/128.html">
+        <a class="prev" href="/2013/10/01/128.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">emlog的一键备份</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2013/09/09/126.html">
+        <a class="next" href="/2013/09/09/126.html">
             <span class="next-text nav-default">uniq、sort不得不注意的尾部空格（trailing whitespaces)</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -427,9 +527,6 @@ exit 0
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -453,8 +550,7 @@ exit 0
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -462,8 +558,6 @@ exit 0
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -471,12 +565,10 @@ exit 0
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

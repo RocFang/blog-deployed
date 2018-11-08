@@ -16,24 +16,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="1.here document here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
-ftp -n $HOST &amp;lt;&amp;lt;EOF quote USER $USER quote PASS $PASS binary put $FileName quit EOF  2.踩到的坑 在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。
+<meta name="author" content="strider" /><meta name="description" content="1.here document here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
+1 2 3 4 5 6 7  ftp -n $HOST &amp;lt;&amp;lt;EOF quote USER $USER quote PASS $PASS binary put $FileName quit EOF    2.踩到的坑 在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2013/05/24/115.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -41,21 +37,24 @@ ftp -n $HOST &amp;lt;&amp;lt;EOF quote USER $USER quote PASS $PASS binary put $F
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="记一个here document的坑" />
 <meta property="og:description" content="1.here document
 
 here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
+
+
+1
+2
+3
+4
+5
+6
+7
+
 
 ftp -n $HOST &lt;&lt;EOF
 quote USER $USER  
@@ -80,6 +79,16 @@ EOF
 
 here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
 
+
+1
+2
+3
+4
+5
+6
+7
+
+
 ftp -n $HOST &lt;&lt;EOF
 quote USER $USER  
 quote PASS $PASS  
@@ -98,7 +107,7 @@ EOF
 
 <meta itemprop="datePublished" content="2013-05-23T16:49:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-05-23T16:49:00&#43;00:00" />
-<meta itemprop="wordCount" content="1281">
+<meta itemprop="wordCount" content="1292">
 
 
 
@@ -108,6 +117,16 @@ EOF
 <meta name="twitter:description" content="1.here document
 
 here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：
+
+
+1
+2
+3
+4
+5
+6
+7
+
 
 ftp -n $HOST &lt;&lt;EOF
 quote USER $USER  
@@ -191,31 +210,34 @@ EOF
         <span class="post-time"> 2013-05-23 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
       <h1 id="1-here-document">1.here document</h1>
 
 <p>here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：</p>
-
-<pre><code>ftp -n $HOST &lt;&lt;EOF
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">ftp -n $HOST &lt;&lt;EOF
 quote USER $USER  
 quote PASS $PASS  
 binary  
 put $FileName  
 quit  
-EOF  
-</code></pre>
-
+EOF  </pre></td></tr></table>
+</div>
+</div>
 <h1 id="2-踩到的坑">2.踩到的坑</h1>
 
 <p>在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。</p>
@@ -227,13 +249,20 @@ EOF
 <p>我需要从C程序中获取的是一个固定格式的字符串，通过在C程序中将该字符串printf出来，在shell中采用a=$(program)的形式即可获取这个字符串输出。</p>
 
 <p>（2）获取这个字符串后，用here document方式，操作redis</p>
-
-<pre><code>redis-cli -h $host_ip -p $host_port&lt;&lt;EOF  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">redis-cli -h $host_ip -p $host_port&lt;&lt;EOF  
 set A $a  
 quit  
-EOF  
-</code></pre>
-
+EOF  </pre></td></tr></table>
+</div>
+</div>
 <p>这个C程序和这个shell脚本运行一段时间都没出问题，直到有一天，我发现了这个C程序的bug，动手修改，在调试过程中加了一些打印语句，例如printf(&ldquo;XXXX&rdquo;);修改后，与脚本联合调试。发现对redis操作不成功。操作redis的here document代码块，整体返回值$?都是等于0的，无法判断其正确与否。单独调试了下C程序，也没发现问题。那么问题在哪里呢？</p>
 
 <p>其实上面两步都有问题：</p>
@@ -247,7 +276,6 @@ EOF
 <p>发现这个问题是由于改了代码后，突然发现对redis的设置不成功了。进而一步步分析，才体会到这两个操作都后患无穷啊！</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -259,30 +287,18 @@ EOF
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
           <a href="/tags/shell/">shell</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2013/06/27/116.html">
+        <a class="prev" href="/2013/06/27/116.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">好的设计真是一念之间吗？</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2013/05/06/114.html">
+        <a class="next" href="/2013/05/06/114.html">
             <span class="next-text nav-default">一张居住证的诞生</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -292,9 +308,6 @@ EOF
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -318,8 +331,7 @@ EOF
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -327,8 +339,6 @@ EOF
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -336,12 +346,10 @@ EOF
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

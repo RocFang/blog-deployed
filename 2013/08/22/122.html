@@ -16,24 +16,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&amp;lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。
+<meta name="author" content="strider" /><meta name="description" content="起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&amp;lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。
 如果就这么过去了，多没意思，我觉得有必要深究一下while的运行机制。
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2013/08/22/122.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -41,15 +37,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="bash中while循环的一个大坑" />
@@ -72,7 +61,7 @@
 
 <meta itemprop="datePublished" content="2013-08-22T03:06:00&#43;00:00" />
 <meta itemprop="dateModified" content="2013-08-22T03:06:00&#43;00:00" />
-<meta itemprop="wordCount" content="913">
+<meta itemprop="wordCount" content="941">
 
 
 
@@ -152,15 +141,8 @@
         <span class="post-time"> 2013-08-22 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -171,17 +153,28 @@
 <p></p>
 
 <p>假设while_test.sh脚本内容如下：</p>
-
-<pre><code>#!/bin/bash  
-  
-let sum=0
-while((sum&lt;10))  
-do  
-echo $sum  
-let sum++  
-done  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"><span class="cp">#!/bin/bash  
+</span><span class="cp"></span>  
+<span class="nb">let</span> <span class="nv">sum</span><span class="o">=</span><span class="m">0</span>
+<span class="k">while</span><span class="o">((</span>sum&lt;<span class="m">10</span><span class="o">))</span>  
+<span class="k">do</span>  
+<span class="nb">echo</span> <span class="nv">$sum</span>  
+<span class="nb">let</span> sum++  
+<span class="k">done</span>  </pre></td></tr></table>
+</div>
+</div>
 <p>运行后，很正常，在屏幕上打印：<br />
 0<br />
 1<br />
@@ -195,18 +188,30 @@ done
 9</p>
 
 <p>下面对脚本进行下修改，在while和do之间加上一个echo语句：</p>
-
-<pre><code>#!/bin/bash  
-  
-let sum=0  
-while((sum&lt;10))  
-echo &quot;nima&quot;  
-do  
-echo $sum  
-let sum++  
-done  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"><span class="cp">#!/bin/bash  
+</span><span class="cp"></span>  
+<span class="nb">let</span> <span class="nv">sum</span><span class="o">=</span><span class="m">0</span>  
+<span class="k">while</span><span class="o">((</span>sum&lt;<span class="m">10</span><span class="o">))</span>  
+<span class="nb">echo</span> <span class="s2">&#34;nima&#34;</span>  
+<span class="k">do</span>  
+<span class="nb">echo</span> <span class="nv">$sum</span>  
+<span class="nb">let</span> sum++  
+<span class="k">done</span>  </pre></td></tr></table>
+</div>
+</div>
 <p>运行之，死循环如约而至，屏幕上翻滚着：</p>
 
 <p>&hellip;..(略）&hellip;&hellip;<br />
@@ -235,20 +240,34 @@ nima<br />
 <p>到这里，答案已经浮出水面了，问题不在bash，而在于受C语言的影响，我们习惯性的认为while应该把sum&lt;10作为循环进行的条件。但bash里,碰到while后，它会把while到do之间的所有语句的执行结果作为循环进行的条件，而所谓“所有语句的执行结果”，就是这所有语句中，最后一个语句的执行结果。如果这最后一个语句执行成功，则继续执行do到done之间的内容，循环继续；如果执行失败，则退出循环。按照shell的惯例，执行成功与否，可以根据返回码来判断，返回码为0，则成功，非0则失败。</p>
 
 <p>验证一下，将脚本改为如下：</p>
-
-<pre><code>#!/bin/bash  
-  
-let sum=0  
-while((sum&lt;5))  
-echo &quot;nima&quot;  
-echo &quot;niba&quot;  
-[ $sum -le 10 ]  
-do  
-echo $sum  
-let sum++  
-done  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"><span class="cp">#!/bin/bash  
+</span><span class="cp"></span>  
+<span class="nb">let</span> <span class="nv">sum</span><span class="o">=</span><span class="m">0</span>  
+<span class="k">while</span><span class="o">((</span>sum&lt;<span class="m">5</span><span class="o">))</span>  
+<span class="nb">echo</span> <span class="s2">&#34;nima&#34;</span>  
+<span class="nb">echo</span> <span class="s2">&#34;niba&#34;</span>  
+<span class="o">[</span> <span class="nv">$sum</span> -le <span class="m">10</span> <span class="o">]</span>  
+<span class="k">do</span>  
+<span class="nb">echo</span> <span class="nv">$sum</span>  
+<span class="nb">let</span> sum++  
+<span class="k">done</span>  </pre></td></tr></table>
+</div>
+</div>
 <p>执行之，在屏幕上打印：</p>
 
 <p>nima<br />
@@ -290,7 +309,6 @@ niba</p>
 <p>当在循环中，sum增加到10后，再次执行while后面的语句，打印nima和niba，但执行[ $sum -le 10 ]时，返回码为非0.所以循环退出。而((sum&lt;5))，完全是个摆设。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -302,30 +320,18 @@ niba</p>
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          
           <a href="/tags/shell/">shell</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2013/08/23/123.html">
+        <a class="prev" href="/2013/08/23/123.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">怎样可以连续做一百个俯卧撑</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2013/08/13/121.html">
+        <a class="next" href="/2013/08/13/121.html">
             <span class="next-text nav-default">久旱逢甘雨----读《国家》有感</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -335,9 +341,6 @@ niba</p>
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -361,8 +364,7 @@ niba</p>
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -370,8 +372,6 @@ niba</p>
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -379,12 +379,10 @@ niba</p>
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 

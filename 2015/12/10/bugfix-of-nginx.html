@@ -16,8 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="strider" />
-  <meta name="description" content="有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。
+<meta name="author" content="strider" /><meta name="description" content="有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。
 例如，Nginx 刚在12月8号发布了nginx-1.9.8, 马上就在nginx-1.9.9,这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。
 首先，看看changelog:
  Changes with nginx 1.9.9 09 Dec 2015
@@ -25,20 +24,17 @@
 variables; the bug had appeared in 1.9.8.
  再来看看是如何修复的，变更前的代码片段:
 
-" />
-
-  <meta name="keywords" content="Hugo, linux, 程序员, 文学, 生活" />
+" /><meta name="keywords" content="程序员, 文学, 生活" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.50" />
+<meta name="generator" content="Hugo 0.50 with even 4.0.0" />
 
 
 <link rel="canonical" href="http://pureage.info/2015/12/10/bugfix-of-nginx.html" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -46,15 +42,8 @@ variables; the bug had appeared in 1.9.8.
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 
-
-
-
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
-<link href="/lib/fancybox/jquery.fancybox-3.1.20.min.css" rel="stylesheet">
-
-
+<link href="/dist/even.93844dae.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
 <meta property="og:title" content="Nginx紧急发布1.9.9修复bug" />
@@ -99,7 +88,7 @@ Changes with nginx 1.9.9                                         09 Dec 2015
 
 <meta itemprop="datePublished" content="2015-12-10T03:27:00&#43;00:00" />
 <meta itemprop="dateModified" content="2015-12-10T03:27:00&#43;00:00" />
-<meta itemprop="wordCount" content="401">
+<meta itemprop="wordCount" content="429">
 
 
 
@@ -190,15 +179,8 @@ Changes with nginx 1.9.9                                         09 Dec 2015
         <span class="post-time"> 2015-12-10 </span>
         
         
-        
       </div>
     </header>
-
-    
-    
-
-    
-    
 
     
     <div class="post-content">
@@ -218,25 +200,59 @@ Changes with nginx 1.9.9                                         09 Dec 2015
 <p>再来看看是如何修复的，变更前的代码片段:</p>
 
 <p></p>
-
-<pre><code>static void  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">static void  
 ngx_http_upstream_init_request(ngx_http_request_t *r)  
 {  
     ....(略）....  
     if (u-&gt;resolved-&gt;port == 0) {  
         ngx_log_error(NGX_LOG_ERR, r-&gt;connection-&gt;log, 0,  
-                      &quot;no port in upstream \&quot;%V\&quot;&quot;, host);  
+                      &#34;no port in upstream \&#34;%V\&#34;&#34;, host);  
         ngx_http_upstream_finalize_request(r, u,  
                                        NGX_HTTP_INTERNAL_SERVER_ERROR);  
         return;  
     }  
     ....(略)....  
-}  
-</code></pre>
-
+}  </pre></td></tr></table>
+</div>
+</div>
 <p>变更后的代码片段：</p>
-
-<pre><code>static void  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">static void  
 ngx_http_upstream_init_request(ngx_http_request_t *r)  
 {  
     ....(略)....  
@@ -244,21 +260,20 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
                 &amp;&amp; u-&gt;resolved-&gt;sockaddr-&gt;sa_family != AF_UNIX)  
             {  
                 ngx_log_error(NGX_LOG_ERR, r-&gt;connection-&gt;log, 0,  
-                              &quot;no port in upstream \&quot;%V\&quot;&quot;, host);  
+                              &#34;no port in upstream \&#34;%V\&#34;&#34;, host);  
                 ngx_http_upstream_finalize_request(r, u,  
                                                NGX_HTTP_INTERNAL_SERVER_ERROR);  
                 return;  
             }  
     ....(略)....  
-}  
-</code></pre>
-
+}  </pre></td></tr></table>
+</div>
+</div>
 <p>作为旁观者和事后诸葛亮，可以很明显看出之前的问题所在：在 upstream 中，Unix 本地域套接字不能用了。</p>
 
 <p>这次版本更新，除了修正这个 Bug 外，没有做其他任何事情，所以，如果你已经尝鲜在用 1.9.8 了，赶紧直接升级到1.9.9 吧。</p>
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -270,28 +285,17 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
   </p>
   
   
-</div>
-
-    
-    
-
-    <footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/2015/12/10/nginx-slice-module.html">
+        <a class="prev" href="/2015/12/10/nginx-slice-module.html">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">尝鲜：Nginx-1.9.8推出的切片模块</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/2015/12/08/connection-header-in-nginx.html">
+        <a class="next" href="/2015/12/08/connection-header-in-nginx.html">
             <span class="next-text nav-default">Nginx对Connection头的处理过程</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -301,9 +305,6 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -327,8 +328,7 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
 
   <span class="copyright-year">
     &copy; 
-    
-      2011 - 
+    2011 - 
     2018
     <span class="heart">
       <i class="iconfont icon-heart"></i>
@@ -336,8 +336,6 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
     <span class="author">strider</span>
   </span>
 </div>
-<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_3726195'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s13.cnzz.com/stat.php%3Fid%3D3726195%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
-
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -345,12 +343,10 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script><script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-  <script type="text/javascript" src="/lib/fancybox/jquery.fancybox-3.1.20.min.js"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.ece58db6.min.js"></script>
 
 
 
