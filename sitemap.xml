@@ -2,14 +2,14 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	
 	<sitemap>
-	   	<loc>http://pureage.info/zh-cn/sitemap.xml</loc>
-		
-	   	<lastmod>2019-03-18T14:49:45+08:00</lastmod>
+	   	<loc>http://pureage.info/en/sitemap.xml</loc>
 		
 	</sitemap>
 	
 	<sitemap>
-	   	<loc>http://pureage.info/en/sitemap.xml</loc>
+	   	<loc>http://pureage.info/zh-cn/sitemap.xml</loc>
+		
+	   	<lastmod>2019-03-18T14:49:45+08:00</lastmod>
 		
 	</sitemap>
 	

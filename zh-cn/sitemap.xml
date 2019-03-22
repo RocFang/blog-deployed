@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<?xml-stylesheet type="text/xsl" href="http://pureage.info/sitemap.xsl"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
     <loc>http://pureage.info/post/annoying-golang-import/</loc>
@@ -1217,6 +1217,16 @@
     <loc>http://pureage.info/categories/</loc>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://pureage.info/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="http://pureage.info/categories/"
+                />
   </url>
   
   <url>
@@ -1266,6 +1276,16 @@
     <lastmod>2013-12-05T15:33:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://pureage.info/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="http://pureage.info/tags/"
+                />
   </url>
   
   <url>
@@ -1357,6 +1377,16 @@
     <lastmod>2019-03-18T14:49:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://pureage.info/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="http://pureage.info/"
+                />
   </url>
   
   <url>
