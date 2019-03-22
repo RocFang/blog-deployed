@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Golang中令人不那么愉悦的import - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="众所周知，在github上参与开源项目的一般流程如下：
+ 将开源项目fork到自己的名下。 在本地开发环境中clone自己在上一步中fork的项目。 本地完成开发测试和代码提交，再push到自己名下的仓库中。 从自己名下的这个项目中，对原始项目发起一个pull request。 发起的pull request被上游merge后，自己的代码就进入开源项目中了。  虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.51" />
+
+
+<link rel="canonical" href="http://pureage.info/post/annoying-golang-import/" />
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.c8c1ff75dee09b44060a6c38f41b9036bac2512ccdb22d7f296cec12dc786375.css" integrity="sha256-yMH/dd7gm0QGCmw49BuQNrrCUSzNsi1/KWzsEtx4Y3U=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="Golang中令人不那么愉悦的import" />
+<meta property="og:description" content="众所周知，在github上参与开源项目的一般流程如下：
+
+
+将开源项目fork到自己的名下。
+在本地开发环境中clone自己在上一步中fork的项目。
+本地完成开发测试和代码提交，再push到自己名下的仓库中。
+从自己名下的这个项目中，对原始项目发起一个pull request。
+发起的pull request被上游merge后，自己的代码就进入开源项目中了。
+
+
+虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://pureage.info/post/annoying-golang-import/" /><meta property="article:published_time" content="2019-03-18T14:49:45&#43;08:00"/>
+<meta property="article:modified_time" content="2019-03-18T14:49:45&#43;08:00"/>
+
+<meta itemprop="name" content="Golang中令人不那么愉悦的import">
+<meta itemprop="description" content="众所周知，在github上参与开源项目的一般流程如下：
+
+
+将开源项目fork到自己的名下。
+在本地开发环境中clone自己在上一步中fork的项目。
+本地完成开发测试和代码提交，再push到自己名下的仓库中。
+从自己名下的这个项目中，对原始项目发起一个pull request。
+发起的pull request被上游merge后，自己的代码就进入开源项目中了。
+
+
+虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。">
+
+
+<meta itemprop="datePublished" content="2019-03-18T14:49:45&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-18T14:49:45&#43;08:00" />
+<meta itemprop="wordCount" content="1294">
+
+
+
+<meta itemprop="keywords" content="程序员,golang," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang中令人不那么愉悦的import"/>
+<meta name="twitter:description" content="众所周知，在github上参与开源项目的一般流程如下：
+
+
+将开源项目fork到自己的名下。
+在本地开发环境中clone自己在上一步中fork的项目。
+本地完成开发测试和代码提交，再push到自己名下的仓库中。
+从自己名下的这个项目中，对原始项目发起一个pull request。
+发起的pull request被上游merge后，自己的代码就进入开源项目中了。
+
+
+虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="http://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Golang中令人不那么愉悦的import</h1>
+      
+      <div class="post-meta">
+        <time datetime="2019-03-18" class="post-time">
+          2019-03-18
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>众所周知，在github上参与开源项目的一般流程如下：</p>
+
+<ol>
+<li>将开源项目fork到自己的名下。</li>
+<li>在本地开发环境中clone自己在上一步中fork的项目。</li>
+<li>本地完成开发测试和代码提交，再push到自己名下的仓库中。</li>
+<li>从自己名下的这个项目中，对原始项目发起一个pull request。</li>
+<li>发起的pull request被上游merge后，自己的代码就进入开源项目中了。</li>
+</ol>
+
+<p>虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。</p>
+
+<p>但是在参与Golang的开源项目中，由于gopath的限制，这个流程就会有问题。举个例子，有一个项目为github.com/userA/project，fork之后，有一个新的仓库，路径为github.com/userB/project。而这个project中大概率会有内部package引用，比如在main.go中，import了github.com/userA/project/moduleA，这样在go get自己的仓库时，仍然会引用到原始的仓库路径。将会导致诸如构建失败等一些问题。</p>
+
+<p>为什么基于c/c++的开源项目就没有这个问题呢，因为c/c++的构建更原始更简单。include只有两种形式，要么是在标准路径中或项目子目录中去查找，要么在非标准路径下，但能通过编译器的选项来告诉编译器去哪里找，而代码本身则是非常干净的，不会有硬编码的特定路径在源码里面。而Golang的import，是一个完整的url，这样可以让go get之类的工具自动化的进行一些操作。</p>
+
+<p>上面可以解释Golang项目在引用外部包的时候使用完整url的做法，但是在引用项目内部包时，仍然使用完整url的做法就多少让人觉得有点不能理解。如果import能支持相对路径，就不会有前面提到的问题了。Golang的开发者们当然对这个问题有自己的考虑，参考这个issue：<a href="https://github.com/golang/go/issues/3515">https://github.com/golang/go/issues/3515</a> 。</p>
+
+<p>不能简单的说Golang的这种构建方式不对，因为它的出现必然是有自己的优点和解决了一些问题的，所以从实用的角度出发，我们只能将其称之为“特点”，并去适应它。</p>
+
+<p>解决办法有几个，但都看上去有些丑陋。比如：</p>
+
+<p>在本地开发的时候，使用的路径仍然是原始项目的路径，将自己名下的仓库作为一个remote upstream，push的时候将修改push到自己名下的仓库中，然后再向原始仓库提交pull request。</p>
+
+<p>对于一般的开源项目，这种“临时”的方法就够用了。但在下面的几个场景种，这种方法显然会很令人不适：</p>
+
+<ol>
+<li>原始项目已经不维护了，你想自己长期维护一个fork。</li>
+<li>原始项目仍然在积极维护，但是你仍然想自己长期维护一个fork。</li>
+</ol>
+
+<p>在上述情况下，其实我们是把原始项目和自己的fork当作两个相对独立的项目，我们希望在构建的时候能直接go build就行了，不希望有其他额外的操作。如果有第三个人，他想fork我们这个fork并进行并列开发，按上面的方法将会非常麻烦。</p>
+
+<p>对于这种情况，我选择将项目内所有源码中的import路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。</p>
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">2019-03-18</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="http://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          <a href="http://pureage.info/tags/golang/">golang</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/free-solo/">
+            <span class="next-text nav-default">徒手攀岩</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  
+    
+
+
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+  
+
+
+<a href="http://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+  
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2019
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -5,14 +5,14 @@
     <link>http://pureage.info/tags/</link>
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>strider</copyright>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 05 Dec 2013 15:33:00 +0000</lastBuildDate>
     
 	<atom:link href="http://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>fastdfs</title>
+      <title>Fastdfs</title>
       <link>http://pureage.info/tags/fastdfs/</link>
       <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
       
@@ -21,7 +21,16 @@
     </item>
     
     <item>
-      <title>nginx</title>
+      <title>Golang</title>
+      <link>http://pureage.info/tags/golang/</link>
+      <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
+      
+      <guid>http://pureage.info/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nginx</title>
       <link>http://pureage.info/tags/nginx/</link>
       <pubDate>Mon, 04 Jul 2016 15:17:00 +0000</pubDate>
       
@@ -30,7 +39,7 @@
     </item>
     
     <item>
-      <title>python</title>
+      <title>Python</title>
       <link>http://pureage.info/tags/python/</link>
       <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
       
@@ -39,7 +48,7 @@
     </item>
     
     <item>
-      <title>shell</title>
+      <title>Shell</title>
       <link>http://pureage.info/tags/shell/</link>
       <pubDate>Wed, 30 Apr 2014 15:43:00 +0000</pubDate>
       
@@ -59,7 +68,7 @@
     <item>
       <title>博客</title>
       <link>http://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</link>
-      <pubDate>Wed, 16 Dec 2015 14:54:00 +0000</pubDate>
+      <pubDate>Wed, 21 Nov 2018 01:09:59 +0800</pubDate>
       
       <guid>http://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</guid>
       <description></description>
@@ -86,7 +95,7 @@
     <item>
       <title>思考</title>
       <link>http://pureage.info/tags/%E6%80%9D%E8%80%83/</link>
-      <pubDate>Sun, 03 Jan 2016 13:55:00 +0000</pubDate>
+      <pubDate>Wed, 02 Jan 2019 14:24:49 +0800</pubDate>
       
       <guid>http://pureage.info/tags/%E6%80%9D%E8%80%83/</guid>
       <description></description>
@@ -140,7 +149,7 @@
     <item>
       <title>电影</title>
       <link>http://pureage.info/tags/%E7%94%B5%E5%BD%B1/</link>
-      <pubDate>Sun, 24 Jan 2016 14:43:00 +0000</pubDate>
+      <pubDate>Tue, 12 Mar 2019 14:09:22 +0800</pubDate>
       
       <guid>http://pureage.info/tags/%E7%94%B5%E5%BD%B1/</guid>
       <description></description>
@@ -149,7 +158,7 @@
     <item>
       <title>程序员</title>
       <link>http://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</link>
-      <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
+      <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
       <guid>http://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</guid>
       <description></description>
@@ -179,33 +188,6 @@
       <pubDate>Sat, 20 Oct 2018 00:13:41 +0800</pubDate>
       
       <guid>http://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>负能量</title>
-      <link>http://pureage.info/tags/%E8%B4%9F%E8%83%BD%E9%87%8F/</link>
-      <pubDate>Mon, 06 May 2013 08:06:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/tags/%E8%B4%9F%E8%83%BD%E9%87%8F/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>运动</title>
-      <link>http://pureage.info/tags/%E8%BF%90%E5%8A%A8/</link>
-      <pubDate>Fri, 22 Jan 2016 13:58:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/tags/%E8%BF%90%E5%8A%A8/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>音乐</title>
-      <link>http://pureage.info/tags/%E9%9F%B3%E4%B9%90/</link>
-      <pubDate>Tue, 21 Aug 2012 12:30:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/tags/%E9%9F%B3%E4%B9%90/</guid>
       <description></description>
     </item>
     

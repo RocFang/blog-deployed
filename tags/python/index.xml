@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>python on 纯真年代</title>
+    <title>Python on 纯真年代</title>
     <link>http://pureage.info/tags/python/</link>
-    <description>Recent content in python on 纯真年代</description>
+    <description>Recent content in Python on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>strider</copyright>
+    <language>zh-cn</language>
     <lastBuildDate>Thu, 14 Nov 2013 11:20:00 +0000</lastBuildDate>
     
 	<atom:link href="http://pureage.info/tags/python/index.xml" rel="self" type="application/rss+xml" />
@@ -33,9 +32,7 @@
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
 [root@vps1 ~]# ls   -l /usr/bin/python2.6
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/blockquote&gt;</description>
     </item>
     
   </channel>

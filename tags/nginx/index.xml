@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>nginx on 纯真年代</title>
+    <title>Nginx on 纯真年代</title>
     <link>http://pureage.info/tags/nginx/</link>
-    <description>Recent content in nginx on 纯真年代</description>
+    <description>Recent content in Nginx on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>strider</copyright>
+    <language>zh-cn</language>
     <lastBuildDate>Mon, 04 Jul 2016 15:17:00 +0000</lastBuildDate>
     
 	<atom:link href="http://pureage.info/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
@@ -24,9 +23,7 @@
 
 &lt;p&gt;但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。&lt;/p&gt;
 
-&lt;p&gt;今天我们就来以&lt;a href=&#34;https://github.com/arut/nginx-rtmp-module&#34;&gt;Nginx-RTMP&lt;/a&gt;这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;今天我们就来以&lt;a href=&#34;https://github.com/arut/nginx-rtmp-module&#34;&gt;Nginx-RTMP&lt;/a&gt;这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -54,9 +51,7 @@
 &lt;p&gt;*) Bugfix: in the ngx_http_v2_module.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;从使用的角度上来说，是增加了一个指令 &lt;a href=&#34;http://nginx.org/en/docs/ngx_core_module.html#load_module&#34;&gt;load_modules&lt;/a&gt; 指令，来加载编译为 so 形式的动态模块。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;从使用的角度上来说，是增加了一个指令 &lt;a href=&#34;http://nginx.org/en/docs/ngx_core_module.html#load_module&#34;&gt;load_modules&lt;/a&gt; 指令，来加载编译为 so 形式的动态模块。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -69,9 +64,7 @@
 
 &lt;p&gt;他打算用 ngx.header 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 *_by_lua 脚本中写入ngx.header[&amp;ldquo;Accept-Ranges&amp;rdquo;] = &amp;ldquo;xxx&amp;rdquo;。在 OpenResty 中，这是一种经常被使用到的方法。&lt;/p&gt;
 
-&lt;p&gt;他发现的问题是，当他这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值，即 &amp;ldquo;bytes&amp;rdquo;.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;他发现的问题是，当他这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值，即 &amp;ldquo;bytes&amp;rdquo;.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -90,9 +83,7 @@
 &lt;li&gt;利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯&lt;br /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -115,9 +106,7 @@
 &lt;p&gt;This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -136,9 +125,7 @@
 &lt;li&gt;Nginx 自身不支持合并回源
 &lt;br /&gt;
 &lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -160,9 +147,7 @@
        variables; the bug had appeared in 1.9.8.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;再来看看是如何修复的，变更前的代码片段:&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;再来看看是如何修复的，变更前的代码片段:&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -185,9 +170,7 @@
 
 &lt;p&gt;其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。&lt;/p&gt;
 
-&lt;p&gt;第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -202,9 +185,7 @@
 
 &lt;p&gt;Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。&lt;/p&gt;
 
-&lt;p&gt;Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -219,9 +200,7 @@
 在应用中，我们发现当nginx 的proxy_cache成功将后端的页面cache住时,浏览器多次对该页面发起请求，会命中nginx的cache,但即使浏览器请求带了If-None-Match请求头，nginx却不会响应304，而是响应200.&lt;br /&gt;
 这样带来的问题是，即使nginx的cache将请求阻挡在后端应用之外，但是:&lt;br /&gt;
 （1）命中后每次响应200导致我们nginx所在的服务器和客户浏览器双方都有流量损耗&lt;br /&gt;
-（2）更重要的是增长了我们的服务响应时间。因为，如果是304的话，nginx不需要向浏览器吐数据，只用告诉浏览器用本地的缓存就好了。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+（2）更重要的是增长了我们的服务响应时间。因为，如果是304的话，nginx不需要向浏览器吐数据，只用告诉浏览器用本地的缓存就好了。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -249,9 +228,7 @@
 
 &lt;p&gt;Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。&lt;/p&gt;
 
-&lt;p&gt;我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -267,9 +244,7 @@
 《深入理解Linux内核架构》&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -282,9 +257,7 @@
 
 &lt;p&gt;我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。&lt;/p&gt;
 
-&lt;p&gt;Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -299,9 +272,7 @@
 
 &lt;p&gt;比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。&lt;/p&gt;
 
-&lt;p&gt;上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -311,14 +282,10 @@
       
       <guid>http://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</guid>
       <description>&lt;p&gt;ngx.var.arg_xx与ngx.req.get_uri_args[&amp;ldquo;xx&amp;rdquo;]两者都是为了获取请求uri中的参数，例如&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;http://pureage.info?strider=1  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
+
+&lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1  
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;为了获取输入参数strider，以下两种方法都可以：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -328,17 +295,11 @@
 &lt;/ol&gt;
 
 &lt;p&gt;差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&amp;ldquo;xx&amp;rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;时，ngx.var.arg_strider的值为&amp;rdquo;1&amp;rdquo;,而ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]的值为table [&amp;ldquo;1&amp;rdquo;, &amp;ldquo;2&amp;rdquo;, &amp;ldquo;3&amp;rdquo;, &amp;ldquo;4&amp;rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4  
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;时，ngx.var.arg_strider的值为&amp;rdquo;1&amp;rdquo;,而ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]的值为table [&amp;ldquo;1&amp;rdquo;, &amp;ldquo;2&amp;rdquo;, &amp;ldquo;3&amp;rdquo;, &amp;ldquo;4&amp;rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -349,8 +310,7 @@
       <guid>http://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</guid>
       <description>&lt;p&gt;对于&lt;a href=&#34;http://pureage.info/2014/04/26/pitfall-of-nginx.html&#34;&gt;Nginx踩坑记（一）&lt;/a&gt;，在openresty的google group上提了个问题：&lt;a href=&#34;https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ&#34;&gt;ngx.exec是如何处理上层定义的变量的&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;春哥的回复&lt;strong&gt;摘录&lt;/strong&gt;如下：&lt;br /&gt;
-&lt;/p&gt;</description>
+&lt;p&gt;春哥的回复&lt;strong&gt;摘录&lt;/strong&gt;如下：&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -366,20 +326,8 @@
 &lt;p&gt;配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。&lt;/p&gt;
 
 &lt;p&gt;例如，如果有如下的配置：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;location /test1 {  
+
+&lt;pre&gt;&lt;code&gt;location /test1 {  
         set $hello hello;  
         rewrite /test1 /test2 last;
 
@@ -387,12 +335,10 @@
   
 location /test2 {  
         echo $hello;  
-}  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。&lt;/p&gt;
+}  
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -412,9 +358,7 @@ location /test2 {
 2. 请求头中的Host头部.&lt;br /&gt;
 3. 与一条请求匹配的server name.&lt;/p&gt;
 
-&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -443,9 +387,7 @@ location /test2 {
 
 &lt;p&gt;翻了一下邮件列表，发现该问题agentzh早有解答：&lt;br /&gt;
 &amp;gt;逆雪寒:&lt;br /&gt;
-&amp;gt;通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是nil 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug ? 还是我理解问题.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&amp;gt;通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是nil 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug ? 还是我理解问题.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -465,26 +407,7 @@ location /test2 {
 &lt;p&gt;（1）目标地址中不带uri。即proxy_pass的参数形如&amp;rdquo;&lt;a href=&#34;http://127.0.0.1:8090&amp;quot;。&#34;&gt;http://127.0.0.1:8090&amp;quot;。&lt;/a&gt;
 此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。&lt;/p&gt;
 
-&lt;p&gt;（2）目标地址中带uri。即proxy_pass的参数形如“&lt;a href=&#34;http://127.0.0.1:8090/dir1/dir2&amp;quot;&#34;&gt;http://127.0.0.1:8090/dir1/dir2&amp;quot;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>nil、null与ngx.null</title>
-      <link>http://pureage.info/2013/09/02/125.html</link>
-      <pubDate>Mon, 02 Sep 2013 14:06:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/09/02/125.html</guid>
-      <description>&lt;h1 id=&#34;问题概述&#34;&gt;问题概述&lt;/h1&gt;
-
-&lt;p&gt;今天第一次在nginx+lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，实现对保存在redis中的任务插入、删除、查询等。虽然nginx，lua等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。&lt;/p&gt;
-
-&lt;p&gt;在Redis中记录的任务其实很简单，每插入一个任务，就在redis中增加一个HASH结构，每次查询返回该SET的各个Field和对应的Value值，例如md5，filesize等。由于任务类型的不同，有的Field可能在该任务中不存在，此时在以json格式将查询结果返回时不应显示该Field。&lt;/p&gt;
-
-&lt;p&gt;以md5域为例，在对当前任务以md5域执行hget后，应该对返回结果做一个判断，如果该HASH结构并没有设置md5这个域，则跳过，继续执行后面的逻辑，如果设置了md5域，则把该域的Value取出来，插入到结果table中，后续再作为json格式返回结果的一部分，返回给后台。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;（2）目标地址中带uri。即proxy_pass的参数形如“&lt;a href=&#34;http://127.0.0.1:8090/dir1/dir2&amp;quot;&#34;&gt;http://127.0.0.1:8090/dir1/dir2&amp;quot;&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

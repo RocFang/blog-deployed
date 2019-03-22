@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>fastdfs on 纯真年代</title>
+    <title>Fastdfs on 纯真年代</title>
     <link>http://pureage.info/tags/fastdfs/</link>
-    <description>Recent content in fastdfs on 纯真年代</description>
+    <description>Recent content in Fastdfs on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>strider</copyright>
+    <language>zh-cn</language>
     <lastBuildDate>Thu, 05 Dec 2013 15:33:00 +0000</lastBuildDate>
     
 	<atom:link href="http://pureage.info/tags/fastdfs/index.xml" rel="self" type="application/rss+xml" />
@@ -18,9 +17,7 @@
       <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
       
       <guid>http://pureage.info/2013/12/05/156.html</guid>
-      <description>&lt;p&gt;FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -5,22 +5,60 @@
     <link>http://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</link>
     <description>Recent content in 程序员 on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>strider</copyright>
-    <lastBuildDate>Tue, 23 Oct 2018 15:39:41 +0800</lastBuildDate>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 18 Mar 2019 14:49:45 +0800</lastBuildDate>
     
 	<atom:link href="http://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>openstack swift 中的 composite ring</title>
+      <title>Golang中令人不那么愉悦的import</title>
+      <link>http://pureage.info/post/annoying-golang-import/</link>
+      <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/annoying-golang-import/</guid>
+      <description>&lt;p&gt;众所周知，在github上参与开源项目的一般流程如下：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将开源项目fork到自己的名下。&lt;/li&gt;
+&lt;li&gt;在本地开发环境中clone自己在上一步中fork的项目。&lt;/li&gt;
+&lt;li&gt;本地完成开发测试和代码提交，再push到自己名下的仓库中。&lt;/li&gt;
+&lt;li&gt;从自己名下的这个项目中，对原始项目发起一个pull request。&lt;/li&gt;
+&lt;li&gt;发起的pull request被上游merge后，自己的代码就进入开源项目中了。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>用手机发布静态博客</title>
+      <link>http://pureage.info/post/write-a-blog-with-a-cellphone/</link>
+      <pubDate>Fri, 23 Nov 2018 22:15:21 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/write-a-blog-with-a-cellphone/</guid>
+      <description>&lt;p&gt;这篇文章没有什么实际内容，请谨慎点开，不要浪费自己的时间。我就是想测试一下在手机上写一篇博客的感觉如何，能否达到以前使用动态博客程序时的体验。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>golang modules对git版本的依赖</title>
+      <link>http://pureage.info/post/bad-feeling-about-go-cmd/</link>
+      <pubDate>Fri, 16 Nov 2018 23:00:44 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/bad-feeling-about-go-cmd/</guid>
+      <description>&lt;p&gt;这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。&lt;/p&gt;
+
+&lt;p&gt;go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。&lt;/p&gt;
+
+&lt;p&gt;但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>openstack swift中的composite ring</title>
       <link>http://pureage.info/post/composite-ring-of-swift/</link>
       <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
       
       <guid>http://pureage.info/post/composite-ring-of-swift/</guid>
-      <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -39,9 +77,7 @@
 
 &lt;p&gt;举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。&lt;/p&gt;
 
-&lt;p&gt;这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -58,9 +94,7 @@
 
 &lt;p&gt;第二遍，以事件、时间为中心，再看一遍。&lt;/p&gt;
 
-&lt;p&gt;第三遍，以人物为中心，再看一遍。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;第三遍，以人物为中心，再看一遍。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -71,9 +105,7 @@
       <guid>http://pureage.info/2016/04/26/253.html</guid>
       <description>&lt;p&gt;周日在广州的 OpenResty 社区 meetup 中做了一个主题为《巧用openresty结合nginx变量机制提供定制化web服务》的分享，说实话还挺紧张的，毕竟是第一次做这种线下的分享，但是到了现场之后慢慢就放松了。因为来参加活动的，大多都是跟身边的同事、同学一样的程序员，在这种气氛下，其实不用考虑会不会怯场、出丑之类的问题。大家都是同道中人，传说中的“演讲技巧”之类的也没有必要，简单的把自己觉得有用的东西分享给大家，对自己是一种锻炼，如果能对听者也能有点用处，那就更好了。&lt;/p&gt;
 
-&lt;p&gt;有几位前公司的同事事前听说我要参加这次分享，自掏门票过来就是为了捧个场，他们中有的工作跟 OpenResty/Nginx 压根没关系，想想挺感动的。都说职场是铁打的营盘流水的兵，能结识这些朋友真是有幸。活动结束后，大家一起去聚了个餐，看了电影《奇幻森林》，这场景太像毕业离别前的小聚，他们中确实有位要马上到另一个城市去了。希望他一切顺心。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;有几位前公司的同事事前听说我要参加这次分享，自掏门票过来就是为了捧个场，他们中有的工作跟 OpenResty/Nginx 压根没关系，想想挺感动的。都说职场是铁打的营盘流水的兵，能结识这些朋友真是有幸。活动结束后，大家一起去聚了个餐，看了电影《奇幻森林》，这场景太像毕业离别前的小聚，他们中确实有位要马上到另一个城市去了。希望他一切顺心。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -86,9 +118,7 @@
 
 &lt;p&gt;现在网络社群发达，一个实际上在某一个领域才刚入门没多久的人，在解决了新手提出的几个hello world 级别的问题之后，就会被称为大神。然后他就能开始散布一些言论了。&lt;/p&gt;
 
-&lt;p&gt;这些言论本身放在一定的限定条件之下是没有问题的，比如 “Python 可简单了，看一个下午手册就能开始干活了”，他至少得有几个限定条件，比如你之前熟悉过其编程语言。即使在这些限定条件之下，你也得踏踏实实花几个小时到半天的时间来看手册不是么。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;这些言论本身放在一定的限定条件之下是没有问题的，比如 “Python 可简单了，看一个下午手册就能开始干活了”，他至少得有几个限定条件，比如你之前熟悉过其编程语言。即使在这些限定条件之下，你也得踏踏实实花几个小时到半天的时间来看手册不是么。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -107,9 +137,7 @@
 &lt;li&gt;利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯&lt;br /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -120,9 +148,7 @@
       <guid>http://pureage.info/2016/01/02/ianmurdock-and-agentzh.html</guid>
       <description>&lt;p&gt;这几天，开源软件界有两件大事，一件是 Debian 创始人 Ian Murdock 自杀身亡，另一件是在锤子手机 T2 的发布会上，罗永浩宣布将门票收入捐给 OpenResty，可以说是一悲一喜。&lt;/p&gt;
 
-&lt;p&gt;2013年，Markdown 标记语言的设计者之一 Aaron Swartz 自杀，我以及无数的程序员们的博客书写时用的就是 Markdown; Debian 以及 Debian 的变种 Ubuntu，也是很多人使用过或正在使用的 Linux 发行版。他们的自杀前后的心理状态，我们肯定不可能去感同身受，我们可能会感叹一句，原来在黑客氛围浓厚的美国，这些著名的黑客在现实中却也遭遇着能敢于去自杀的痛苦。不管怎么样，他们在这个世界上留下了他们的足迹供后人怀念。祝 Ian Murdock 走好。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;2013年，Markdown 标记语言的设计者之一 Aaron Swartz 自杀，我以及无数的程序员们的博客书写时用的就是 Markdown; Debian 以及 Debian 的变种 Ubuntu，也是很多人使用过或正在使用的 Linux 发行版。他们的自杀前后的心理状态，我们肯定不可能去感同身受，我们可能会感叹一句，原来在黑客氛围浓厚的美国，这些著名的黑客在现实中却也遭遇着能敢于去自杀的痛苦。不管怎么样，他们在这个世界上留下了他们的足迹供后人怀念。祝 Ian Murdock 走好。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -145,9 +171,7 @@
 &lt;p&gt;This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -162,9 +186,7 @@
 
 &lt;p&gt;Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。&lt;/p&gt;
 
-&lt;p&gt;Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -180,9 +202,7 @@
 《深入理解Linux内核架构》&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -201,9 +221,7 @@
 &lt;li&gt;&lt;p&gt;在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。&lt;/p&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;在另外一个目录下新建一个裸仓库。执行git init &amp;ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;/ol&gt;</description>
     </item>
     
     <item>
@@ -221,9 +239,7 @@
 
 &lt;p&gt;最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。&lt;/p&gt;
 
-&lt;p&gt;在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -240,9 +256,7 @@
 
 &lt;p&gt;直到有一天我接触到了章哥。&lt;/p&gt;
 
-&lt;p&gt;章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -257,9 +271,7 @@
 
 &lt;h3 id=&#34;背景&#34;&gt;背景&lt;/h3&gt;
 
-&lt;p&gt;A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -279,9 +291,7 @@
 2. 请求头中的Host头部.&lt;br /&gt;
 3. 与一条请求匹配的server name.&lt;/p&gt;
 
-&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -310,9 +320,7 @@
 
 &lt;p&gt;翻了一下邮件列表，发现该问题agentzh早有解答：&lt;br /&gt;
 &amp;gt;逆雪寒:&lt;br /&gt;
-&amp;gt;通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是nil 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug ? 还是我理解问题.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+&amp;gt;通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是nil 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug ? 还是我理解问题.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -332,433 +340,11 @@
 &lt;p&gt;&lt;strong&gt;之所以能这么用的唯一理由是该操作是原子的&lt;/strong&gt;。&lt;/p&gt;
 
 &lt;p&gt;之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
+
+&lt;pre&gt;&lt;code&gt;if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
     open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
-...  /* 继续执行任务 */  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>AF_INET与PF_INET的区别</title>
-      <link>http://pureage.info/2013/12/06/157.html</link>
-      <pubDate>Fri, 06 Dec 2013 08:24:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/12/06/157.html</guid>
-      <description>&lt;p&gt;在一些开源项目的socket相关代码中，会同时看到AF_IENT和PF_INET，这两者有什么区别呢？&lt;/p&gt;
-
-&lt;p&gt;其实这两个东西就是当年设计上的误差而已。AF=Adress Family;PF=Protocal Family，原来的设计是设想一个AF会支持多个PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux源代码为证：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;/* Protocol families, same as address families. */  
-#define PF_UNSPEC	AF_UNSPEC  
-#define PF_UNIX	 AF_UNIX  
-#define PF_LOCAL	AF_LOCAL  
-#define PF_INET	 AF_INET  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</title>
-      <link>http://pureage.info/2013/12/05/156.html</link>
-      <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/12/05/156.html</guid>
-      <description>&lt;p&gt;FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>linux下获取本地ip的几种方法</title>
-      <link>http://pureage.info/2013/12/04/155.html</link>
-      <pubDate>Wed, 04 Dec 2013 08:06:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/12/04/155.html</guid>
-      <description>&lt;h2 id=&#34;1-调用getifaddrs&#34;&gt;1.调用getifaddrs&lt;/h2&gt;
-
-&lt;blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</title>
-      <link>http://pureage.info/2013/11/14/132.html</link>
-      <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/11/14/132.html</guid>
-      <description>&lt;p&gt;本文主要内容参考自：&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&#34;&gt;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。&lt;/p&gt;
-
-&lt;p&gt;这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.&lt;/p&gt;
-
-&lt;p&gt;以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;[root@vps1 ~]# ls   -l /usr/bin/python&lt;br /&gt;
--rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
-[root@vps1 ~]# ls   -l /usr/bin/python2.6
--rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>推倒重做</title>
-      <link>http://pureage.info/2013/11/13/131.html</link>
-      <pubDate>Wed, 13 Nov 2013 13:21:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/11/13/131.html</guid>
-      <description>&lt;p&gt;这几个月一直在做一个基于FastDFS的分布式存储系统，从前期调研、测试到后面的设计、编码、测试等。其中设计部分，每个环节都和当时带我的一位哥们讨论过，时而愁眉不展，百思不得其解；时而一拍脑袋，找到一个很巧妙的设计方法。已经有两个月没有什么大的改动了，上周实在无聊，就把我当时赶工写的，现在看来不堪入目的代码进行了重构。&lt;/p&gt;
-
-&lt;p&gt;一切看起来很美好的样子，只是看起来。&lt;/p&gt;
-
-&lt;p&gt;部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>关于proxy_pass的参数路径问题</title>
-      <link>http://pureage.info/2013/10/31/130.html</link>
-      <pubDate>Thu, 31 Oct 2013 04:16:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/10/31/130.html</guid>
-      <description>&lt;p&gt;由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。&lt;/p&gt;
-
-&lt;p&gt;这一搜，就掉进坑里了。&lt;/p&gt;
-
-&lt;p&gt;这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&amp;ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。&lt;/p&gt;
-
-&lt;p&gt;其实根本没这么复杂，只有两种情况：&lt;/p&gt;
-
-&lt;p&gt;（1）目标地址中不带uri。即proxy_pass的参数形如&amp;rdquo;&lt;a href=&#34;http://127.0.0.1:8090&amp;quot;。&#34;&gt;http://127.0.0.1:8090&amp;quot;。&lt;/a&gt;
-此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。&lt;/p&gt;
-
-&lt;p&gt;（2）目标地址中带uri。即proxy_pass的参数形如“&lt;a href=&#34;http://127.0.0.1:8090/dir1/dir2&amp;quot;&#34;&gt;http://127.0.0.1:8090/dir1/dir2&amp;quot;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>利用here document携带c代码</title>
-      <link>http://pureage.info/2013/10/08/129.html</link>
-      <pubDate>Tue, 08 Oct 2013 03:23:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/10/08/129.html</guid>
-      <description>&lt;p&gt;假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;tmp_src_filename=fdfs_check_bits.c  
-cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_filename  
-#include &amp;lt;stdio.h&amp;gt;  
-#include &amp;lt;unistd.h&amp;gt;  
-#include &amp;lt;fcntl.h&amp;gt;  
-int main()  
-{  
-        printf(&amp;#34;%d\n&amp;#34;, (int)sizeof(long));  
-        printf(&amp;#34;%d\n&amp;#34;, (int)sizeof(off_t));  
-        return 0;  
-}  
-EOF  
-  
-gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
-output=$(./a.out)  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
-    </item>
-    
-    <item>
-      <title>漫谈logrotate与crond</title>
-      <link>http://pureage.info/2013/09/10/127.html</link>
-      <pubDate>Tue, 10 Sep 2013 15:11:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/09/10/127.html</guid>
-      <description>&lt;h1 id=&#34;什么是logrotate&#34;&gt;什么是logrotate&lt;/h1&gt;
-
-&lt;p&gt;logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。&lt;/p&gt;
-
-&lt;h1 id=&#34;lorotate的切割方式&#34;&gt;lorotate的切割方式&lt;/h1&gt;
-
-&lt;p&gt;以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。&lt;/p&gt;
-
-&lt;p&gt;当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。&lt;/p&gt;
-
-&lt;p&gt;当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>uniq、sort不得不注意的尾部空格（trailing whitespaces)</title>
-      <link>http://pureage.info/2013/09/09/126.html</link>
-      <pubDate>Mon, 09 Sep 2013 13:38:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/09/09/126.html</guid>
-      <description>&lt;h1 id=&#34;问题产生背景&#34;&gt;问题产生背景&lt;/h1&gt;
-
-&lt;p&gt;自己写的一个基于FastDFS的客户端软件的日志格式如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
-[2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
-[2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
-[2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
-[2013-09-06 08:57:01] 1734272 group6/M00/00/28/Kj4ZK1IpKL-AZF8OABp2gDqh-sA949.mp3 ;fuckgfw.com/mp3k18/a2/1429_9466.mp3  
-[2013-09-06 08:57:01] 2453888 group6/M00/00/2D/Kj4ZKlIpKL6AOkQ-ACVxgMD1aRE474.mp3 ;fuckgfw.com/mp3k18/a2/1429_9460.mp3  
-[2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3  
-[2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
-[2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
-[2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>nil、null与ngx.null</title>
-      <link>http://pureage.info/2013/09/02/125.html</link>
-      <pubDate>Mon, 02 Sep 2013 14:06:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/09/02/125.html</guid>
-      <description>&lt;h1 id=&#34;问题概述&#34;&gt;问题概述&lt;/h1&gt;
-
-&lt;p&gt;今天第一次在nginx+lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，实现对保存在redis中的任务插入、删除、查询等。虽然nginx，lua等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。&lt;/p&gt;
-
-&lt;p&gt;在Redis中记录的任务其实很简单，每插入一个任务，就在redis中增加一个HASH结构，每次查询返回该SET的各个Field和对应的Value值，例如md5，filesize等。由于任务类型的不同，有的Field可能在该任务中不存在，此时在以json格式将查询结果返回时不应显示该Field。&lt;/p&gt;
-
-&lt;p&gt;以md5域为例，在对当前任务以md5域执行hget后，应该对返回结果做一个判断，如果该HASH结构并没有设置md5这个域，则跳过，继续执行后面的逻辑，如果设置了md5域，则把该域的Value取出来，插入到结果table中，后续再作为json格式返回结果的一部分，返回给后台。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>bash中while循环的一个大坑</title>
-      <link>http://pureage.info/2013/08/22/122.html</link>
-      <pubDate>Thu, 22 Aug 2013 03:06:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/08/22/122.html</guid>
-      <description>&lt;p&gt;起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&amp;lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。&lt;/p&gt;
-
-&lt;p&gt;如果就这么过去了，多没意思，我觉得有必要深究一下while的运行机制。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>sort命令中-k、-t选项的用法</title>
-      <link>http://pureage.info/2013/08/05/120.html</link>
-      <pubDate>Mon, 05 Aug 2013 12:56:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/08/05/120.html</guid>
-      <description>&lt;h1 id=&#34;需求&#34;&gt;需求：&lt;/h1&gt;
-
-&lt;p&gt;假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
-group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
-......(略）......  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？&lt;/p&gt;
-
-&lt;h1 id=&#34;方法&#34;&gt;方法：&lt;/h1&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&amp;hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&amp;hellip;groupn的顺序排列。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>bash下如何实现perl中seek的功能？</title>
-      <link>http://pureage.info/2013/07/21/119.html</link>
-      <pubDate>Sun, 21 Jul 2013 15:23:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/07/21/119.html</guid>
-      <description>&lt;p&gt;因为日志处理需要，接触到perl,虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。&lt;/p&gt;
-
-&lt;p&gt;假设有这样的应用场景：客户通过ftp客户端上传文件到接入端ftp服务器，接入端ftp服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端ftp服务器要做的工作就是定时分析ftp server（假设是vsftpd,则日志为xferlog)的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog的记录条数也随之增长。&lt;/p&gt;
-
-&lt;p&gt;perl中通过seek函数可以很方便的做到，每一次脚本执行时，都将上一次脚本执行时xferlog的大小作为本次读操作的偏移量，用这个偏移量来调用seek，本次处理完后再将该偏移量更新后存入到一个文件供下次脚本执行时读取。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>再不判断异常分支就剁手</title>
-      <link>http://pureage.info/2013/07/13/117.html</link>
-      <pubDate>Sat, 13 Jul 2013 06:02:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/07/13/117.html</guid>
-      <description>&lt;p&gt;一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？&lt;/p&gt;
-
-&lt;p&gt;可是今天还是犯了一个这样的错误。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>好的设计真是一念之间吗？</title>
-      <link>http://pureage.info/2013/06/27/116.html</link>
-      <pubDate>Thu, 27 Jun 2013 14:45:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/06/27/116.html</guid>
-      <description>&lt;h2 id=&#34;背景描述&#34;&gt;背景描述&lt;/h2&gt;
-
-&lt;p&gt;近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。&lt;/p&gt;
-
-&lt;h2 id=&#34;分工明确化&#34;&gt;分工明确化&lt;/h2&gt;
-
-&lt;p&gt;从始至终我们持有的一个观点就是，这个worker的功能要极度简化，就是去从tasklist中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个tasklist怎么来的，里面的任务是由谁来插入，worker一概不管。这样的话，有几个好处：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;worker的角色明确，目标清晰。直接的好处就是代码容易编写。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;设计思想比较通用&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;tasklist的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的log中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;关于重试&#34;&gt;关于重试&lt;/h2&gt;
-
-&lt;p&gt;worker从tasklist中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。关于这个异常处理，在这里多说两句，讲一个亲身经历的例子：&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>记一个here document的坑</title>
-      <link>http://pureage.info/2013/05/24/115.html</link>
-      <pubDate>Thu, 23 May 2013 16:49:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2013/05/24/115.html</guid>
-      <description>&lt;h1 id=&#34;1-here-document&#34;&gt;1.here document&lt;/h1&gt;
-
-&lt;p&gt;here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;ftp -n $HOST &amp;lt;&amp;lt;EOF
-quote USER $USER  
-quote PASS $PASS  
-binary  
-put $FileName  
-quit  
-EOF  &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h1 id=&#34;2-踩到的坑&#34;&gt;2.踩到的坑&lt;/h1&gt;
-
-&lt;p&gt;在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>“透明”与“非透明”之间的歧义</title>
-      <link>http://pureage.info/2012/05/25/75.html</link>
-      <pubDate>Fri, 25 May 2012 13:35:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2012/05/25/75.html</guid>
-      <description>&lt;p&gt;在准备答辩之余,翻了翻以前看过的书。发现了一些想起来会会心一笑的地方。&lt;/p&gt;
-
-&lt;p&gt;比如，在《用TCP/IP进行网际互连》第一卷HTTP的那一章，对代理服务器有如下阐述：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;有两种形式的代理服务器存在：非透明的(nontransparent)和透明的（transparent)。正如它们的名字所暗示的，非透明服务器对用户来说是可见的，也就是说，用户必须配置浏览器来联络一个代理，而不是与原始资源所在的服务器联络。透明代理不需要对浏览器的配置进行任何改动。事实上，透明代理会检查所有通过代理的TCP连接，并拦截到达80端口的任何连接。无论是哪一种情况，代理都会将万维网页面进行缓存，然后从缓存中取出页面，以回答后来的请求。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>卖身记</title>
-      <link>http://pureage.info/2011/12/05/8.html</link>
-      <pubDate>Mon, 05 Dec 2011 13:50:00 +0000</pubDate>
-      
-      <guid>http://pureage.info/2011/12/05/8.html</guid>
-      <description>&lt;p&gt;这是一篇写给自己的文章，不写没法交差，也可以说是为写而写。其实，我一直觉得应该对自己的人生轨迹做一个阶段性总结，所谓雁过留声，或是供日后凭吊。但按照某人的说法：“道理谁都懂，XXXX”，XXXX代表各种借口。果然这次也不例外。从八月末九月初开始正式准备找工作到十月九号签约，这一个月的时间里我不止一次的说要把白天的经历简单的记录一下，到时候归纳出一篇面经来，事实上我也确实干了这么一项工作，打开我的电脑里一篇名为“找工作日记”的txt文档，内容如下：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;2011.09.20  星期三&lt;/p&gt;
-
-&lt;p&gt;早上七点起床 去中兴面试，两轮，自我感觉良好。&lt;/p&gt;
-
-&lt;p&gt;2011.09.21  星期三&lt;/p&gt;
-
-&lt;p&gt;华为open day 去时打的，回来做了三个小时公交车&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;忽略空白行的话，这4行文字就是我这一个月来所有的记录。简直是在嘲笑我的言出不行。&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;</description>
+...  /* 继续执行任务 */  
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
   </channel>
