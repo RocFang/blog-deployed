@@ -6,10 +6,19 @@
     <description>Recent content in 博客 on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 21 Nov 2018 01:09:59 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 25 Mar 2019 10:45:26 +0800</lastBuildDate>
     
 	<atom:link href="http://pureage.info/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>将域名转到Namesilo</title>
+      <link>http://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</link>
+      <pubDate>Mon, 25 Mar 2019 10:45:26 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</guid>
+      <description>&lt;p&gt;本网站所使用的域名pureage.info自2011年注册开始，一直托管在godaddy上。当年国外的域名注册商家中，只有godaddy支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>静态博客的黄金搭档:Caddy和Hugo</title>

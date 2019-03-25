@@ -3,6 +3,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</loc>
+    <lastmod>2019-03-25T10:45:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://pureage.info/post/annoying-golang-import/</loc>
     <lastmod>2019-03-18T14:49:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -1242,7 +1249,7 @@
   
   <url>
     <loc>http://pureage.info/post/</loc>
-    <lastmod>2019-03-18T14:49:45+08:00</lastmod>
+    <lastmod>2019-03-25T10:45:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -1277,7 +1284,7 @@
   
   <url>
     <loc>http://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2018-11-21T01:09:59+08:00</lastmod>
+    <lastmod>2019-03-25T10:45:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -1354,7 +1361,7 @@
   
   <url>
     <loc>http://pureage.info/</loc>
-    <lastmod>2019-03-18T14:49:45+08:00</lastmod>
+    <lastmod>2019-03-25T10:45:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
