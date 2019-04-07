@@ -6,10 +6,53 @@
     <description>Recent content on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 25 Mar 2019 10:45:26 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 07 Apr 2019 17:51:22 +0800</lastBuildDate>
     
         <atom:link href="http://pureage.info/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>混迹技术聊天群容易产生的几个错觉</title>
+      <link>http://pureage.info/post/illusions-produced-in-im-groups-of-software-technology/</link>
+      <pubDate>Sun, 07 Apr 2019 17:51:22 +0800</pubDate>
+      
+      <guid>http://pureage.info/post/illusions-produced-in-im-groups-of-software-technology/</guid>
+      
+        <description>&lt;p&gt;现如今，各行各业都有无数的聊天群，软件技术相关当然也不例外。一个程序员不混几个技术群，每天在里面聊聊技术吹吹水，都似乎有点非主流了。&lt;/p&gt;
+
+&lt;p&gt;我这里说的是那种技术氛围相对浓厚一点的聊天群，大家主要的聊天内容还是会跟某些具体技术相关。纯水群不在本文讨论范围之列。&lt;/p&gt;
+
+&lt;p&gt;经过我长期观察，混迹技术聊天群容易产生几个错觉，甚至可以称之为幻觉。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;错觉一：真正的大牛们貌似都很会喷人，所以我也要会喷。&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;这种错觉的表现，就是某些群友们从来不会好好说话，言必称A语言垃圾，B框架狗屎，C项目巨烂无比。&lt;/p&gt;
+
+&lt;p&gt;是的，很多业界大牛是比较有个性，经常会看到一些态度激烈的言论。但是你首先要搞清楚，个性每个人都有，但大牛是要肚里有货的，甚至光肚里有货都不够，还要有项目能流传出来供大家使用、讨论、评判。肚里没啥干货，嘴里粪喷成花也改变不了你菜鸟的本质。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;错觉二：指出经典开源项目的毛病，我就看上去更牛逼了。&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;这一部分人其实跟上一波人有很大的重合，他们缺乏对历史上那些经典开源软件的敬畏之心。&lt;/p&gt;
+
+&lt;p&gt;比如，有人会因为使用的一些开源项目在某些情况下会coredump，就怒起逢此项目必喷。你要问他们是怎么解决这些问题的，有没有给官方报issues，有没有自己提交pull request解决这些问题，答案多半是没有。&lt;/p&gt;
+
+&lt;p&gt;事实上，任何一个开源项目都必然会有bug存在，在使用开源项目时，遇到问题就尝试去反馈问题，解决问题，是使用开源项目的基本素养。&lt;/p&gt;
+
+&lt;p&gt;几十年前，就有一位美国伟人说过：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;My fellow programmers ask not what open source can do for you, ask what you can do for open source.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;当然这是我篡改过的版本：）&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;错觉三：站在巨人的肩膀上，我自己也是巨人了。&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;软件开发/程序设计发展到今天，有无数的先驱在前面铺路搭桥，以至于今天我们不用造轮子，直接完全使用开源项目都能完成很多任务。&lt;/p&gt;
+
+&lt;p&gt;站在巨人的肩膀上，能让我们看的更远，但并不意味着我们自己也是巨人了。自己真正的代码能力怎么样，自己心里有点数啊大兄弟。&lt;/p&gt;</description>
+      
+    </item>
     
     <item>
       <title>将域名转到Namesilo</title>
@@ -938,52 +981,6 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;p&gt;多年以后&lt;br /&gt;
 她也许还记得&lt;br /&gt;
 这个阳光明媚的下午&lt;/p&gt;</description>
-      
-    </item>
-    
-    <item>
-      <title>看小说与看代码的共通之处</title>
-      <link>http://pureage.info/2016/06/08/similarities-of-novels-and-codes.html</link>
-      <pubDate>Tue, 07 Jun 2016 16:10:47 +0000</pubDate>
-      
-      <guid>http://pureage.info/2016/06/08/similarities-of-novels-and-codes.html</guid>
-      
-        <description>&lt;p&gt;看小说，是我从小的爱好，看代码写代码，是我谋生的技能。这是两件极不相干的事，但是最近忽然觉得，这两者却有相通之处。原来我一直是用看小说的方式来看代码。&lt;/p&gt;
-
-&lt;p&gt;我认为，一部好的小说，如果不是囫囵吞枣随意读完便罢的话，至少是要看三遍的。&lt;/p&gt;
-
-&lt;p&gt;第一遍，按顺序读完。&lt;/p&gt;
-
-&lt;p&gt;第二遍，以事件、时间为中心，再看一遍。&lt;/p&gt;
-
-&lt;p&gt;第三遍，以人物为中心，再看一遍。&lt;/p&gt;
-
-&lt;p&gt;其中，第二遍和第三遍的顺序可能会颠倒甚至交错进行，而且第二遍和第三遍本身各自又包含小范围内的反复阅读。这个过程虽然每个人各有各的习惯，但主要目的就是整理和归纳。&lt;/p&gt;
-
-&lt;p&gt;按顺序读完，这很好理解。科技类书籍可以跳读、挑读，但是读小说时将作品的内容顺序读完应该是最基本的。&lt;/p&gt;
-
-&lt;p&gt;以事件、时间为中心，是对应小说的灵魂，矛盾和冲突。只有以事件为中心，才能从全局的角度来掌握小说的内容，才能更好的欣赏其中的美。&lt;/p&gt;
-
-&lt;p&gt;例如，金庸的《天龙八部》中的著名事件，少室山大战，参与者有那几方？有几种矛盾在里面？这么多性格迥异、各自怀有不同目的的人，在这个事件中处的位置是什么？如果不能回答这几个问题，是很遗憾的事情，这样就无法欣赏金庸先生的笔力之深，格局之大。&lt;/p&gt;
-
-&lt;p&gt;以人物为中心，则是从细处着眼，分析某个具体人物在一系列事件中的心理和表现，理解其成长或者变化。小说毕竟是个纯人文的东西，在今天完全不读小说其实是完全没有任何害处的，喜欢读小说的人，很多是喜欢那种心理、精神上的沉浸感。从一个具体人物的视角观察书里的世界，我们能更好的理解这些人为什么会在某个时间点做那么一件事情。&lt;/p&gt;
-
-&lt;p&gt;例如，金庸的《神雕侠侣》，郭靖心怀天下的情怀怎么表达出来？通过杨过的眼睛来看。杨过意图刺杀郭靖前后的几章，从杨过的视角，一边是与自己有杀父之仇，一边是为国为民的侠之大者，郭靖心忧天下的形象就呼之欲出了。&lt;/p&gt;
-
-&lt;p&gt;再来说看代码。&lt;/p&gt;
-
-&lt;p&gt;看代码与看小说有个不同，一份代码第一遍很难从头到尾就读一遍，而且看代码的过程，比看小说更需要随时切换视角。所以，上面提到的看小说的“三遍”，对应了看代码的如下三个视角。(注:这里说的看代码的方法仅针对面向过程的项目，面向对象的大型项目我也没深入接触过，就不胡说了。)&lt;/p&gt;
-
-&lt;p&gt;第一，架构、框架的视角&lt;br /&gt;
-以Nginx为例，我们要知道Nginx整个框架的基本原理，Nginx框架与各模块是怎么串联起来的，各模块的各回调函数在框架中处于什么位置？&lt;/p&gt;
-
-&lt;p&gt;第二，关键流程的视角&lt;br /&gt;
-以Nginx-RTMP为例，我们要知道一个直播过程有哪几方参与？一个流推上来会发生那些事情？一个播放器接进来又会发生哪些事情？音视频数据是怎么发送给播放器的？多进程之间又有哪些事情？断流会有哪些操作？&lt;/p&gt;
-
-&lt;p&gt;第三，数据的视角&lt;br /&gt;
-还是以Nginx-RTMP为例，一个流在系统中的数据结构是什么？是怎么存储的？一个tcp连接又是对应什么数据结构，怎么存储的？各播放器怎么表示？它们是怎么组织起来的？pull、push涉及到的远端连接，在系统中是怎么通过relay组织和实现的？&lt;/p&gt;
-
-&lt;p&gt;脑洞大开，胡扯一通。&lt;/p&gt;</description>
       
     </item>
     
