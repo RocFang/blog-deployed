@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>博客 on 纯真年代</title>
-    <link>http://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</link>
+    <link>https://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</link>
     <description>Recent content in 博客 on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 25 Mar 2019 10:45:26 +0800</lastBuildDate>
     
-	<atom:link href="http://pureage.info/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pureage.info/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>将域名转到Namesilo</title>
-      <link>http://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</link>
+      <link>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</link>
       <pubDate>Mon, 25 Mar 2019 10:45:26 +0800</pubDate>
       
-      <guid>http://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</guid>
+      <guid>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</guid>
       <description>&lt;p&gt;本网站所使用的域名pureage.info自2011年注册开始，一直托管在godaddy上。当年国外的域名注册商家中，只有godaddy支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>静态博客的黄金搭档:Caddy和Hugo</title>
-      <link>http://pureage.info/post/caddy-and-hugo/</link>
+      <link>https://pureage.info/post/caddy-and-hugo/</link>
       <pubDate>Wed, 21 Nov 2018 01:09:59 +0800</pubDate>
       
-      <guid>http://pureage.info/post/caddy-and-hugo/</guid>
+      <guid>https://pureage.info/post/caddy-and-hugo/</guid>
       <description>&lt;p&gt;几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
 
 &lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;
@@ -35,10 +35,10 @@
     
     <item>
       <title>继续留在Typecho</title>
-      <link>http://pureage.info/2015/12/16/still-using-typecho.html</link>
+      <link>https://pureage.info/2015/12/16/still-using-typecho.html</link>
       <pubDate>Wed, 16 Dec 2015 14:54:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/12/16/still-using-typecho.html</guid>
+      <guid>https://pureage.info/2015/12/16/still-using-typecho.html</guid>
       <description>&lt;p&gt;最近手心手背总时不时发痒，又开始想折腾博客玩了。&lt;/p&gt;
 
 &lt;p&gt;这个小小的个人博客，从 2011 年开始，几乎把主流的 Blog 系统折腾了个遍，从最初的 Wordpress,到 Typecho, Emlog, Textpattern 等等。其中，Typecho 被来回折腾了几次，因为 Typecho 自身也经历了两个大的阶段：从几年没有维护，到开始重构并默认支持 Markdown 编辑器。&lt;/p&gt;
@@ -48,10 +48,10 @@
     
     <item>
       <title>从emlog换到typecho</title>
-      <link>http://pureage.info/2013/12/23/161.html</link>
+      <link>https://pureage.info/2013/12/23/161.html</link>
       <pubDate>Mon, 23 Dec 2013 13:04:44 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/12/23/161.html</guid>
+      <guid>https://pureage.info/2013/12/23/161.html</guid>
       <description>&lt;p&gt;typecho终于迎来大的更新了，从2012年5月8号官网放出一篇名为&lt;a href=&#34;http://typecho.org/archives/65/&#34;&gt;《Its about time》&lt;/a&gt;的日志后，让各路淫民翘首以待，谁都没想到一翘就翘了一年多。&lt;/p&gt;
 
 &lt;p&gt;从两年前买了域名+空间后，试过了各种博客程序，wordpress,typecho,emlog,textpattern等等，但最喜欢的还是emlog和typecho，后来一直用的是emlog。说实在话，对emlog很满意的，emlog的社区也做的不错，但这次typecho的更新太吸引人了，还是转了过来。更换程序是很彻底的，我丝毫没有考虑如何在url上做文章，对这个网站和搜索引擎而言，意味着N多死链，但幸好对我自己而言，不意味任何东西。&lt;/p&gt;
@@ -61,10 +61,10 @@
     
     <item>
       <title>emlog的一键备份</title>
-      <link>http://pureage.info/2013/10/01/128.html</link>
+      <link>https://pureage.info/2013/10/01/128.html</link>
       <pubDate>Tue, 01 Oct 2013 03:31:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/10/01/128.html</guid>
+      <guid>https://pureage.info/2013/10/01/128.html</guid>
       <description>&lt;p&gt;不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -78,10 +78,10 @@
     
     <item>
       <title>如何在豆瓣认领自己的博客？</title>
-      <link>http://pureage.info/2012/02/29/52.html</link>
+      <link>https://pureage.info/2012/02/29/52.html</link>
       <pubDate>Wed, 29 Feb 2012 12:26:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2012/02/29/52.html</guid>
+      <guid>https://pureage.info/2012/02/29/52.html</guid>
       <description>&lt;p&gt;1.先到豆瓣九点的这个页面&lt;a href=&#34;http://9.douban.com/reader/&#34;&gt;http://9.douban.com/reader/&lt;/a&gt; 点击右侧“添加订阅”，输入你的博客地址，然后豆瓣就会开始抓取你的博客，稍微等会儿，就添加进去了。&lt;/p&gt;
 
 &lt;p&gt;2.点下方的“管理订阅列表”，进入页面后，点你博客的名字，进入你的博客九点页面，再点击图片右侧的“认领这个博客”，豆瓣会给出一串字符（如doubanclaim9434b54d244e5b6f）要求你写进你的博客日志里，写好之后回到这个页面，点击“重抓”，过个10分钟左右等豆瓣验证好了，你就拥有这个博客了，然后那行写在日志里的字符也可以删了。&lt;/p&gt;

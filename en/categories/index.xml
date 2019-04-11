@@ -2,12 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 纯真年代</title>
-    <link>http://pureage.info/en/categories/</link>
+    <link>https://pureage.info/en/categories/</link>
     <description>Recent content in Categories on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     
-	<atom:link href="http://pureage.info/en/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pureage.info/en/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

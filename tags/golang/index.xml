@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Golang on 纯真年代</title>
-    <link>http://pureage.info/tags/golang/</link>
-    <description>Recent content in Golang on 纯真年代</description>
+    <title>golang on 纯真年代</title>
+    <link>https://pureage.info/tags/golang/</link>
+    <description>Recent content in golang on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 18 Mar 2019 14:49:45 +0800</lastBuildDate>
     
-	<atom:link href="http://pureage.info/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pureage.info/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Golang中令人不那么愉悦的import</title>
-      <link>http://pureage.info/post/annoying-golang-import/</link>
+      <link>https://pureage.info/post/annoying-golang-import/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
-      <guid>http://pureage.info/post/annoying-golang-import/</guid>
+      <guid>https://pureage.info/post/annoying-golang-import/</guid>
       <description>&lt;p&gt;众所周知，在github上参与开源项目的一般流程如下：&lt;/p&gt;
 
 &lt;ol&gt;

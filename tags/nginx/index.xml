@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Nginx on 纯真年代</title>
-    <link>http://pureage.info/tags/nginx/</link>
-    <description>Recent content in Nginx on 纯真年代</description>
+    <title>nginx on 纯真年代</title>
+    <link>https://pureage.info/tags/nginx/</link>
+    <description>Recent content in nginx on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 04 Jul 2016 15:17:00 +0000</lastBuildDate>
     
-	<atom:link href="http://pureage.info/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pureage.info/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>代码中的谎言</title>
-      <link>http://pureage.info/2016/07/04/lies-in-code.html</link>
+      <link>https://pureage.info/2016/07/04/lies-in-code.html</link>
       <pubDate>Mon, 04 Jul 2016 15:17:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2016/07/04/lies-in-code.html</guid>
+      <guid>https://pureage.info/2016/07/04/lies-in-code.html</guid>
       <description>&lt;p&gt;俗话说，一个谎言，要用一百个谎言去圆。&lt;/p&gt;
 
 &lt;p&gt;在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。&lt;/p&gt;
@@ -28,10 +28,10 @@
     
     <item>
       <title>关于Nginx-1.9.11的动态模块</title>
-      <link>http://pureage.info/2016/02/14/nginx-dynamic-module.html</link>
+      <link>https://pureage.info/2016/02/14/nginx-dynamic-module.html</link>
       <pubDate>Sun, 14 Feb 2016 14:57:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2016/02/14/nginx-dynamic-module.html</guid>
+      <guid>https://pureage.info/2016/02/14/nginx-dynamic-module.html</guid>
       <description>&lt;p&gt;我们知道，原生 Nginx 增加、修改一个第三方模块，需要重新编译源代码，所有的模块都是用静态链接的形式组织起来的。而 Tengine 有一个增强的功能，即动态模块加载 DSO(Dynamic Shared Objects), 可以实现运行时动态加载模块，而不用每次都要重新编译Tengine。&lt;/p&gt;
 
 &lt;p&gt;在 2016 年农历春节期间，Nginx 官方发布了最新版本 Nginx-1.9.11，也增加了该功能。&lt;/p&gt;
@@ -56,10 +56,10 @@
     
     <item>
       <title>使用ngx.header修改Accept-Ranges的问题</title>
-      <link>http://pureage.info/2016/01/17/modify-accept-ranges-header.html</link>
+      <link>https://pureage.info/2016/01/17/modify-accept-ranges-header.html</link>
       <pubDate>Sun, 17 Jan 2016 14:09:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2016/01/17/modify-accept-ranges-header.html</guid>
+      <guid>https://pureage.info/2016/01/17/modify-accept-ranges-header.html</guid>
       <description>&lt;p&gt;今天有位朋友在使用 OpenResty 时发现一个奇怪的事情。&lt;/p&gt;
 
 &lt;p&gt;他打算用 ngx.header 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 *_by_lua 脚本中写入ngx.header[&amp;ldquo;Accept-Ranges&amp;rdquo;] = &amp;ldquo;xxx&amp;rdquo;。在 OpenResty 中，这是一种经常被使用到的方法。&lt;/p&gt;
@@ -69,10 +69,10 @@
     
     <item>
       <title>如何绘制流程图和结构图</title>
-      <link>http://pureage.info/2016/01/12/flow-chart.html</link>
+      <link>https://pureage.info/2016/01/12/flow-chart.html</link>
       <pubDate>Tue, 12 Jan 2016 14:38:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2016/01/12/flow-chart.html</guid>
+      <guid>https://pureage.info/2016/01/12/flow-chart.html</guid>
       <description>&lt;p&gt;经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -88,10 +88,10 @@
     
     <item>
       <title>accept与epoll惊群</title>
-      <link>http://pureage.info/2015/12/22/thundering-herd.html</link>
+      <link>https://pureage.info/2015/12/22/thundering-herd.html</link>
       <pubDate>Tue, 22 Dec 2015 07:01:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/12/22/thundering-herd.html</guid>
+      <guid>https://pureage.info/2015/12/22/thundering-herd.html</guid>
       <description>&lt;p&gt;今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。&lt;/p&gt;
 
 &lt;h2 id=&#34;1-什么叫惊群现象&#34;&gt;1. 什么叫惊群现象&lt;/h2&gt;
@@ -111,10 +111,10 @@
     
     <item>
       <title>尝鲜：Nginx-1.9.8推出的切片模块</title>
-      <link>http://pureage.info/2015/12/10/nginx-slice-module.html</link>
+      <link>https://pureage.info/2015/12/10/nginx-slice-module.html</link>
       <pubDate>Thu, 10 Dec 2015 06:12:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/12/10/nginx-slice-module.html</guid>
+      <guid>https://pureage.info/2015/12/10/nginx-slice-module.html</guid>
       <description>&lt;p&gt;熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：&lt;/p&gt;
 
 &lt;ul&gt;
@@ -130,10 +130,10 @@
     
     <item>
       <title>Nginx紧急发布1.9.9修复bug</title>
-      <link>http://pureage.info/2015/12/10/bugfix-of-nginx.html</link>
+      <link>https://pureage.info/2015/12/10/bugfix-of-nginx.html</link>
       <pubDate>Thu, 10 Dec 2015 03:27:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/12/10/bugfix-of-nginx.html</guid>
+      <guid>https://pureage.info/2015/12/10/bugfix-of-nginx.html</guid>
       <description>&lt;p&gt;有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。&lt;/p&gt;
 
 &lt;p&gt;例如，Nginx 刚在12月8号发布了nginx-1.9.8, 马上就在nginx-1.9.9,这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。&lt;/p&gt;
@@ -152,10 +152,10 @@
     
     <item>
       <title>Nginx对Connection头的处理过程</title>
-      <link>http://pureage.info/2015/12/08/connection-header-in-nginx.html</link>
+      <link>https://pureage.info/2015/12/08/connection-header-in-nginx.html</link>
       <pubDate>Tue, 08 Dec 2015 07:04:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/12/08/connection-header-in-nginx.html</guid>
+      <guid>https://pureage.info/2015/12/08/connection-header-in-nginx.html</guid>
       <description>&lt;h3 id=&#34;1-标准&#34;&gt;1. 标准&lt;/h3&gt;
 
 &lt;p&gt;RFC2616 中，对 Connection 的说明如下：&lt;/p&gt;
@@ -175,10 +175,10 @@
     
     <item>
       <title>不规范的 Nginx 开发</title>
-      <link>http://pureage.info/2015/11/11/non-standard-nginx-programming.html</link>
+      <link>https://pureage.info/2015/11/11/non-standard-nginx-programming.html</link>
       <pubDate>Wed, 11 Nov 2015 09:55:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/11/11/non-standard-nginx-programming.html</guid>
+      <guid>https://pureage.info/2015/11/11/non-standard-nginx-programming.html</guid>
       <description>&lt;p&gt;最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。&lt;/p&gt;
 
 &lt;h2 id=&#34;离主分支过远&#34;&gt;离主分支过远&lt;/h2&gt;
@@ -190,10 +190,10 @@
     
     <item>
       <title>nginx proxy_cache与etag配合的问题</title>
-      <link>http://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</link>
+      <link>https://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</link>
       <pubDate>Thu, 25 Jun 2015 13:07:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</guid>
+      <guid>https://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</guid>
       <description>&lt;p&gt;&lt;strong&gt;首先谈谈遇到的问题:&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;一个Nginx架在一个后端服务的前面，Nginx proxy_pass到它并开启proxy_cache,假设这个后端服务总是会吐Etag响应头。
@@ -205,10 +205,10 @@
     
     <item>
       <title>Nginx中的进程间通信</title>
-      <link>http://pureage.info/2015/03/28/ipc-of-nginx.html</link>
+      <link>https://pureage.info/2015/03/28/ipc-of-nginx.html</link>
       <pubDate>Sat, 28 Mar 2015 12:39:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/03/28/ipc-of-nginx.html</guid>
+      <guid>https://pureage.info/2015/03/28/ipc-of-nginx.html</guid>
       <description>&lt;p&gt;我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -233,10 +233,10 @@
     
     <item>
       <title>进程间传递文件描述符</title>
-      <link>http://pureage.info/2015/03/19/passing-file-descriptors.html</link>
+      <link>https://pureage.info/2015/03/19/passing-file-descriptors.html</link>
       <pubDate>Thu, 19 Mar 2015 08:46:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2015/03/19/passing-file-descriptors.html</guid>
+      <guid>https://pureage.info/2015/03/19/passing-file-descriptors.html</guid>
       <description>&lt;p&gt;首先，必须声明，“进程间传递文件描述符”这个说法是错误的。&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -249,10 +249,10 @@
     
     <item>
       <title>Nginx如何控制某个特性是否打开</title>
-      <link>http://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</link>
+      <link>https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</link>
       <pubDate>Fri, 17 Oct 2014 09:31:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</guid>
+      <guid>https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</guid>
       <description>&lt;p&gt;提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？&lt;/p&gt;
 
 &lt;p&gt;我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。&lt;/p&gt;
@@ -262,10 +262,10 @@
     
     <item>
       <title>用proxy_intercept_errors和recursive_error_pages代理多次302</title>
-      <link>http://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</link>
+      <link>https://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</link>
       <pubDate>Mon, 25 Aug 2014 15:59:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</guid>
+      <guid>https://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</guid>
       <description>&lt;p&gt;302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.&lt;/p&gt;
 
 &lt;p&gt;302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。&lt;/p&gt;
@@ -277,10 +277,10 @@
     
     <item>
       <title>ngx.var.arg与ngx.req.get_uri_args的区别</title>
-      <link>http://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</link>
+      <link>https://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</link>
       <pubDate>Wed, 30 Jul 2014 10:30:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</guid>
+      <guid>https://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</guid>
       <description>&lt;p&gt;ngx.var.arg_xx与ngx.req.get_uri_args[&amp;ldquo;xx&amp;rdquo;]两者都是为了获取请求uri中的参数，例如&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1  
@@ -304,10 +304,10 @@
     
     <item>
       <title>春哥关于Nginx踩坑记（一）的回复</title>
-      <link>http://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</link>
+      <link>https://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</link>
       <pubDate>Wed, 30 Apr 2014 02:42:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</guid>
+      <guid>https://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</guid>
       <description>&lt;p&gt;对于&lt;a href=&#34;http://pureage.info/2014/04/26/pitfall-of-nginx.html&#34;&gt;Nginx踩坑记（一）&lt;/a&gt;，在openresty的google group上提了个问题：&lt;a href=&#34;https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ&#34;&gt;ngx.exec是如何处理上层定义的变量的&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;春哥的回复&lt;strong&gt;摘录&lt;/strong&gt;如下：&lt;/p&gt;</description>
@@ -315,10 +315,10 @@
     
     <item>
       <title>Nginx踩坑记（一）</title>
-      <link>http://pureage.info/2014/04/26/pitfall-of-nginx.html</link>
+      <link>https://pureage.info/2014/04/26/pitfall-of-nginx.html</link>
       <pubDate>Sat, 26 Apr 2014 13:18:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/04/26/pitfall-of-nginx.html</guid>
+      <guid>https://pureage.info/2014/04/26/pitfall-of-nginx.html</guid>
       <description>&lt;h2 id=&#34;1-预备知识&#34;&gt;1. 预备知识&lt;/h2&gt;
 
 &lt;p&gt;Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。&lt;/p&gt;
@@ -343,10 +343,10 @@ location /test2 {
     
     <item>
       <title>关于nginx中的host变量</title>
-      <link>http://pureage.info/2014/02/22/host-variable-in-nginx.html</link>
+      <link>https://pureage.info/2014/02/22/host-variable-in-nginx.html</link>
       <pubDate>Fri, 21 Feb 2014 19:51:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/02/22/host-variable-in-nginx.html</guid>
+      <guid>https://pureage.info/2014/02/22/host-variable-in-nginx.html</guid>
       <description>&lt;p&gt;关于变量host，在Nginx的官网wiki中是如下说明的：&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -363,10 +363,10 @@ location /test2 {
     
     <item>
       <title>lua-nginx使用自定义变量中需要说明的一点</title>
-      <link>http://pureage.info/2014/01/20/lua-nginx-variable.html</link>
+      <link>https://pureage.info/2014/01/20/lua-nginx-variable.html</link>
       <pubDate>Mon, 20 Jan 2014 15:30:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/01/20/lua-nginx-variable.html</guid>
+      <guid>https://pureage.info/2014/01/20/lua-nginx-variable.html</guid>
       <description>&lt;p&gt;在nginx中，有两种方式添加自定义的变量：&lt;/p&gt;
 
 &lt;ul&gt;
@@ -392,10 +392,10 @@ location /test2 {
     
     <item>
       <title>关于proxy_pass的参数路径问题</title>
-      <link>http://pureage.info/2013/10/31/130.html</link>
+      <link>https://pureage.info/2013/10/31/130.html</link>
       <pubDate>Thu, 31 Oct 2013 04:16:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/10/31/130.html</guid>
+      <guid>https://pureage.info/2013/10/31/130.html</guid>
       <description>&lt;p&gt;由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。&lt;/p&gt;
 
 &lt;p&gt;这一搜，就掉进坑里了。&lt;/p&gt;

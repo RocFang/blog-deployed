@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Python on 纯真年代</title>
-    <link>http://pureage.info/tags/python/</link>
-    <description>Recent content in Python on 纯真年代</description>
+    <title>python on 纯真年代</title>
+    <link>https://pureage.info/tags/python/</link>
+    <description>Recent content in python on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 14 Nov 2013 11:20:00 +0000</lastBuildDate>
     
-	<atom:link href="http://pureage.info/tags/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pureage.info/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</title>
-      <link>http://pureage.info/2013/11/14/132.html</link>
+      <link>https://pureage.info/2013/11/14/132.html</link>
       <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/11/14/132.html</guid>
+      <guid>https://pureage.info/2013/11/14/132.html</guid>
       <description>&lt;p&gt;本文主要内容参考自：&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&#34;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&#34;&gt;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&lt;/a&gt;&lt;/p&gt;

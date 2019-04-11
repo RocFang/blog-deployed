@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://pureage.info/sitemap.xml
+Sitemap: https://pureage.info/sitemap.xml

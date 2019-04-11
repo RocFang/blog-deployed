@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Shell on 纯真年代</title>
-    <link>http://pureage.info/tags/shell/</link>
-    <description>Recent content in Shell on 纯真年代</description>
+    <title>shell on 纯真年代</title>
+    <link>https://pureage.info/tags/shell/</link>
+    <description>Recent content in shell on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 30 Apr 2014 15:43:00 +0000</lastBuildDate>
     
-	<atom:link href="http://pureage.info/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pureage.info/tags/shell/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>RPM中的%config和%config(noreplace)</title>
-      <link>http://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</link>
+      <link>https://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</link>
       <pubDate>Wed, 30 Apr 2014 15:43:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</guid>
+      <guid>https://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</guid>
       <description>&lt;p&gt;打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？&lt;/p&gt;
 
 &lt;p&gt;答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。&lt;/p&gt;
@@ -32,10 +32,10 @@
     
     <item>
       <title>依赖一个RPM来制作新的RPM</title>
-      <link>http://pureage.info/2014/01/27/176.html</link>
+      <link>https://pureage.info/2014/01/27/176.html</link>
       <pubDate>Mon, 27 Jan 2014 03:41:46 +0000</pubDate>
       
-      <guid>http://pureage.info/2014/01/27/176.html</guid>
+      <guid>https://pureage.info/2014/01/27/176.html</guid>
       <description>&lt;p&gt;项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。&lt;/p&gt;
 
 &lt;p&gt;在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。&lt;/p&gt;
@@ -47,10 +47,10 @@
     
     <item>
       <title>利用here document携带c代码</title>
-      <link>http://pureage.info/2013/10/08/129.html</link>
+      <link>https://pureage.info/2013/10/08/129.html</link>
       <pubDate>Tue, 08 Oct 2013 03:23:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/10/08/129.html</guid>
+      <guid>https://pureage.info/2013/10/08/129.html</guid>
       <description>&lt;p&gt;假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;tmp_src_filename=fdfs_check_bits.c  
@@ -73,10 +73,10 @@ output=$(./a.out)
     
     <item>
       <title>emlog的一键备份</title>
-      <link>http://pureage.info/2013/10/01/128.html</link>
+      <link>https://pureage.info/2013/10/01/128.html</link>
       <pubDate>Tue, 01 Oct 2013 03:31:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/10/01/128.html</guid>
+      <guid>https://pureage.info/2013/10/01/128.html</guid>
       <description>&lt;p&gt;不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -90,10 +90,10 @@ output=$(./a.out)
     
     <item>
       <title>漫谈logrotate与crond</title>
-      <link>http://pureage.info/2013/09/10/127.html</link>
+      <link>https://pureage.info/2013/09/10/127.html</link>
       <pubDate>Tue, 10 Sep 2013 15:11:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/09/10/127.html</guid>
+      <guid>https://pureage.info/2013/09/10/127.html</guid>
       <description>&lt;h1 id=&#34;什么是logrotate&#34;&gt;什么是logrotate&lt;/h1&gt;
 
 &lt;p&gt;logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。&lt;/p&gt;
@@ -109,10 +109,10 @@ output=$(./a.out)
     
     <item>
       <title>uniq、sort不得不注意的尾部空格（trailing whitespaces)</title>
-      <link>http://pureage.info/2013/09/09/126.html</link>
+      <link>https://pureage.info/2013/09/09/126.html</link>
       <pubDate>Mon, 09 Sep 2013 13:38:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/09/09/126.html</guid>
+      <guid>https://pureage.info/2013/09/09/126.html</guid>
       <description>&lt;h1 id=&#34;问题产生背景&#34;&gt;问题产生背景&lt;/h1&gt;
 
 &lt;p&gt;自己写的一个基于FastDFS的客户端软件的日志格式如下：&lt;/p&gt;
@@ -132,10 +132,10 @@ output=$(./a.out)
     
     <item>
       <title>bash中while循环的一个大坑</title>
-      <link>http://pureage.info/2013/08/22/122.html</link>
+      <link>https://pureage.info/2013/08/22/122.html</link>
       <pubDate>Thu, 22 Aug 2013 03:06:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/08/22/122.html</guid>
+      <guid>https://pureage.info/2013/08/22/122.html</guid>
       <description>&lt;p&gt;起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&amp;lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。&lt;/p&gt;
 
 &lt;p&gt;如果就这么过去了，多没意思，我觉得有必要深究一下while的运行机制。&lt;/p&gt;</description>
@@ -143,10 +143,10 @@ output=$(./a.out)
     
     <item>
       <title>sort命令中-k、-t选项的用法</title>
-      <link>http://pureage.info/2013/08/05/120.html</link>
+      <link>https://pureage.info/2013/08/05/120.html</link>
       <pubDate>Mon, 05 Aug 2013 12:56:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/08/05/120.html</guid>
+      <guid>https://pureage.info/2013/08/05/120.html</guid>
       <description>&lt;h1 id=&#34;需求&#34;&gt;需求：&lt;/h1&gt;
 
 &lt;p&gt;假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：&lt;/p&gt;
@@ -168,10 +168,10 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
     
     <item>
       <title>bash下如何实现perl中seek的功能？</title>
-      <link>http://pureage.info/2013/07/21/119.html</link>
+      <link>https://pureage.info/2013/07/21/119.html</link>
       <pubDate>Sun, 21 Jul 2013 15:23:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/07/21/119.html</guid>
+      <guid>https://pureage.info/2013/07/21/119.html</guid>
       <description>&lt;p&gt;因为日志处理需要，接触到perl,虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。&lt;/p&gt;
 
 &lt;p&gt;假设有这样的应用场景：客户通过ftp客户端上传文件到接入端ftp服务器，接入端ftp服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端ftp服务器要做的工作就是定时分析ftp server（假设是vsftpd,则日志为xferlog)的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog的记录条数也随之增长。&lt;/p&gt;
@@ -181,10 +181,10 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
     
     <item>
       <title>记一个here document的坑</title>
-      <link>http://pureage.info/2013/05/24/115.html</link>
+      <link>https://pureage.info/2013/05/24/115.html</link>
       <pubDate>Thu, 23 May 2013 16:49:00 +0000</pubDate>
       
-      <guid>http://pureage.info/2013/05/24/115.html</guid>
+      <guid>https://pureage.info/2013/05/24/115.html</guid>
       <description>&lt;h1 id=&#34;1-here-document&#34;&gt;1.here document&lt;/h1&gt;
 
 &lt;p&gt;here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：&lt;/p&gt;

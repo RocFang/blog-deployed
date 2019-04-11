@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<?xml-stylesheet type="text/xsl" href="http://pureage.info/sitemap.xsl"?>
+<?xml-stylesheet type="text/xsl" href="https://pureage.info/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://pureage.info/en/categories/</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://pureage.info/en/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://pureage.info/en/tags/</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://pureage.info/en/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://pureage.info/en/</loc>
-    <changefreq>weekly</changefreq>
+    <loc>https://pureage.info/en/</loc>
     <priority>0</priority>
   </url>
   
