@@ -33,11 +33,11 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.4" />
+<meta name="generator" content="Hugo 0.55.5" />
 
 
 <link rel="canonical" href="https://pureage.info/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
+<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.19ae5a432863a072ec64433bb1020bd6d3401129f87d6f2ad5af3bcfd84168a1.css" integrity="sha256-Ga5aQyhjoHLsZEM7sQIL1tNAESn4fW8q1a87z9hBaKE=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
 
 
 
@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-04-07T17:51:22&#43;08:00"/>
+<meta property="og:updated_time" content="2019-05-09T10:43:17&#43;08:00"/>
 
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
@@ -271,6 +271,45 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2015/02/14/learning-from-injury.html">受伤小记</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2015-02-14" class="post-time">
+        2015-02-14
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>千小心万小心，我还是受伤了。</p>
+
+<p>一月中下旬的时候，由于各种事情挤在一起，有一周多的时间完全没有跑步，其中包括去北京参加公司年会等。于是在1月25号，我开始恢复训练。</p>
+
+<p>那天是个周日，下午五点多的时候，我直接从住处沿公路跑到我经常跑步的公园并继续跑完6千多米。在跑之前，本是打算跑完一万米的，谁知由于前半程是在公路上跑的，路上各种变向绕开行人等动作，而且并没有做准备动作，导致腿部、膝盖等在跑完三千米的时候已经有不适了。</p>
+
+<p>在这种情况下，我做了一个错误的决定，继续跑了三千米。跑完后，膝盖侧面有些不适，心里暗想糟糕，不会受伤了吧。</p>
+
+<p>第二天，我又做出了一个更错误的决定，上完班后又跑了次一万米。这直接导致跑完后膝盖侧面非常疼痛，接下来的一周我已经完全不能跑步了，上下楼都很困难，不得已还只好放弃骑车上下班，改为步行。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/02/14/learning-from-injury.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+    
+      <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2014/12/30/qingyuan-marathon.html">报名了清远马拉松</a>
     </h1>
     
@@ -426,41 +465,6 @@
     </div>
     <div class="read-more">
       <a href="/2014/11/11/running-report-1.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/10/17/nginx-configure-of-define-and-have.html">Nginx如何控制某个特性是否打开</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-10-17" class="post-time">
-        2014-10-17
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
-
-<p>我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。</p>
-
-<p>Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/10/17/nginx-configure-of-define-and-have.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>

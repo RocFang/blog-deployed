@@ -33,11 +33,11 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.4" />
+<meta name="generator" content="Hugo 0.55.5" />
 
 
 <link rel="canonical" href="https://pureage.info/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
+<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.19ae5a432863a072ec64433bb1020bd6d3401129f87d6f2ad5af3bcfd84168a1.css" integrity="sha256-Ga5aQyhjoHLsZEM7sQIL1tNAESn4fW8q1a87z9hBaKE=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
 
 
 
@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-04-07T17:51:22&#43;08:00"/>
+<meta property="og:updated_time" content="2019-05-09T10:43:17&#43;08:00"/>
 
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
@@ -271,6 +271,41 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2014/01/21/reading-plan.html">2014年的读书计划</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-01-21" class="post-time">
+        2014-01-21
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>2013年我读了太多好书，主要原因有两点：<br />
+1. 作为一个宅男，看电影、看书本来就是我的爱好。
+2. 两年前就养成了看电子书的习惯了，但2013年看的更多了。工具从Kindle，到手机和Web端，平台主要是多看和豆瓣，技术类电子书主要是买图灵社区的PDF。</p>
+
+<p>如果你也跟我一样算是个喜欢看书的宅男，那么一旦习惯了阅读电子书，就会发现阅读量比以前突飞猛进了。国内电子书市场刚刚起步，很多地方不尽如人意，比如多看，最近几个月出的新书的质量简直不忍直视。这也不能怪它，好书的版权难拿，只好多出一些杂七杂八的书了。换个角度想想，即使你走进购书中心，合你口味的书还是少数，所以能偶尔在上面找到一本好书就心满意足了，没什么好怨念的。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/01/21/reading-plan.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+    
+      <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2014/01/20/lua-nginx-variable.html">lua-nginx使用自定义变量中需要说明的一点</a>
     </h1>
     
@@ -427,52 +462,6 @@
     </div>
     <div class="read-more">
       <a href="/2014/01/08/do-not-kiss-the-ass-of-your-boss.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/12/25/165.html">O_EXCL的作用</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-12-25" class="post-time">
-        2013-12-25
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <h2 id="1-原始语义">1.原始语义</h2>
-
-<p>与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。</p>
-
-<h2 id="2-使用场景">2.使用场景</h2>
-
-<p>O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。</p>
-
-<p><strong>之所以能这么用的唯一理由是该操作是原子的</strong>。</p>
-
-<p>之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:</p>
-
-<pre><code>if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
-    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
-...  /* 继续执行任务 */  
-</code></pre>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/25/165.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>

@@ -6,10 +6,21 @@
     <description>Recent content in Posts on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 07 Apr 2019 17:51:22 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 09 May 2019 10:43:17 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>《非暴力沟通》读书笔记</title>
+      <link>https://pureage.info/post/nonviolent-communication/</link>
+      <pubDate>Thu, 09 May 2019 10:43:17 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/nonviolent-communication/</guid>
+      <description>&lt;p&gt;这几天空闲的时候读完了马歇尔·卢森堡的《非暴力沟通》，觉得它确实是一本好书，在现实生活中指导意义很强。&lt;/p&gt;
+
+&lt;p&gt;如果没有看过这本书，仅看内容简介大概会把它归为“心灵鸡汤”一类的书。但实际上这是一本可以用来指导具体实践的教程，作者不厌其烦甚至有些啰嗦的举了大量的例子来说明非暴力沟通的具体实践。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>混迹技术聊天群容易产生的几个错觉</title>
@@ -272,23 +283,6 @@
 &lt;p&gt;多年以后&lt;br /&gt;
 她也许还记得&lt;br /&gt;
 这个阳光明媚的下午&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>看小说与看代码的共通之处</title>
-      <link>https://pureage.info/2016/06/08/similarities-of-novels-and-codes.html</link>
-      <pubDate>Tue, 07 Jun 2016 16:10:47 +0000</pubDate>
-      
-      <guid>https://pureage.info/2016/06/08/similarities-of-novels-and-codes.html</guid>
-      <description>&lt;p&gt;看小说，是我从小的爱好，看代码写代码，是我谋生的技能。这是两件极不相干的事，但是最近忽然觉得，这两者却有相通之处。原来我一直是用看小说的方式来看代码。&lt;/p&gt;
-
-&lt;p&gt;我认为，一部好的小说，如果不是囫囵吞枣随意读完便罢的话，至少是要看三遍的。&lt;/p&gt;
-
-&lt;p&gt;第一遍，按顺序读完。&lt;/p&gt;
-
-&lt;p&gt;第二遍，以事件、时间为中心，再看一遍。&lt;/p&gt;
-
-&lt;p&gt;第三遍，以人物为中心，再看一遍。&lt;/p&gt;</description>
     </item>
     
   </channel>

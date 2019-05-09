@@ -3,13 +3,32 @@
   
   <url>
     <loc>https://pureage.info/post/</loc>
-    <lastmod>2019-04-07T17:51:22+08:00</lastmod>
+    <lastmod>2019-05-09T10:43:17+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/</loc>
-    <lastmod>2019-04-07T17:51:22+08:00</lastmod>
+    <lastmod>2019-05-09T10:43:17+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/nonviolent-communication/</loc>
+    <lastmod>2019-05-09T10:43:17+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/</loc>
+    <lastmod>2019-05-09T10:43:17+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</loc>
+    <lastmod>2019-05-09T10:43:17+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -22,12 +41,6 @@
   
   <url>
     <loc>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</loc>
-    <lastmod>2019-04-07T17:51:22+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/</loc>
     <lastmod>2019-04-07T17:51:22+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -131,12 +144,6 @@
     <lastmod>2018-10-20T00:13:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</loc>
-    <lastmod>2018-10-20T00:13:41+08:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

@@ -35,7 +35,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.4" />
+<meta name="generator" content="Hugo 0.55.5" />
 
 
 <link rel="canonical" href="https://pureage.info/2013/10/01/128.html" />
@@ -54,7 +54,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.19ae5a432863a072ec64433bb1020bd6d3401129f87d6f2ad5af3bcfd84168a1.css" integrity="sha256-Ga5aQyhjoHLsZEM7sQIL1tNAESn4fW8q1a87z9hBaKE=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
 
 
 
@@ -350,9 +350,8 @@
 <ul>
 <li>如果不带参数，或执行./emlog_backup.sh all 则先备份数据库，再备份content目录<br /></li>
 <li>如果是执行./emlog_backup.sh sql，则只备份数据库<br /></li>
-<li>如果是执行./emlog_backup.sh content，则只备份content目录<br />
-<br /></li>
-</ul>
+
+<li><p>如果是执行./emlog_backup.sh content，则只备份content目录</p>
 
 <pre><code>#!/bin/bash  
   
@@ -376,82 +375,83 @@ fi
   
 backup_database()  
 {  
-        #----get the cookie----  
-        curl -d &quot;user=$emlog_user&amp;pw=$emlog_password&quot;  &quot;$emlog_domain&quot;/admin/index.php?action=login -c &quot;$backup_path/cookie&quot;  
+    #----get the cookie----  
+    curl -d &quot;user=$emlog_user&amp;pw=$emlog_password&quot;  &quot;$emlog_domain&quot;/admin/index.php?action=login -c &quot;$backup_path/cookie&quot;  
   
   
-        #----back up database----  
-        table_backup=(  
-        &quot;emlog_attachment&quot;  
-        &quot;emlog_blog&quot;  
-        &quot;emlog_comment&quot;  
-        &quot;emlog_options&quot;  
-        &quot;emlog_navi&quot;  
-        &quot;emlog_reply&quot;  
-        &quot;emlog_sort&quot;  
-        &quot;emlog_link&quot;  
-        &quot;emlog_tag&quot;  
-        &quot;emlog_trackback&quot;  
-        &quot;emlog_twitter&quot;  
-        &quot;emlog_user&quot;  
-        )  
-        table_box=$(  
-        let i=0;  
-        for((i=0;i&lt;${#table_backup[@]}-1;i=i+1))  
-        do  
-        echo -n &quot;table_box[$i]=${table_backup[$i]}&amp;&quot;  
-        done  
-        echo -n &quot;table_box[$i]=${table_backup[$i]}&quot;  
-        )  
-        echo $table_box  
+    #----back up database----  
+    table_backup=(  
+    &quot;emlog_attachment&quot;  
+    &quot;emlog_blog&quot;  
+    &quot;emlog_comment&quot;  
+    &quot;emlog_options&quot;  
+    &quot;emlog_navi&quot;  
+    &quot;emlog_reply&quot;  
+    &quot;emlog_sort&quot;  
+    &quot;emlog_link&quot;  
+    &quot;emlog_tag&quot;  
+    &quot;emlog_trackback&quot;  
+    &quot;emlog_twitter&quot;  
+    &quot;emlog_user&quot;  
+    )  
+    table_box=$(  
+    let i=0;  
+    for((i=0;i&lt;${#table_backup[@]}-1;i=i+1))  
+    do  
+    echo -n &quot;table_box[$i]=${table_backup[$i]}&amp;&quot;  
+    done  
+    echo -n &quot;table_box[$i]=${table_backup[$i]}&quot;  
+    )  
+    echo $table_box  
   
-        sql_file=&quot;$(date &quot;+%Y_%m_%d_%H_%M_%S&quot;).sql&quot;  
+    sql_file=&quot;$(date &quot;+%Y_%m_%d_%H_%M_%S&quot;).sql&quot;  
   
-        curl  -b &quot;$backup_path/cookie&quot; -L    -d &quot;$table_box&quot;  &quot;$emlog_domain&quot;/admin/data.php?action=bakstart&gt;&quot;$backup_path/$sql_file&quot;  
+    curl  -b &quot;$backup_path/cookie&quot; -L    -d &quot;$table_box&quot;  &quot;$emlog_domain&quot;/admin/data.php?action=bakstart&gt;&quot;$backup_path/$sql_file&quot;  
   
-        #----delete the cookie----  
-        rm -rf &quot;$backup_path/cookie&quot;  
+    #----delete the cookie----  
+    rm -rf &quot;$backup_path/cookie&quot;  
 }  
   
 backup_content()  
 {  
-        wget  -r  -nH --cut-dirs=3  -nv &quot;$remote_content&quot; -P &quot;$backup_path&quot;  
+    wget  -r  -nH --cut-dirs=3  -nv &quot;$remote_content&quot; -P &quot;$backup_path&quot;  
   
-        #----delete old content  
-        if  [ -d &quot;$backup__path/content&quot; ];then  
-                rm -rf &quot;$backup_path/content&quot;  
-        fi  
+    #----delete old content  
+    if  [ -d &quot;$backup__path/content&quot; ];then  
+            rm -rf &quot;$backup_path/content&quot;  
+    fi  
 }  
   
   
 if [ $# -eq 0 ];then  
-        backup_database  
-        backup_content  
-        exit 0  
+    backup_database  
+    backup_content  
+    exit 0  
   
 elif [ $# -eq 1 ];then  
-        if [ &quot;$1&quot; == &quot;all&quot; ];then  
-                backup_database  
-                backup_content  
-                exit 0  
+    if [ &quot;$1&quot; == &quot;all&quot; ];then  
+            backup_database  
+            backup_content  
+            exit 0  
   
-        elif [ &quot;$1&quot; == &quot;sql&quot; ];then  
-                backup_database  
-                exit 0  
+    elif [ &quot;$1&quot; == &quot;sql&quot; ];then  
+            backup_database  
+            exit 0  
   
-        elif [ &quot;$1&quot; == &quot;content&quot; ];then  
-                backup_content  
-                exit 0  
-        else  
-                echo &quot;operation not supported!&quot;  
-                exit 1  
-        fi  
+    elif [ &quot;$1&quot; == &quot;content&quot; ];then  
+            backup_content  
+            exit 0  
+    else  
+            echo &quot;operation not supported!&quot;  
+            exit 1  
+    fi  
   
 else  
-        echo &quot;operation not supported!&quot;  
-        exit 1  
+    echo &quot;operation not supported!&quot;  
+    exit 1  
 fi  
-</code></pre>
+</code></pre></li>
+</ul>
 
 <p><strong>2.windows</strong></p>
 
@@ -535,6 +535,8 @@ wget  -r  -nH --cut-dirs=3 -nv  ftp://admin:123456@127.0.0.1/domains/pureage.inf
   
 
   
+
+  
   
 
   
@@ -542,10 +544,8 @@ wget  -r  -nH --cut-dirs=3 -nv  ftp://admin:123456@127.0.0.1/domains/pureage.inf
   
 
   
-  
+
     
-
-
 
         </div>
       </div>

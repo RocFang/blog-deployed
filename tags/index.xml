@@ -6,10 +6,19 @@
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 07 Apr 2019 17:51:22 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 09 May 2019 10:43:17 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>读书</title>
+      <link>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</link>
+      <pubDate>Thu, 09 May 2019 10:43:17 +0800</pubDate>
+      
+      <guid>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>程序员</title>
@@ -53,15 +62,6 @@
       <pubDate>Wed, 02 Jan 2019 14:24:49 +0800</pubDate>
       
       <guid>https://pureage.info/tags/%E6%80%9D%E8%80%83/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>读书</title>
-      <link>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</link>
-      <pubDate>Sat, 20 Oct 2018 00:13:41 +0800</pubDate>
-      
-      <guid>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</guid>
       <description></description>
     </item>
     
