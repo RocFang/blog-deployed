@@ -6,10 +6,25 @@
     <description>Recent content on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 09 May 2019 10:43:17 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 May 2019 18:27:06 +0800</lastBuildDate>
     
         <atom:link href="https://pureage.info/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>工具</title>
+      <link>https://pureage.info/tools/</link>
+      <pubDate>Mon, 27 May 2019 18:27:06 +0800</pubDate>
+      
+      <guid>https://pureage.info/tools/</guid>
+      
+        <description>&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://passwd.pureage.info&#34;&gt;个人密码生成器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://tune.pureage.info&#34;&gt;简谱转调器&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+      
+    </item>
     
     <item>
       <title>《非暴力沟通》读书笔记</title>
@@ -942,70 +957,6 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;p&gt;最后，曾经骑行作为三大俗被很多人笑话。但是经过环青海湖之后，对于这种言论我只会报以轻蔑的一笑了。连青海湖这么好的路况，短短五天（实际骑行只有四天）的路程，就让我体会到骑行真是对身体和意志的双重考验，而与那些穿行在川藏线、滇藏线、新疆等地的真正骑行爱好者相比，我遇到的这些困难不值一提。&lt;/p&gt;
 
 &lt;p&gt;向他们表示敬意。&lt;/p&gt;</description>
-      
-    </item>
-    
-    <item>
-      <title>代码中的谎言</title>
-      <link>https://pureage.info/2016/07/04/lies-in-code.html</link>
-      <pubDate>Mon, 04 Jul 2016 15:17:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/2016/07/04/lies-in-code.html</guid>
-      
-        <description>&lt;p&gt;俗话说，一个谎言，要用一百个谎言去圆。&lt;/p&gt;
-
-&lt;p&gt;在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。&lt;/p&gt;
-
-&lt;p&gt;但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。&lt;/p&gt;
-
-&lt;p&gt;今天我们就来以&lt;a href=&#34;https://github.com/arut/nginx-rtmp-module&#34;&gt;Nginx-RTMP&lt;/a&gt;这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。&lt;/p&gt;
-
-&lt;p&gt;在ngx_rtmp.c中，存在一个全局变量ngx_rtmp_init_queue，通过阅读它的相关使用场景，我们可以知道这是一个队列性质的全局变量，与ngx_posted_accept_events、ngx_posted_events这两个变量类似。它们的用法是，将一类事件通过调用ngx_post_event注册到与其对应的队列中，当然这个注册是可以发生在不同的时间和场景下，然后在将来某个时刻，通过调用ngx_event_process_posted来耗尽这个任务队列，即遍历该任务队列中的每个事件，并执行事件的handler回调函数。&lt;/p&gt;
-
-&lt;p&gt;我们继续来看ngx_rtmp_init_queue这个事件队列的具体情况。&lt;/p&gt;
-
-&lt;p&gt;(1) ngx_rtmp_init_queue的初始化&lt;/p&gt;
-
-&lt;p&gt;ngx_rtmp_init_queue的初始化发生在ngx_rtmp_module模块的init_process中，通过调用ngx_rtmp_init_queue来完成。&lt;/p&gt;
-
-&lt;p&gt;(2) ngx_rtmp_init_queue的事件注册&lt;/p&gt;
-
-&lt;p&gt;在Nginx-RTMP中，只有两个地方往ngx_rtmp_init_queue中注册了事件，他们分别是ngx_rtmp_exec_module模块和ngx_rtmp_relay_module模块的init_process钩子。注册的事件具有相同的属性：希望在进程启动的时候就执行的事件。例如在ngx_rtmp_relay_module模块中，正常的pull回源处理逻辑，是当有播放器接入进来之后才会被触发。而配置了属性为static的pull，当worker进程刚启动时就会去上上层拉取指定的流，而不会等播放器播放行为来触发。ngx_rtmp_exec_module模块中的使用也是如此。&lt;/p&gt;
-
-&lt;p&gt;(3) ngx_rtmp_init_queue的消耗&lt;/p&gt;
-
-&lt;p&gt;上面第二点说明了在什么场景、什么时候，程序会往ngx_rtmp_init_queue这个全局队列中注册事件。我们接下来应该关心的是，这个事件队列中的事件，什么时候会得到执行。&lt;/p&gt;
-
-&lt;p&gt;通过查阅代码，我们会发现在ngx_rtmp_stat_module模块的init_process钩子中，ngx_rtmp_init_queue队列中的事件会通过调用ngx_event_process_posted被耗尽。&lt;/p&gt;
-
-&lt;p&gt;至此，从逻辑上来说，我们已经完全清楚了ngx_rtmp_init_queue这个全局变量存在的意义。&lt;/p&gt;
-
-&lt;p&gt;但是这还不够，我们深入思考一下，就会有如下的疑问：&lt;/p&gt;
-
-&lt;p&gt;(1) 为什么在RTMP模块中注册的事件，要在一个HTTP模块(ngx_rtmp_stat_module其实是一个HTTP模块)中执行?ngx_rtmp_stat_module模块的作用是统计流的信息，从逻辑上来说，我们可以选择不编译这个模块，而由于上述ngx_rtmp_init_queue的使用逻辑，却不能这样做，因为这些静态功能(static_pull, static_exec)在依赖它。即使模块之间有时候不能完全避免耦合，但RTMP里的功能却要依赖一个HTTP模块，这说不过去。&lt;/p&gt;
-
-&lt;p&gt;(2) 我们知道任务队列的作用主要是延迟事件的执行。但是这里如此使用的意义在哪里？通过前面的分析，我们知道无论是往ngx_rtmp_init_queue中注册事件，还是消耗ngx_rtmp_init_queue里的事件，都是发生在相关模块的init_process钩子中。而当一个worker进程启动后，马上就会通过一个简单的for循环来遍历执行所有模块的init_process钩子，这显然并没有起到任何延时的意义。&lt;/p&gt;
-
-&lt;p&gt;既然不应该让RTMP模块去依赖一个HTTP模块，也不用考虑事件的延迟执行，我们为什么不去掉ngx_rtmp_init_queue，改为直接在各涉事RTMP模块的init_process钩子中直接去执行自己对应的事件呢？这样程序逻辑更清楚且不会有额外的损失。&lt;/p&gt;
-
-&lt;p&gt;答案是因为定时器。&lt;/p&gt;
-
-&lt;p&gt;这些在init_process中注册到ngx_rtmp_init_queue中的事件，都需要用到定时器来检查这些事件是否执行正常，进而决定是否再次执行相应的逻辑。&lt;/p&gt;
-
-&lt;p&gt;而在RTMP模块的init_process钩子中是不能使用定时器的，严格的说，是使用定时器不会达到定时器的效果。&lt;/p&gt;
-
-&lt;p&gt;所以作者才会创造这么一个ngx_rtmp_init_queue，让本应在相关RTMP模块的init_process钩子中自顾自执行的逻辑，放到统计模块这个HTTP模块的init_process中一股脑执行，因为在HTTP模块的init_process钩子中，可以使用定时器。&lt;/p&gt;
-
-&lt;p&gt;为什么？&lt;/p&gt;
-
-&lt;p&gt;因为定时器的初始化是在ngx_event_core_module模块的init_process钩子中进行的，ngx_event_core_module是一个NGX_EVENT_MODULE类型的模块。而由于Nginx-RTMP项目config文件的写法，会导致所有RTMP类型的模块在全局模块数组ngx_modules中的位置，处于ngx_event_core_module模块的前面。从当前最新的config版本，我们能清楚的看到这一事实：&lt;br /&gt;
-&lt;a href=&#34;https://github.com/arut/nginx-rtmp-module/blob/e08959247dc840bb42cdf3389b1f5edb5686825f/config&#34;&gt;config&lt;/a&gt;。所以，ngx_event_core_module的init_process会在各RTMP模块的init_process之后执行，那么在RTMP模块的init_process钩子中添加的定时器，会在ngx_event_core_module的init_process中被毫不留情的初始化掉。&lt;/p&gt;
-
-&lt;p&gt;错误其实在一开始就铸成，从一开始作者就在config文件中将RTMP模块放在了ngx_event_core_module模块之前。我们可以查看config文件的&lt;a href=&#34;https://github.com/arut/nginx-rtmp-module/commit/eb6a14fb6cc9ece398b8b2b5aae5d91b694c32d3&#34;&gt;第二次提交&lt;/a&gt;来确认这一点。&lt;/p&gt;
-
-&lt;p&gt;弄清楚了整个来龙去脉之后，我们当然就知道该如何去掉ngx_rtmp_init_queue，这也是应该的，既然问题都不存在了，为了解决这个问题的奇技淫巧当然也不应该存在。&lt;/p&gt;
-
-&lt;p&gt;开源软件的魅力就在于此，你仿佛能穿越时空，通过代码与作者对话，感受他的聪明、狡黠与纠结。&lt;/p&gt;</description>
       
     </item>
     
