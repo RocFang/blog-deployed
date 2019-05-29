@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-05-27T18:27:06&#43;08:00"/>
+<meta property="og:updated_time" content="2019-05-29T13:25:01&#43;08:00"/>
 
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
@@ -289,6 +289,47 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2014/04/30/noreplace-in-rpm-spec-file.html">RPM中的%config和%config(noreplace)</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-04-30" class="post-time">
+        2014-04-30
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？</p>
+
+<p>答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。</p>
+
+<p>对于spec文件中在%files段的某一个文件，我们要讨论三种情况：</p>
+
+<ol>
+<li>没有带%config指令。例如：%{_sbindir}/redis-server<br /></li>
+<li>带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf<br /></li>
+<li>带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf<br /></li>
+</ol>
+    </div>
+    <div class="read-more">
+      <a href="/2014/04/30/noreplace-in-rpm-spec-file.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+    
+      <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html">春哥关于Nginx踩坑记（一）的回复</a>
     </h1>
     
@@ -441,41 +482,6 @@ location /test2 {
     </div>
     <div class="read-more">
       <a href="/2014/04/12/agentzh.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/03/31/difference-of-rd-and-sales.html">研发与销售的一些区别</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-03-31" class="post-time">
-        2014-03-31
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>身为一名开发人员，因为一些机会接触过一些销售，其中有些是非常优秀的销售。在与他们打交道的过程之中，能明显感觉到研发与销售的区别。</p>
-
-<p><strong>销售们通常是外向型的</strong>。当然，并不一定是说他们的性格本身就外向的，而是他们的工作方式、工作态度会给人一种他们很外向的印象。例如，某位金牌销售，每周都会在社交网络上写一些文章，分享、感悟之类。而我接触到的包括我自己在内的研发，基本上都是埋头干自己的事情。</p>
-
-<p><strong>销售们通常比研发要更成熟</strong>。工作中接触到的印象深刻的销售们，现在都是接近或已经是90后了。但他们在为人处世上比同龄的研发要厉害很多。这也很正常，跟学习、工作经历密不可分。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/03/31/difference-of-rd-and-sales.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
@@ -1360,6 +1366,27 @@ location /test2 {
 
       
 
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
       
       
       <li><a href="/page/16/">»</a></li>
@@ -1367,7 +1394,7 @@ location /test2 {
 
       
       
-      <li><a href="/page/35/">»»</a></li>
+      <li><a href="/page/36/">»»</a></li>
       
 
       </ul>

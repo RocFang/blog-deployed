@@ -6,10 +6,23 @@
     <description>Recent content in Posts on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 09 May 2019 10:43:17 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 29 May 2019 13:25:01 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Rebuild My Notes</title>
+      <link>https://pureage.info/post/rebuild-my-notes/</link>
+      <pubDate>Wed, 29 May 2019 13:25:01 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/rebuild-my-notes/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;笔记系统，不就是个云笔记吗？说的这么高大上。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;从2013年起，我就开始将自己的各种笔记和收集到的零散知识放在有道云笔记上。到现在为止，客观的说，有道云笔记的表现是很让我满意的。网友反映它会丢笔记等种种严重的毛病，我基本都没遇到过，有印象的几次问题表现在同步出了冲突，但并没有导致笔记丢失，而是同一份笔记生成了几份。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>《非暴力沟通》读书笔记</title>
@@ -265,24 +278,6 @@
 &lt;p&gt;但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。&lt;/p&gt;
 
 &lt;p&gt;今天我们就来以&lt;a href=&#34;https://github.com/arut/nginx-rtmp-module&#34;&gt;Nginx-RTMP&lt;/a&gt;这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>雨中午后</title>
-      <link>https://pureage.info/2016/06/11/a-rainy-afternoon.html</link>
-      <pubDate>Sat, 11 Jun 2016 09:30:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/2016/06/11/a-rainy-afternoon.html</guid>
-      <description>&lt;p&gt;细雨中&lt;br /&gt;
-一辆自行车迎面而来&lt;br /&gt;
-车篮里&lt;br /&gt;
-一个小女孩伸开双手在飞翔&lt;br /&gt;
-卷发贴在额头&lt;br /&gt;
-脸蛋红成一个苹果&lt;/p&gt;
-
-&lt;p&gt;多年以后&lt;br /&gt;
-她也许还记得&lt;br /&gt;
-这个阳光明媚的下午&lt;/p&gt;</description>
     </item>
     
   </channel>
