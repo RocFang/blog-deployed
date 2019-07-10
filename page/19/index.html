@@ -315,9 +315,197 @@
     
     <div class="post-summary">
       <p>FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/05/156.html" class="read-more-link">阅读全文</a>
+
+<p><strong>1. tcprecvdata_ex</strong></p>
+
+<pre><code>int tcprecvdata_ex(int sock, void *data, const int size, \  
+		const int timeout, int *count)  
+{  
+	int left_bytes;  
+	int read_bytes;  
+	int res;
+	int ret_code;  
+	unsigned char* p;  
+#ifdef USE_SELECT  
+	fd_set read_set;  
+	struct timeval t;  
+#else  
+	struct pollfd pollfds;  
+#endif  
+  
+#ifdef USE_SELECT  
+	FD_ZERO(&amp;read_set);  
+	FD_SET(sock, &amp;read_set);  
+#else  
+	pollfds.fd = sock;  
+	pollfds.events = POLLIN;  
+#endif  
+  
+	read_bytes = 0;  
+	ret_code = 0;  
+	p = (unsigned char*)data;  
+	left_bytes = size;  
+	while (left_bytes &gt; 0)  
+	{  
+  
+#ifdef USE_SELECT  
+		if (timeout &lt;= 0)  
+		{  
+			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
+		}  
+		else  
+		{  
+			t.tv_usec = 0;  
+			t.tv_sec = timeout;  
+			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
+		}  
+#else  
+		res = poll(&amp;pollfds, 1, 1000 * timeout);  
+		if (pollfds.revents &amp; POLLHUP)  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+#endif  
+  
+		if (res &lt; 0)  
+		{  
+			ret_code = errno != 0 ? errno : EINTR;  
+			break;  
+		}  
+		else if (res == 0)  
+		{  
+			ret_code = ETIMEDOUT;  
+			break;  
+		}  
+	  
+		read_bytes = recv(sock, p, left_bytes, 0);  
+		if (read_bytes &lt; 0)  
+		{  
+			ret_code = errno != 0 ? errno : EINTR;  
+			break;  
+		}  
+		if (read_bytes == 0)  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+  
+		left_bytes -= read_bytes;  
+		p += read_bytes;  
+	}  
+  
+	if (count != NULL)  
+	{  
+		*count = size - left_bytes;  
+	}  
+  
+	return ret_code;  
+}  
+</code></pre>
+
+<p><strong>2.tcprecvdata_nb_ex</strong></p>
+
+<pre><code>int tcprecvdata_nb_ex(int sock, void *data, const int size, \  
+		const int timeout, int *count)  
+{  
+	int left_bytes;  
+	int read_bytes;  
+	int res;  
+	int ret_code;  
+	unsigned char* p;  
+#ifdef USE_SELECT  
+	fd_set read_set;  
+	struct timeval t;  
+#else  
+	struct pollfd pollfds;  
+#endif  
+  
+#ifdef USE_SELECT  
+	FD_ZERO(&amp;read_set);  
+	FD_SET(sock, &amp;read_set);  
+#else  
+	pollfds.fd = sock;  
+	pollfds.events = POLLIN;  
+#endif  
+  
+	read_bytes = 0;  
+	ret_code = 0;  
+	p = (unsigned char*)data;  
+	left_bytes = size;  
+	while (left_bytes &gt; 0)  
+	{  
+		read_bytes = recv(sock, p, left_bytes, 0);  
+		if (read_bytes &gt; 0)  
+		{  
+			left_bytes -= read_bytes;  
+			p += read_bytes;  
+			continue;  
+		}  
+  
+		if (read_bytes &lt; 0)  
+		{  
+  
+			if (!(errno == EAGAIN || errno == EWOULDBLOCK))  
+			{  
+				ret_code = errno != 0 ? errno : EINTR;  
+				break;  
+			}  
+		}  
+		else  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+  
+#ifdef USE_SELECT  
+		if (timeout &lt;= 0)  
+		{  
+			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
+		}  
+		else  
+		{  
+			t.tv_usec = 0;  
+			t.tv_sec = timeout;  
+			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
+		}  
+#else  
+		res = poll(&amp;pollfds, 1, 1000 * timeout);  
+		if (pollfds.revents &amp; POLLHUP)  
+		{  
+			ret_code = ENOTCONN;  
+			break;  
+		}  
+#endif  
+  
+		if (res &lt; 0)  
+		{  
+			ret_code = errno != 0 ? errno : EINTR;  
+			break;  
+		}  
+		else if (res == 0)  
+		{  
+			ret_code = ETIMEDOUT;  
+			break;  
+		}  
+	}  
+  
+	if (count != NULL)  
+	{  
+		*count = size - left_bytes;  
+	}  
+  
+	return ret_code;  
+}  
+</code></pre>
+
+<p>乍一眼看上去，这两个不是一样吗？仔细看下就会发现区别所在：nonblock版本在循环里把recv操作放在了select/poll之前，而block版本在循环里把recv操作放在了select/poll之后。其他地方几乎都是一模一样的。</p>
+
+<p>其实，这两个函数处理的socket在调用他们之前，都已经被设置为nonblock了，这是一个前提条件。也就是说，我们这两个函数是对一个nonblock的socket在细分为block和nonblock，有点拗口，既然这个socket都已经是nonblock的了，为什么这里还会有block和nonblock的区别呢?</p>
+
+<p>他们的区别在于，tcprecvdata_nb_ex会调用select/poll从而阻塞的唯一场合就是在一个recv返回EAGAIN错误或 EWOULDBLOCK时，而tcprecvdata_nb在每一次recv调用钱都会调用可能引起阻塞的select/poll。</p>
+
+<p>在这两个函数中学到了一个技巧，该技巧与这两个函数的区别无关。就是如何在一个nonblock的socket连接中获取希望获取的字节数。由于socket是nonblock的，调用recv马上返回，如果出错且错误是EAGAIN或EWOULDBLOCK，那么我们希望能再重试一下。但如果只是用一个while循环来主动一遍一遍的重试的话，超时该如何处理呢？其实这才是这两个函数中用到select/poll的真正意义所在。即，在一个非阻塞的套接字连接里，达到阻塞接收指定大小的数据的效果，但同时又有超时机制来保证并不会真正的阻塞。</p>
     </div>
     
   </div>
@@ -350,9 +538,83 @@
 <blockquote>
 <p>The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3.  Support of address families other than IPv4 is available only on kernels that support netlink.</p>
 </blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/04/155.html" class="read-more-link">阅读全文</a>
+
+e>
+
+<h2 id="2-调用ioctl">2.调用ioctl</h2>
+
+<pre><code>int getlocaladdrs(char ip_addrs[][IP_ADDRESS_SIZE], \  
+	const int max_count, int *count)  
+{  
+	int s;  
+	struct ifconf ifconf;  
+	struct ifreq ifr[32];  
+	int if_count;  
+	int i;  
+	int result;  
+  
+	*count = 0;  
+	s = socket(AF_INET, SOCK_STREAM, 0);  
+	if (s &lt; 0)  
+	{  
+		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
+			&quot;socket create fail, errno: %d, error info: %s&quot;, \  
+			__LINE__, errno, STRERROR(errno));  
+		return errno != 0 ? errno : EMFILE;  
+	}  
+  
+	ifconf.ifc_buf = (char *) ifr;  
+	ifconf.ifc_len = sizeof(ifr);  
+	if (ioctl(s, SIOCGIFCONF, &amp;ifconf) &lt; 0)  
+	{  
+		result = errno != 0 ? errno : EMFILE;  
+		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
+			&quot;call ioctl fail, errno: %d, error info: %s&quot;, \  
+			__LINE__, result, STRERROR(result));  
+ 		close(s);  
+		return result;  
+	}  
+  
+	if_count = ifconf.ifc_len / sizeof(ifr[0]);  
+	if (max_count &lt; if_count)  
+	{  
+		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
+			&quot;max_count: %d &lt; iterface count: %d&quot;, \  
+			__LINE__, max_count, if_count);  
+ 		close(s);  
+		return ENOSPC;  
+	}  
+  
+	for (i = 0; i &lt; if_count; i++)  
+	{  
+		struct sockaddr_in *s_in;  
+    		s_in = (struct sockaddr_in *) &amp;ifr[i].ifr_addr;  
+    		if (!inet_ntop(AF_INET, &amp;s_in-&gt;sin_addr, \  
+			ip_addrs[*count], IP_ADDRESS_SIZE))  
+		{  
+			result = errno != 0 ? errno : EMFILE;  
+			logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
+				&quot;call inet_ntop fail, &quot; \  
+				&quot;errno: %d, error info: %s&quot;, \  
+				__LINE__, result, STRERROR(result));  
+ 			close(s);  
+			return result;  
+    		}  
+		(*count)++;  
+	}  
+  
+	close(s);  
+	return *count &gt; 0 ? 0 : ENOENT;  
+}  
+</code></pre>
+
+<h2 id="3-判断一个ip是否是本地ip的几种方法">3.判断一个ip是否是本地ip的几种方法：</h2>
+
+<p>（1）用该ip和指定一个端口号，执行bind操作，成功则说明是本地IP，否则不是。</p>
+
+<p>（2）上一种方法的问题在于，如果指定的端口被占用了，那么及时是本地Ip，bind也会出错。可以做如下修改：bind时指定0端口，让系统给分配一个可用的端口。</p>
+
+<p>（3）先用上面提到的获取本地Ip的两种方法把本地ip列表获取到，然后看目标ip是否在其中即可。</p>
     </div>
     
   </div>
@@ -385,9 +647,8 @@
 <p>开始我似乎在一个黑暗的监狱里，浑身发抖，抱着膝盖蜷在墙角，像一条瑟瑟发抖的狗。忽然一道月光照下来，我慢慢站起来，展开双臂，发现臂下连着一双乌黑的翅膀。迎着月光，纵身一跃，化身为蝙蝠侠，滑翔在城市的夜空。滑翔了几分钟之后，猛然振翅向更高更亮处飞去，突然发现自己已经不是蝙蝠侠了，这次变成了阿凡达。</p>
 
 <p>梦是什么时候醒的不知道了，这段时间，特别是午休时，经常从噩梦中惊醒，或是在噩梦中挣扎着想醒来却动弹不得。能做一下美梦，挺好的，而且梦里几个镜头的衔接简直太漂亮了，闭上眼睛依然能有强烈的画面感在脑中回想。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/02/154.html" class="read-more-link">阅读全文</a>
+
+<p>其实，原因很简单，就是近来经常看一些极限运动，特别是穿滑翔衣从直升机或山顶纵身而下的视频。</p>
     </div>
     
   </div>
@@ -424,9 +685,124 @@
 <p>我们来看看五度圈是个什么样子：</p>
 
 <p><img src="/img/wuduquan-1.jpg" alt="wuduquan-1.jpg" /></p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/01/153.html" class="read-more-link">阅读全文</a>
+
+<p>我们知道，那些带有升降符号的半音都有几种表示方法，这里统一用如图所示的记法，即以降号为主。</p>
+
+<p>想不通过死记硬背来画出这个圈，有三种方法，下面将一一道来。唯一需要你牢记的就是，五度圈上每相邻的两个音之间间隔了7个半音。没错，你只需要记住7这个数字就行了。</p>
+
+<p>第一种方法：</p>
+
+<p>我们把十二平均律的十二个记号用数字1到12一一对应，即</p>
+
+<ul>
+<li>C      1<br /></li>
+<li>Db     2<br /></li>
+<li>D  3<br /></li>
+<li>Eb     4<br /></li>
+<li>E  5<br /></li>
+<li>F  6<br /></li>
+<li>Gb     7<br /></li>
+<li>G  8<br /></li>
+<li>Ab     9<br /></li>
+<li>A  10<br /></li>
+<li>Bb     11<br /></li>
+<li>B  12<br />
+<br /></li>
+</ul>
+
+<p>以C为起点，他在五度圈上的下一个音是这么算出来的：1+7x1=8,由十二平均律的顺序，第8个音是G（最简单的是直接查上表），所以C的下一个音就是G。</p>
+
+<p>C之后的第二个音，即G后面的一个音：1+7x2=15,15除以12，余3。由十二平均律，第3个音是D，所以G后的音是D。</p>
+
+<p>依次类推：</p>
+
+<p>1+7x3=22,22除以12，余10。由十二平均律，紧接着是A。<br />
+1+7x4=29,29除以12，余5，即E。<br />
+1+7x5=36,26除以12，余0，由于上面标示12平均律的范围是1到12，不包括0，所以把0按12算，即B。<br />
+1+7x6=43,43除以12，余7，即Gb。<br />
+1+7x7=50,50除以12，余2，即Db。<br />
+1+7x8=57,50除以12，余9，即Ab。<br />
+1+7x9=64,64除以12，余4，即Eb。<br />
+1+7x10=71,71除以12，余11，即Bb。<br />
+1+7x11=78，78除以12，余6，即F。</p>
+
+<p>将上面推导出来的音按顺序排列出来，即是五度圈上标注的顺序。大功告成。</p>
+
+<p>第二种方法:</p>
+
+<p>第二种方法来自于晓松老师的网站，链接为：</p>
+
+<p><a href="http://www.soharp.com/index.php/lession/show/id/103。转述如下：">http://www.soharp.com/index.php/lession/show/id/103。转述如下：</a></p>
+
+<blockquote>
+<p>先分析一下上面的标准五度圈，如果把五度圈比作一个钟表盘的话，那么，C在12点的位置；顺时针由F到B，包括七个自然音；由#F到bB，又包括五个变化音，一共十二个音。<br />
+现在我们把F和B连成一条直线&ndash;蓝色点划线&ndash;我们姑且把它称作音区分隔线（乐理上没这叫法，别当真，只是为了方便说明问题），右上绿色部分是自然音区，左下红色部分是变化音区，如下图：<br />
+<img src="/img/wuduquan-2.jpg" alt="wuduquan-2.jpg" /><br />
+单独把自然音&mdash;-绿色部分提出来，如下图：<br />
+<img src="/img/wuduquan-3.jpg" alt="wuduquan-3.jpg" /><br />
+ 貌似非常地杂乱无章啊，NO，是有规律的：<br />
+ 首先，CDEFGAB，这个C大调音阶对大家来说，应该是已经烂熟于心了，就按照这个顺序，再加一点小方法一路写下去。方法如下：<br />
+1、确定C的位置，钟表盘的12点位置，顺时针开始，隔一个点写D，再隔一个点写E，再隔着五点钟的那个点写F，然后好像写不下去了，没关系，既然只是 研究自然音区，那么隔个B位置的那个点，直接转上去写F就好了，再隔一个已知的C写上G，再隔已经写出来的D点，写A，最后，隔着已经写的E，把五点钟的 B补上，于是，五度圈自然音部分就写完整了。书写顺序如下图：<br />
+<img src="/img/wuduquan-4.jpg" alt="wuduquan-4.jpg" /><br />
+2、既然自然音区众大神儿们已经归位，那么开始研究一下变化音区的音符都应该是哪几位，如下图：<br />
+<img src="/img/wuduquan-5.jpg" alt="wuduquan-5.jpg" /><br />
+当把自然区的七个音符都写出来的时候，那么，我们用区别于写自然音的另外一种方法，来排列变化区的音符：<br />
+仍然看已经写出来的自然区，从F开始，沿着我们所谓的那个分隔线看到B，再逆时针的看EADG，整个序列应该是 BEADG。<br />
+ 那从，从B开始，把BEADG依次从F开始按逆时针顺序（不再像自然音那样隔着点来写了，依次写就OK。）写到变化音区里，如下图：<br />
+ <img src="/img/wuduquan-6.jpg" alt="wuduquan-6.jpg" /><br />
+不伦不类啊，这都啥呀，怎么么成了自然音，这里明明应该是变化音的啊，那些升、降记号哪去了？？？<br />
+您别急啊，试着，把这哥五个都添上降记号看看是什么？如下图：<br />
+ <img src="/img/wuduquan-7.jpg" alt="wuduquan-7.jpg" /><br />
+关于为什么都添上降记号，我是这样记忆的，因为是逆时针方向书写的BEADG，就写降记号咯，“逆”与“降”在汉字逻辑中还有一定关联性的吧？（您 可以试试，如果顺时针比照自然音部分，顺时针书写变化音部分，再加上升记号（#），也是这几个小东西&mdash;&ndash;如果括号内的话会把您看迷糊的话，请立刻忘 记！）<br />
+ 如果再把刚才已经写出来的自然音部分合在一起，一个完全的五度圈就热乎乎、香喷喷滴新鲜出炉了：<br />
+ <img src="/img/wuduquan-8.jpg" alt="wuduquan-8.jpg" /><br />
+吼吼，现在是不是已经能够默画下五度圈了呢？<br />
+其实变化音用降记号写出来，用升记号表示不难了吧、bB=#A   bE=#D    bA=#G    bD=#C    bG=#F      &mdash;&mdash;&mdash;&mdash;-这您是知道的！<br />
+PS:来个动画，每五秒钟翻一页，共十一页。<br />
+ <img src="/img/wuduquan-9.gif" alt="wuduquan-9.gif" /></p>
+</blockquote>
+
+<p>第三种方法：</p>
+
+<p>第三种方法和第一种方法都是strider原创，如有雷同，纯属巧合。</p>
+
+<p>（1）首先，画一个圆，将其12等分，如下图所示：</p>
+
+<p><img src="/img/wuduquan-10.jpg" alt="wuduquan-10.jpg" /></p>
+
+<p>（2）将其按时钟终顺序标注次序，注意，该次序仅为画图过程的中间产物，与最终五度圈的顺序无关。如下图所示，仅仅是画一个时钟，很简单：</p>
+
+<p><img src="/img/wuduquan-11.jpg" alt="wuduquan-11.jpg" /></p>
+
+<p>（3）把12点标为第一个点（注意，从现在起，在时钟上标注的数字即为最终五度圈上各音的次序），12点与6点在一条直径上，连接12点与6点左边的一个点，将其标为2，以2为起点，连接其对应直径另一端的相邻的那个点，标为3：</p>
+
+<p><img src="/img/wuduquan-12.jpg" alt="wuduquan-12.jpg" /></p>
+
+<p>（4）以3为起点，连接其对应直径的另一端的旁边相邻的那个点，标为4点，以4为起点，连接其对应直径的另一端的旁边相邻的那个点，标为5点：</p>
+
+<p><img src="/img/wuduquan-13.jpg" alt="wuduquan-13.jpg" /></p>
+
+<p>（5）以5为起点，连接其对应直径的另一端的旁边相邻的那个点，标为6点，以6为起点，连接其对应直径的另一端的旁边相邻的那个点，标为7点：</p>
+
+<p><img src="/img/wuduquan-14.jpg" alt="wuduquan-14.jpg" /></p>
+
+<p>（6）以7为起点，连接其对应直径的另一端的旁边相邻的那个点，标为8点，以8为起点，连接其对应直径的另一端的旁边相邻的那个点，标为9点：</p>
+
+<p><img src="/img/wuduquan-15.jpg" alt="wuduquan-15.jpg" /></p>
+
+<p>（4）以9为起点，连接其对应直径的另一端的旁边相邻的那个点，标为10点，以10为起点，连接其对应直径的另一端的旁边相邻的那个点，标为11点：</p>
+
+<p><img src="/img/wuduquan-16.jpg" alt="wuduquan-16.jpg" /></p>
+
+<p>（4）以11为起点，连接其对应直径的另一端的旁边相邻的那个点，标为12点，至此，1到12全部标记完成。</p>
+
+<p><img src="/img/wuduquan-17.jpg" alt="wuduquan-17.jpg" /></p>
+
+<p>按上面那张十二平均律对应顺序的表格，将1到12对应的音按顺序标上去，就完成了五度圈的绘制：</p>
+
+<p><img src="/img/wuduquan-18.jpg" alt="wuduquan-18.jpg" /></p>
+
+<p>以上介绍了三种推导五度圈的方法，随便掌握一种即可让你在忘记五度圈的情况下，从头画出完整的一份。</p>
     </div>
     
   </div>
@@ -459,9 +835,20 @@
 <p>喜欢一个乐器一般是从喜欢某首它演奏的曲子开始的，在国内，很多布鲁斯口琴爱好者都是从《星之所在》、《天空之城》、《爱尔兰画眉》、《素敌》等曲子开始的，我也一样。</p>
 
 <p>但你总会开始接触到布鲁斯风格，让布鲁斯口琴焕发生命光彩的风格。其实布鲁斯口琴最初并不是用来演奏布鲁斯音乐的，而是欧洲的一些民谣。但随着布鲁斯口琴传入到了美国，开始发生了一些变化。那时的美国，是牛仔的美国。口琴的轻便让它可以随时放在口袋里，那时候它仍然不是布鲁斯的。直到有一天，美国的黑人，赋予了口琴第二次生命。压音、超吹、把位变换等等，他们不断的压榨着它的性能，用它尽情的演奏布鲁斯音乐。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/11/16/134.html" class="read-more-link">阅读全文</a>
+
+<p>每一种乐器，都有自己的历史和文化。学习布鲁斯口琴，理解布布鲁斯音乐，是一道迈不过去的坎。<br />
+布鲁斯音乐是一种很神奇的音乐。刚接触到时，觉得很难听，太喧闹，这哪里是音乐。但慢慢的，你会随着它的节奏开始晃动你的脑袋或身体，感受它的时而轻快，时而沉重，时而悲泣，时而低吟。闭上眼睛，仿佛你已置身密西西比，置身芝加哥。</p>
+
+<p>有一部电影叫《蓝调传奇》，用平铺直叙的方式讲述了几位大师们的一生。那样的年代，充斥着种族，暴力。生活太多苦难。Little Walter拿着口琴说，它才是我的妈妈，然后演出了《My Babe》。Chuck Berry一面接受滚石乐队朝圣般的膜拜，一面接受警察的痛打。电影的最后，没有辉煌，没有灯光。Little Walter死在了公寓里，伊塔·詹姆斯望着切斯的背影，唱出了《I’d Rather Go Blind》，肆意冲击你的泪腺。</p>
+
+<p>无论什么年代，生活中总是会有痛苦。越长大越明白，痛苦是无法战胜的。你只有经历它，活下去。口琴见证着，音乐见证着。</p>
+
+<p>很久没有更新关于口琴的文章了。事实上，通过搜索引擎找到这个小小的blog的访客，绝大部分是与口琴相关。很惭愧，没有写出有多少价值的文章。曾经做的一个翻译，也仅仅是为了加深自己的理解，而非供认阅读。有的朋友留言探讨翻译中的一些问题，有的朋友问我怎么不更新，希望steve baker的教程能继续。这些留言中有些还没来得及回，有一次却因为我不堪spam骚扰，清空了所有留言。这些朋友的留言再也找不回来了。想到这里，更是非常惭愧和抱歉。</p>
+
+<p>以后会继续写一些口琴方面的文章，虽然我技术很菜，但如果能帮到一点其他人，也就有它的价值。再加上现在手上有多余的硬件，再次讲口琴的内部构造时，可能会拿起螺丝刀拆开用图片说话。</p>
+
+<p>附上《蓝调传奇》片段：<br />
+<embed src="http://player.youku.com/player.php/sid/XMzExNTU1MjA4/v.swf" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash" /></p>
     </div>
     
   </div>

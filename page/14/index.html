@@ -319,9 +319,8 @@
 <p>巧得很，正当我下完决心后，发现自己手里捧着一本村上春树的《当我谈跑步时我谈些什么》。当然这只是一种主观的说法，到底是在看这本书书的时候下了决心还是在看书之前已经下了决心，我自己也搞不清了。</p>
 
 <p>跑步其实不仅仅是跑步这项运动。跑步意味着生活的一切都开始逐渐规律化，平静化，意味着对自己的掌控。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/08/19/start-runngin-again.html" class="read-more-link">阅读全文</a>
+
+<p>希望这是一个新的开始。</p>
     </div>
     
   </div>
@@ -360,9 +359,12 @@
 
 <li><p>在另外一个目录下新建一个裸仓库。执行git init &ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。</p></li>
 </ol>
-    </div>
-    <div class="read-more">
-      <a href="/2014/08/14/local-backup-using-git.html" class="read-more-link">阅读全文</a>
+
+<p>参考：</p>
+
+<ol>
+<li><a href="http://treeleafmedia.be/blog/2011/03/creating-a-new-git-repository-on-a-local-file-system/">http://treeleafmedia.be/blog/2011/03/creating-a-new-git-repository-on-a-local-file-system/</a><br /></li>
+</ol>
     </div>
     
   </div>
@@ -409,9 +411,95 @@
 </code></pre>
 
 <p>时，ngx.var.arg_strider的值为&rdquo;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/07/30/two-kinds-of-variables-in-ngx-lua.html" class="read-more-link">阅读全文</a>
+
+<p>ngx.var.arg_的实现是直接使用nginx原生的变量支持，nginx相关代码为：</p>
+
+<pre><code>ngx_http_variable_value_t *  
+ngx_http_get_variable(ngx_http_request_t *r, ngx_str_t *name, ngx_uint_t key)  
+{  
+....(略）....  
+if (ngx_strncmp(name-&gt;data, &quot;arg_&quot;, 4) == 0) {  
+  
+        if (ngx_http_variable_argument(r, vv, (uintptr_t) name) == NGX_OK) {  
+            return vv;  
+        }  
+  
+        return NULL;  
+    }  
+  
+    vv-&gt;not_found = 1;  
+  
+    return vv;  
+}  
+  
+static ngx_int_t  
+ngx_http_variable_argument(ngx_http_request_t *r, ngx_http_variable_value_t *v,  
+    uintptr_t data)  
+{  
+    ngx_str_t *name = (ngx_str_t *) data;  
+  
+    u_char *arg;  
+    size_t len;  
+    ngx_str_t value;  
+  
+    len = name-&gt;len - (sizeof(&quot;arg_&quot;) - 1);  
+    arg = name-&gt;data + sizeof(&quot;arg_&quot;) - 1;  
+  
+    if (ngx_http_arg(r, arg, len, &amp;value) != NGX_OK) {  
+        v-&gt;not_found = 1;  
+        return NGX_OK;  
+    }  
+  
+    v-&gt;data = value.data;  
+    v-&gt;len = value.len;  
+    v-&gt;valid = 1;  
+    v-&gt;no_cacheable = 0;  
+    v-&gt;not_found = 0;  
+  
+    return NGX_OK;  
+}  
+  
+ngx_int_t  
+ngx_http_arg(ngx_http_request_t *r, u_char *name, size_t len, ngx_str_t *value)  
+{  
+    u_char *p, *last;  
+  
+    if (r-&gt;args.len == 0) {  
+        return NGX_DECLINED;  
+    }  
+  
+    p = r-&gt;args.data;  
+    last = p + r-&gt;args.len;  
+  
+    for ( /* void */ ; p &lt; last; p++) {  
+  
+        /* we need '=' after name, so drop one char from last */  
+  
+        p = ngx_strlcasestrn(p, last - 1, name, len - 1);  
+  
+        if (p == NULL) {  
+            return NGX_DECLINED;  
+        }  
+  
+        if ((p == r-&gt;args.data || *(p - 1) == '&amp;') &amp;&amp; *(p + len) == '=') {  
+  
+            value-&gt;data = p + len + 1;  
+  
+            p = ngx_strlchr(p, last, '&amp;');  
+  
+            if (p == NULL) {  
+                p = r-&gt;args.data + r-&gt;args.len;  
+            }  
+  
+            value-&gt;len = p - value-&gt;data;  
+  
+            return NGX_OK;  
+        }  
+    }  
+  
+    return NGX_DECLINED;  
+}  
+</code></pre>
     </div>
     
   </div>
@@ -444,9 +532,12 @@
 <p>很多次沮丧的发现，自己给身边的人倾心推荐的电影，他们看完都表示没有什么感觉。有一个经验是，如果电影看到一半，对方萌萌的抬起头，弱弱的问道，这个电影到底是讲什么的啊？这个时候最聪明的做法是赶紧换别的活动，不要抱有任何也许后面的剧情会让他/她大为震撼的幻想。</p>
 
 <p>刚开始的时候是心情是很不愉快的，明明这个电影我已经看了三遍了，恨不得次次都有泪点，为啥在您这就一无是处呢？后来，我逐渐领悟到，问题在我，而不在别人。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/07/12/movie-cannot-be-shared.html" class="read-more-link">阅读全文</a>
+
+<p>只要不是太糟糕的电影，无论什么类型，基本上我都能集中注意力去看的。因为电影于我，是一种精神体验，当你的精神投入到一定程度，有时会觉得自己把别人的人生也经历了一遍。人的一生只有一次，但通过电影，让人生在某种程度上得到了延伸。</p>
+
+<p>所以，看电影的确是一种非常私人的东西。能陪朋友一起看的，只能是那些“爆米花电影”。</p>
+
+<p>所以，下次有跟别人一起看电影的欲望时，及时打住。</p>
     </div>
     
   </div>
@@ -477,9 +568,8 @@
       <p>最近家里来了两个客人：两只金鱼，一只白色的，一只红色的，我给他们分别取了个名字，小红与小白。于是每天早上出门前，给他们喂点食料，晚上回来后趴在鱼缸前跟他们说两声Hello成了我的一大乐趣。</p>
 
 <p>几天之后，我发现，当我凑近鱼缸跟他们say Hello的时候，他们会慢慢的游到水面，露头吐出两个泡泡然后迅速沉入水底，仿佛一脸娇羞。一脸娇羞，说明我是一个喜欢歪歪的人，放佛，有说明我并没有歪歪的那么放肆。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/05/29/two-fishes.html" class="read-more-link">阅读全文</a>
+
+<p>想起小时候貌似看过一个少数民族的传说，一个小伙子家里有条鱼，每天当小伙子出门干活后，那条鱼就跳出鱼缸，变成一个美丽的姑娘，把家里的活都干好。不知道是不是古人和我一样看到了鱼儿冒泡时&rdquo;一脸娇羞&rdquo;的样子，才歪歪出这么个故事的。</p>
     </div>
     
   </div>

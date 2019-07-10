@@ -325,9 +325,30 @@
 
 <p>几家大厂里面，我比较喜欢网易的员工，人格独立，三观端正。当然其他几家大公司这种标准的也很多，只是平均一下就不成了。</p>
 </blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/2014/01/08/do-not-kiss-the-ass-of-your-boss.html" class="read-more-link">阅读全文</a>
+
+<p>今天在一个Linux技术讨论群里，有幸见到了这样一位忠心护主的同学。他很兴奋的群里转了几条关于阿里的新闻：</p>
+
+<blockquote>
+<p>阿里数字娱乐事业群总裁刘春宁首次披露阿里手游平台战略：手机游戏是移动时代最核心的用户需求， 阿里手游平台战略，目标是打造更加健康、开放、共赢的游戏生态链！同时，我们将收入分成比例调整为2：8（阿里只占20%），全力支持创意产业！</p>
+</blockquote>
+
+<p>然后做出了如下评论:</p>
+
+<blockquote>
+<p>阿里做游戏 企鹅紧张了</p>
+</blockquote>
+
+<p>马上有人出来反驳了，说马云不是说饿死也不做游戏吗，怎么现在又开始做游戏了？</p>
+
+<p>这位兄台马上反唇相讥:</p>
+
+<blockquote>
+<p>你没看到健康、开放、共赢 三个词吗？我们肯定只做健康类游戏，比如益智类游戏就很适合你啊,补补智商</p>
+</blockquote>
+
+<p>阿里做游戏，肯定是不需要拿起道德大棒来声讨的。但既然之前那么高调的把自己放在一个道德制高点的位置上，现在并没有做到，难道还不能允许别人说两句吗。</p>
+
+<p>商人有钱不赚你让他干什么,难道让他来写代码啊？商人说的话也肯定不能全当真，这是常识，用一句俗话说，认真你就输了。倒是那些急于护主的，嘴里口口声声的说着“我们做的是健康类游戏”、“我们做的是平台，不是游戏&hellip;&ldquo;的人，真的该去吃吃药了。</p>
     </div>
     
   </div>
@@ -371,9 +392,67 @@
     open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
 ...  /* 继续执行任务 */  
 </code></pre>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/25/165.html" class="read-more-link">阅读全文</a>
+
+<p>由于判断文件是否存在与创建文件是两个步骤，就会存在临界竞争的问题。试想下面的场景：</p>
+
+<ol>
+<li>某程序的进程A判断文件不存在，因此A认为自己是此时系统中该程序唯一的实例，准备继续执行创建指定的文件。<br /></li>
+<li>操作系统的调度策略恰好在此时起作用，进程A暂停执行。此时指定的文件还没有创建。<br /></li>
+<li>该程序的另一个进程B开始执行，同样，由于指定的文件不存在，B也认为自己是此时系统中该程序的唯一实例，准备继续执行创建指定的文件。<br /></li>
+<li>这样，进程A和进程B都能成功调用open并继续往下执行。<br /></li>
+<li>此时系统中就同时运行着该程序的两个实例，与仅运行一个进程的期望不符。<br />
+<br /></li>
+</ol>
+
+<p>所以说，O_EXCL与O_CREATE联合使用的前提就是该操作是原子的。</p>
+
+<h2 id="3-非原子操作如何达到同样目的">3.非原子操作如何达到同样目的</h2>
+
+<p>假设现在不能使用O_EXCL|O_CREATE，或者假设用O_EXCL|O_CREATE调用open并不是原子的，该如何达到上面关于“一个程序只能运行一个实例”的要求呢？</p>
+
+<p>可以用系统调用link来实现。</p>
+
+<p>link的原型如下:</p>
+
+<pre><code> #include &lt;unistd.h&gt;  
+  
+ int link(const char *oldpath, const char *newpath);  
+</code></pre>
+
+<p>link的作用是为oldpath指定的源文件创建一个newpath指定的链接文件(硬链接，hard link)。如果创建成功，则返回0，如果newpath路径指定的目标文件在调用link前已经存在，则link会错误返回。</p>
+
+<p>根据link的特点，可以达到上面的要求：<br />
+1. 首先确保文件系统中已经有一个源文件file1。<br />
+2. 某程序的一个进程A开始执行，调用link，试图创建一个file1的链接文件file2。<br />
+3. 如果A调用link成功，说明该程序此时只有进程A锁定了该文件，进程A可以继续往下执行。<br />
+4. 由于进程A为file1创建了一个链接文件file2,此时file1的链接数是2（用stat可获取链接数）。<br />
+5. 进程B调用link,同样试图创建file1的链接文件file2，但由于file2已经存在，link错误返回。可进一步调用stat系统调用，查看file1的链接数，确定该链接数是2。<br />
+6. 进程B退出。</p>
+
+<h2 id="4-o-excl-o-create确实有可能是非原子的">4.O_EXCL|O_CREATE确实有可能是非原子的</h2>
+
+<p>在NFS上，O_EXCL|O\CREATE确实有可能是非原子的：</p>
+
+<blockquote>
+<p>On NFS, O_EXCL is supported only when using NFSv3 or later on<br />
+              kernel 2.6 or later.  In NFS environments where O_EXCL support<br />
+              is not provided, programs that rely on it for performing<br />
+              locking tasks will contain a race condition.</p>
+</blockquote>
+
+<p>在这种情况下，上面讨论的使用link的方法就有了用武之地。如上引文所述，在最新的内核中，NFS中并不存在该问题，用O_EXCL|O_CREATE仍然能满足要求。</p>
+
+<h2 id="5-其它">5. 其它</h2>
+
+<p>O_EXCL一般只能和O_CREATE一起使用，不能单独使用，但有一个例外：在2.6即以后的内核中，如果open指定的文件是一个块设备文件，O_EXCL可以单独使用，此时，如果该块设备正在被使用（例如已经被挂在)，那么open将失败返回，错误码是EBUSY;除此之外，单独使用O_EXCL的后果无法预知：</p>
+
+<blockquote>
+<p>In general, the behavior of O_EXCL is undefined if it is used<br />
+             without O_CREAT.  There is one exception: on Linux 2.6 and<br />
+             later, O_EXCL can be used without O_CREAT if pathname refers<br />
+             to a block device.  If the block device is in use by the<br />
+             system (e.g., mounted), open() fails with the error EBUSY.</p>
+</blockquote>
     </div>
     
   </div>
@@ -406,9 +485,12 @@
 <p>从两年前买了域名+空间后，试过了各种博客程序，wordpress,typecho,emlog,textpattern等等，但最喜欢的还是emlog和typecho，后来一直用的是emlog。说实在话，对emlog很满意的，emlog的社区也做的不错，但这次typecho的更新太吸引人了，还是转了过来。更换程序是很彻底的，我丝毫没有考虑如何在url上做文章，对这个网站和搜索引擎而言，意味着N多死链，但幸好对我自己而言，不意味任何东西。</p>
 
 <p>这个博客一直放在一个虚拟空间里，除了用ftp上传网站代码外，几乎没有任何权限。虽然早已有一个vps，但仍然没有把它迁过来，让它安静的躺在这里吧。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/23/161.html" class="read-more-link">阅读全文</a>
+
+<p>断断续续的写一些无病呻吟的文章已经两年了，而且在可预测的未来，这些无病呻吟的文章还会继续写下去。</p>
+
+<p>有一部电影里有这么一句台词，艺术是什么，艺术是人类在这个星球上存活过的痕迹。对我而言，这些乱七八糟的文字就是我生活的痕迹。只需要看到文章发表日期就行了，文章内容怎么样，其实并不重要。</p>
+
+<p>希望博客改头换面后，能多写点东西，质量上能稍微有些提高。</p>
     </div>
     
   </div>
@@ -439,9 +521,24 @@
       <p>周末，成都的一个朋友陪他的一个哥们来广州玩，原因是他这个哥们跟女朋友闹别扭了心里难受，他陪他出来转转。中午把他们接到后，吃了顿饭，到我的住处坐坐，然后就去订了几张电影票，看了《扫毒》。</p>
 
 <p>《扫毒》是个怀旧的电影，但如何个怀旧法，每个人的感受不同。诚然，跟很多人一样，我也认为影片本身香港八九十年代兄弟情的主题确实是怀旧的一大因素，但对我而言，最能体现怀旧情绪的，是主题曲《誓要去，入刀山》。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/09/158.html" class="read-more-link">阅读全文</a>
+
+<p>兄弟三人第一次哼起这首歌时，我就意识到，这歌词我肯定在哪里看过。终于，电影放完后，我想起来，这歌词取自《陆小凤传奇》之《凤舞九天》，初中时，把一套一共四册的《陆小凤传奇》看了七八遍（后来才知道，这套书缺了最后一部，《剑神一笑》），而这一段更是我非常喜欢，翻来覆去来回看的：</p>
+
+<blockquote>
+<p>誓要去,入刀山;浩气壮，过干关。豪情无限，男儿傲气，地狱也独来独往返！<br />
+存心一闯虎豹灾，今朝去几时还？<br />
+奈何难尽欢干日醉，此刻相对恨晚。<br />
+愿与你，尽一杯」聚与散，记心间」毋忘情义，长存浩气，口后再相知未晚。“<br />
+歌已尽，酒已空。陆小凤放下碗筷，转身离去。<br />
+“慢着！西门吹雪随着大喝声站起，走向又转过身来的陆小凤。<br />
+西门吹雪没有说话，他只是伸出他的一双手。<br />
+他的手紧握着陆小凤的双腕，陆小凤的手也紧握着西门吹雪的腕。<br />
+西门吹雪激动的轻轻吟诵：“毋忘情义，长存浩气，日后再相知末晚。”<br />
+西门吹雪眼中已温热。陆小凤放开西门吹雪的手腕，大步走了出去。<br />
+只听陆小凤的豪放的歌声，犹自在黑夜中袅绕：“毋忘情义，长存浩气，口后再相知末晚。”</p>
+</blockquote>
+
+<p>这么多年过去了，竟然还能记起，记起一首歌，就是记起一段青春。有些东西，随着时间的流逝，慢慢被藏到内心深处，但它们并没有消失，只是放在那里，等着某一天忽然被想起。</p>
     </div>
     
   </div>
@@ -479,9 +576,9 @@
 #define PF_LOCAL	AF_LOCAL  
 #define PF_INET	 AF_INET  
 </code></pre>
-    </div>
-    <div class="read-more">
-      <a href="/2013/12/06/157.html" class="read-more-link">阅读全文</a>
+
+<p>参考：<br />
+<a href="http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming">http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming</a></p>
     </div>
     
   </div>

@@ -323,9 +323,16 @@
 <p>习惯的力量有这么大吗？电影毕竟只是电影，很多地方经不起推敲。</p>
 
 <p>很巧的是，我刚好在昨天看完了一本书，叫《习惯的力量》，这是一本值得一看的书。并没有类似习惯决定性格，性格决定命运的老套警句，而是以大量的科学实验为依据，讲述了习惯的产生的原理，习惯对人的影响，以及怎么养成或破坏一个习惯。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/11/16/133.html" class="read-more-link">阅读全文</a>
+
+<p>概括一下习惯的原理：</p>
+
+<p>一个习惯由三个部分构成，暗示、惯常行为和奖赏。暗示是指触发惯常行为的一系列因素，例如：地点、时间、情绪状态、其他人以及之前的动作等等。惯常行为就是我们常说的习惯本身。奖赏则是隐藏在这个惯常行为背后的某种渴求感。养成或破坏一个习惯的关键在于找到暗示和奖赏，把中间的惯常动作用新的动作替换掉。</p>
+
+<p>例如，小张同学有在每天下午三点吃甜食的习惯，这个毛病让他一直无法减肥成功。每天下午一到三点，他会起身到公司门口的商店买点吃的，再绕到办公室和身边的同事聊会天，在这个过程中把这些食物干掉。然后回到座位上继续工作。而其实他真正的渴求是他在专心工作到下午时，需要进行一些社交活动，吃东西的同时，和同事聊会天才是真正的奖赏。所以，只要他意识到了这一点，他就可以把吃甜食这个步骤给替换掉。</p>
+
+<p>当然，道理如果用不到自己身上，那就永远只是道理。下面一段时间，找一个我自己认为是不好的习惯，看看能否用书中的理论来改掉。例如，我有蹲坑拖延症，从小就有。每次蹲坑，手里不那本书是不会去的，这个时候书就很重要了，如果竟然我选了一本武侠小说，我肯定会在厕所里耗上很久。有一次我真的就在厕所里把某一本借来的《皮皮鲁和鲁西西》看完了。现在，阅读的载体又多了个手机、kindle等，这个坏毛病当然也还在延续。</p>
+
+<p>那么首先得找到蹲坑看书的爽点在哪里，当然不是一时半会能找到的，试试看吧。</p>
     </div>
     
   </div>
@@ -369,9 +376,217 @@
 [root@vps1 ~]# ls   -l /usr/bin/python2.6
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6</p>
 </blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/2013/11/14/132.html" class="read-more-link">阅读全文</a>
+
+<p>可以看到两个都不是软链接。通过计算一下md5值，可以发现这两者一模一样：</p>
+
+<blockquote>
+<p>958a320a8c3f4d352d398bb0ebc46ed8  /usr/bin/python<br />
+[root@vps1 ~]# md5sum  /usr/bin/python2.6
+958a320a8c3f4d352d398bb0ebc46ed8  /usr/bin/python2.6</p>
+</blockquote>
+
+<p>因此，/usr/bin/python实际上是/usr/bin/python2.6的一个拷贝。如果我们此时想安装一个python3.3，应该怎么做呢？首先绝对不要想着先去卸载已有的python，曾经apt-get remove python或者yum remove python的人肯定会会心一笑。最通常的做法，下载到python3.3的源码来编译。</p>
+
+<p>在CentOS下，通过./configure&amp;&amp;make&amp;&amp;make install安装后，python会被安装到/usr/local/bin目录下，可能同时有python,python3,python3.3。其中python3.3和python是两个一模一样h的可执行文件，而python3则是一个指向/usr/local/bin/python的软链接。这样带来的问题是，在/usr/bin和/usr/local/bin目录下，都有一个名为python的可执行文件。虽然通过环境变量的可以确定在shell中执行python时到底是执行了哪个目录下的python，但总归显的很麻烦，时间长了更容易引起混乱。</p>
+
+<p>这个仅仅是安装一个python时遇到的问题，现实情况下，你可能同时跑着两个版本的django，每个版本的django依赖的python又不同，通过分别指定路径、建立软连接等方式虽然能解决，但还是一个字，乱。不知什么时候，就会互相影响了。</p>
+
+<p>自从有了virtualenv，pythoner的生活就好起来了。</p>
+
+<p>virtualenv的目的就是让每个python应用程序和自己依赖的python解释器及python库，各自隔离开来，互相不影响，更不会破坏系统自带的python环境。</p>
+
+<p>下面就来详细的演示virtualenv的操作过程：</p>
+
+<p>1.系统环境说明：</p>
+
+<blockquote>
+<p>操作系统：CentOS6.2<br />
+# cat /etc/issue<br />
+CentOS release 6.2 (Final)<br />
+Kernel \r on an \m</p>
+</blockquote>
+
+<p>系统自带python环境：</p>
+
+<blockquote>
+<p># python -V<br />
+Python 2.6.6<br />
+|# whereis python<br />
+python: /usr/bin/python /usr/bin/python2.6 /usr/lib/python2.6 /usr/include/python2.6 /usr/share/man/man1/python.1.gz<br />
+# ls -l /usr/bin/python*<br />
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python<br />
+lrwxrwxrwx 1 root root    6 Nov 12 06:29 /usr/bin/python2 -&gt; python<br />
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6</p>
+</blockquote>
+
+<p>2.操作预期：</p>
+
+<p>分别安装最新版的python2.7和python3.3，并各自安装一个flask框架，互相隔离。</p>
+
+<p>3.操作过程：</p>
+
+<p>（1）方便起见，首先安装一些其它常用的组件：</p>
+
+<pre><code>yum groupinstall &quot;Development tools&quot;  
+yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel  
+</code></pre>
+
+<p>（2）下载和安装python2.7.6</p>
+
+<pre><code># mkdir -p /home/fangpeng/sources  
+# cd /home/fangpeng/sources/  
+# wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz  
+#tar xvfz Python-2.7.6.tgz  
+#cd Python-2.7.6  
+# ./configure --prefix=/usr/local  
+# make &amp;&amp; make altinstall  
+</code></pre>
+
+<p>注意，是make altinstall，而不是make install。这样可以避免造成系统存在多个名为python，实际版本却各异的文件。</p>
+
+<p>安装完毕后，/usr/bin下系统自带的几个python文件都没有任何影响。在/usr/local/bin目录下，则多了一个python2.7和python2.7-config。</p>
+
+<p>（3）下载和安装Python3.3.2</p>
+
+<pre><code># cd /home/fangpeng/sources  
+# wget http://www.python.org/ftp/python/3.3.2/Python-3.3.2.tgz  
+#tar xvfz Python-3.3.2.tgz  
+# cd Python-3.3.2  
+# ./configure --prefix=/usr/local  
+# make &amp;&amp; make altinstall  
+</code></pre>
+
+<p>同样注意，是make altinstall，而非make install。安装完成后，在/usr/local/bin目录下，多出三个文件，分别是python3.3m,python3.3和python3.3-config,其中python3.3和python3.3m是同一个文件的两份拷贝。对系统自带的python2.6.6和上一步安装的python2.7.6无影响。</p>
+
+<p>（4）下载distribute</p>
+
+<pre><code># cd /home/fangpeng/sources  
+# wget --no-check-certificate https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz  
+</code></pre>
+
+<p>（5）为python2.7.6安装easy_install</p>
+
+<pre><code># tar xvfz distribute-0.6.49.tar.gz  
+# cd distribute-0.6.49  
+# python2.7 setup.py  install  
+</code></pre>
+
+<p>（6）为python3.3.2安装easy_install</p>
+
+<pre><code># cd /home/fangpeng/sources/  
+# rm -rf distribute-0.6.49  
+# tar xvfz distribute-0.6.49.tar.gz  
+# cd distribute-0.6.49  
+# python3.3 setup.py install  
+</code></pre>
+
+<p>执行完（5）和（6）后，在/usr/local/bin目录下，会多出三个文件，分别是easy_install，easy_install-2.7和easy_install-3.3。其中，easy_install在两次安装时都会生成，因此会存在覆盖。我们直接使用easy_install-2.7和easy_install-3.3即可。</p>
+
+<p>（7）为python2.7安装virtualenv<br />
+终于到了virtualenv了，这才是我们今天的主角。</p>
+
+<pre><code>easy_install-2.7 virtualenv  
+</code></pre>
+
+<p>（8）为python3.3安装virtualenv</p>
+
+<pre><code># easy_install-3.3  virtualenv  
+</code></pre>
+
+<p>至此，我们分别为python2.7.6和python3.3.2安装了virtualenv。同样在/usr/local/bin目录下多出了三个文件，分别是virtualenv，virtualenv-2.7和virtualenv-3.3。其中，virtualenv在两次安装时都会生成，因此会存在覆盖。我们直接使用virtualenv-2.7和virtualenv-3.3即可。</p>
+
+<p>下面用web框架flask的安装，来演示virtualenv的使用。创建两个flask的沙盒，其中一个依赖的是python2.7.6,另一个依赖python3.3.2。</p>
+
+<p>（1）创建相应的工程目录</p>
+
+<pre><code># mkdir -p /home/fangpeng/project/hello_flask  
+# cd /home/fangpeng/project/hello_flask/  
+# mkdir python2.7 python3.3  
+</code></pre>
+
+<p>（2）创建基于python2.7的flask工程</p>
+
+<pre><code># cd /home/fangpeng/project/hello_flask/python2.7/  
+# virtualenv-2.7 --distribute env  
+Using base prefix '/usr/local'  
+New python executable in env/bin/python3.3  
+Also creating executable in env/bin/python  
+Installing Setuptools..................................................................................................................................done.  
+Installing Pip.............................................................................................................................................done.  
+# source env/bin/activate  
+(env)# 
+(env)# python -V  
+Python 2.7.6  
+# pip install flask  
+(env)# vim hello.py  
+</code></pre>
+
+<p>hello.py内容如下：</p>
+
+<pre><code>from flask import Flask  
+app=Flask(__name__)  
+  
+@app.route('/hello')  
+def hello():  
+        return &quot;Hello,Flask!&quot;  
+if __name__=='__main__':  
+        app.run(host='0.0.0.0',debug=True)  
+</code></pre>
+
+<p>执行hello.py:</p>
+
+<pre><code>(env)# python hello.py 
+ * Running on http://0.0.0.0:5000/  
+ * Restarting with reloader  
+</code></pre>
+
+<p>用浏览器或在另一个终端用curl访问该hello接口，如下：</p>
+
+<pre><code># curl 192.168.1.101:5000/hello  
+Hello,Flask!#  
+</code></pre>
+
+<p>（3）退出python2.7的virtualenv环境</p>
+
+<p>继续上一步，按ctr+c退出hello.py的执行。如下所示，此时还处于python2.7的virtualenv中，执行deactivate退出。</p>
+
+<pre><code>(env)# deactivate  
+# 
+</code></pre>
+
+<p>（4）创建基于python3.3的flask工程</p>
+
+<pre><code>#cd /home/fangpeng/project/hello_flask/python3.3/  
+# virtualenv-3.3 --distribute env  
+Using base prefix '/usr/local'  
+New python executable in env/bin/python3.3  
+Also creating executable in env/bin/python  
+Installing Setuptools.........................................................................................done.  
+Installing Pip....................................................................................................done.  
+# source env/bin/activate  
+(env)# 
+#（env) python -V  
+Python 3.3.2  
+(env)# pip  install flask  
+</code></pre>
+
+<p>hello.py的内容和上面完全一致，此处略去。<br />
+执行hello.py:</p>
+
+<pre><code>(env)# python hello.py 
+ * Running on http://0.0.0.0:5000/  
+ * Restarting with reloader  
+</code></pre>
+
+<p>用浏览器或在另一个终端用curl访问该hello接口，如下：</p>
+
+<pre><code># curl 192.168.1.101:5000/hello  
+Hello,Flask!#  
+</code></pre>
+
+<p>至此演示完毕。</p>
+
+<p>与上面的例子类似，以后如果要python2.7.6,则在创建应用程序前，先用virtualenv-2.7创建一个沙盘，要用python3.3.2,则用virtualenv-3.3创建一个沙盘。这样，依赖不同版本python的应用程序彼此完全隔离开来。在各自的virtualenv中，执行python命令就不用管版本问题了，更重要的是，系统自带的python环境也完全被隔离开来。</p>
     </div>
     
   </div>
@@ -404,9 +619,29 @@
 <p>一切看起来很美好的样子，只是看起来。</p>
 
 <p>部门的开发主要分为后台组和系统组，我属于系统组，主要职责是做底层linux c方面，譬如nginx模块开发，存储系统开发等；后台组的职责就是要能从web上和我们的系统对接，在更高层面上进行管理，一方面是为了便于公司内部系统的部署和监控，另一方面也是为了和客户对接。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/11/13/131.html" class="read-more-link">阅读全文</a>
+
+<p>问题就出在和后台对接上，昨天把我们组以及后台组的几个同事拉过来review我的代码时，发现现有的redis中设计的存储结构存在一定的缺陷。而这种设计的缺陷在公司现在一个主要的视频cdn产品中也有，所以后台组的同事们强烈要求在这个分布式存储系统中避免这个问题。</p>
+
+<p>意识到了问题后，昨天下午几个人就在一起把解决方案给讨论出来了。</p>
+
+<p>一切看起来还是很美好。</p>
+
+<p>经过多次血淋淋的教训，我知道肯定不能开始写代码，于是今天我又把这个新的设计拿出来，在纸上画了画，在大脑里细细的想了想。一个让我心惊的问题突然冒出来了，而以昨天讨论的方案，根本无法解决这个问题，吃一堑长一智，这次赶紧把几个主要人员叫到一块反映了这个问题。大家板着小板凳，围坐在小黑板前写写画画，一个小时后终于讨论出一种解决办法。与昨天的方案不同，这次的修改是大规模的，整个redis中的数据结构要完全重新设计。</p>
+
+<p>想起以前在华为时的开发场景，软件的架构都是架构师们设计好了，一般情况是没什么问题的，因为架构确定前会经过无数次的大大小小的会议评审。一旦架构、方案确定下来，下面的兄弟们就在各自从属的模块里垒着代码。你不用考虑任何架构方面的问题，你的代码对其他模块的影响也已经降到了最低，一方面是由低耦合的架构决定的，另一方面华为的软件质量体系也予以了保证，例如，可能外面的公司很难理解，华为的一个产品的开发周期内，会专门有一个从上到下的团队，负责版本的构建，通俗点说，就是操作svn，监控、测试着每一笔代码合入。这也是我离开华为的原因之一，螺丝钉感过于强烈。</p>
+
+<p>记得当时主管挽留我的时候，说华为的软件流程在外面是很难找到第二家的，而且这个流程已经深入到制度里了。不管项目多大，涉及到多少团队多少人，正是因为这个流程，这个制度，保证着都能在规定的时间内把东西做出来。</p>
+
+<p>当时我嘴上不说，心里嗤之以鼻，您继续忽悠，我都不想当螺丝钉了，您还给我讲论螺丝钉的光荣伟大。</p>
+
+<p>现在到了一个新的公司，做一个新的产品，写了些代码，对软件流程、大公司和小公司的区别有了一些思考。</p>
+
+<ol>
+<li>积淀、传承。这一点上大、小公司的差别太大。在华为，如果前一个项目的设计有缺陷，在下一个版本时，必然会将其当做重中之重，而不会出现我今天发现的问题。其实只要一个软件的质量够稳定，那么其架构肯定经过千锤百炼才设计出来的。而很可惜的是，再大的公司也不会把这个架构的历史变迁列出来给你看，只能靠自己慢慢深入体会。所以，如果有还在类似于华为的公司工作的同学，对现状不满，但是又不能决定离开时，可以从这一点入手，改变自己的心态，在华为能学到的东西不是没有，而是太多。<br /></li>
+<li>灵活性。这一点大公司当然完全不如小公司了。我今天发现了这个问题，毕竟只是一个小项目，即使完全重做，也没多少难度，但在大公司则很难如此轻松应对了。<br /></li>
+<li>主观能动性。如前所述，在华为做一个小兵其实不用操多少心，但在小公司，如果在你的同事或上级给你一个架构或方案，你当时发现了问题，一定要尽快如实的反馈，和稀泥的方式不会对你有任何帮助。那我今天的事情举例，当时这个redis的结构设计，是由那个带我入门的同事设计的，当时我也想到了这个问题，后来不知怎么就自己说服自己没问题了。大公司由于历史积淀深，新员工一般会对老员工带有一种学生膜拜老师的感觉，胆怯，不敢指出问题，而小公司相对而言，很可能里面的资深员工也只比你多工作一两年，年龄相似，发现问题嘻嘻哈哈把问题沟通下就行了。<br />
+想的不多，暂时写到这里吧。<br /></li>
+</ol>
     </div>
     
   </div>
@@ -446,9 +681,95 @@
 此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。</p>
 
 <p>（2）目标地址中带uri。即proxy_pass的参数形如“<a href="http://127.0.0.1:8090/dir1/dir2&quot;">http://127.0.0.1:8090/dir1/dir2&quot;</a></p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/10/31/130.html" class="read-more-link">阅读全文</a>
+
+<p>此时新的目标url中，匹配的uri部分将会被修改为该参数中的uri，如&rdquo;<a href="http://127.0.0.1:8888/dir1/dir2.&quot;">http://127.0.0.1:8888/dir1/dir2.&quot;</a></p>
+
+<p>有人说，你没有讨论ip和端口后带不带”/“的区别。其实是不需要的，因为&rdquo;/&ldquo;本身就是一种uri，很明显属于上面的第二种情况，只不过是把原来的uri修改为了现在的uri（”/&rdquo;)，看上去，像是删除了原url中匹配的部分。如果不理解这一点，就会总想着去牢记、区分结尾带不带&rdquo;/&ldquo;的情况。<br />
+官方文档也是这么叙述的，根本没有提及半句“/&ldquo;：</p>
+
+<blockquote>
+<p>A request URI is passed to the server as follows:</p>
+
+<p>If the proxy_pass directive is specified with a URI, then when a request is passed to the server, the part of a normalized request URI matching the location is replaced by a URI specified in the directive:<br />
+location /name/ {<br />
+    proxy_pass <a href="http://127.0.0.1/remote/">http://127.0.0.1/remote/</a>;<br />
+}<br />
+If proxy_pass is specified without a URI, the request URI is passed to the server in the same form as sent by a client when the original request is processed, or the full normalized request URI is passed when processing the changed URI:<br />
+location /some/path/ {<br />
+    proxy_pass <a href="http://127.0.0.1">http://127.0.0.1</a>;<br />
+}</p>
+</blockquote>
+
+<p>测试部分如下。</p>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                proxy_pass <a href="http://127.0.0.1:8090">http://127.0.0.1:8090</a>;<br />
+                }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test1/test2/echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/test1/test2  
+</code></pre>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                proxy_pass <a href="http://127.0.0.1:8090/">http://127.0.0.1:8090/</a>;<br />
+                }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/  
+</code></pre>
+
+<p>如果配置为：<br />
+&gt;server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                        proxy_pass <a href="http://127.0.0.1:8090/test1">http://127.0.0.1:8090/test1</a>;<br />
+                        }<br />
+            }</p>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test1echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/test1  
+</code></pre>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                        proxy_pass <a href="http://127.0.0.1:8090/test3/test4/test5">http://127.0.0.1:8090/test3/test4/test5</a>;<br />
+                        }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test3/test4/test5echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:80990/test3/test4/test5  
+</code></pre>
     </div>
     
   </div>
@@ -494,9 +815,8 @@ EOF
 gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
 output=$(./a.out)  
 </code></pre>
-    </div>
-    <div class="read-more">
-      <a href="/2013/10/08/129.html" class="read-more-link">阅读全文</a>
+
+<p>上面的代码摘自FastDFS的make.sh。</p>
     </div>
     
   </div>

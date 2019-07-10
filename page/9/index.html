@@ -319,9 +319,25 @@
 <p>这个小小的个人博客，从 2011 年开始，几乎把主流的 Blog 系统折腾了个遍，从最初的 Wordpress,到 Typecho, Emlog, Textpattern 等等。其中，Typecho 被来回折腾了几次，因为 Typecho 自身也经历了两个大的阶段：从几年没有维护，到开始重构并默认支持 Markdown 编辑器。</p>
 
 <p>每个阶段维护博客的心态也不一样。刚开始的时候，总到处想和人交换链接，把界面搞得好看点，各种插件都试一试。这个阶段确实还真认识了一些一起写博客的同学，大家经常互访互评，搞得还挺热闹。但是必须要知道的是，即使在 2011 年之前，个人博客也早已经开始没落了，这是大势所趋，曾经的那些博客，到现在也已经绝大多数打不开，还挺让人唏嘘的。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/16/still-using-typecho.html" class="read-more-link">阅读全文</a>
+
+<p>后来就不怎么想折腾了，也不再去管写的东西到底有没有人看，因为知道这其实并没有什么意义。前面提到的几次折腾 Typecho 的过程，其实就体现了这种心态的变化。Typecho 之前的版本是很简洁甚至简陋的，默认连编辑器都没有，恰好是这个特点，一方面决定了它在某个时刻打动了我，另一方面又决定了不会在它上面停留很久。直到 2013 年，Typecho 重新开发，增加了一些特性，其中最重要的一个特性是原生支持 Markdown 编辑器，支持实时预览，恰好在那个时刻，我觉得这个特性就是我最需要的，所以在 2013 年就又将博客切到 Typecho，一直到现在。</p>
+
+<p>如果说这个从主动愿意折腾，到后来不想折腾的变化，算是一个成长的轨迹的话，为什么现在又突然想再重新折腾呢？似乎是一种矛盾，但其实是统一的，就是越来越想真的将精力放在文章本身了。看看这些备选项你就懂了:</p>
+
+<ul>
+<li>Jekyll<br /></li>
+<li>Octopress<br /></li>
+<li>Ghost<br /></li>
+<li>Farbox<br /></li>
+<li>Hexo<br />
+<br /></li>
+</ul>
+
+<p>上面列出的每一项我都试用过，最终锁定在 Hexo 上，都挽起袖子开始准备写转换脚本了。<strong>临在最后关头，又打住了</strong>。</p>
+
+<p>如果是早两年，此时这博客肯定就已经是迁移完了，评论什么的多半也再次都搞丢了。不过现在既然网站的底部还写着“由 Typecho 强力驱动”，则说明我已经打定主意不迁了。</p>
+
+<p>因为我只反问了自己一句：现在 Typecho 有让你用着不爽的地方吗？ 即使是 Typecho 的开发者 joyqi 都开始拥抱变化，捣腾出一个 PHP 版本的静态博客生成系统 Logecho 了， Typecho 确实并没有让我用起来有不好的感觉。既然没有，为什么要换呢？</p>
     </div>
     
   </div>
@@ -360,9 +376,149 @@
 <br />
 <br /></li>
 </ul>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/10/nginx-slice-module.html" class="read-more-link">阅读全文</a>
+
+<p>当然，上面列出来的并不全， 所以，在现在主流的 CDN 技术栈里面， Nginx 起到的多是一个粘合剂的作用，例如调度器、负载均衡器、业务逻辑（防盗链等），需要与 Squid、ATS 等主流 Cache Server 配合使用，即使不使用这些技术，也会使用其它办法，例如直接使用文件系统和数据库去管理文件，而不会直接使用 proxy_cache 模块。</p>
+
+<p>Nginx-1.9.8 中新增加的一个模块ngx_http_slice_module解决了一部分问题。本文就来尝尝鲜，看看这个切片模块。</p>
+
+<p>注意：截至到发文时，Nginx 马上发布了 Nginx-1.9.9，用来解决 Nginx-1.9.8中的一个 Bug，所以，在实际使用中，如果需要使用本新增特性，请直接使用 Nginx-1.9.9。</p>
+
+<p>首先，我们看看几个不同版本的 Nginx 的 proxy_cache 对 Range 的处理情况。</p>
+
+<h3 id="nginx-0-8-15">Nginx-0.8.15</h3>
+
+<p>在 Nginx-0.8.15 中，使用如下配置文件做测试:</p>
+
+<pre><code>http {  
+    include       mime.types;  
+    default_type  application/octet-stream;  
+    sendfile        on;  
+    keepalive_timeout  65;  
+  
+    proxy_cache_path /tmp/nginx/cache levels=1:2 keys_zone=cache:100m;  
+    server {    
+        listen       8087;  
+        server_name  localhost;  
+        location / {  
+            proxy_cache cache;  
+            proxy_cache_valid 200 206 1h;  
+           # proxy_set_header Range $http_range;  
+            proxy_pass http://127.0.0.1:8080;  
+  
+        }  
+        error_page   500 502 503 504  /50x.html;  
+        location = /50x.html {  
+            root   html;  
+        }  
+  
+    }  
+}  
+</code></pre>
+
+<p>重点说明以下两种情况：<br />
+* 第一次 Range 请求（没有本地缓存），Nginx 会去后端将整个文件拉取下来（后端响应码是200）后，并且返回给客户端的是整个文件，响应状态码是200，而非206. 后续的 Range 请求则都用缓存下来的本地文件提供服务，且响应状态码都是对应的206了。<br />
+* 如果在上面的配置文件中，加上 proxy_set_header Range $http_range;再进行测试(测试前先清空 Nginx 本地缓存)。则第一次 Range 请求（没有本地缓存），Nginx 会去后端用 Range 请求文件，而不会把整个文件拉下来，响应给客户端的也是206.但问题在于，由于没有把 Range 请求加入到 cache key 中，会导致后续所有的请求，不管 Range 如何，只要 url 不变，都会直接用cache 的内容来返回给客户端，这肯定是不符合要求的。</p>
+
+<h3 id="nginx-1-9-7">Nginx-1.9.7</h3>
+
+<p>在 Nginx-1.9.7 中，同样进行上面两种情况的测试，第二种情况的结果其实是没多少意义，而且肯定也和 Nginx-0.8.15 一样，所以这里只关注第一种测试情况。</p>
+
+<p>第一次 Range 请求（没有本地缓存），Nginx 会去后端将整个文件拉取下来（后端响应码是200），但返回给客户端的是正确的 Range 响应，即206.后续的 Range 请求，则都用缓存下来的本地文件提供服务，且都是正常的206响应。</p>
+
+<p>可见，与之前的版本相比，还是有改进的，但并没有解决最实质的问题。</p>
+
+<p>我们可以看看 Nginx 官方对于 Cache 在 Range 请求时行为的说明:</p>
+
+<blockquote>
+<p>How Does NGINX Handle Byte Range Requests?</p>
+
+<p>If the file is up-to-date in the cache, then NGINX honors a byte range request and serves only the specified bytes of the item to the client. If the file is not cached, or if it’s stale, NGINX downloads the entire file from the origin server. If the request is for a single byte range, NGINX sends that range to the client as soon as it is encountered in the download stream. If the request specifies multiple byte ranges within the same file, NGINX delivers the entire file to the client when the download completes.</p>
+
+<p>Once the download completes, NGINX moves the entire resource into the cache so that all future byte-range requests, whether for a single range or multiple ranges, are satisfied immediately from the cache.</p>
+</blockquote>
+
+<h3 id="nginx-1-9-8">Nginx-1.9.8</h3>
+
+<p>我们继续看看Nginx-1.9.8, 当然，在编译时要加上参数&ndash;with-http_slice_module，并作类似下面的配置:</p>
+
+<pre><code>http {  
+    include       mime.types;  
+    default_type  application/octet-stream;  
+    sendfile        on;  
+    keepalive_timeout  65;  
+  
+    proxy_cache_path /tmp/nginx/cache levels=1:2 keys_zone=cache:100m;  
+    server {  
+        listen       8087;  
+        server_name  localhost;  
+        location / {  
+            slice 1m;  
+            proxy_cache cache;  
+            proxy_cache_key $uri$is_args$args$slice_range;  
+            proxy_set_header Range $slice_range;  
+            proxy_cache_valid 200 206 1h;  
+            #proxy_set_header Range $http_range;  
+            proxy_pass http://127.0.0.1:8080;  
+  
+        }  
+        error_page   500 502 503 504  /50x.html;  
+        location = /50x.html {  
+            root   html;  
+        }  
+  
+    }  
+}  
+</code></pre>
+
+<p>不测不知道，一侧吓一跳，这俨然是一个杀手级的特性。</p>
+
+<p>首先，如果不带 Range 请求，后端大文件在本地 cache 时，会按照配置的 slice 大小进行切片存储。</p>
+
+<p>其次，如果带 Range 请求，则 Nginx 会用合适的 Range 大小（以 slice 为边界）去后端请求，这个大小跟客户端请求的 Range 可能不一样，并将以 slice 为大小的切片存储到本地，并以正确的206响应客户端。</p>
+
+<p>注意上面所说的，Nginx 到后端的 Range 并不一定等于客户端请求的 Range，因为无论你请求的Range 如何，Nginx 到后端总是以 slice 大小为边界，将客户端请求分割成若干个子请求到后端，假设配置的 slice 大小为1M,即1024字节，那么如果客户端请求 Range 为0-1023范围以内任何数字，均会落到第一个切片上，如果请求的 Range 横跨了几个 slice 大小，则nginx会向后端发起多个子请求，将这几个 slice 缓存下来。而对客户端，均以客户端请求的 Range 为准。如果一个请求中，有一部分文件之前没有缓存下来，则 Nginx 只会去向后端请求缺失的那些切片。</p>
+
+<p>由于这个模块是建立在子请求的基础上，会有这么一个潜在问题：当文件很大或者 slice 很小的时候，会按照 slice 大小分成很多个子请求，而这些个子请求并不会马上释放自己的资源，可能会导致文件描述符耗尽等情况。</p>
+
+<h3 id="小结">小结</h3>
+
+<p>总结一下，需要注意的点：</p>
+
+<ul>
+<li>该模块用在 proxy_cache 大文件的场景，将大文件切片缓存<br /></li>
+<li>编译时对 configure 加上 &ndash;with-http_slice_module 参数<br /></li>
+<li>$slice_range 一定要加到 proxy_cache_key 中，并使用 proxy_set_header 将其作为 Range 头传递给后端<br /></li>
+<li>要根据文件大小合理设置 slice 大小<br />
+<br /></li>
+</ul>
+
+<p>具体特性的说明，可以参考 Roman Arutyunyan 提出这个 patch 时的邮件来往：<br />
+<a href="https://forum.nginx.org/read.php?29,261929,261929#msg-261929">https://forum.nginx.org/read.php?29,261929,261929#msg-261929</a></p>
+
+<p>顺带提一下，Roman Arutyunyan 也是个大牛，做流媒体领域的同学们肯定很多都听说过：<a href="https://github.com/arut/nginx-rtmp-module">nginx-rtmp</a> 模块的作者。</p>
+
+<h3 id="参考资料">参考资料</h3>
+
+<ol>
+<li>Nginx 官方的 Cache 指南<br />
+<a href="https://www.nginx.com/blog/nginx-caching-guide/">https://www.nginx.com/blog/nginx-caching-guide/</a><br /></li>
+<li>Nginx各版本changelog<br />
+<a href="http://nginx.org/en/CHANGES">http://nginx.org/en/CHANGES</a><br /></li>
+<li>Nginx proxy 模块 wiki<br />
+<a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html">http://nginx.org/en/docs/http/ngx_http_proxy_module.html</a><br /></li>
+<li>http_slice_module 的历次提交记录<br />
+<a href="http://hg.nginx.org/nginx/rev/29f35e60840b">http://hg.nginx.org/nginx/rev/29f35e60840b</a><br />
+<a href="http://hg.nginx.org/nginx/rev/bc9ea464e354">http://hg.nginx.org/nginx/rev/bc9ea464e354</a><br />
+<a href="http://hg.nginx.org/nginx/rev/4f0f4f02c98f">http://hg.nginx.org/nginx/rev/4f0f4f02c98f</a><br /></li>
+<li>http_slice_module 提交前的邮件来往<br />
+<a href="https://forum.nginx.org/read.php?29,261929">https://forum.nginx.org/read.php?29,261929</a><br /></li>
+<li>Nginx 之前版本关于 Range cache 的邮件来往<br />
+<a href="https://forum.nginx.org/read.php?2,8958,8958">https://forum.nginx.org/read.php?2,8958,8958</a><br /></li>
+<li>切片模块的 wiki<br />
+<a href="http://nginx.org/en/docs/http/ngx_http_slice_module.html">http://nginx.org/en/docs/http/ngx_http_slice_module.html</a><br />
+<br />
+<br /></li>
+</ol>
     </div>
     
   </div>
@@ -404,9 +560,44 @@
 </blockquote>
 
 <p>再来看看是如何修复的，变更前的代码片段:</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/10/bugfix-of-nginx.html" class="read-more-link">阅读全文</a>
+
+<pre><code>static void  
+ngx_http_upstream_init_request(ngx_http_request_t *r)  
+{  
+    ....(略）....  
+    if (u-&gt;resolved-&gt;port == 0) {  
+        ngx_log_error(NGX_LOG_ERR, r-&gt;connection-&gt;log, 0,  
+                      &quot;no port in upstream \&quot;%V\&quot;&quot;, host);  
+        ngx_http_upstream_finalize_request(r, u,  
+                                       NGX_HTTP_INTERNAL_SERVER_ERROR);  
+        return;  
+    }  
+    ....(略)....  
+}  
+</code></pre>
+
+<p>变更后的代码片段：</p>
+
+<pre><code>static void  
+ngx_http_upstream_init_request(ngx_http_request_t *r)  
+{  
+    ....(略)....  
+            if (u-&gt;resolved-&gt;port == 0  
+                &amp;&amp; u-&gt;resolved-&gt;sockaddr-&gt;sa_family != AF_UNIX)  
+            {  
+                ngx_log_error(NGX_LOG_ERR, r-&gt;connection-&gt;log, 0,  
+                              &quot;no port in upstream \&quot;%V\&quot;&quot;, host);  
+                ngx_http_upstream_finalize_request(r, u,  
+                                               NGX_HTTP_INTERNAL_SERVER_ERROR);  
+                return;  
+            }  
+    ....(略)....  
+}  
+</code></pre>
+
+<p>作为旁观者和事后诸葛亮，可以很明显看出之前的问题所在：在 upstream 中，Unix 本地域套接字不能用了。</p>
+
+<p>这次版本更新，除了修正这个 Bug 外，没有做其他任何事情，所以，如果你已经尝鲜在用 1.9.8 了，赶紧直接升级到1.9.9 吧。</p>
     </div>
     
   </div>
@@ -449,9 +640,113 @@
 <p>其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。</p>
 
 <p>第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/08/connection-header-in-nginx.html" class="read-more-link">阅读全文</a>
+
+<h3 id="2-nginx-是如何做的">2.Nginx 是如何做的</h3>
+
+<p>注:以下代码均来自 Nginx-1.8.0</p>
+
+<p>对于请求中的 Connection 头， Nginx 在 http 解析时调用 ngx_http_process_connection 方法：</p>
+
+<pre><code>static ngx_int_t  
+ngx_http_process_connection(ngx_http_request_t *r, ngx_table_elt_t *h,  
+    ngx_uint_t offset)  
+{  
+    if (ngx_strcasestrn(h-&gt;value.data, &quot;close&quot;, 5 - 1)) {  
+        r-&gt;headers_in.connection_type = NGX_HTTP_CONNECTION_CLOSE;  
+  
+    } else if (ngx_strcasestrn(h-&gt;value.data, &quot;keep-alive&quot;, 10 - 1)) {  
+        r-&gt;headers_in.connection_type = NGX_HTTP_CONNECTION_KEEP_ALIVE;  
+    }  
+  
+    return NGX_OK;  
+}  
+</code></pre>
+
+<p>可见，该方法主要功能只涉及到上面所述的 Connection 作用的第2个作用，而没有第1个。这应该算的上是实现对标准的支持不完整吧。</p>
+
+<p>不管怎么样，我们继续分析一下 Nginx 在管理持久连接上具体是怎么做的，上面的代码逻辑很简单：<br />
+（1）如果 Connection 头是 close（不区分大小写），则 r-&gt;headers_in.connection_type 被置为 NGX_HTTP_CONNECTION_CLOSE</p>
+
+<p>（2）如果 Connection 头是 keep-alive（不区分大小写），则 r-&gt;headers_in.connection_type 被设置为 NGX_HTTP_CONNECTION_KEEP_ALIVE</p>
+
+<p>（3）如果不是以上两种情况，则什么都不做，此时 r-&gt;headers_in.connection_type 默认为0.</p>
+
+<p>可以看到，ngx_http_process_connection 的作用仅仅是设置了一个标记r-&gt;headers_in.connection_type，我们继续看这个标记是如何被使用的。</p>
+
+<p>要想完整的讲述这个过程，不可避免需要涉及一些 Nginx 配置解析、解析 HTTP 协议相关的流程，但这些都不是本文的重点，下面均一笔带过。</p>
+
+<p>Nginx 的各历史版本中，对于 http 协议解析的过程，细节稍微有些变化。在 Nginx-1.8.0 中，过程如下：</p>
+
+<p>（0）我们知道，Nginx 是一个主进程加多子进程的架构，配置解析发生在 fork 子进程之前，在这个过程中很多操作都是对于全局变量 cycle 的操作。在 fork 之后，每个子进程均会继承一份这个全局变量 cycle(这里不考虑COW)。</p>
+
+<p>（1）http 配置解析的入口为 ngx_http_block，这是个很复杂的函数。因为 Nginx 的配置文件分层级，可以有包含关系，为了对这个特性提供支持，配置文件的解析涉及到配置项的内存布局的设计，最终落实下来，就是全局变量 cycle 的 conf_ctx 成员，这是个四重指针。配置解析的这部分是另一个话题，本文不打算细说。这里要关注的是，在 ngx_http_block 函数的最后，调用了ngx_http_optimize_servers 方法，在这个方法里，完成了这样一个事情：配置文件里的监听套接字（可能是多个），最终被复制到了全局变量 ngx_cycle 的 listening 数组里。整个调用关系为，nginx.c-&gt;main()-&gt;ngx_init_cycle-&gt;ngx_http_block(在 ngx_init_cycle里通过钩子被回调)-&gt;ngx_http_optimize_servers-&gt;ngx_http_init_listening-&gt;ngx_http_add_listening-&gt;ngx_create_listening, 有兴趣的同学可以深入进去看看。</p>
+
+<p>（2）在上面的这个调用链里，ngx_http_add_listening 做了另外一个事情：将所有的ngx_listening_t 类型的监听套接字的 handler 钩子设置为 ngx_http_init_connection，这个在后面会用到。</p>
+
+<p>（3）nginx fork 出多个子进程，每个子进程会在 ngx_worker_process_init 方法里调用各个nginx 模块 init_process 钩子，其中当然也包括 NGX_EVENT_MODULE 类型的ngx_event_core_module 模块，其 init_process 钩子为 ngx_event_process_init。在ngx_event_process_init 里，每一个 ngx_listening_t 类型的监听套接字变量 ls[i]，根据ngx_get_connection 从 nginx 的 connections 储备池里获得一个与之相关的ngx_connection_t 类型的变量 c ,这两个变量均有一个指针成员指向对方，以此保持互相联系。从这里开始，我们将注意力转移到这个 ngx_connection_t 类型的变量 c 上。在 ngx_event_process_init 的后面，这个 ngx_connection_t 类型的变量的读事件的 handler，被置为 ngx_event_accept。然后这个读事件被添加到 epoll 中。</p>
+
+<p>（4）当一个请求来临时，ngx_event_accpet 被回调，其中上面第（2）步里为监听套接字设置的 handler,即 ngx_http_init_connection 被调用：</p>
+
+<pre><code>ls-&gt;handler(c);  
+</code></pre>
+
+<p>这个调用非常有趣，ls 实质上是代表着监听套接字，而参数 c 则是 accept 后建立起来的连接套接字，根据 socket 的基本知识，该连接上后续客户端与 Nginx 之间的信息传输，都通过这个连接套接字上的读写来进行。</p>
+
+<p>（5）从 ngx_http_init_connection 开始，就着手进行一系列 HTTP 协议解析。中间涉及到ngx_http_wait_request_handler、ngx_http_create_request、ngx_http_process_request_line、ngx_http_process_request_headers 等解析方法。</p>
+
+<p>似乎已经偏题太远了，我们回到最初的 Connection 请求头，在上面所讲的ngx_http_process_connection 中，根据 Connection 头，将 r-&gt;headers_in.connection_type 置为NGX_HTTP_CONNECTION_CLOSE、NGX_HTTP_CONNECTION_KEEP_ALIVE 或者默认初始值 0.</p>
+
+<p>那么这个过程发生在上面所述的一系列流程的哪个阶段呢？当然是发生在ngx_http_process_request_headers 里了，在个方法里，全局数组 ngx_http_headers_in 的对应元素的 handler 被调用，对于 Connection 请求头，就是 ngx_http_process_connection了。</p>
+
+<p>讲明白了 ngx_http_process_connection 发生的前因，我们再来看看后果。</p>
+
+<p>ngx_http_process_connection 的直接影响只有一个，即对 r-&gt;headers_in.connection_type进行赋值，close 为 NGX_HTTP_CONNECTION_CLOSE，keep-alive 为NGX_HTTP_CONNECTION_KEEP_ALIVE，其它情况为 0（初始值）。</p>
+
+<p>（6）在第（5）步里，在 ngx_http_process_request_line方法调用完 ngx_http_process_request_headers 后，继续调用 ngx_http_process_request，进而开始正式的在业务上处理HTTP请求。ngx_http_process_request的核心内容是对 ngx_http_handler 的调用。</p>
+
+<p>（7）在 ngx_http_handler 里，有这样一段代码：</p>
+
+<pre><code>if (!r-&gt;internal) {  
+        switch (r-&gt;headers_in.connection_type) {  
+        case 0:  
+            r-&gt;keepalive = (r-&gt;http_version &gt; NGX_HTTP_VERSION_10);  
+            break;  
+  
+        case NGX_HTTP_CONNECTION_CLOSE:  
+            r-&gt;keepalive = 0;  
+            break;  
+  
+        case NGX_HTTP_CONNECTION_KEEP_ALIVE:  
+            r-&gt;keepalive = 1;  
+            break;  
+        }  
+  
+        r-&gt;lingering_close = (r-&gt;headers_in.content_length_n &gt; 0  
+                              || r-&gt;headers_in.chunked);  
+        r-&gt;phase_handler = 0;  
+  
+    } else {  
+        cmcf = ngx_http_get_module_main_conf(r, ngx_http_core_module);  
+        r-&gt;phase_handler = cmcf-&gt;phase_engine.server_rewrite_index;  
+    }  
+</code></pre>
+
+<p>所以，到现在为止，客户端请求里带来的 Connection 头部，落在了 r-&gt;keepalive 上了。规则如下：</p>
+
+<ul>
+<li>如果 Connection 头部里为&rdquo;close&rdquo;,则 r-&gt;keepalive 为 0.<br /></li>
+<li>如果 Connection 头部里为&rdquo;keep-alive&rdquo;,则 r-&gt;keepalive为 1.<br /></li>
+<li>如果不是以上两种情况，则按照 HTTP 协议走默认情况：如果是 HTTP 1.0 以上，则 r-&gt;keepalive 默认为 1，如果是 HTTP 1.0及以下，则 r-&gt;keepalive默认为 0.这一点是与 HTTP 协议相符合的.<br />
+<br /></li>
+</ul>
+
+<p>到目前为止，我们所讲的都算是 r-&gt;keepalive 是怎么产生的，还没有涉及到它是如何被使用的。</p>
+
+<p>r-&gt;keepalive 的使用主要是在函数 ngx_http_finalize_connection 中，而ngx_http_finalize_connection 在 Nginx 中，仅被 ngx_http_finalize_request 调用。顾名思义，ngx_http_finalize_request 讲的是怎么结束一个 HTTP 请求的。</p>
+
+<p>（8）在 ngx_http_finalize_connection 中，如果 r-&gt;keepalive 为1，则会调用ngx_http_set_keepalive 并返回。ngx_http_set_keepalive 方法完成将当前连接设为keepalive 状态的实质性工作。它实际上会把表示请求的 ngx_http_request_t 结构体释放，却又不会调用 ngx_http_close_connection 方法关闭连接，同时也在检测 keepalive 连接是否超时。</p>
+
+<p>至此，Connection 头部在 Nginx 里的处理流程差不多都讲完了，具体细节可按照这个脉络查看相应的代码。</p>
     </div>
     
   </div>
@@ -484,9 +779,20 @@
 <p>关于天气，用天公作美来形容再贴切不过了。广州经过多次试探，终于找到了入冬的节奏，气温骤降，还有阵阵小雨。本来以为这次会像三月份的清远马拉松一样冒雨奔跑，还在担心这寒冷的天气淋雨可能会吃不消，结果当天突然风和日丽，蓝天白云。真是一个惊喜。</p>
 
 <p>这次半马，我的准备工作其实是不足的。最近已经有两周没有跑步了，而且当天早上还没有任何进食，直接空腹开跑，但还好之前还是积累了一定的跑量，再加上之前已经有一次半马的经验了，所以心理上并没有什么压力。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/07/guangzhou-marathon.html" class="read-more-link">阅读全文</a>
+
+<p>有一个让我非常兴奋的地方是，整个过程中我的膝盖没有任何不适。倒是双脚有些疼痛，尤其是脚拇指，估计是鞋的问题，到现在脚趾头还是淤青的。另外，大腿、臀部肌肉酸痛感强烈，这恰恰说明我的跑步姿势是没问题的，所以膝盖才会感觉良好。总体上说，身体没有什么不良反应。这也算是一个惊喜，说明在这方面的努力没有白费。</p>
+
+<p>比赛组织上，广马比清远马拉松更有经验，不得不提，赛后的姜汤简直是久旱甘霖。当天凭借广马参赛号码布，在广州市内还能免费乘坐地铁，比赛成绩也是当天就用短信发到手机上等等，做的好的地方真的还是挺多的。</p>
+
+<p>目前在考虑是否明年跑一次全马，主要思想斗争集中在如下几点:</p>
+
+<ul>
+<li>我是个平底足。平时走路稍微距离长一点脚都会痛，如果我能控制好膝盖，那么跑全马的瓶颈应该就在脚上了。本着健康第一的原则，我不适合去跑全马。<br /></li>
+<li>但是如果每年都去参加几次半马，时间长了肯定也会腻。<br />
+<br /></li>
+</ul>
+
+<p>暂时并没有得出结论，明年先跑一次半马再说，如果确实很轻松了，再考虑全马的事。</p>
     </div>
     
   </div>

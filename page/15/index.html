@@ -325,9 +325,82 @@
 <li>带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf<br /></li>
 <li>带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf<br /></li>
 </ol>
-    </div>
-    <div class="read-more">
-      <a href="/2014/04/30/noreplace-in-rpm-spec-file.html" class="read-more-link">阅读全文</a>
+
+<p>具体一点，包含如下场景：</p>
+
+<h3 id="1-一个文件没有被-config或-config-noreplace-指令配置">1. 一个文件没有被%config或%config(noreplace)指令配置</h3>
+
+<p>此时，不管该文件在安装完成后，有没有在本地被修改过，当升级该rpm包时，该文件会被这个新的rpm包的里的同名文件替换,（旧文件被删除）。</p>
+
+<h3 id="2-一个文件被-config指令配置">2. 一个文件被%config指令配置</h3>
+
+<p>此时包含如下情况：</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换掉掉旧的文件，旧的文件会被保存为xx.rpmsave,如/etc/redis/redis.conf.rpmsave</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换掉旧的文件。（旧文件被删除）</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件不会覆盖旧的文件，旧文件保持不变。</p>
+
+<h3 id="3-一个文件被-config-noreplace-指令配置">3. 一个文件被%config(noreplace)指令配置</h3>
+
+<p>此时包含如下情况：</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，旧文件保持不变，新rpm包里的该文件并重命名为xx.rpmnew,例如/etc/redis/redis.conf.rpmnew</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
+
+<ul>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。<br /></li>
+</ul>
+
+<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件不会覆盖旧的文件，旧文件保持不变。</p>
+
+<h3 id="4-总结">4.总结</h3>
+
+<ol>
+<li>如果一个文件在%files段没有被%config或%config(noreplace)指令配置;则执行rpm -Uvh时，该文件会无条件被新文件替换。<br /></li>
+<li>无论一个文件有没有被%config或%config(noreplace)指令配置，只要改文件在本地没有被编辑过，则执行rpm -Uvh时，该文件会被新文件替换。<br /></li>
+<li>一个被%config或%config(noreplace)指令配置的文件，如果被编辑过，那么在rpm更新时，如果新的rpm包中该文件没有修改，则该文件不会被新rpm包中的文件替换，之前做的编辑依然有效。<br /></li>
+<li>一个被%config指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件会被重命名为xx.rpmsave, 新文件会替代原文件。<br /></li>
+<li>一个被%config(noreplace)指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件不会被新的rpm包中的文件替换，之前做的编辑依然有效；但新rpm包中的同名文件会被重命名为xx.rpmnew.<br />
+<br /></li>
+</ol>
+
+<p>参考：<br />
+<a href="http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html">http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html</a></p>
     </div>
     
   </div>
@@ -358,9 +431,22 @@
       <p>对于<a href="http://pureage.info/2014/04/26/pitfall-of-nginx.html">Nginx踩坑记（一）</a>，在openresty的google group上提了个问题：<a href="https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ">ngx.exec是如何处理上层定义的变量的</a></p>
 
 <p>春哥的回复<strong>摘录</strong>如下：</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html" class="read-more-link">阅读全文</a>
+
+<blockquote>
+<p>你这里使用了 rewrite 配置指令来发起内部跳转。其实 rewrite 指令发起的内部跳转非常特殊：它不会从<br />
+server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执行，所以你上例中写在server {}<br />
+块中的“set $hello hello”并不会在跳转后重新运行一遍，因为 server-rewrite 阶段在跳转后被直接跳过。</p>
+
+<p>注意，rewrite 配置指令的特殊行为也可以通过下面这一行 ngx_lua 配置来复现：</p>
+
+<pre><code> rewrite_by_lua 'ngx.req.set_uri(&quot;/test2&quot;, true)'; 
+</code></pre>
+
+<p>而ngx.exec() 调用（以及其他接口，比如 echo_exec 配置指令）发起的内部跳转的标准行为是从  server-rewrite<br />
+阶段重新开始执行，所以你的“set $hello hello”会被重新执行一遍，从而改写掉 $hello  变量原先的取值（即&rdquo;bye&rdquo;）。</p>
+
+<p>我或许应该在教程里强调一下这个重要细节 :)</p>
+</blockquote>
     </div>
     
   </div>
@@ -408,9 +494,107 @@ location /test2 {
 </code></pre>
 
 <p>虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/04/26/pitfall-of-nginx.html" class="read-more-link">阅读全文</a>
+
+<p>测试如下所示：<br />
+<img src="/img/nginx-1.png" alt="nginx-1.png" /></p>
+
+<h2 id="2-如果变量定义在server处">2. 如果变量定义在server处</h2>
+
+<p>例如，如果有如下的配置：</p>
+
+<pre><code>set $hello hello;  
+location /test1 {  
+        echo $hello;  
+}  
+  
+location /test2 {  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>那么很容易想到，无论是访问/test1还是/test2，都会输出在上层定义的变量$hello的值，测试如下：<br />
+<img src="/img/nginx-2.png" alt="nginx-2.png" /></p>
+
+<p>再进一步，假设配置如下：</p>
+
+<pre><code>set $hello hello;  
+location /test1 {  
+        set $hello bye;  
+        rewrite /test1 /test2 last;  
+}  
+  
+location /test2 {  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>则同样很容易想到，如果直接访问/test1，则会先把在server段定义的$hello变量由“hello&rdquo;改写为&rdquo;bye&rdquo;，再进行内部跳转到/test2后，则会输出新的修改过后的变量$hello；而如果直接访问/test2，则会输出在server段定义的变量。测试如下：<br />
+<img src="/img/nginx-3.png" alt="nginx-3.png" /></p>
+
+<h2 id="3-坑来了">3. 坑来了</h2>
+
+<p>到现在为止，一切都很正常，上述的知识点也是Nginx配置中的基础知识。但当和ngx_lua模块结合起来时，就时常会碰到比较诡异的事情。<br />
+假设配置如下：</p>
+
+<pre><code>set $hello hello;  
+  
+location /test1 {  
+        content_by_lua '  
+                ngx.var.hello = &quot;bye&quot;;  
+                ngx.exec(&quot;/test2&quot;);  
+        ';  
+}  
+  
+location /test2 {  
+        echo &quot;in test2&quot;;  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>我们来猜猜分别访问/test1和/test2，会输出什么。首先,server段已经定义了变量$hello为字符串&rdquo;hello&rdquo;，直接访问/test1时，会将其修改为&rdquo;bye&rdquo;，然后执行ngx.exec跳转到/test2，输出变量$hello。但经过测试，分别访问/test1和/test2的时候，结果如下所示：<br />
+<img src="/img/nginx-4.png" alt="nginx-4.png" /><br />
+是不是很奇怪？直接访问/test2输出hello是正常的，可是访问/test1居然也是输出hello，在/test1中对hello变量的更改似乎没起作用。</p>
+
+<p>到底/test1的content_by_lua段中，对变量$test的修改起作用没，我们可以测试一下，添加一行调试代码如下：</p>
+
+<pre><code>set $hello hello;  
+  
+location /test1 {  
+        content_by_lua '  
+                ngx.var.hello = &quot;bye&quot;;  
+                ngx.log(ngx.ERR, ngx.var.hello);  
+                ngx.exec(&quot;/test2&quot;);  
+        ';  
+}  
+  
+location /test2 {  
+        echo &quot;in test2&quot;;  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>再次访问/test1，我们会发现，在log中记录下来了此时的$hello变量为&rdquo;bye&rdquo;。可是为什么执行内部跳转到/test2后，输出的结果还是&rdquo;hello&rdquo;呢？</p>
+
+<p>我们再次改造一下配置：</p>
+
+<pre><code>location /test1 {  
+        set $hello hello;  
+        content_by_lua '  
+                ngx.var.hello = &quot;bye&quot;;  
+                ngx.log(ngx.ERR, ngx.var.hello);  
+                ngx.exec(&quot;/test2&quot;);  
+        ';  
+}  
+  
+location /test2 {  
+        echo &quot;in test2&quot;;  
+        echo $hello;  
+}  
+</code></pre>
+
+<p>和上面的区别在于，这次将变量的定义从server段迁到了location /test1中，在/test1中的content_by_lua段对其进行修改，再执行内部跳转到/test2。测试结果如下：<br />
+<img src="/img/nginx-5.png" alt="nginx-5.png" /><br />
+这次的结果显然是符合我们的预期的。直接访问/test1，由于在content_by_lua中将$hello变量更改为&rdquo;bye&rdquo;了，所以当内部跳转到/test2时，输出$hello变量就会输出“bye&rdquo;；如果直接访问/test2，则由于此时并没有对$hello变量赋值，所以$hello变量为空。</p>
     </div>
     
   </div>
@@ -448,9 +632,12 @@ location /test2 {
 <p>最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。</p>
 
 <p>在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/04/17/svn-log.html" class="read-more-link">阅读全文</a>
+
+<p>而直接使用svn log命令时，默认只显示当前工作目录的log。</p>
+
+<p>假设当前工作目录已经是最新了，在此基础上，对一个文件A提交了commit，此时在当前目录下执行svn log -l 1 无法看到这次提交的log，如果想要看到，必须先执行svn update, 即使当前的工作目录下内容已经是最新的了；而执行svn log A -l 1则可以。</p>
+
+<p>原因在于svn对于文件及其父目录是分开管理版本号的。更新了一个文件，该文件的版本号是更新了，但该文件坐在的目录的版本号并没有更新。</p>
     </div>
     
   </div>
@@ -487,9 +674,59 @@ location /test2 {
 <p>直到有一天我接触到了章哥。</p>
 
 <p>章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/04/12/agentzh.html" class="read-more-link">阅读全文</a>
+
+<p>在openresty的google group中，随手摘取一条，贴在下面，时时自省。</p>
+
+<p><a href="https://groups.google.com/forum/#!searchin/openresty/dict/openresty/0dtgxIgCOPM/LXf2RXvaDh4J">https://groups.google.com/forum/#!searchin/openresty/dict/openresty/0dtgxIgCOPM/LXf2RXvaDh4J</a></p>
+
+<blockquote>
+<p>A:<br />
+我这边有一个案例需要用到遍历字典操作，请问这个功能如何实现？修改源码？</p>
+
+<p><strong>agentzh</strong>:<br />
+Brian Akins 已经提供了一个补丁，可以看这里的相关讨论：</p>
+
+<p><a href="https://github.com/chaoslawful/lua-nginx-module/pull/170">https://github.com/chaoslawful/lua-nginx-module/pull/170</a></p>
+
+<p>这两天我会尝试将一个经过修订的版本合并到 ngx_lua 的主干。</p>
+
+<p>另：同时抄送给 openresty 中文邮件列表：<a href="https://groups.google.com/group/openresty">https://groups.google.com/group/openresty</a><br />
+（国内访问可能需要翻墙）也欢迎你加入该列表并在那里和我们讨论这样的问题 :) 多谢！</p>
+
+<p>Best regards,</p>
+
+<p>B:<br />
+我之前也写过所有keys的一个补丁，章老师看看？呵呵。&gt;<a href="https://gist.github.com/74439ea9fac084e43932">https://gist.github.com/74439ea9fac084e43932</a><br />
+blog: <a href="http://chenxiaoyu.org">http://chenxiaoyu.org</a></p>
+
+<p>A:<br />
+Hi,B.验证了你的实现，可以通过。不过我有一个问题在于，做keys操作的时候，锁会不会阻塞整个worker?如果时间长了，其他的写入会不会受到影响。<br />
+毕竟对整个TREE，其他线程都阻塞了。<br />
+我想实现一个类似切换DUMP的功能，dump那一刻，切换入口到新的tree上，新tree是老的tree的复制，从入口开始遍历全部NODE即可。</p>
+
+<p><strong>agentzh</strong>:<br />
+Hello!<br />
+2012/10/19 铁轮:<br />
+共享内存字典是作为缓存来设计的，类似 memcached，而不是被设计成像 redis 那样的支持持久化的存储。</p>
+
+<p>所以一开始其实我也并不想添加 get_keys 这样的方法，因为对于元素非常多的字典，必然会锁比较长的时间。现在添加 get_keys<br />
+方法属于“make hard things possible”，但绝不应滥用 :)</p>
+
+<p>*我想实现一个类似切换DUMP的功能，dump那一刻，切换入口到新的tree上，新tree是老的tree的复制，从入口开始遍历全部NODE即可*。</p>
+
+<p>你说的这种做法的最大问题是，从老 tree 复制出新 tree 在 ngx_lua 共享内存字典现有的结构中代价会高于 get_keys()遍历本身。数据结构中的指针都需要重新设置，不能直接按块复制共享内存中的所有数据，同时整个复制的全过程还是需要锁定。</p>
+
+<p>值得一提的是，Redis 的 RDB 持久化方法 [1] 借用了 fork()系统调用来保证一致性，同时避免了对线上访问的直接干扰。另外，fork 可以利用到系统的 copy-on-write机制，所以也很省内存。Redis 服务器是单线程单进程的服务，所以 fork 很合适。但对于多 worker使用共享内存的场景，这种做法就不再适用了。</p>
+
+<p>Redis 的 AOF 持久化方法通过追加记录所有写操作的日志文件来在重构整个存储，倒是可以用于 ngx_lua的共享内存字典中，但在写入频繁的时候，其引入的额外开销还是不容忽视的。</p>
+
+<p>正如前面所提到的，ngx_lua 目前的共享内存字典实现是针对缓存场景设计的，所以我也不会把它实现得过于复杂。或许未来我们可以在ngx_lua 模块之外，通过专门的 Nginx C 模块实现可以供 Lua 使用的其他的更加 redis 的共享存储 :)</p>
+
+<p>Best regards,<br />
+-agentzh</p>
+
+<p>[1] <a href="http://redis.io/topics/persistence">http://redis.io/topics/persistence</a></p>
+</blockquote>
     </div>
     
   </div>

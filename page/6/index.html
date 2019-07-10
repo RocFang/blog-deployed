@@ -319,9 +319,29 @@
 <p>现在网络社群发达，一个实际上在某一个领域才刚入门没多久的人，在解决了新手提出的几个hello world 级别的问题之后，就会被称为大神。然后他就能开始散布一些言论了。</p>
 
 <p>这些言论本身放在一定的限定条件之下是没有问题的，比如 “Python 可简单了，看一个下午手册就能开始干活了”，他至少得有几个限定条件，比如你之前熟悉过其编程语言。即使在这些限定条件之下，你也得踏踏实实花几个小时到半天的时间来看手册不是么。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2016/03/27/basic-respect-to-a-programming-language.html" class="read-more-link">阅读全文</a>
+
+<p>可是现实的情况简直令人啼笑皆非。比如，在一个 OpenResty 的群里，关于 Lua 如下的问题简直层出不穷:</p>
+
+<ul>
+<li>为什么我定义了一个数组，下标 0 处没有我想要的数？<br /></li>
+<li>为什么我在循环里写个 continue 会报错？<br /></li>
+<li>a.b、a[&ldquo;b&rdquo;]、a[b]等等这些表达式为什么总不能按我的设想工作？<br /></li>
+<li>为什么正则表达式在 string.find 中不好使？<br /></li>
+<li>为什么&hellip;<br />
+<br /></li>
+</ul>
+
+<p>起初，碰到这种问题，我都会善意的提醒:</p>
+
+<blockquote>
+<p>看看《Lua程序设计》这本书吧，Lua 的作者亲手所写，绝大多数这些问题，在前几章都能找到答案。</p>
+</blockquote>
+
+<p>但是几次下来之后，很明显提这些问题的人并没有去看。因为在解决了当时的问题之后，他们很快又会提出第二个类似的问题。</p>
+
+<p>看来以后编程的流派要在面向过程编程、面向对象编程、面向工资编程、面向 Google 编程、面向 Stack Overflow 编程中，加入一个面向 QQ 群编程。</p>
+
+<p>在我看来，这些人就缺少对一门编程语言的基本尊重。也许，他就是受了某些所谓“大牛”的某些论断的影响。这些论断里可能就有这么一句 “Lua 啊，可简单了，看都不用看，直接写吧”。</p>
     </div>
     
   </div>
@@ -369,9 +389,165 @@
 </blockquote>
 
 <p>从使用的角度上来说，是增加了一个指令 <a href="http://nginx.org/en/docs/ngx_core_module.html#load_module">load_modules</a> 指令，来加载编译为 so 形式的动态模块。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2016/02/14/nginx-dynamic-module.html" class="read-more-link">阅读全文</a>
+
+<p>该功能的实现还是挺简单的，主要包括如下几个方面:</p>
+
+<ul>
+<li>将模块相关的类型定义和操作方法调整到新的文件 ngx_module.h 和 ngx_module.c 中<br /></li>
+<li>添加 dlopen 的封装<br /></li>
+<li>调整编译脚本<br /></li>
+<li>少量 Nginx 核心代码的调整。主要是为 cycle 新增了一个成员modules, 用来取代之前的全局变量 ngx_modules, 并将之前初始化时对于 ngx_modules 的操作封装成几个函数，放在 init_cycle 里调用。<br />
+<br /></li>
+</ul>
+
+<p>我认为我们需要重点关注的是如下几个:</p>
+
+<ul>
+<li>编译脚本有了较大的变化，在以后的模块编程中，尽量要让自己的模块能够静态链接和动态链接。这就需要适应一下新的编译框架。<br /></li>
+<li>不光旧的模块需要考虑兼容性，新的模块也要考虑对于旧的 Nginx 版本的兼容性。这包括两个方面，一个是 c 语言层面，要关注动态模块对于 Nginx 框架的调整，例如之前凡是用到全局变量 ngx_modules 的地方，要修改为 cycle-&gt;modules，当然正确的做法应该是用宏开关来判断当前 Nginx 版本是否大于 1.9.11 来决定是否调整；另一个是编译脚本，也需要判断版本，从而做出一些开关的选择，重点是对 ngx_module_link 变量的判断。<br />
+<br /></li>
+</ul>
+
+<p>举个例子，对于 nginx-rtmp 模块，我们要将其修改为既能在 Nginx-1.9.11 及其以后的版本中，同时支持静态链接(&ndash;add-module)和动态链接(&ndash;add-dynamic-module)，又要让其在老的版本中依然能支持旧的编译框架下的静态链接(&ndash;add-module)。</p>
+
+<p>为了达到这个目的，我做了如下测试，首先将 nginx-rtmp 的 congfig 文件修改为:</p>
+
+<pre><code>ngx_addon_name=&quot;ngx_rtmp_module&quot;  
+RTMP_CORE_MODULES=&quot;ngx_rtmp_module                             \  
+                   ngx_rtmp_core_module                        \  
+                   ngx_rtmp_cmd_module                         \  
+                   ngx_rtmp_codec_module                       \  
+                   ngx_rtmp_access_module                      \  
+                   ngx_rtmp_record_module                      \  
+                   ngx_rtmp_live_module                        \  
+                   ngx_rtmp_play_module                        \  
+                   ngx_rtmp_flv_module                         \  
+                   ngx_rtmp_mp4_module                         \  
+                   ngx_rtmp_netcall_module                     \  
+                   ngx_rtmp_relay_module                       \  
+                   ngx_rtmp_exec_module                        \  
+                   ngx_rtmp_auto_push_module                   \  
+                   ngx_rtmp_notify_module                      \  
+                   ngx_rtmp_log_module                         \  
+                   ngx_rtmp_limit_module                       \  
+                   ngx_rtmp_hls_module                         \  
+                   ngx_rtmp_dash_module                        \  
+                   &quot;  
+RTMP_HTTP_MODULES=&quot;ngx_rtmp_stat_module                        \  
+                   ngx_rtmp_control_module                        \  
+                  &quot;  
+RTMP_DEPS=&quot;$ngx_addon_dir/ngx_rtmp_amf.h               \  
+           $ngx_addon_dir/ngx_rtmp_bandwidth.h         \  
+           $ngx_addon_dir/ngx_rtmp_cmd_module.h        \  
+           $ngx_addon_dir/ngx_rtmp_codec_module.h      \  
+           $ngx_addon_dir/ngx_rtmp_eval.h              \  
+           $ngx_addon_dir/ngx_rtmp.h                   \  
+           $ngx_addon_dir/ngx_rtmp_version.h           \  
+           $ngx_addon_dir/ngx_rtmp_live_module.h       \  
+           $ngx_addon_dir/ngx_rtmp_netcall_module.h    \  
+           $ngx_addon_dir/ngx_rtmp_play_module.h       \  
+           $ngx_addon_dir/ngx_rtmp_record_module.h     \  
+           $ngx_addon_dir/ngx_rtmp_relay_module.h      \  
+           $ngx_addon_dir/ngx_rtmp_streams.h           \  
+           $ngx_addon_dir/ngx_rtmp_bitop.h             \  
+           $ngx_addon_dir/ngx_rtmp_proxy_protocol.h    \  
+           $ngx_addon_dir/hls/ngx_rtmp_mpegts.h        \  
+           $ngx_addon_dir/dash/ngx_rtmp_mp4.h          \  
+           &quot;  
+RTMP_CORE_SRCS=&quot;$ngx_addon_dir/ngx_rtmp.c                   \  
+                $ngx_addon_dir/ngx_rtmp_init.c              \  
+                $ngx_addon_dir/ngx_rtmp_handshake.c         \  
+                $ngx_addon_dir/ngx_rtmp_handler.c           \  
+                $ngx_addon_dir/ngx_rtmp_amf.c               \  
+                $ngx_addon_dir/ngx_rtmp_send.c              \  
+                $ngx_addon_dir/ngx_rtmp_shared.c            \  
+                $ngx_addon_dir/ngx_rtmp_eval.c              \  
+                $ngx_addon_dir/ngx_rtmp_receive.c           \  
+                $ngx_addon_dir/ngx_rtmp_core_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_cmd_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_codec_module.c      \  
+                $ngx_addon_dir/ngx_rtmp_access_module.c     \  
+                $ngx_addon_dir/ngx_rtmp_record_module.c     \  
+                $ngx_addon_dir/ngx_rtmp_live_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_play_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_flv_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_mp4_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_netcall_module.c    \  
+                $ngx_addon_dir/ngx_rtmp_relay_module.c      \  
+                $ngx_addon_dir/ngx_rtmp_bandwidth.c         \  
+                $ngx_addon_dir/ngx_rtmp_exec_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_auto_push_module.c  \  
+                $ngx_addon_dir/ngx_rtmp_notify_module.c     \  
+                $ngx_addon_dir/ngx_rtmp_log_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_limit_module.c      \  
+                $ngx_addon_dir/ngx_rtmp_bitop.c             \  
+                $ngx_addon_dir/ngx_rtmp_proxy_protocol.c    \  
+                $ngx_addon_dir/hls/ngx_rtmp_hls_module.c    \  
+                $ngx_addon_dir/dash/ngx_rtmp_dash_module.c  \  
+                $ngx_addon_dir/hls/ngx_rtmp_mpegts.c        \  
+                $ngx_addon_dir/dash/ngx_rtmp_mp4.c          \  
+                &quot;  
+RTMP_HTTP_SRCS=&quot;$ngx_addon_dir/ngx_rtmp_stat_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_control_module.c    \  
+                &quot;  
+  
+#nginx version &gt;= 1.9.11  
+if test -n &quot;$ngx_module_link&quot;; then  
+    ngx_module_incs=$ngx_addon_dir  
+    ngx_module_deps=$RTMP_DEPS  
+    if [ $ngx_module_link = DYNAMIC ] ; then  
+        ngx_module_name=&quot;$RTMP_CORE_MODULES $RTMP_HTTP_MODULES&quot;  
+        ngx_module_srcs=&quot;$RTMP_CORE_SRCS $RTMP_HTTP_SRCS&quot;  
+        . auto/module  
+    elif [ $ngx_module_link = ADDON ] ; then  
+        ngx_module_type=CORE  
+        ngx_module_name=$RTMP_CORE_MODULES  
+        ngx_module_srcs=$RTMP_CORE_SRCS  
+        . auto/module  
+        ngx_module_type=HTTP  
+        ngx_module_name=$RTMP_HTTP_MODULES  
+        ngx_module_srcs=$RTMP_HTTP_SRCS  
+        . auto/module  
+    fi  
+  
+#nginx version &lt; 1.9.11  
+else  
+    CORE_MODULES=&quot;$CORE_MODULES  
+                  $RTMP_CORE_MODULES&quot;  
+    HTTP_MODULES=&quot;$HTTP_MODULES  
+                  $RTMP_HTTP_MODULES&quot;  
+    NGX_ADDON_DEPS=&quot;$NGX_ADDON_DEPS \  
+                    $RTMP_DEPS&quot;  
+    NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS  
+                    $RTMP_CORE_SRCS  
+                    $RTMP_HTTP_SRCS&quot;  
+    CFLAGS=&quot;$CFLAGS -I$ngx_addon_dir&quot;  
+fi  
+  
+USE_OPENSSL=YES  
+</code></pre>
+
+<p>然后调整所有 c 源文件里使用 ngx_modules 的地方，可以添加类似如下的代码片段:</p>
+
+<pre><code>#if defined(nginx_version) &amp;&amp; nginx_version &gt;= 1009011  
+    modules = cf-&gt;cycle-&gt;modules;  
+#else  
+    modules = ngx_modules;  
+#endif  
+</code></pre>
+
+<p>这样就可以达到我们的目的了。</p>
+
+<p>具体关于编译脚本的调整，我们参考一下官方的几个文档即可：</p>
+
+<ul>
+<li><a href="https://www.nginx.com/resources/wiki/extending/converting/">Converting Static Modules to Dynamic Modules</a><br /></li>
+<li><a href="https://www.nginx.com/resources/wiki/extending/new_config/">New Config Shell File</a><br /></li>
+<li><a href="https://www.nginx.com/resources/wiki/extending/old_config/">Old Config Shell File</a><br />
+<br /></li>
+</ul>
+
+<p>注意，上面的文档中，关于 rtmp 模块的调整，是有问题的，一方面如果那些使用了 ngx_modules 全局变量的 c 文件不相应修改的话，运行时会有段错误；另一方面，示例里对 config 文件的调整，只能保证对于 Nginx-1.9.11 及其以后的版本能同时支持编译为动态模块和静态模块，却对 Nginx-1.9.11 之前的版本的支持有问题。</p>
     </div>
     
   </div>
@@ -406,9 +582,8 @@
 <blockquote>
 <p>Jennifer Connelly&rsquo;s shot at the beach is an homage to the same shot with her in &ldquo;Dark City&rdquo;</p>
 </blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/2016/01/24/dark-city.html" class="read-more-link">阅读全文</a>
+
+<p>能在这个镜头一出现，就联想到《梦之安魂曲》，这种感觉我挺喜欢。</p>
     </div>
     
   </div>
@@ -443,9 +618,21 @@
 <p>先说社交。刚开始跑的时候，喜欢将跑步的记录分享到朋友圈、微博中，后来跑成习惯了之后就基本不去分享了，因为朋友圈里的人都知道我经常在跑步，我也没必要再去浪费这点带宽和存储资源。所以社交方面的功能并不是我选择一个 APP 的原因。</p>
 
 <p>主要原因还是最基本的功能：数据记录、统计和分析。不管哪一款 APP，都不可能一次性就将这些功能做好做全，肯定是需要不断挖掘和完善。而这方面，益动的表现根本不像是一款互联网产品。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2016/01/22/leaving-edooon.html" class="read-more-link">阅读全文</a>
+
+<p>举个例子，益动本身并不是一款纯粹的跑步 APP，它还支持滑雪、轮滑、走路等很多运动类型。在开始记录之前，需要先选择好本次运动的运动类型，否则它默认是上一次的运动类型。这样就会导致一个问题，如果昨天我刚好是骑行，今天跑步前却忘了将运动类型改回为跑步的话，今天的记录就还是骑行了。这是一个如此常见的场景，在益动这里却成了一个大问题，因为它不支持事后修改指定记录的运动类型。</p>
+
+<p>遇到这种麻烦的肯定不知我一个。我们随便用“益动+修改运动类型”在 google 里搜索一下，就会发现不少人也有这种问题，随便挑两个：</p>
+
+<ol>
+<li><a href="https://edooon.com/bbs/25743">问题：跑步的时候不小心把运动类型设定成步行了怎么改？</a><br /></li>
+<li><a href="https://edooon.com/bbs/109401">运动类型修改</a><br /></li>
+</ol>
+
+<p>从这些帖子里可以知道，益动不是不能修改某条记录的运动类型，需要修改的话联系管理员在后台修改即可，管理员可真够清闲啊。另外，益动也在帖子里承诺后续版本会支持在 APP 端自行修改，可这么个简单的功能，居然从 2014 年一直拖到 2016 年都没加上。正像我上面说的，这还是一个互联网产品吗？</p>
+
+<p>当然，益动并不是一无是处，当时看中它的优点就是简洁，只是现在我有点受不了它过于缓慢的更新速度了。我在乎的是记录，如果一条记录都是错的，留在上面还有什么意义呢。</p>
+
+<p>总之，还是希望益动越来越好，在未来的跑步 APP 大战中，应该还是会有它的一席之地。</p>
     </div>
     
   </div>
@@ -478,9 +665,24 @@
 <p>他打算用 ngx.header 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 *_by_lua 脚本中写入ngx.header[&ldquo;Accept-Ranges&rdquo;] = &ldquo;xxx&rdquo;。在 OpenResty 中，这是一种经常被使用到的方法。</p>
 
 <p>他发现的问题是，当他这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值，即 &ldquo;bytes&rdquo;.</p>
-    </div>
-    <div class="read-more">
-      <a href="/2016/01/17/modify-accept-ranges-header.html" class="read-more-link">阅读全文</a>
+
+<p>开源软件的好处就是，所谓“奇怪”的事情只要愿意探究，都能找到答案。下面就简单的解释一下为什么使用 ngx.header 修改 Accept-Ranges 响应头的时候，会导致两个并列的 Accept-Ranges 头。</p>
+
+<p>首先，Nginx 在内部是通过一个单链表来管理一个请求的响应头。</p>
+
+<p>其次，Nginx 自身的 Accept-Ranges 响应头的设置是由 ngx_http_range_header_filter_module 模块来完成的。我们知道，Nginx 对于 HTTP 请求的处理是分阶段的，header_filter 和 body_filter 的位置在处理链的位置中很靠后。</p>
+
+<p>明确上面这两点之后，再通过阅读一下 nginx-lua 的相关代码，就可以解释这个问题了:</p>
+
+<ul>
+<li><p>ngx.header 的处理方式是，在添加响应头之前，会查找响应头的链表中是否已经有了该响应，如果没有，则添加，如果有，则覆盖。这种行为正是我们已知的。</p></li>
+
+<li><p>由于 ngx_http_range_header_filter_module 的位置在 nginx-lua 之后，所以在我们使用 ngx.header 添加/修改了 Accept-Ranges 头部之后，ngx_http_range_header_filter_module 依然要添加 Accept-Ranges 头。</p></li>
+
+<li><p>ngx_http_range_header_filter_module 在添加 Accept-Ranges 头时的行为是不检查当前响应头链表里是否已经有了 Accept-Ranges 头部，不管三七二十一，直接在响应头的链表里添加一个 Accept-Ranges 响应头。</p></li>
+</ul>
+
+<p>所以，ngx.header 和 ngx_http_range_header_filter_module 各自往响应头里添加了一个 Accept-Ranges 头，导致响应头中出现了两个并列的 Accept-Ranges。</p>
     </div>
     
   </div>

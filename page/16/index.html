@@ -319,9 +319,10 @@
 <p><strong>销售们通常是外向型的</strong>。当然，并不一定是说他们的性格本身就外向的，而是他们的工作方式、工作态度会给人一种他们很外向的印象。例如，某位金牌销售，每周都会在社交网络上写一些文章，分享、感悟之类。而我接触到的包括我自己在内的研发，基本上都是埋头干自己的事情。</p>
 
 <p><strong>销售们通常比研发要更成熟</strong>。工作中接触到的印象深刻的销售们，现在都是接近或已经是90后了。但他们在为人处世上比同龄的研发要厉害很多。这也很正常，跟学习、工作经历密不可分。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/03/31/difference-of-rd-and-sales.html" class="read-more-link">阅读全文</a>
+
+<p><strong>销售们通常比研发更敢于将自己的“野心”公布于众</strong>。至少到目前为止，我碰见的销售们，都会直言不讳的说，自己以后肯定是要开公司的，而一个研发如果经常把这些话挂在嘴边，多少会给领导、同事一种不稳定的感觉，这家伙会不会马上就要跳槽了？这也是由研发与销售不同的工作性质决定的。众所周知，销售的薪水是和业绩直接挂钩的，因为他的业绩直接跟公司的收入相关。所以，销售是一个以结果论英雄的职业，事情办成了就好，至于你的野心，公司是不会怎么管的。</p>
+
+<p>所以，不同的性格、经历，以及工作性质，导致了研发与销售无论在外在气质，还是心胸抱负之间的差别。虽然说，这些差别不能说明哪种更优越，但多了解一下同龄人是一个什么状态，对于我们这些整天待在自己小圈子的程序员还是很有帮助的。</p>
     </div>
     
   </div>
@@ -356,9 +357,179 @@
 <h3 id="背景">背景</h3>
 
 <p>A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/02/26/how-standard-is-broken.html" class="read-more-link">阅读全文</a>
+
+<p>最近，运维发现服务器上有很多416请求。416是Range错误的响应码，除去一些正常的416外，运维还发现有一类416请求的Range头是:</p>
+
+<pre><code>Range: byptes=XXXX-0
+</code></pre>
+
+<p>XXXX是个非0的数。很明显，这是一个错误的Range请求，之所以会出现这样的Range，是因为对方的播放器bug导致。但A公司要求，把XXX-0按照xxx-来处理。</p>
+
+<p>我们知道，在HTTP协议中规定的是，一个Range头可以有如下形式（假设文件大小为1000个字节）：</p>
+
+<blockquote>
+<p>bytes=0-499(前500个字节）<br />
+bytes=500-999（第二个500个字节）<br />
+bytes=-500（最后500个字节）<br />
+bytes=9500-（与上同，最后500个字节）<br />
+bytes=0-0,-1（第一个字节和最后一个字节）</p>
+</blockquote>
+
+<p>那么到底有没有bytes=500-0这样的range呢？我们从标准和实现两方面来考虑。</p>
+
+<h3 id="标准">标准</h3>
+
+<p>参考RFC2616 14.35.1节<br />
+&gt;If the last-byte-pos value is present, it MUST be greater than or equal to the first-byte-pos in that byte-range-spec, or the byte-range-spec is syntactically invalid. The recipient of a byte-range-set that includes one or more syntactically invalid byte-range-spec values MUST ignore the header field that includes that byte-range-set.</p>
+
+<p>所以，理论上，bytes=500-0这样的range段，是错误的。</p>
+
+<h3 id="实现">实现</h3>
+
+<p>以Nginx为例，我们来看看代码中是如何处理的。</p>
+
+<pre><code>static ngx_int_t  
+ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,  
+    ngx_uint_t ranges)  
+{  
+    u_char            *p;  
+    off_t              start, end, size, content_length;  
+    ngx_uint_t         suffix;  
+    ngx_http_range_t  *range;  
+  
+    p = r-&gt;headers_in.range-&gt;value.data + 6;  
+    size = 0;  
+    content_length = r-&gt;headers_out.content_length_n;  
+  
+    for ( ;; ) {  
+        start = 0;  
+        end = 0;  
+        suffix = 0;  
+  
+        while (*p == ' ') { p++; }  
+  
+        if (*p != '-') {  
+            if (*p &lt; '0' || *p &gt; '9') {  
+                return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+            }  
+  
+            while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
+                start = start * 10 + *p++ - '0';  
+            }  
+  
+            while (*p == ' ') { p++; }  
+  
+            if (*p++ != '-') {  
+                return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+            }  
+  
+            while (*p == ' ') { p++; }  
+  
+            if (*p == ',' || *p == '\0') {  
+                end = content_length;  
+                goto found;  
+            }  
+  
+        } else {  
+            suffix = 1;  
+            p++;  
+        }  
+  
+        if (*p &lt; '0' || *p &gt; '9') {  
+            return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+        }  
+  
+        while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
+            end = end * 10 + *p++ - '0';  
+        }  
+  
+        while (*p == ' ') { p++; }  
+  
+        if (*p != ',' &amp;&amp; *p != '\0') {  
+            return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+        }  
+  
+        if (suffix) {  
+            start = content_length - end;  
+            end = content_length - 1;  
+        }  
+  
+        if (end &gt;= content_length) {  
+            end = content_length;  
+  
+        } else {  
+            end++;  
+        }  
+  
+    found:  
+  
+        if (start &lt; end) {  
+            range = ngx_array_push(&amp;ctx-&gt;ranges);  
+            if (range == NULL) {  
+                return NGX_ERROR;  
+            }  
+  
+            range-&gt;start = start;  
+            range-&gt;end = end;  
+  
+            size += end - start;  
+  
+            if (ranges-- == 0) {  
+                return NGX_DECLINED;  
+            }  
+        }  
+  
+        if (*p++ != ',') {  
+            break;  
+        }  
+    }  
+  
+    if (ctx-&gt;ranges.nelts == 0) {  
+        return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+    }  
+  
+    if (size &gt; content_length) {  
+        return NGX_DECLINED;  
+    }  
+  
+    return NGX_OK;  
+}  
+</code></pre>
+
+<p>其中，</p>
+
+<pre><code> found:  
+  
+        if (start &lt; end) {  
+            range = ngx_array_push(&amp;ctx-&gt;ranges);  
+            if (range == NULL) {  
+                return NGX_ERROR;  
+            }  
+  
+            range-&gt;start = start;  
+            range-&gt;end = end;  
+  
+            size += end - start; 
+  
+            if (ranges-- == 0) {  
+                return NGX_DECLINED;  
+            }  
+        }  
+</code></pre>
+
+<p>表明，只有start&lt;end的，才会后续进行range处理。这里的start，是指bytes=a-b中的a，end指的是b+1。</p>
+
+<p>所以，在HTTP服务器的典型实现上，Range: bytes=500-0也是错误的请求。</p>
+
+<h3 id="现实世界">现实世界</h3>
+
+<p>好了，从理论和典型实现上讨论了Range头之后，我们回到第三次元，现实世界。</p>
+
+<p>可以猜想，出现这个问题的原因是A公司的播放器开发人员代码的一处bug导致。但由于它们是甲方，所以我们应该予以配合。结果是我们在服务器端将<code>Range: bytes=500-0</code>这类的请求与<code>Range: bytes=500-</code>等同处理。</p>
+
+<p>解决起来很简单，非常简单。但是，好好的标准就这么被破坏了。可以想象，A是Top级的互联网大佬，某家cdn帮他们解决这种Range错误了，它肯定会对其他cdn商家说，这个很简单，那谁都是这么处理的。然后，中国所有的cdn商家都这么处理了。再然后，没人记的这东西是否遵循标准了，即使有人拿标准说起，也会被老人们这么教育：&rdquo;标准只是理想情况，现实中的实现，是复杂多变的&hellip;&rdquo;</p>
+
+<p>更没人会记得，罪魁祸首是某个倒霉的播放器程序猿。</p>
     </div>
     
   </div>
@@ -395,9 +566,61 @@
 <p>我和女友在一个学校读研，我比她高一届，也就是说，我们一起在学校度过了两年的时光。我们经常在吃完晚饭后，去教研室之前，来到学校的超市里逛逛。有时候是一人一根冰激凌，有时候是一包薯片，然后坐在超市门口的长凳上消磨十几分钟的时光。长凳的一边是超市，另外一边是一家书店，名曰智博书店。其实除了去逛逛超市，我们更多会逛逛这个书店。但不管怎么样，我们总会在外面这个长凳上坐个十几分钟，当时能不能看到夕阳现在不记得了，但回忆起来总觉得有。</p>
 
 <p>有时候我们会面朝书店，有时候会面朝超市。当我们面朝超市时，我们面前是超市的玻璃墙，里面是位于超市里的一个迷你的礼品店，透过玻璃能看到陈列的礼物，有几个小猪，有一个骷髅头，有几个类似于猪八戒背媳妇风格的娃娃，还有一个裹着红色头巾的海盗。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/02/23/gift-not-sent-out.html" class="read-more-link">阅读全文</a>
+
+<p>不知道哪一天，我突然想，我把这个海盗送给她吧，想起这茬的原因是可能我们都很喜欢《加勒比海盗》，喜欢杰克船长。然后会想，嗯，明天再一个人过来买了送给她吧。可我一个人来的时候，却要么没想起来，要么当时有别的理由，说下次再买吧。终于有一天，我们再次在长凳上望着那面玻璃墙时，我们发现那个海盗已经不在上面了。</p>
+
+<h3 id="二-口琴">二.口琴</h3>
+
+<p>毕业后，我来到深圳华为，大队培训一周后，来到部门报到，部门报到一周后，就和一起入职的另外六个新人在另一个老同事的带领下，去北京出差了四个半月。业内人士都知道，这个不叫出差，叫异地研发。</p>
+
+<p>这个老同事人称彪哥。虽然他在这里干了七年，但看上去一点都不老；虽然他的名字中有一个“彪”字，但他无论容貌还是性格，都跟“彪”字严重不符。于是我们一帮菜鸟，在他的带领下，在北京完成了跌跌撞撞的、忐忐忑忑的职业生涯最初几个月。</p>
+
+<p>北京几个月的生活是极其单调的，住在一家名为青年公寓的旅店。周一到周六，每天早上七点起床，七点半出发，走几分钟路程，路过一个公园，看几个大姐大妈跳健身操，拐个十字路口乘上公司的大巴，坐四十分钟到公司；晚上九点多，在公司门口乘上大巴，原方向返回，路过那个公园，看几个小孩跳鬼步舞，走几分钟路程，回到青年公寓。</p>
+
+<p>星期天是休息的。我们会一起中午起床，到附近一家饭店点上几个菜吃个午饭，然后散开各忙各事，晚上三三两两吃完晚饭后，我们会一起到路边一家烧烤店里一人拿一瓶啤酒，叫上几十根羊肉串。</p>
+
+<p>对于读者来说，这些文字和彪哥无关。对于我来说，这些文字是一幅一副或连续或断裂的画面，这些画面的每一帧里，几乎都有彪哥的影子。</p>
+
+<p>彪哥有一个刚出生几个月的儿子，和他老婆、爸妈一起在武汉。彪哥没带笔记本电脑出来，所以隔个三两天，就会借我的电脑用上个十来分钟，然后我就会缠着他要最新的他儿子的照片或视频。对我来说，所有的几个月大的小孩都很可爱，对彪哥来说当然不是如此。无论是在深圳，还是在北京，他公司用的电脑的桌面都是他的儿子。</p>
+
+<p>彪哥是个典型的技术男，与世无争，干事踏实低调。也正因为如此，他在这里干了七年但仍是个普通员工，部门里和他同一批的基本都是PL或是XXX专家头衔了。</p>
+
+<p>某一天，我想要给彪哥的儿子送个礼物。我自己喜欢吹口琴，走哪都带着，因此想到了送这么个能发声的小玩意也许不错，他家里会更添几分热闹。但跟上面的故事一样，在北京的四个多月，以及回到深圳后的几个月，我都没能送出这个小小的礼物。</p>
+
+<p>现在我已早已离开深圳近一年了。那些事情想起来既近又远，既清晰又模糊。如果问我那近一年里有什么遗憾吗？我首先想到的不是初入职场心态各种不积极，不会排解压力，不会推事情；而是这个没有送出去的口琴。</p>
+
+<h3 id="三-最后">三.最后</h3>
+
+<p>读书时，不止一次想起过要把《唐诗三百首》背完，也实践了不止一次。但几乎每次，都是在重复第一首和最后一首，大家都会懂得。</p>
+
+<ol>
+<li>感遇<br /></li>
+</ol>
+
+<blockquote>
+<p>《感遇》<br />
+张九龄</p>
+
+<p>　<br />
+兰叶春葳蕤，桂华秋皎洁。
+欣欣此生意，自尔为佳节。
+谁知林栖者，闻风坐相悦。
+草木有本心，何求美人折？</p>
+</blockquote>
+
+<ol>
+<li>金缕衣<br /></li>
+</ol>
+
+<blockquote>
+<p>《金缕衣》<br />
+杜秋娘</p>
+
+<p>劝君莫惜金缕衣，劝君惜取少年时。
+花开堪折直须折，莫待无花空折枝。</p>
+</blockquote>
+
+<p>不管这两首诗本意是什么，我现在想起的是，感谢让我遇见你，那些憾事，现在开始，也并未晚。</p>
     </div>
     
   </div>
@@ -437,9 +660,157 @@
 3. 与一条请求匹配的server name.</p>
 
 <p>很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/02/22/host-variable-in-nginx.html" class="read-more-link">阅读全文</a>
+
+<p>为了表示语气的加强，再重复一遍，这个规则包含了<strong>三个</strong>步骤。</p>
+
+<p>但由于某种不知名的原因，网上能找到的大部分关于该变量的说明都只包含两点。</p>
+
+<p>例如这个：</p>
+
+<blockquote>
+<p>$host</p>
+
+<p>请求中的Host字段，如果请求中的Host字段不可用，则为服务器处理请求的服务器名称。</p>
+</blockquote>
+
+<p>再例如这个：</p>
+
+<blockquote>
+<p>$host, 请求信息中的&rdquo;Host&rdquo;，如果请求中没有Host行，则等于设置的服务器名;</p>
+</blockquote>
+
+<p><strong>这些说法都是错误的</strong>。它们将一个本来很有内涵的东西向读者隐藏起来，如果你只是一扫而过，在心里默念，哦，这个变量原来是这样的，很简单嘛，那就会错过很多东西。下面就来详细的说明一下该变量。</p>
+
+<h3 id="1-什么是请求行中的host">1.什么是请求行中的host?</h3>
+
+<p>我们知道，HTTP是一个文本协议，建立在一个可靠的传输层协议之上。这个传输层协议要是可靠的，面向连接的。由于TCP的普及程度，让它成了HTTP下层协议事实上的标准。但我们要知道，HTTP并不仅限于建立在TCP之上。只要是可靠的，面向连接的传输层协议，都可以用来传输HTTP。下面所说的HTTP，都是指搭载在TCP之上的HTTP。</p>
+
+<p>一个HTTP请求过程是这样的，客户端先与服务器建立起TCP连接，然后再与服务器端进行请求和回复的收发。请求包含请求行、请求头和请求体，其中，根据请求方法的不同，请求体是可选的。</p>
+
+<p>下面开始说请求行。</p>
+
+<p>在发送请求行之前，客户端与服务器已经建立了连接。所以此时请求行中并不需要有服务器的信息。例如，可以如下：</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.1</p>
+</blockquote>
+
+<p>这就是一个完整的HTTP请求行。虽然请求行中不需要有服务器的信息，但仍然可以在请求行中包含服务器的信息。例如：</p>
+
+<blockquote>
+<p>GET www.pureage.info/index.php HTTP/1.1</p>
+</blockquote>
+
+<p>两者一比较，就很容易理解什么叫请求行中的host了。第一个请求行中，就没有host，第二种请求行中，就带了host，为wwww.pureage.info。</p>
+
+<h3 id="2-host请求头与http-1-0-http-1-1">2.Host请求头与HTTP/1.0、HTTP/1.1</h3>
+
+<p>一个请求，请求行下面就是一些列的请求头。这些请求头，在HTTP/1.0中，都是可选的，且HTTP/1.0不支持Host请求头；而<strong>在HTTP/1.1中，Host请求头部必须存在</strong>。</p>
+
+<p>除了阅读RFC2616来确认这一点外，我们来看看Nginx中的代码：</p>
+
+<pre><code>ngx_int_t  
+ngx_http_process_request_header(ngx_http_request_t *r)  
+...(略)...  
+if (r-&gt;headers_in.host == NULL &amp;&amp; r-&gt;http_version &gt; NGX_HTTP_VERSION_10) {  
+        ngx_log_error(NGX_LOG_INFO, r-&gt;connection-&gt;log, 0,  
+                   &quot;client sent HTTP/1.1 request without \&quot;Host\&quot; header&quot;);  
+        ngx_http_finalize_request(r, NGX_HTTP_BAD_REQUEST);  
+        return NGX_ERROR;  
+...(略)...  
+</code></pre>
+
+<p>即，如果协议版本在HTTP/1.0之上，且请求头部没有Host的话，会直接返回一个Bad Request错误响应。</p>
+
+<h3 id="3-什么是与请求匹配的server-name">3.什么是与请求匹配的server name?</h3>
+
+<p>server name是指在Nginx配置文件中，在server块中，用server_name指令设置的值。一个server可以多次使用server_name指令，来实现俗称的“虚拟主机”。例如：</p>
+
+<pre><code>server {  
+    listen      80;  
+    server_name example.org www.example.org;  
+    ...  
+}  
+  
+server {  
+    listen      80;  
+    server_name example.net www.example.net;  
+    ...  
+}  
+  
+server {  
+    listen      80;  
+    server_name example.com www.example.com;  
+    ...  
+}  
+</code></pre>
+
+<p>关于虚拟主机的确定方法，还是引用Nginx的官方文档：</p>
+
+<blockquote>
+<p>在这个配置中，nginx仅仅检查请求的“Host”头以决定该请求应由哪个虚拟主机来处理。如果Host头没有匹配任意一个虚拟主机，或者请求中根本没有包含Host头，那nginx会将请求分发到定义在此端口上的默认虚拟主机。在以上配置中，第一个被列出的虚拟主机即nginx的默认虚拟主机——这是nginx的默认行为。而且，可以显式地设置某个主机为默认虚拟主机，即在&rdquo;listen&rdquo;指令中设置&rdquo;default_server&rdquo;参数：</p>
+
+<p>server {<br />
+   listen      80 default_server;<br />
+   server_name example.net www.example.net;<br />
+   &hellip;<br />
+}</p>
+</blockquote>
+
+<h3 id="4-整理一下">4.整理一下</h3>
+
+<p>上面所有的说明，都仅仅是解释了Nginx官方文档中关于host变量选择的三个来源值。不过，知道了这三个值是什么，怎么来的，以及HTTP/1.0与HTTP/1.1的区别，我们就能彻底搞清楚这个host变量是怎么确定的了。</p>
+
+<p>首先，无论是HTTP/1.0还是HTTP/1.1请求，只要请求行中带了主机信息，那么host变量就是该请求行中所带的host。需要注意的是，host变量是不带端口号的。</p>
+
+<p>所以，下面两条请求的host变量都是www.pureage.info:</p>
+
+<blockquote>
+<p>GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.php</a> HTTP/1.0<br />
+GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.php</a> HTTP/1.1</p>
+</blockquote>
+
+<p>其次，假设请求行中不带主机信息，那么我们就来看请求头部中的Host头。此时HTTP/1.0请求和HTTP/1.1请求的表现就大不相同了。有如下几种情况：</p>
+
+<p>1.HTTP/1.0请求，不带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.0</p>
+</blockquote>
+
+<p>此时，host变量为与该请求匹配的虚拟主机的主机名，及在nginx配置文件中与之匹配的server段中server_name指令设置的值。如果该server中没有使用<code>server_name</code>指令，那么host变量就是一个空值，不存在。</p>
+
+<p>2.HTTP/1.0请求，带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.0<br />
+Host: www.pureage.info</p>
+</blockquote>
+
+<p>此时，host变量即为www.pureage.info</p>
+
+<p>3.HTTP/1.1请求，不带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.1</p>
+</blockquote>
+
+<p>如前所述，HTTP/1.1请求必须携带Host头部。所以这种情况，请求会返回一个Bad Request错误响应。host变量当然就更不存在了。</p>
+
+<p>4.HTTP/1.1请求，带Host头</p>
+
+<blockquote>
+<p>GET /index.php HTTP/1.1<br />
+Host: www.pureage.info</p>
+</blockquote>
+
+<p>此时，host变量即为www.pureage.info</p>
+
+<p>通过上面的例子，可以看出，对于HTTP/1.1请求，host变量不会为空，它要么在请求行中指定，要么在Host头部指定，要么就是一条错误的请求；而对于HTTP/1.0请求，host变量有为空的情况，即请求行和请求头中没有指定host，且匹配的server也没有名称时。</p>
+
+<h3 id="5-验证">5.验证</h3>
+
+<p>可以搭建一台Nginx服务器，用telnet来验证上面的说法。此处略过，但这个操作很有必要。</p>
     </div>
     
   </div>
@@ -474,9 +845,26 @@
 <p>再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。</p>
 
 <p>最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/01/27/176.html" class="read-more-link">阅读全文</a>
+
+<p>第二个方法，制作一个子包。rpm包里有一个subpackage的概念，就是说可以同时生成一个main包和多个subpackage包。子包的制作也很简单，在A包原有的spec文件中，添加%subpackage foo的字样，同样将一下必要的标签，例如%file，都在其后加上foo即可。这个方法很不错，但有几个问题：</p>
+
+<ol>
+<li>但需要改动A软件的spec文件，我的原则是尽量不要动A原有的文件，最多在其源码路径SOURCE下添加一两个tar.gz包，而且这几个源码包在A的spec文件中是不会有所体现的。<br /></li>
+<li>虽然大部分标签例如%files,%pre,%post等都可以为每个subpackage单独添加，但最重要的标签，%prep,%build和%install确是一个spec文件中只能存在一份。一个解决方法是把业务逻辑的添加放到%post阶段添加。<br />
+<br /></li>
+</ol>
+
+<p>其实第二个方法已经可以解决我的问题了，但多少都会动A的spec文件，并且subpackage也加一个%files标签，与main package的%files重复，很占地方，导致以后每次main package更新%files标签的时候，subpackage部分的%files也要去更新。虽然查了一下，spec中可以有include命令，可以把公共部分提取到一个外部文件，再分别include进来，但如前所述，我希望尽可能少的去改A的spec文件。本来A只有一个spec文件，现在为了简洁要拆成两个，不能说没对其产生影响。</p>
+
+<p>最后只好采用了第三种方法。</p>
+
+<p>首先，将B的所有业务逻辑放到一个B.tar.gz包里，提交到A的SOURCE目录下，A的spec文件不会去操作这个源码包。注意，为了简便起见，在B.tar.gz中，要有一个Makefile文件，在里面完成install的操作。这样在spec文件中，只用一行语句调用该Makefile即可。</p>
+
+<p>其次，为B软件维护一个脚本。该脚本完成如下工作：将A的spec文件拷贝出来，用sed,awk等进行修改，主要是修改一些Release信息等。最主要的工作是在%install标签下，调用A.tar.gz中的Makefile。</p>
+
+<p>最后，该脚本会去用rpmbuild执行这个新生成的spec文件。在调用时将source目录定义到A的SOURCE目录，如前所属，B.tar.gz就放在这里。</p>
+
+<p>用这种方法，虽然需要维护一个脚本，但最少限度的动用A，又能完全自动的同步A软件包的更新，且生成的是一个B的独立rpm包。目前看来较好的满足的我的需求。</p>
     </div>
     
   </div>

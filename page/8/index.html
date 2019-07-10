@@ -321,9 +321,8 @@
 <blockquote>
 <p>此事如此简单，我们比比英文和中文，如果你胜，我洗耳恭听。</p>
 </blockquote>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/29/236.html" class="read-more-link">阅读全文</a>
+
+<p>顿时觉得，人贵有自知之明这句话，说的真好。为什么贵，因为难啊，有自知之明，也有逻辑，就更是难上加难了。</p>
     </div>
     
   </div>
@@ -358,9 +357,32 @@
 <p>此时此刻，用“烟锁重楼”四个字描述眼前的景观，真是别有一番滋味。</p>
 
 <p>在现代城市的高楼间行走，很久都没有去怀念什么了。但是今天却想起了很多事情。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/26/the-stars.html" class="read-more-link">阅读全文</a>
+
+<h2 id="繁星">繁星</h2>
+
+<p>小时候，最令人欢欣鼓舞的时候，当然是暑假了。漫长的两个月里，陪伴我们的不仅有《西游记》、《新白娘子传奇》，还有家里的水牛，和满天的繁星。</p>
+
+<p>湖北的夏天是非常热的，所以我们晚上经常会到阳台、楼顶睡觉，或是一张木板床，或是干脆打地铺，低头吃着西瓜，抬眼就是满天的繁星。那是一种什么景象，我有限的词汇量已经无法表达。那时候眼睛也没有近视，就盯着月亮看，盯着银河看，能看一整晚，然后在微风中睡去，在露水气中醒来。</p>
+
+<p>那时候有篇课文讲的是张衡数星星的故事，我也会试着数一数，后来干脆放弃，因为那密度实在太大，根本不可能去数。</p>
+
+<p>到中学的时候，经常在书店看到冰心的《繁星》一书，却从来没有去翻看，直到现在都没有读过这本书，因为记忆里繁星的样子太过深刻，虽然这看上去这并没有什么逻辑关系。</p>
+
+<p>自从来到城市后，十多年就再也没见过这繁星，环境每况日下，让年轻的我不禁发愁，以后该怎么给小孩解释银河、北斗、牛郎织女。</p>
+
+<h2 id="观月">观月</h2>
+
+<p>小学时有门课叫《自然》，我们当时的自然课老师是一位老头，姓邹，在村里很有名气，因为当时班里几乎所有同学的父母也都是他的学生，以严厉著称。在开学前，我父亲还特意很严肃的告诉我，邹老师的课要认真对待，不然少不了挨揍。</p>
+
+<p>不知道是不是邹老师年纪大了，脾气变温和的缘故，真上课时我并没有感受到他的严厉。直到有一次，他给我们布置了一个作业。</p>
+
+<p>当时的课讲到了日食、月食等自然现象。这个作业就是，连续两个月每天都将当天的月亮画下来。小伙伴们都觉得这个任务很艰巨，而且谁也不敢作弊。</p>
+
+<p>于是那两个月每天上早课（相当于初中的早自习）的时候，天还没完全亮，我们就走在了上学的路上。在路上，就着月色，将月亮的形状、位置和当时的时间记录下来。大家虽然不敢作弊，但背地里不乏骂骂咧咧。</p>
+
+<p>有几天刚好赶上了狮子座流星雨，走在路上的时候，看着一颗一颗的流星从天边滑落，幼小的呆若木鸡,莫名的感动。</p>
+
+<p>许多年以后，小学里很多老师都淡忘了，但这位邹老师和他的这次作业却始终记得。</p>
     </div>
     
   </div>
@@ -403,9 +425,290 @@
 </blockquote>
 
 <p>简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/22/thundering-herd.html" class="read-more-link">阅读全文</a>
+
+<h2 id="2-accept-惊群">2. accept 惊群</h2>
+
+<p>考虑如下场景：<br />
+主进程创建socket, bind, listen之后，fork出多个子进程，每个子进程都开始循环处理（accept)这个socket。每个进程都阻塞在accpet上，当一个新的连接到来时，所有的进程都会被唤醒，但其中只有一个进程会accept成功，其余皆失败，重新休眠。这就是accept惊群。</p>
+
+<p>那么这个问题真的存在吗？</p>
+
+<p>事实上，历史上，Linux 的 accpet 确实存在惊群问题，但现在的内核都解决该问题了。即，当多个进程/线程都阻塞在对同一个 socket 的 accept 调用上时，当有一个新的连接到来，内核只会唤醒一个进程，其他进程保持休眠，压根就不会被唤醒。</p>
+
+<p>测试代码如下：</p>
+
+<pre><code>#include &lt;sys/types.h&gt;  
+#include &lt;sys/socket.h&gt;  
+#include &lt;netinet/in.h&gt;  
+#include &lt;sys/wait.h&gt;  
+#include &lt;stdio.h&gt;  
+#include &lt;string.h&gt;  
+#define PROCESS_NUM 10  
+int main()  
+{  
+    int fd = socket(PF_INET, SOCK_STREAM, 0);  
+    int connfd;  
+    int pid;  
+    char sendbuff[1024];  
+    struct sockaddr_in serveraddr;  
+    serveraddr.sin_family = AF_INET;  
+    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);  
+    serveraddr.sin_port = htons(1234);  
+    bind(fd, (struct sockaddr*)&amp;serveraddr, sizeof(serveraddr));  
+    listen(fd, 1024);  
+    int i;  
+    for(i = 0; i &lt; PROCESS_NUM; i++)  
+    {  
+        int pid = fork();  
+        if(pid == 0)  
+        {  
+            while(1)  
+            {  
+                connfd = accept(fd, (struct sockaddr*)NULL, NULL);  
+                snprintf(sendbuff, sizeof(sendbuff), &quot;accept PID is %d\n&quot;, getpid());  
+                
+                send(connfd, sendbuff, strlen(sendbuff) + 1, 0);  
+                printf(&quot;process %d accept success!\n&quot;, getpid());  
+                close(connfd);  
+            }  
+        }  
+    }  
+    int status;  
+    wait(&amp;status);  
+    return 0;  
+} 
+</code></pre>
+
+<p>当我们对该服务器发起连接请求（用 telnet/curl 等模拟）时，会看到只有一个进程被唤醒。</p>
+
+<p>关于 accept 惊群的一些帖子或文章：</p>
+
+<ul>
+<li><a href="http://bbs.chinaunix.net/thread-946261-1-1.html">惊群问题在 linux 上可能是莫须有的问题</a><br /></li>
+<li><a href="http://stackoverflow.com/questions/2213779/does-the-thundering-herd-problem-exist-on-linux-anymore">Does the Thundering Herd Problem exist on Linux anymore?</a><br /></li>
+<li><a href="http://www.citi.umich.edu/projects/linux-scalability/reports/accept.html">历史上解决 linux accept 惊群的补丁讨论</a><br /></li>
+</ul>
+
+<h2 id="3-epoll惊群">3. epoll惊群</h2>
+
+<p>如上所述，accept 已经不存在惊群问题，但 epoll 上还是存在惊群问题。即，如果多个进程/线程阻塞在监听同一个 listening socket fd 的 epoll_wait 上，当有一个新的连接到来时，所有的进程都会被唤醒。</p>
+
+<p>考虑如下场景：</p>
+
+<p>主进程创建 socket, bind， listen 后，将该 socket 加入到 epoll 中，然后 fork 出多个子进程，每个进程都阻塞在 epoll_wait 上，如果有事件到来，则判断该事件是否是该 socket 上的事件，如果是，说明有新的连接到来了，则进行 accept 操作。为了简化处理，忽略后续的读写以及对 accept 返回的新的套接字的处理，直接断开连接。</p>
+
+<p>那么，当新的连接到来时，是否每个阻塞在 epoll_wait 上的进程都会被唤醒呢？</p>
+
+<p>很多博客中提到，测试表明虽然 epoll_wait 不会像 accept 那样只唤醒一个进程/线程，但也不会把所有的进程/线程都唤醒。例如这篇文章：<a href="http://blog.163.com/pandalove@126/blog/static/9800324520122633515612">关于多进程 epoll 与 “惊群”问题</a>。</p>
+
+<p>为了验证这个问题，我自己写了一个测试程序：</p>
+
+<pre><code>#include &lt;sys/types.h&gt;  
+#include &lt;sys/socket.h&gt;  
+#include &lt;sys/epoll.h&gt;  
+#include &lt;netdb.h&gt;  
+#include &lt;string.h&gt;  
+#include &lt;stdio.h&gt;  
+#include &lt;unistd.h&gt;  
+#include &lt;fcntl.h&gt;  
+#include &lt;stdlib.h&gt;  
+#include &lt;errno.h&gt;  
+#include &lt;sys/wait.h&gt;  
+#define PROCESS_NUM 10  
+static int  
+create_and_bind (char *port)  
+{  
+    int fd = socket(PF_INET, SOCK_STREAM, 0);  
+    struct sockaddr_in serveraddr;  
+    serveraddr.sin_family = AF_INET;  
+    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);  
+    serveraddr.sin_port = htons(atoi(port));  
+    bind(fd, (struct sockaddr*)&amp;serveraddr, sizeof(serveraddr));  
+    return fd;  
+}  
+	static int  
+make_socket_non_blocking (int sfd)  
+{  
+    int flags, s;  
+ 
+    flags = fcntl (sfd, F_GETFL, 0);  
+    if (flags == -1)  
+    {  
+        perror (&quot;fcntl&quot;);  
+        return -1;  
+    }  
+ 
+    flags |= O_NONBLOCK;  
+    s = fcntl (sfd, F_SETFL, flags);  
+    if (s == -1)  
+    {  
+        perror (&quot;fcntl&quot;);  
+        return -1;  
+    }  
+ 
+    return 0;  
+}  
+  
+#define MAXEVENTS 64  
+ 
+int  
+main (int argc, char *argv[])  
+{  
+    int sfd, s;  
+    int efd;  
+    struct epoll_event event;  
+    struct epoll_event *events;  
+ 
+    sfd = create_and_bind(&quot;1234&quot;);  
+    if (sfd == -1)  
+        abort ();  
+ 
+    s = make_socket_non_blocking (sfd);  
+    if (s == -1)  
+        abort ();  
+ 
+    s = listen(sfd, SOMAXCONN);  
+    if (s == -1)  
+    {  
+        perror (&quot;listen&quot;);  
+        abort ();  
+    }  
+ 
+    efd = epoll_create(MAXEVENTS);  
+    if (efd == -1)  
+    {  
+        perror(&quot;epoll_create&quot;);  
+        abort();  
+    }  
+ 
+    event.data.fd = sfd;  
+    //event.events = EPOLLIN | EPOLLET;  
+    event.events = EPOLLIN;  
+    s = epoll_ctl(efd, EPOLL_CTL_ADD, sfd, &amp;event);  
+    if (s == -1)  
+    {  
+        perror(&quot;epoll_ctl&quot;);  
+        abort();  
+    }  
+ 
+    /* Buffer where events are returned */  
+    events = calloc(MAXEVENTS, sizeof event);  
+	        int k;  
+    for(k = 0; k &lt; PROCESS_NUM; k++)  
+    {  
+        int pid = fork();  
+        if(pid == 0)  
+        {  
+ 
+            /* The event loop */  
+            while (1)  
+            {  
+                int n, i;  
+                n = epoll_wait(efd, events, MAXEVENTS, -1);  
+                printf(&quot;process %d return from epoll_wait!\n&quot;, getpid());  
+	                                   /* sleep here is very important!*/  
+                //sleep(2);  
+	                                   for (i = 0; i &lt; n; i++)  
+                {  
+                    if ((events[i].events &amp; EPOLLERR) || (events[i].events &amp; EPOLLHUP) || (!(events[i].events &amp;                                    EPOLLIN)))  
+                    {  
+                        /* An error has occured on this fd, or the socket is not  
+                        ready for reading (why were we notified then?) */  
+                        fprintf (stderr, &quot;epoll error\n&quot;);  
+                        close (events[i].data.fd);  
+                        continue;  
+                    }  
+                    else if (sfd == events[i].data.fd)  
+                    {  
+                        /* We have a notification on the listening socket, which  
+                        means one or more incoming connections. */  
+                        struct sockaddr in_addr;  
+                        socklen_t in_len;  
+                        int infd;  
+                        char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];  
+ 
+                        in_len = sizeof in_addr;  
+                        infd = accept(sfd, &amp;in_addr, &amp;in_len);  
+                        if (infd == -1)  
+                        {  
+                            printf(&quot;process %d accept failed!\n&quot;, getpid());  
+                            break;  
+                        }  
+                        printf(&quot;process %d accept successed!\n&quot;, getpid());  
+ 
+                        /* Make the incoming socket non-blocking and add it to the  
+                        list of fds to monitor. */  
+                        close(infd); 
+                    }  
+                }  
+            }  
+        }  
+    }  
+    int status;  
+    wait(&amp;status);  
+    free (events);  
+    close (sfd);  
+    return EXIT_SUCCESS;  
+}  
+</code></pre>
+
+<p>发现确实如上面那篇博客里所说，当我模拟发起一个请求时，只有一个或少数几个进程被唤醒了。</p>
+
+<p>也就是说，到目前为止，还没有得到一个确定的答案。但后来，在下面这篇博客中看到这样一个评论：<a href="http://blog.csdn.net/spch2008/article/details/18301357">http://blog.csdn.net/spch2008/article/details/18301357</a></p>
+
+<blockquote>
+<p>这个总结，需要进一步阐述，你的实验，看上去是只有4个进程唤醒了，而事实上，其余进程没有被唤醒的原因是你的某个进程已经处理完这个 accept，内核队列上已经没有这个事件，无需唤醒其他进程。你可以在 epoll 获知这个 accept 事件的时候，不要立即去处理，而是 sleep 下，这样所有的进程都会被唤起</p>
+</blockquote>
+
+<p>看到这个评论后，我顿时如醍醐灌顶，重新修改了上面的测试程序，即在 epoll_wait 返回后，加了个 sleep 语句，这时再测试，果然发现所有的进程都被唤醒了。</p>
+
+<p>所以，epoll_wait上的惊群确实是存在的。</p>
+
+<h2 id="4-为什么内核不处理-epoll-惊群">4. 为什么内核不处理 epoll 惊群</h2>
+
+<p>看到这里，我们可能有疑惑了，为什么内核对 accept 的惊群做了处理，而现在仍然存在 epoll 的惊群现象呢？</p>
+
+<p>我想，应该是这样的：<br />
+accept 确实应该只能被一个进程调用成功，内核很清楚这一点。但 epoll 不一样，他监听的文件描述符，除了可能后续被 accept 调用外，还有可能是其他网络 IO 事件的，而其他 IO 事件是否只能由一个进程处理，是不一定的，内核不能保证这一点，这是一个由用户决定的事情，例如可能一个文件会由多个进程来读写。所以，对 epoll 的惊群，内核则不予处理。</p>
+
+<h2 id="5-nginx-是如何处理惊群问题的">5. Nginx 是如何处理惊群问题的</h2>
+
+<p>在思考这个问题之前，我们应该以前对前面所讲几点有所了解，即先弄清楚问题的背景，并能自己复现出来，而不仅仅只是看书或博客，然后再来看看 Nginx 的解决之道。这个顺序不应该颠倒。</p>
+
+<p>首先，我们先大概梳理一下 Nginx 的网络架构，几个关键步骤为:</p>
+
+<ol>
+<li>Nginx 主进程解析配置文件，根据 listen 指令，将监听套接字初始化到全局变量 ngx_cycle 的 listening 数组之中。此时，监听套接字的创建、绑定工作早已完成。<br /></li>
+<li>Nginx 主进程 fork 出多个子进程。<br /></li>
+<li>每个子进程在 ngx_worker_process_init 方法里依次调用各个 Nginx 模块的 init_process 钩子，其中当然也包括 NGX_EVENT_MODULE 类型的 ngx_event_core_module 模块，其 init_process 钩子为 ngx_event_process_init。<br /></li>
+<li>ngx_event_process_init 函数会初始化 Nginx 内部的连接池，并把 ngx_cycle 里的监听套接字数组通过连接池来获得相应的表示连接的 ngx_connection_t 数据结构，这里关于 Nginx 的连接池先略过。我们主要看 ngx_event_process_init 函数所做的另一个工作：如果在配置文件里<strong>没有</strong>开启<a href="http://nginx.org/en/docs/ngx_core_module.html#accept_mutex">accept_mutex锁</a>，就通过 ngx_add_event 将所有的监听套接字添加到 epoll 中。<br /></li>
+<li>每一个 Nginx 子进程在执行完 ngx_worker_process_init 后，会在一个死循环中执行 ngx_process_events_and_timers，这就进入到事件处理的核心逻辑了。<br /></li>
+<li>在 ngx_process_events_and_timers 中，如果在配置文件里开启了 accept_mutext 锁，子进程就会去获取 accet_mutext 锁。如果获取成功，则通过 ngx_enable_accept_events 将监听套接字添加到 epoll 中，否则，不会将监听套接字添加到 epoll 中，甚至有可能会调用 ngx_disable_accept_events 将监听套接字从 epoll 中删除（如果在之前的连接中，本worker子进程已经获得过accept_mutex锁)。<br /></li>
+<li>ngx_process_events_and_timers 继续调用 ngx_process_events，在这个函数里面阻塞调用 epoll_wait。<br /></li>
+</ol>
+
+<p>至此，关于 Nginx 如何处理 fork 后的监听套接字，我们已经差不多理清楚了，当然还有一些细节略过了，比如在每个 Nginx 在获取 accept_mutex 锁前，还会根据当前负载来判断是否参与 accept_mutex 锁的争夺。</p>
+
+<p>把这个过程理清了之后，Nginx 解决惊群问题的方法也就出来了，就是利用 accept_mutex 这把锁。</p>
+
+<p>如果配置文件中没有开启 accept_mutex，则所有的监听套接字不管三七二十一，都加入到每子个进程的 epoll中，这样当一个新的连接来到时，所有的 worker 子进程都会惊醒。</p>
+
+<p>如果配置文件中开启了 accept_mutex，则只有一个子进程会将监听套接字添加到 epoll 中，这样当一个新的连接来到时，当然就只有一个 worker 子进程会被唤醒了。</p>
+
+<h2 id="6-小结">6. 小结</h2>
+
+<p>现在我们对惊群及 Nginx 的处理总结如下：</p>
+
+<ul>
+<li>accept 不会有惊群，epoll_wait 才会。<br /></li>
+<li>Nginx 的 accept_mutex,并不是解决 accept 惊群问题，而是解决 epoll_wait 惊群问题。<br /></li>
+<li>说Nginx 解决了 epoll_wait 惊群问题，也是不对的，它只是控制是否将监听套接字加入到epoll 中。监听套接字只在一个子进程的 epoll 中，当新的连接来到时，其他子进程当然不会惊醒了。<br />
+<br /></li>
+</ul>
+
+<h2 id="7-其他参考文章">7. 其他参考文章</h2>
+
+<p><a href="http://blog.csdn.net/russell_tao/article/details/7204260">“惊群”，看看 nginx 是怎么解决它的</a></p>
     </div>
     
   </div>
@@ -436,9 +739,14 @@
       <p>大学室友涛从南京来深圳出差，今天特意抽空到我家来小聚了一下。从大学毕业，到现在已经有6年多没见了，大学四年同处一室的感情还是挺深的，尽管这么久没见面了，仍没有生疏感。朋友之间相处没有生疏感的表现就是，面对彼此都没有交流上的压力，我不用刻意找话题跟你聊天，你也不用刻意逢迎我的喜好，吃饭时我不用担心是否你酒没喝到，你也不用按照我的节奏来喝酒。有一茬没一茬的聊天，一杯半盏的喝酒，自由惬意。</p>
 
 <p>说起来大学毕业都六年了。六年后再见面，我们都已经成家，他还有了一个刚满一岁的女儿。似水流年，流年似水，平日里丝毫不觉得，只有在带有旧日痕迹的事物放到面前时，感慨才会如此强烈。但不可避免的事实是，我们都是生活中的人了。不可能彻夜长谈，不可能一直回味过去。离别才是常态，小聚只是片段。所谓生活中的人，就是对生活本身习以为常，面对相聚别离，不会有太多悲喜。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/20/meet-an-old-friend.html" class="read-more-link">阅读全文</a>
+
+<p>曾经的我是一个很怀旧的人。记得在六七岁的时候，经常会在睡觉跟自己对话:明天这个时候，此刻就已经成为过去，所以我现在要刻意的想一些东西，明天这个时候好回忆。原来自己小时候，还挺文艺的。</p>
+
+<p>从个人管理的角度上说，过于怀旧当然是不好的。所以，现在我已经刻意做出了很多改变。这种改变花了很长时间，很不容易。难度不亚于吸烟者戒掉烟瘾。</p>
+
+<p>但我并不觉得，一个坦然面对现在的人，比一个沉迷过去的人更值得被人尊崇。面对时间、宇宙，一切都太渺小。即使一个人活着的每一天都能活在当下，到死的那一刻，我相信过去的影像还是会在脑海中跳跃闪回。所以，如果让现在的我去劝说一个正处于“为赋新词强说愁”的年龄的少年，我还真不知道该如何组织语言，让他听信于我。</p>
+
+<p>我想我只能说出“尊敬时间就是尊敬自己，尊敬自己就是尊敬时间，所以不要让时间白白流失掉”这类无聊的话吧。</p>
     </div>
     
   </div>
@@ -473,9 +781,20 @@
 <p>2015 年，跑了两次马拉松，拿了两个纪念牌，说明我百马人生的目标已经完成了百分之二。其实这个目标是怎么来的我都不记得了，但似乎有了这个说法之后，跑步这件事情顿时被赋予了一层特别的意义一样。</p>
 
 <p>跑步的意义对我到底是什么，我思考了一段时间。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/18/lets-talk-about-running-again.html" class="read-more-link">阅读全文</a>
+
+<p>跑步对我意义重大。这次正儿八经的开始跑步，其实是因为当时面临着一场巨大的危机，家庭、工作异常不顺，尤其是家庭，连续一年多，经常都处在崩溃的边缘。直到有一天我受不了了，决定反击。反击的时候总得有个象征性的东西吧，比如影视作品里飘扬的旗帜、燃爆的音乐，于是我选择了跑步。这种个人情况和内心的活动，外人是毫无察觉的，同事们看我开始每天下班跑步，还挺羡慕的。于是，就这么熬到了现在。从这个角度说，跑步拯救了我。</p>
+
+<p>但是如果仅仅停留在这个层面的思考，然后就说，跑步吧，跑步能改变你的人生，这未免也太肤浅了。真实的情况不是那样的。</p>
+
+<p>跑步就是跑步，仅此而已。它不能于任何困境中拯救任何人。能拯救一个人的，只能是他自己。在跑步这件事上，是我首先意识到，我该主动改变一下工作、生活中的状态，跑步只不过是一种号角性质的东西，起到助燃和提醒的作用。助燃作用不用多说，提醒作用说的是，只要这个习惯还在继续，那么个人的状态和态度都应该继续。</p>
+
+<p>客观的说，跑步本身的作用有两个。一是促进分泌多巴胺，让人有一种愉悦的心情。二是能真实的增强体质，身体好了，所谓的精气神就上来了。</p>
+
+<p>把跑步换成任何一种对健康或心理有积极作用的习惯，都能起到这个作用。比如瑜伽、钓鱼、学习一门乐器等等。把多余的精力消耗掉，让心情平静下来，就不会有那么多的时间和精力耗在空虚的消极情绪中。</p>
+
+<p>所以，最厉害的人是那些不需要借助外部运动，就能获得内心平静和力量的人，各种先贤圣哲多是这样的人。</p>
+
+<p>而我们普通人很难仅凭内心自省的力量，就能让自己活得平静。我还是继续跑下去吧。</p>
     </div>
     
   </div>
