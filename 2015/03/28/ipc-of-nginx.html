@@ -23,7 +23,15 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Ngi" />
+  <meta name="description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
+ 套接字（匿名套接字对）
+ 共享内存
+ 信号
+  本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。
+1. Nginx中的channel通信机制 1.1概述 首先简单的说一下Nginx中channel通信的机制。
+Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。
+我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。
+" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -58,14 +66,52 @@
 
 
 <meta property="og:title" content="Nginx中的进程间通信" />
-<meta property="og:description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Ngi" />
+<meta property="og:description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
+
+
+套接字（匿名套接字对）
+共享内存
+信号
+
+
+
+本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。
+
+1. Nginx中的channel通信机制
+
+1.1概述
+
+首先简单的说一下Nginx中channel通信的机制。
+
+Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。
+
+我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2015/03/28/ipc-of-nginx.html" />
 <meta property="article:published_time" content="2015-03-28T12:39:00&#43;00:00"/>
 <meta property="article:modified_time" content="2015-03-28T12:39:00&#43;00:00"/>
 
 <meta itemprop="name" content="Nginx中的进程间通信">
-<meta itemprop="description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Ngi">
+<meta itemprop="description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
+
+
+套接字（匿名套接字对）
+共享内存
+信号
+
+
+
+本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。
+
+1. Nginx中的channel通信机制
+
+1.1概述
+
+首先简单的说一下Nginx中channel通信的机制。
+
+Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。
+
+我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。">
 
 
 <meta itemprop="datePublished" content="2015-03-28T12:39:00&#43;00:00" />
@@ -77,7 +123,26 @@
 <meta itemprop="keywords" content="nginx," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Nginx中的进程间通信"/>
-<meta name="twitter:description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Ngi"/>
+<meta name="twitter:description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
+
+
+套接字（匿名套接字对）
+共享内存
+信号
+
+
+
+本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。
+
+1. Nginx中的channel通信机制
+
+1.1概述
+
+首先简单的说一下Nginx中channel通信的机制。
+
+Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。
+
+我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -319,9 +384,7 @@
 
     
     <div class="post-content">
-      
-
-<p>我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:</p>
+      <p>我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:</p>
 
 <ul>
 <li>套接字（匿名套接字对）<br /></li>
@@ -933,7 +996,6 @@ ngx_shm_free(ngx_shm_t *shm)
 <h2 id="3-channel机制和共享内存在nginx中的使用情况">3. channel机制和共享内存在Nginx中的使用情况</h2>
 
 <p>前面讲Nginx中的channel机制时提到，Nginx虽然提供了这种机制，但目前很少用到，而共享内存却相对用的比较多了。例如，为了统计Nginx总体的http请求处理情况，需要跨越多个worker来计算，Nginx自带的http模块ngx_http_stub_status_module即主要依赖共享内存的方式。</p>
-
     </div>
 
     

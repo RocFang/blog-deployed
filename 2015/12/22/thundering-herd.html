@@ -23,7 +23,13 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。 1. 什么叫惊群现象 首先，我们看看维基百科对惊群的定义: The thundering herd problem occurs when a" />
+  <meta name="description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+1. 什么叫惊群现象 首先，我们看看维基百科对惊群的定义:
+ The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+ 简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。
+" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -58,14 +64,42 @@
 
 
 <meta property="og:title" content="accept与epoll惊群" />
-<meta property="og:description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。 1. 什么叫惊群现象 首先，我们看看维基百科对惊群的定义: The thundering herd problem occurs when a" />
+<meta property="og:description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+
+1. 什么叫惊群现象
+
+首先，我们看看维基百科对惊群的定义:
+
+
+The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+
+
+简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2015/12/22/thundering-herd.html" />
 <meta property="article:published_time" content="2015-12-22T07:01:00&#43;00:00"/>
 <meta property="article:modified_time" content="2015-12-22T07:01:00&#43;00:00"/>
 
 <meta itemprop="name" content="accept与epoll惊群">
-<meta itemprop="description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。 1. 什么叫惊群现象 首先，我们看看维基百科对惊群的定义: The thundering herd problem occurs when a">
+<meta itemprop="description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+
+1. 什么叫惊群现象
+
+首先，我们看看维基百科对惊群的定义:
+
+
+The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+
+
+简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。">
 
 
 <meta itemprop="datePublished" content="2015-12-22T07:01:00&#43;00:00" />
@@ -77,7 +111,21 @@
 <meta itemprop="keywords" content="程序员,nginx," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="accept与epoll惊群"/>
-<meta name="twitter:description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。 1. 什么叫惊群现象 首先，我们看看维基百科对惊群的定义: The thundering herd problem occurs when a"/>
+<meta name="twitter:description" content="今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+
+1. 什么叫惊群现象
+
+首先，我们看看维基百科对惊群的定义:
+
+
+The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+
+
+简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -319,9 +367,7 @@
 
     
     <div class="post-content">
-      
-
-<p>今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。</p>
+      <p>今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。</p>
 
 <h2 id="1-什么叫惊群现象">1. 什么叫惊群现象</h2>
 
@@ -620,7 +666,6 @@ accept 确实应该只能被一个进程调用成功，内核很清楚这一点�
 <h2 id="7-其他参考文章">7. 其他参考文章</h2>
 
 <p><a href="http://blog.csdn.net/russell_tao/article/details/7204260">“惊群”，看看 nginx 是怎么解决它的</a></p>
-
     </div>
 
     

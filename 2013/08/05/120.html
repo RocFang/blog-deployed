@@ -23,7 +23,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="需求： 假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下： group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977 ..." />
+  <meta name="description" content="需求： 假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：
+group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977 ......(略）......  如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？
+方法： cat result_test_upload.log | grep -o group[0-9][0-9]* | sort -n -t p -k 2| uniq -c  其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&amp;hellip;中的1,2,3. sort -n很简单，表示按照group1,group2,group3&amp;hellip;groupn的顺序排列。
+" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -58,14 +61,46 @@
 
 
 <meta property="og:title" content="sort命令中-k、-t选项的用法" />
-<meta property="og:description" content="需求： 假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下： group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977 ..." />
+<meta property="og:description" content="需求：
+
+假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：
+
+group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
+group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
+......(略）......  
+
+
+如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？
+
+方法：
+
+cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
+
+
+其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&hellip;groupn的顺序排列。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2013/08/05/120.html" />
 <meta property="article:published_time" content="2013-08-05T12:56:00&#43;00:00"/>
 <meta property="article:modified_time" content="2013-08-05T12:56:00&#43;00:00"/>
 
 <meta itemprop="name" content="sort命令中-k、-t选项的用法">
-<meta itemprop="description" content="需求： 假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下： group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977 ...">
+<meta itemprop="description" content="需求：
+
+假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：
+
+group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
+group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
+......(略）......  
+
+
+如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？
+
+方法：
+
+cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
+
+
+其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&hellip;groupn的顺序排列。">
 
 
 <meta itemprop="datePublished" content="2013-08-05T12:56:00&#43;00:00" />
@@ -77,7 +112,23 @@
 <meta itemprop="keywords" content="程序员,shell," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="sort命令中-k、-t选项的用法"/>
-<meta name="twitter:description" content="需求： 假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下： group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977 ..."/>
+<meta name="twitter:description" content="需求：
+
+假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：
+
+group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
+group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
+......(略）......  
+
+
+如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？
+
+方法：
+
+cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
+
+
+其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&hellip;groupn的顺序排列。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -319,9 +370,7 @@
 
     
     <div class="post-content">
-      
-
-<h1 id="需求">需求：</h1>
+      <h1 id="需求">需求：</h1>
 
 <p>假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：</p>
 
@@ -349,7 +398,6 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
 </code></pre>
 
 <p>的统计结果了。</p>
-
     </div>
 
     

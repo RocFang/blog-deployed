@@ -23,7 +23,10 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1" />
+  <meta name="description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。
+go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。
+但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。
+" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -58,14 +61,22 @@
 
 
 <meta property="og:title" content="golang modules对git版本的依赖" />
-<meta property="og:description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1" />
+<meta property="og:description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。
+
+go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。
+
+但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/post/bad-feeling-about-go-cmd/" />
 <meta property="article:published_time" content="2018-11-16T23:00:44&#43;08:00"/>
 <meta property="article:modified_time" content="2018-11-16T23:00:44&#43;08:00"/>
 
 <meta itemprop="name" content="golang modules对git版本的依赖">
-<meta itemprop="description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1">
+<meta itemprop="description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。
+
+go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。
+
+但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。">
 
 
 <meta itemprop="datePublished" content="2018-11-16T23:00:44&#43;08:00" />
@@ -77,7 +88,11 @@
 <meta itemprop="keywords" content="程序员," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="golang modules对git版本的依赖"/>
-<meta name="twitter:description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1"/>
+<meta name="twitter:description" content="这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。
+
+go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。
+
+但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -355,7 +370,6 @@
 <p>这话当然不是我杜撰的，具体见: <a href="https://github.com/golang/go/issues/26746">https://github.com/golang/go/issues/26746</a></p>
 
 <p>连我这种软件行业的凡夫俗子，都知道遇到异常的合理处理方式是什么（例如我在2013年写的一篇文章：<a href="http://pureage.info/2013/07/13/117.html">再不判断异常分支就剁手</a>），google 里绝对意义上的高手竟然对此毫不在意，实在让人大跌眼镜。</p>
-
     </div>
 
     

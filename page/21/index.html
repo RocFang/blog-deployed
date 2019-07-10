@@ -314,7 +314,15 @@
   <div class="post-content">
     
     <div class="post-summary">
-      不知道大家平时备份是不是和我一样这么操作的： 登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱） 用ftp备份content目录 如果
+      <p>不知道大家平时备份是不是和我一样这么操作的：</p>
+
+<ol>
+<li>登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱）<br /></li>
+<li>用ftp备份content目录
+<br /></li>
+</ol>
+
+<p>如果你想简化操作，并且和我一样苦逼的用着虚拟主机，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。</p>
     </div>
     <div class="read-more">
       <a href="/2013/10/01/128.html" class="read-more-link">阅读全文</a>
@@ -345,7 +353,17 @@
   <div class="post-content">
     
     <div class="post-summary">
-      什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志
+      <h1 id="什么是logrotate">什么是logrotate</h1>
+
+<p>logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。</p>
+
+<h1 id="lorotate的切割方式">lorotate的切割方式</h1>
+
+<p>以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。</p>
+
+<p>当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。</p>
+
+<p>当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。</p>
     </div>
     <div class="read-more">
       <a href="/2013/09/10/127.html" class="read-more-link">阅读全文</a>
@@ -376,7 +394,21 @@
   <div class="post-content">
     
     <div class="post-summary">
-      问题产生背景 自己写的一个基于FastDFS的客户端软件的日志格式如下： [2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3 [2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3 [2013-09-06 08:57:01] 1734272 group6/M00/00/28/Kj4ZK1IpKL-AZF8OABp2gDqh-sA949.mp3 ;fuckgfw.com/mp3k18/a2/1429_9466.mp3 [2013-09-06 08:57:01] 2453888 group6/M00/00/2D/Kj4ZKlIpKL6AOkQ-ACVxgMD1aRE474.mp3 ;fuckgfw.com/mp3k18/a2/1429_9460.mp3 [2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3
+      <h1 id="问题产生背景">问题产生背景</h1>
+
+<p>自己写的一个基于FastDFS的客户端软件的日志格式如下：</p>
+
+<pre><code>[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
+[2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
+[2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
+[2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
+[2013-09-06 08:57:01] 1734272 group6/M00/00/28/Kj4ZK1IpKL-AZF8OABp2gDqh-sA949.mp3 ;fuckgfw.com/mp3k18/a2/1429_9466.mp3  
+[2013-09-06 08:57:01] 2453888 group6/M00/00/2D/Kj4ZKlIpKL6AOkQ-ACVxgMD1aRE474.mp3 ;fuckgfw.com/mp3k18/a2/1429_9460.mp3  
+[2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3  
+[2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
+[2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
+[2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
+</code></pre>
     </div>
     <div class="read-more">
       <a href="/2013/09/09/126.html" class="read-more-link">阅读全文</a>
@@ -407,7 +439,13 @@
   <div class="post-content">
     
     <div class="post-summary">
-      问题概述 今天第一次在nginx+lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，
+      <h1 id="问题概述">问题概述</h1>
+
+<p>今天第一次在nginx+lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，实现对保存在redis中的任务插入、删除、查询等。虽然nginx，lua等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。</p>
+
+<p>在Redis中记录的任务其实很简单，每插入一个任务，就在redis中增加一个HASH结构，每次查询返回该SET的各个Field和对应的Value值，例如md5，filesize等。由于任务类型的不同，有的Field可能在该任务中不存在，此时在以json格式将查询结果返回时不应显示该Field。</p>
+
+<p>以md5域为例，在对当前任务以md5域执行hget后，应该对返回结果做一个判断，如果该HASH结构并没有设置md5这个域，则跳过，继续执行后面的逻辑，如果设置了md5域，则把该域的Value取出来，插入到结果table中，后续再作为json格式返回结果的一部分，返回给后台。</p>
     </div>
     <div class="read-more">
       <a href="/2013/09/02/125.html" class="read-more-link">阅读全文</a>
@@ -438,7 +476,17 @@
   <div class="post-content">
     
     <div class="post-summary">
-      躺在水底 仰望 光影摇曳 扑朔迷离 就像 俯瞰众生
+      <p>躺在水底</p>
+
+<p>仰望</p>
+
+<p>光影摇曳</p>
+
+<p>扑朔迷离</p>
+
+<p>就像</p>
+
+<p>俯瞰众生</p>
     </div>
     <div class="read-more">
       <a href="/2013/08/30/124.html" class="read-more-link">阅读全文</a>
