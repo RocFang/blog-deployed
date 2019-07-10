@@ -23,13 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="1. 标准 RFC2616 中，对 Connection 的说明如下：
- HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
- 综合RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
-1. 控制不再转发给代理的首部字段 2. 管理持久连接
-其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
-第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。
-" />
+  <meta name="description" content="1. 标准 RFC2616 中，对 Connection 的说明如下： HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s)," />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -38,7 +32,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2015/12/08/connection-header-in-nginx.html" />
@@ -57,49 +51,21 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="Nginx对Connection头的处理过程" />
-<meta property="og:description" content="1. 标准
-
-RFC2616 中，对 Connection 的说明如下：
-
-
-HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
-
-
-综合RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
-1. 控制不再转发给代理的首部字段
-2. 管理持久连接
-
-其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
-
-第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。" />
+<meta property="og:description" content="1. 标准 RFC2616 中，对 Connection 的说明如下： HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s)," />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2015/12/08/connection-header-in-nginx.html" />
 <meta property="article:published_time" content="2015-12-08T07:04:00&#43;00:00"/>
 <meta property="article:modified_time" content="2015-12-08T07:04:00&#43;00:00"/>
 
 <meta itemprop="name" content="Nginx对Connection头的处理过程">
-<meta itemprop="description" content="1. 标准
-
-RFC2616 中，对 Connection 的说明如下：
-
-
-HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
-
-
-综合RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
-1. 控制不再转发给代理的首部字段
-2. 管理持久连接
-
-其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
-
-第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。">
+<meta itemprop="description" content="1. 标准 RFC2616 中，对 Connection 的说明如下： HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s),">
 
 
 <meta itemprop="datePublished" content="2015-12-08T07:04:00&#43;00:00" />
@@ -111,21 +77,7 @@ HTTP/1.1 proxies MUST parse the Connection header field before a message is forw
 <meta itemprop="keywords" content="nginx," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Nginx对Connection头的处理过程"/>
-<meta name="twitter:description" content="1. 标准
-
-RFC2616 中，对 Connection 的说明如下：
-
-
-HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
-
-
-综合RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
-1. 控制不再转发给代理的首部字段
-2. 管理持久连接
-
-其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
-
-第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。"/>
+<meta name="twitter:description" content="1. 标准 RFC2616 中，对 Connection 的说明如下： HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s),"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -190,6 +142,8 @@ HTTP/1.1 proxies MUST parse the Connection header field before a message is forw
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -251,6 +205,8 @@ HTTP/1.1 proxies MUST parse the Connection header field before a message is forw
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -324,6 +280,10 @@ HTTP/1.1 proxies MUST parse the Connection header field before a message is forw
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -359,7 +319,9 @@ HTTP/1.1 proxies MUST parse the Connection header field before a message is forw
 
     
     <div class="post-content">
-      <h3 id="1-标准">1. 标准</h3>
+      
+
+<h3 id="1-标准">1. 标准</h3>
 
 <p>RFC2616 中，对 Connection 的说明如下：</p>
 
@@ -481,6 +443,7 @@ ngx_http_process_connection(ngx_http_request_t *r, ngx_table_elt_t *h,
 <p>（8）在 ngx_http_finalize_connection 中，如果 r-&gt;keepalive 为1，则会调用ngx_http_set_keepalive 并返回。ngx_http_set_keepalive 方法完成将当前连接设为keepalive 状态的实质性工作。它实际上会把表示请求的 ngx_http_request_t 结构体释放，却又不会调用 ngx_http_close_connection 方法关闭连接，同时也在检测 keepalive 连接是否超时。</p>
 
 <p>至此，Connection 头部在 Nginx 里的处理流程差不多都讲完了，具体细节可按照这个脉络查看相应的代码。</p>
+
     </div>
 
     
@@ -654,6 +617,8 @@ ngx_http_process_connection(ngx_http_request_t *r, ngx_table_elt_t *h,
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

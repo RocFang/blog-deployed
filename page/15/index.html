@@ -33,11 +33,11 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
+<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
@@ -136,6 +136,8 @@
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -197,6 +199,8 @@
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -270,6 +274,10 @@
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -306,17 +314,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？</p>
-
-<p>答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。</p>
-
-<p>对于spec文件中在%files段的某一个文件，我们要讨论三种情况：</p>
-
-<ol>
-<li>没有带%config指令。例如：%{_sbindir}/redis-server<br /></li>
-<li>带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf<br /></li>
-<li>带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf<br /></li>
-</ol>
+      打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？ 答案是，该指
     </div>
     <div class="read-more">
       <a href="/2014/04/30/noreplace-in-rpm-spec-file.html" class="read-more-link">阅读全文</a>
@@ -347,9 +345,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>对于<a href="http://pureage.info/2014/04/26/pitfall-of-nginx.html">Nginx踩坑记（一）</a>，在openresty的google group上提了个问题：<a href="https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ">ngx.exec是如何处理上层定义的变量的</a></p>
-
-<p>春哥的回复<strong>摘录</strong>如下：</p>
+      对于Nginx踩坑记（一），在openresty的google group上提了个问题：ngx.exec是如何处理上层定义的变量的 春哥的回复摘
     </div>
     <div class="read-more">
       <a href="/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html" class="read-more-link">阅读全文</a>
@@ -380,26 +376,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <h2 id="1-预备知识">1. 预备知识</h2>
-
-<p>Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。</p>
-
-<p>配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。</p>
-
-<p>例如，如果有如下的配置：</p>
-
-<pre><code>location /test1 {  
-        set $hello hello;  
-        rewrite /test1 /test2 last;
-
-}
-  
-location /test2 {  
-        echo $hello;  
-}  
-</code></pre>
-
-<p>虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。</p>
+      1. 预备知识 Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。 配置过Nginx的
     </div>
     <div class="read-more">
       <a href="/2014/04/26/pitfall-of-nginx.html" class="read-more-link">阅读全文</a>
@@ -430,16 +407,7 @@ location /test2 {
   <div class="post-content">
     
     <div class="post-summary">
-      <p>关于svn log，我之前的工作方式一般都是这样：</p>
-
-<ol>
-<li>执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。<br /></li>
-<li>执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。<br /></li>
-</ol>
-
-<p>最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。</p>
-
-<p>在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。</p>
+      关于svn log，我之前的工作方式一般都是这样： 执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit
     </div>
     <div class="read-more">
       <a href="/2014/04/17/svn-log.html" class="read-more-link">阅读全文</a>
@@ -470,15 +438,7 @@ location /test2 {
   <div class="post-content">
     
     <div class="post-summary">
-      <p>这标题，怎么读着这么别扭。</p>
-
-<p>接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如Linus就不用多说了，身边的同学和同事中，技术牛人性格也一般比较桀骜。桀骜的表现之一就是不会浪费时间去回答一些基本的问题，最著名的就是那篇流传已久的论坛发帖指南了吧。</p>
-
-<p>自己虽然算不上牛人，但在某些方面也会有同事来求助，碰到一些比较低端的问题，其实心里会有烦躁的。烦躁的程度与当时的心情、手里有多少活正在干等因素相关。</p>
-
-<p>直到有一天我接触到了章哥。</p>
-
-<p>章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。</p>
+      这标题，怎么读着这么别扭。 接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如Linus就不用多说了，身边
     </div>
     <div class="read-more">
       <a href="/2014/04/12/agentzh.html" class="read-more-link">阅读全文</a>
@@ -1495,6 +1455,8 @@ location /test2 {
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

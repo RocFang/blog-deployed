@@ -33,11 +33,11 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
+<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
@@ -136,6 +136,8 @@
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -197,6 +199,8 @@
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -270,6 +274,10 @@
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -306,11 +314,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>大三那年，跑了整整一年步，风雨无阻。五年后，我再度下了这个决心。</p>
-
-<p>巧得很，正当我下完决心后，发现自己手里捧着一本村上春树的《当我谈跑步时我谈些什么》。当然这只是一种主观的说法，到底是在看这本书书的时候下了决心还是在看书之前已经下了决心，我自己也搞不清了。</p>
-
-<p>跑步其实不仅仅是跑步这项运动。跑步意味着生活的一切都开始逐渐规律化，平静化，意味着对自己的掌控。</p>
+      大三那年，跑了整整一年步，风雨无阻。五年后，我再度下了这个决心。 巧得很，正当我下完决心后，发现自己手里捧着一本村上春树的《当我谈跑步时我谈些
     </div>
     <div class="read-more">
       <a href="/2014/08/19/start-runngin-again.html" class="read-more-link">阅读全文</a>
@@ -341,17 +345,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。</p>
-
-<p>假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。</p>
-
-<p>进一步想一下，这里有两种做法：</p>
-
-<ol>
-<li><p>在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。</p></li>
-
-<li><p>在另外一个目录下新建一个裸仓库。执行git init &ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。</p></li>
-</ol>
+      得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间
     </div>
     <div class="read-more">
       <a href="/2014/08/14/local-backup-using-git.html" class="read-more-link">阅读全文</a>
@@ -382,25 +376,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数，例如</p>
-
-<pre><code>http://pureage.info?strider=1  
-</code></pre>
-
-<p>为了获取输入参数strider，以下两种方法都可以：</p>
-
-<ol>
-<li><p>local strider = ngx.var.arg_strider</p></li>
-
-<li><p>local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]</p></li>
-</ol>
-
-<p>差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&ldquo;xx&rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：</p>
-
-<pre><code>http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
-</code></pre>
-
-<p>时，ngx.var.arg_strider的值为&rdquo;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。</p>
+      ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数
     </div>
     <div class="read-more">
       <a href="/2014/07/30/two-kinds-of-variables-in-ngx-lua.html" class="read-more-link">阅读全文</a>
@@ -431,11 +407,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>看电影，就像其他一切需要调动内心体验的行为，都是非常私人化的，这是无数次教训得出的宝贵经验。它告诉我，自己的看法，不要指望其他任何人能认同。</p>
-
-<p>很多次沮丧的发现，自己给身边的人倾心推荐的电影，他们看完都表示没有什么感觉。有一个经验是，如果电影看到一半，对方萌萌的抬起头，弱弱的问道，这个电影到底是讲什么的啊？这个时候最聪明的做法是赶紧换别的活动，不要抱有任何也许后面的剧情会让他/她大为震撼的幻想。</p>
-
-<p>刚开始的时候是心情是很不愉快的，明明这个电影我已经看了三遍了，恨不得次次都有泪点，为啥在您这就一无是处呢？后来，我逐渐领悟到，问题在我，而不在别人。</p>
+      看电影，就像其他一切需要调动内心体验的行为，都是非常私人化的，这是无数次教训得出的宝贵经验。它告诉我，自己的看法，不要指望其他任何人能认同。
     </div>
     <div class="read-more">
       <a href="/2014/07/12/movie-cannot-be-shared.html" class="read-more-link">阅读全文</a>
@@ -466,9 +438,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>最近家里来了两个客人：两只金鱼，一只白色的，一只红色的，我给他们分别取了个名字，小红与小白。于是每天早上出门前，给他们喂点食料，晚上回来后趴在鱼缸前跟他们说两声Hello成了我的一大乐趣。</p>
-
-<p>几天之后，我发现，当我凑近鱼缸跟他们say Hello的时候，他们会慢慢的游到水面，露头吐出两个泡泡然后迅速沉入水底，仿佛一脸娇羞。一脸娇羞，说明我是一个喜欢歪歪的人，放佛，有说明我并没有歪歪的那么放肆。</p>
+      最近家里来了两个客人：两只金鱼，一只白色的，一只红色的，我给他们分别取了个名字，小红与小白。于是每天早上出门前，给他们喂点食料，晚上回来后趴
     </div>
     <div class="read-more">
       <a href="/2014/05/29/two-fishes.html" class="read-more-link">阅读全文</a>
@@ -1485,6 +1455,8 @@
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

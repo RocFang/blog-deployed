@@ -23,9 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？
-可是今天还是犯了一个这样的错误。
-" />
+  <meta name="description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -34,7 +32,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2013/07/13/117.html" />
@@ -53,25 +51,21 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="再不判断异常分支就剁手" />
-<meta property="og:description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？
-
-可是今天还是犯了一个这样的错误。" />
+<meta property="og:description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2013/07/13/117.html" />
 <meta property="article:published_time" content="2013-07-13T06:02:00&#43;00:00"/>
 <meta property="article:modified_time" content="2013-07-13T06:02:00&#43;00:00"/>
 
 <meta itemprop="name" content="再不判断异常分支就剁手">
-<meta itemprop="description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？
-
-可是今天还是犯了一个这样的错误。">
+<meta itemprop="description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有">
 
 
 <meta itemprop="datePublished" content="2013-07-13T06:02:00&#43;00:00" />
@@ -83,9 +77,7 @@
 <meta itemprop="keywords" content="程序员," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="再不判断异常分支就剁手"/>
-<meta name="twitter:description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？
-
-可是今天还是犯了一个这样的错误。"/>
+<meta name="twitter:description" content="一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -150,6 +142,8 @@
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -211,6 +205,8 @@
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -284,6 +280,10 @@
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -332,6 +332,7 @@
 <p>曾问过一个健身教练，真的有必要去健身馆吗？我自己每天就做做俯卧撑，你看我的肌肉不也还行吗？健身教练回到道，你眼里只有胸肌，我们看到的是XXX肌、XXX肌、XXX肌&hellip;.对这些肌肉群的练习一个人的健身运动是专业的还是野路子的区别所在。</p>
 
 <p>希望自己能真的吃一堑长一智。</p>
+
     </div>
 
     
@@ -505,6 +506,8 @@
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

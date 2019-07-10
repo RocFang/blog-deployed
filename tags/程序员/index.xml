@@ -17,11 +17,7 @@
       <pubDate>Sun, 07 Apr 2019 17:51:22 +0800</pubDate>
       
       <guid>https://pureage.info/post/illusions-produced-in-im-groups-of-software-technology/</guid>
-      <description>&lt;p&gt;现如今，各行各业都有无数的聊天群，软件技术相关当然也不例外。一个程序员不混几个技术群，每天在里面聊聊技术吹吹水，都似乎有点非主流了。&lt;/p&gt;
-
-&lt;p&gt;我这里说的是那种技术氛围相对浓厚一点的聊天群，大家主要的聊天内容还是会跟某些具体技术相关。纯水群不在本文讨论范围之列。&lt;/p&gt;
-
-&lt;p&gt;经过我长期观察，混迹技术聊天群容易产生几个错觉，甚至可以称之为幻觉。&lt;/p&gt;</description>
+      <description>现如今，各行各业都有无数的聊天群，软件技术相关当然也不例外。一个程序员不混几个技术群，每天在里面聊聊技术吹吹水，都似乎有点非主流了。 我这里说</description>
     </item>
     
     <item>
@@ -30,17 +26,7 @@
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
       <guid>https://pureage.info/post/annoying-golang-import/</guid>
-      <description>&lt;p&gt;众所周知，在github上参与开源项目的一般流程如下：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;将开源项目fork到自己的名下。&lt;/li&gt;
-&lt;li&gt;在本地开发环境中clone自己在上一步中fork的项目。&lt;/li&gt;
-&lt;li&gt;本地完成开发测试和代码提交，再push到自己名下的仓库中。&lt;/li&gt;
-&lt;li&gt;从自己名下的这个项目中，对原始项目发起一个pull request。&lt;/li&gt;
-&lt;li&gt;发起的pull request被上游merge后，自己的代码就进入开源项目中了。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。&lt;/p&gt;</description>
+      <description>众所周知，在github上参与开源项目的一般流程如下： 将开源项目fork到自己的名下。 在本地开发环境中clone自己在上一步中fork的项目</description>
     </item>
     
     <item>
@@ -49,7 +35,7 @@
       <pubDate>Fri, 23 Nov 2018 22:15:21 +0800</pubDate>
       
       <guid>https://pureage.info/post/write-a-blog-with-a-cellphone/</guid>
-      <description>&lt;p&gt;这篇文章没有什么实际内容，请谨慎点开，不要浪费自己的时间。我就是想测试一下在手机上写一篇博客的感觉如何，能否达到以前使用动态博客程序时的体验。&lt;/p&gt;</description>
+      <description>这篇文章没有什么实际内容，请谨慎点开，不要浪费自己的时间。我就是想测试一下在手机上写一篇博客的感觉如何，能否达到以前使用动态博客程序时的体验</description>
     </item>
     
     <item>
@@ -58,11 +44,7 @@
       <pubDate>Fri, 16 Nov 2018 23:00:44 +0800</pubDate>
       
       <guid>https://pureage.info/post/bad-feeling-about-go-cmd/</guid>
-      <description>&lt;p&gt;这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。&lt;/p&gt;
-
-&lt;p&gt;go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。&lt;/p&gt;
-
-&lt;p&gt;但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。&lt;/p&gt;</description>
+      <description>这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1</description>
     </item>
     
     <item>
@@ -71,7 +53,7 @@
       <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
       
       <guid>https://pureage.info/post/composite-ring-of-swift/</guid>
-      <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
+      <description>openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server 可以选择地缘近的后端存储服务来</description>
     </item>
     
     <item>
@@ -80,17 +62,7 @@
       <pubDate>Tue, 10 Oct 2017 15:01:38 +0000</pubDate>
       
       <guid>https://pureage.info/post/obsolescent-technology/</guid>
-      <description>&lt;p&gt;互联网技术的世界很奇怪。&lt;/p&gt;
-
-&lt;p&gt;大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。&lt;/p&gt;
-
-&lt;p&gt;但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。&lt;/p&gt;
-
-&lt;p&gt;这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。&lt;/p&gt;
-
-&lt;p&gt;举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。&lt;/p&gt;
-
-&lt;p&gt;这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。&lt;/p&gt;</description>
+      <description>互联网技术的世界很奇怪。 大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今</description>
     </item>
     
     <item>
@@ -99,15 +71,7 @@
       <pubDate>Tue, 07 Jun 2016 16:10:47 +0000</pubDate>
       
       <guid>https://pureage.info/2016/06/08/similarities-of-novels-and-codes.html</guid>
-      <description>&lt;p&gt;看小说，是我从小的爱好，看代码写代码，是我谋生的技能。这是两件极不相干的事，但是最近忽然觉得，这两者却有相通之处。原来我一直是用看小说的方式来看代码。&lt;/p&gt;
-
-&lt;p&gt;我认为，一部好的小说，如果不是囫囵吞枣随意读完便罢的话，至少是要看三遍的。&lt;/p&gt;
-
-&lt;p&gt;第一遍，按顺序读完。&lt;/p&gt;
-
-&lt;p&gt;第二遍，以事件、时间为中心，再看一遍。&lt;/p&gt;
-
-&lt;p&gt;第三遍，以人物为中心，再看一遍。&lt;/p&gt;</description>
+      <description>看小说，是我从小的爱好，看代码写代码，是我谋生的技能。这是两件极不相干的事，但是最近忽然觉得，这两者却有相通之处。原来我一直是用看小说的方式</description>
     </item>
     
     <item>
@@ -116,9 +80,7 @@
       <pubDate>Tue, 26 Apr 2016 14:32:12 +0000</pubDate>
       
       <guid>https://pureage.info/2016/04/26/253.html</guid>
-      <description>&lt;p&gt;周日在广州的 OpenResty 社区 meetup 中做了一个主题为《巧用openresty结合nginx变量机制提供定制化web服务》的分享，说实话还挺紧张的，毕竟是第一次做这种线下的分享，但是到了现场之后慢慢就放松了。因为来参加活动的，大多都是跟身边的同事、同学一样的程序员，在这种气氛下，其实不用考虑会不会怯场、出丑之类的问题。大家都是同道中人，传说中的“演讲技巧”之类的也没有必要，简单的把自己觉得有用的东西分享给大家，对自己是一种锻炼，如果能对听者也能有点用处，那就更好了。&lt;/p&gt;
-
-&lt;p&gt;有几位前公司的同事事前听说我要参加这次分享，自掏门票过来就是为了捧个场，他们中有的工作跟 OpenResty/Nginx 压根没关系，想想挺感动的。都说职场是铁打的营盘流水的兵，能结识这些朋友真是有幸。活动结束后，大家一起去聚了个餐，看了电影《奇幻森林》，这场景太像毕业离别前的小聚，他们中确实有位要马上到另一个城市去了。希望他一切顺心。&lt;/p&gt;</description>
+      <description>周日在广州的 OpenResty 社区 meetup 中做了一个主题为《巧用openresty结合nginx变量机制提供定制化web服务》的分享，说实话还挺紧张的，毕竟是第一</description>
     </item>
     
     <item>
@@ -127,11 +89,7 @@
       <pubDate>Sun, 27 Mar 2016 03:15:27 +0000</pubDate>
       
       <guid>https://pureage.info/2016/03/27/basic-respect-to-a-programming-language.html</guid>
-      <description>&lt;p&gt;在大学里我们就知道一个著名的论断:程序=数据结构+算法，无数人奉为圭臬，衍生出很多变形体，比如&amp;rdquo;编程语言不重要，思想才重要&amp;rdquo;。&lt;/p&gt;
-
-&lt;p&gt;现在网络社群发达，一个实际上在某一个领域才刚入门没多久的人，在解决了新手提出的几个hello world 级别的问题之后，就会被称为大神。然后他就能开始散布一些言论了。&lt;/p&gt;
-
-&lt;p&gt;这些言论本身放在一定的限定条件之下是没有问题的，比如 “Python 可简单了，看一个下午手册就能开始干活了”，他至少得有几个限定条件，比如你之前熟悉过其编程语言。即使在这些限定条件之下，你也得踏踏实实花几个小时到半天的时间来看手册不是么。&lt;/p&gt;</description>
+      <description>在大学里我们就知道一个著名的论断:程序=数据结构+算法，无数人奉为圭臬，衍生出很多变形体，比如&amp;rdquo;编程语言不重要，思想才重要&amp;rd</description>
     </item>
     
     <item>
@@ -140,17 +98,7 @@
       <pubDate>Tue, 12 Jan 2016 14:38:00 +0000</pubDate>
       
       <guid>https://pureage.info/2016/01/12/flow-chart.html</guid>
-      <description>&lt;p&gt;经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件&lt;/li&gt;
-&lt;li&gt;一些其他相对较小众的绘图软件，例如 Pencil&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;脑图工具，例如 Xmind&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。&lt;/p&gt;</description>
+      <description>经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工</description>
     </item>
     
     <item>
@@ -159,9 +107,7 @@
       <pubDate>Sat, 02 Jan 2016 14:02:40 +0000</pubDate>
       
       <guid>https://pureage.info/2016/01/02/ianmurdock-and-agentzh.html</guid>
-      <description>&lt;p&gt;这几天，开源软件界有两件大事，一件是 Debian 创始人 Ian Murdock 自杀身亡，另一件是在锤子手机 T2 的发布会上，罗永浩宣布将门票收入捐给 OpenResty，可以说是一悲一喜。&lt;/p&gt;
-
-&lt;p&gt;2013年，Markdown 标记语言的设计者之一 Aaron Swartz 自杀，我以及无数的程序员们的博客书写时用的就是 Markdown; Debian 以及 Debian 的变种 Ubuntu，也是很多人使用过或正在使用的 Linux 发行版。他们的自杀前后的心理状态，我们肯定不可能去感同身受，我们可能会感叹一句，原来在黑客氛围浓厚的美国，这些著名的黑客在现实中却也遭遇着能敢于去自杀的痛苦。不管怎么样，他们在这个世界上留下了他们的足迹供后人怀念。祝 Ian Murdock 走好。&lt;/p&gt;</description>
+      <description>这几天，开源软件界有两件大事，一件是 Debian 创始人 Ian Murdock 自杀身亡，另一件是在锤子手机 T2 的发布会上，罗永浩宣布将门票收入捐给 OpenResty，可以说</description>
     </item>
     
     <item>
@@ -170,21 +116,7 @@
       <pubDate>Tue, 22 Dec 2015 07:01:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/12/22/thundering-herd.html</guid>
-      <description>&lt;p&gt;今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。&lt;/p&gt;
-
-&lt;h2 id=&#34;1-什么叫惊群现象&#34;&gt;1. 什么叫惊群现象&lt;/h2&gt;
-
-&lt;p&gt;首先，我们看看&lt;a href=&#34;http://en.wikipedia.org/wiki/Thundering_herd_problem&#34;&gt;维基百科对惊群的定义&lt;/a&gt;:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.&lt;/p&gt;
-
-&lt;p&gt;This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.&lt;/p&gt;
-
-&lt;p&gt;This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。&lt;/p&gt;</description>
+      <description>今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。 1. 什么叫惊群现象 首先，我们看看维基百科对惊群的定义: The thundering herd problem occurs when a</description>
     </item>
     
     <item>
@@ -193,13 +125,7 @@
       <pubDate>Wed, 11 Nov 2015 09:55:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/11/11/non-standard-nginx-programming.html</guid>
-      <description>&lt;p&gt;最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。&lt;/p&gt;
-
-&lt;h2 id=&#34;离主分支过远&#34;&gt;离主分支过远&lt;/h2&gt;
-
-&lt;p&gt;Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。&lt;/p&gt;
-
-&lt;p&gt;Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。&lt;/p&gt;</description>
+      <description>最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。 离主分支过远 Nginx 是一个很有生命力的项目， 不断的在开发一</description>
     </item>
     
     <item>
@@ -208,14 +134,7 @@
       <pubDate>Thu, 19 Mar 2015 08:46:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/03/19/passing-file-descriptors.html</guid>
-      <description>&lt;p&gt;首先，必须声明，“进程间传递文件描述符”这个说法是错误的。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。&lt;br /&gt;
-《深入理解Linux内核架构》&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。&lt;/p&gt;</description>
+      <description>首先，必须声明，“进程间传递文件描述符”这个说法是错误的。 在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由</description>
     </item>
     
     <item>
@@ -224,17 +143,7 @@
       <pubDate>Thu, 14 Aug 2014 01:48:16 +0000</pubDate>
       
       <guid>https://pureage.info/2014/08/14/local-backup-using-git.html</guid>
-      <description>&lt;p&gt;得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。&lt;/p&gt;
-
-&lt;p&gt;假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。&lt;/p&gt;
-
-&lt;p&gt;进一步想一下，这里有两种做法：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;在另外一个目录下新建一个裸仓库。执行git init &amp;ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;</description>
+      <description>得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间</description>
     </item>
     
     <item>
@@ -243,16 +152,7 @@
       <pubDate>Thu, 17 Apr 2014 03:56:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/04/17/svn-log.html</guid>
-      <description>&lt;p&gt;关于svn log，我之前的工作方式一般都是这样：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。&lt;br /&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。&lt;/p&gt;
-
-&lt;p&gt;在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;</description>
+      <description>关于svn log，我之前的工作方式一般都是这样： 执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit</description>
     </item>
     
     <item>
@@ -261,15 +161,7 @@
       <pubDate>Fri, 11 Apr 2014 16:02:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/04/12/agentzh.html</guid>
-      <description>&lt;p&gt;这标题，怎么读着这么别扭。&lt;/p&gt;
-
-&lt;p&gt;接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如Linus就不用多说了，身边的同学和同事中，技术牛人性格也一般比较桀骜。桀骜的表现之一就是不会浪费时间去回答一些基本的问题，最著名的就是那篇流传已久的论坛发帖指南了吧。&lt;/p&gt;
-
-&lt;p&gt;自己虽然算不上牛人，但在某些方面也会有同事来求助，碰到一些比较低端的问题，其实心里会有烦躁的。烦躁的程度与当时的心情、手里有多少活正在干等因素相关。&lt;/p&gt;
-
-&lt;p&gt;直到有一天我接触到了章哥。&lt;/p&gt;
-
-&lt;p&gt;章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。&lt;/p&gt;</description>
+      <description>这标题，怎么读着这么别扭。 接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如Linus就不用多说了，身边</description>
     </item>
     
     <item>
@@ -278,13 +170,7 @@
       <pubDate>Tue, 25 Feb 2014 16:14:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/02/26/how-standard-is-broken.html</guid>
-      <description>&lt;p&gt;如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。&lt;/p&gt;
-
-&lt;p&gt;但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。&lt;/p&gt;
-
-&lt;h3 id=&#34;背景&#34;&gt;背景&lt;/h3&gt;
-
-&lt;p&gt;A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。&lt;/p&gt;</description>
+      <description>如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在</description>
     </item>
     
     <item>
@@ -293,18 +179,7 @@
       <pubDate>Fri, 21 Feb 2014 19:51:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/02/22/host-variable-in-nginx.html</guid>
-      <description>&lt;p&gt;关于变量host，在Nginx的官网wiki中是如下说明的：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;直白的翻译一下:host变量的值按照如下优先级获得：
-1. 请求行中的host.&lt;br /&gt;
-2. 请求头中的Host头部.&lt;br /&gt;
-3. 与一条请求匹配的server name.&lt;/p&gt;
-
-&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。&lt;/p&gt;</description>
+      <description>关于变量host，在Nginx的官网wiki中是如下说明的： $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request 直</description>
     </item>
     
     <item>
@@ -313,27 +188,7 @@
       <pubDate>Mon, 20 Jan 2014 15:30:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/01/20/lua-nginx-variable.html</guid>
-      <description>&lt;p&gt;在nginx中，有两种方式添加自定义的变量：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;在配置文件中用set指定添加&lt;/li&gt;
-&lt;li&gt;在自己编写的C模块中，调用&lt;code&gt;ngx_http_add_variable&lt;/code&gt;接口来添加变量&lt;br /&gt;
-&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;第一种方法较简单，第二种方法有一处需要说明一下。&lt;/p&gt;
-
-&lt;p&gt;当调用&lt;code&gt;ngx_http_add_variable&lt;/code&gt;接口时，如果传入的flag参数中&lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt;位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。&lt;/p&gt;
-
-&lt;p&gt;在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。&lt;/p&gt;
-
-&lt;p&gt;例如，某个C模块中用带有&lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt;位的flag参数调用了&lt;code&gt;ngx_http_add_variable&lt;/code&gt;，创建了变量A，则如果在lua代码中通过&lt;code&gt;ngx.var.A&lt;/code&gt;只能得到一个nil值。&lt;/p&gt;
-
-&lt;p&gt;而如果在配置文件中，先调用set命令:&lt;code&gt;set $B $A;&lt;/code&gt;,那么在lua代码中，通过代码&lt;code&gt;local A2 = ngx.var.B&lt;/code&gt;则可以间接访问到该变量。&lt;/p&gt;
-
-&lt;p&gt;翻了一下邮件列表，发现该问题agentzh早有解答：&lt;br /&gt;
-&amp;gt;逆雪寒:&lt;br /&gt;
-&amp;gt;通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是nil 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug ? 还是我理解问题.&lt;/p&gt;</description>
+      <description>在nginx中，有两种方式添加自定义的变量： 在配置文件中用set指定添加 在自己编写的C模块中，调用ngx_http_add_variable</description>
     </item>
     
   </channel>

@@ -23,13 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？
-答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。
-对于spec文件中在%files段的某一个文件，我们要讨论三种情况：
- 没有带%config指令。例如：%{_sbindir}/redis-server
- 带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf
- 带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf
- " />
+  <meta name="description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？ 答案是，该指" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -38,7 +32,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html" />
@@ -57,41 +51,21 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="RPM中的%config和%config(noreplace)" />
-<meta property="og:description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？
-
-答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。
-
-对于spec文件中在%files段的某一个文件，我们要讨论三种情况：
-
-
-没有带%config指令。例如：%{_sbindir}/redis-server
-带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf
-带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf
-" />
+<meta property="og:description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？ 答案是，该指" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html" />
 <meta property="article:published_time" content="2014-04-30T15:43:00&#43;00:00"/>
 <meta property="article:modified_time" content="2014-04-30T15:43:00&#43;00:00"/>
 
 <meta itemprop="name" content="RPM中的%config和%config(noreplace)">
-<meta itemprop="description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？
-
-答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。
-
-对于spec文件中在%files段的某一个文件，我们要讨论三种情况：
-
-
-没有带%config指令。例如：%{_sbindir}/redis-server
-带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf
-带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf
-">
+<meta itemprop="description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？ 答案是，该指">
 
 
 <meta itemprop="datePublished" content="2014-04-30T15:43:00&#43;00:00" />
@@ -103,17 +77,7 @@
 <meta itemprop="keywords" content="shell," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="RPM中的%config和%config(noreplace)"/>
-<meta name="twitter:description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？
-
-答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。
-
-对于spec文件中在%files段的某一个文件，我们要讨论三种情况：
-
-
-没有带%config指令。例如：%{_sbindir}/redis-server
-带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf
-带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf
-"/>
+<meta name="twitter:description" content="打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？ 答案是，该指"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -178,6 +142,8 @@
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -239,6 +205,8 @@
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -312,6 +280,10 @@
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -347,7 +319,9 @@
 
     
     <div class="post-content">
-      <p>打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？</p>
+      
+
+<p>打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？</p>
 
 <p>答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。</p>
 
@@ -434,6 +408,7 @@
 
 <p>参考：<br />
 <a href="http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html">http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html</a></p>
+
     </div>
 
     
@@ -607,6 +582,8 @@
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

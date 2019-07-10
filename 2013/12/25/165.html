@@ -23,11 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="1.原始语义 与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
-2.使用场景 O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
-之所以能这么用的唯一理由是该操作是原子的。
-之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
-if( access(file, R_OK) == -1 ) /* 首先检查文件是否存在 */ open(file, O_RDWR | O_CREAT，0666); /* 如果不存在，那我创建一个这样的文件 */ ... /* 继续执行任务 */ " />
+  <meta name="description" content="1.原始语义 与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -36,7 +32,7 @@ if( access(file, R_OK) == -1 ) /* 首先检查文件是否存在 */ open(file, O
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2013/12/25/165.html" />
@@ -55,51 +51,21 @@ if( access(file, R_OK) == -1 ) /* 首先检查文件是否存在 */ open(file, O
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="O_EXCL的作用" />
-<meta property="og:description" content="1.原始语义
-
-与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
-
-2.使用场景
-
-O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
-
-之所以能这么用的唯一理由是该操作是原子的。
-
-之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
-
-if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
-    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
-...  /* 继续执行任务 */  
-" />
+<meta property="og:description" content="1.原始语义 与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2013/12/25/165.html" />
 <meta property="article:published_time" content="2013-12-25T15:48:00&#43;00:00"/>
 <meta property="article:modified_time" content="2013-12-25T15:48:00&#43;00:00"/>
 
 <meta itemprop="name" content="O_EXCL的作用">
-<meta itemprop="description" content="1.原始语义
-
-与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
-
-2.使用场景
-
-O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
-
-之所以能这么用的唯一理由是该操作是原子的。
-
-之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
-
-if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
-    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
-...  /* 继续执行任务 */  
-">
+<meta itemprop="description" content="1.原始语义 与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE">
 
 
 <meta itemprop="datePublished" content="2013-12-25T15:48:00&#43;00:00" />
@@ -111,22 +77,7 @@ if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */
 <meta itemprop="keywords" content="程序员," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="O_EXCL的作用"/>
-<meta name="twitter:description" content="1.原始语义
-
-与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。
-
-2.使用场景
-
-O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。
-
-之所以能这么用的唯一理由是该操作是原子的。
-
-之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:
-
-if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
-    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
-...  /* 继续执行任务 */  
-"/>
+<meta name="twitter:description" content="1.原始语义 与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -191,6 +142,8 @@ if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -252,6 +205,8 @@ if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -325,6 +280,10 @@ if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -360,7 +319,9 @@ if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */
 
     
     <div class="post-content">
-      <h2 id="1-原始语义">1.原始语义</h2>
+      
+
+<h2 id="1-原始语义">1.原始语义</h2>
 
 <p>与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。</p>
 
@@ -437,6 +398,7 @@ if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */
              to a block device.  If the block device is in use by the<br />
              system (e.g., mounted), open() fails with the error EBUSY.</p>
 </blockquote>
+
     </div>
 
     
@@ -610,6 +572,8 @@ if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

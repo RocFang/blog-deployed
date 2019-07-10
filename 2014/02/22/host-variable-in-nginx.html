@@ -23,13 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
- $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
- 直白的翻译一下:host变量的值按照如下优先级获得： 1. 请求行中的host.
-2. 请求头中的Host头部.
-3. 与一条请求匹配的server name.
-很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。
-" />
+  <meta name="description" content="关于变量host，在Nginx的官网wiki中是如下说明的： $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request 直" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -38,7 +32,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2014/02/22/host-variable-in-nginx.html" />
@@ -57,43 +51,21 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="关于nginx中的host变量" />
-<meta property="og:description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
-
-
-$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
-
-
-直白的翻译一下:host变量的值按照如下优先级获得：
-1. 请求行中的host.
-2. 请求头中的Host头部.
-3. 与一条请求匹配的server name.
-
-很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。" />
+<meta property="og:description" content="关于变量host，在Nginx的官网wiki中是如下说明的： $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request 直" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2014/02/22/host-variable-in-nginx.html" />
 <meta property="article:published_time" content="2014-02-21T19:51:00&#43;00:00"/>
 <meta property="article:modified_time" content="2014-02-21T19:51:00&#43;00:00"/>
 
 <meta itemprop="name" content="关于nginx中的host变量">
-<meta itemprop="description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
-
-
-$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
-
-
-直白的翻译一下:host变量的值按照如下优先级获得：
-1. 请求行中的host.
-2. 请求头中的Host头部.
-3. 与一条请求匹配的server name.
-
-很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。">
+<meta itemprop="description" content="关于变量host，在Nginx的官网wiki中是如下说明的： $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request 直">
 
 
 <meta itemprop="datePublished" content="2014-02-21T19:51:00&#43;00:00" />
@@ -105,18 +77,7 @@ $host：in this order of precedence: host name from the request line, or host na
 <meta itemprop="keywords" content="程序员,nginx," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="关于nginx中的host变量"/>
-<meta name="twitter:description" content="关于变量host，在Nginx的官网wiki中是如下说明的：
-
-
-$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
-
-
-直白的翻译一下:host变量的值按照如下优先级获得：
-1. 请求行中的host.
-2. 请求头中的Host头部.
-3. 与一条请求匹配的server name.
-
-很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。"/>
+<meta name="twitter:description" content="关于变量host，在Nginx的官网wiki中是如下说明的： $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request 直"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -181,6 +142,8 @@ $host：in this order of precedence: host name from the request line, or host na
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -242,6 +205,8 @@ $host：in this order of precedence: host name from the request line, or host na
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -315,6 +280,10 @@ $host：in this order of precedence: host name from the request line, or host na
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -350,7 +319,9 @@ $host：in this order of precedence: host name from the request line, or host na
 
     
     <div class="post-content">
-      <p>关于变量host，在Nginx的官网wiki中是如下说明的：</p>
+      
+
+<p>关于变量host，在Nginx的官网wiki中是如下说明的：</p>
 
 <blockquote>
 <p>$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request</p>
@@ -513,6 +484,7 @@ Host: www.pureage.info</p>
 <h3 id="5-验证">5.验证</h3>
 
 <p>可以搭建一台Nginx服务器，用telnet来验证上面的说法。此处略过，但这个操作很有必要。</p>
+
     </div>
 
     
@@ -687,6 +659,8 @@ Host: www.pureage.info</p>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

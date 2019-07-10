@@ -54,7 +54,8 @@
 
 &lt;p&gt;并不是，拥有客户端的云笔记，可以很好的完成知识的收集。然后要定期整理、消化，输出到新的地方去。&lt;/p&gt;
 
-&lt;p&gt;最重要的，当然还是执行了。导致笔记本成为“垃圾堆“的，永远是我自己，而非这些工具。没有执行，上面说的每一个字，都毫无意义。&lt;/p&gt;</description>
+&lt;p&gt;最重要的，当然还是执行了。导致笔记本成为“垃圾堆“的，永远是我自己，而非这些工具。没有执行，上面说的每一个字，都毫无意义。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -116,7 +117,8 @@
 
 &lt;p&gt;在我看来，非暴力沟通的实质其实是聚焦。聚焦自己和对方的真实需求，一切以真实需求为中心，为其服务，从自己的主观情绪中跳出来。&lt;/p&gt;
 
-&lt;p&gt;道理和方法这本书是讲清楚了，执行的事就只能是交给读者自己了。至少我相信，正确的执行非暴力沟通，夫妻间的不愉快将会大大减少。&lt;/p&gt;</description>
+&lt;p&gt;道理和方法这本书是讲清楚了，执行的事就只能是交给读者自己了。至少我相信，正确的执行非暴力沟通，夫妻间的不愉快将会大大减少。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -159,7 +161,8 @@
 
 &lt;p&gt;软件开发/程序设计发展到今天，有无数的先驱在前面铺路搭桥，以至于今天我们不用造轮子，直接完全使用开源项目都能完成很多任务。&lt;/p&gt;
 
-&lt;p&gt;站在巨人的肩膀上，能让我们看的更远，但并不意味着我们自己也是巨人了。自己真正的代码能力怎么样，自己心里有点数啊大兄弟。&lt;/p&gt;</description>
+&lt;p&gt;站在巨人的肩膀上，能让我们看的更远，但并不意味着我们自己也是巨人了。自己真正的代码能力怎么样，自己心里有点数啊大兄弟。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -172,7 +175,8 @@
       
         <description>&lt;p&gt;本网站所使用的域名pureage.info自2011年注册开始，一直托管在godaddy上。当年国外的域名注册商家中，只有godaddy支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。&lt;/p&gt;
 
-&lt;p&gt;直到最近，域名又要续费了，而这个info的域名现在居然到了150元人民币一年，干脆趁这个机会转出到namesilo了。整个过程用了不到五分钟，namesilo一年的费用是80多块，还借机体验了一下域名转出的流程，真是何乐而不为呢。&lt;/p&gt;</description>
+&lt;p&gt;直到最近，域名又要续费了，而这个info的域名现在居然到了150元人民币一年，干脆趁这个机会转出到namesilo了。整个过程用了不到五分钟，namesilo一年的费用是80多块，还借机体验了一下域名转出的流程，真是何乐而不为呢。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -216,7 +220,8 @@
 
 &lt;p&gt;在上述情况下，其实我们是把原始项目和自己的fork当作两个相对独立的项目，我们希望在构建的时候能直接go build就行了，不希望有其他额外的操作。如果有第三个人，他想fork我们这个fork并进行并列开发，按上面的方法将会非常麻烦。&lt;/p&gt;
 
-&lt;p&gt;对于这种情况，我选择将项目内所有源码中的import路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。&lt;/p&gt;</description>
+&lt;p&gt;对于这种情况，我选择将项目内所有源码中的import路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -237,7 +242,8 @@
 
 &lt;p&gt;英国探险家乔治·马洛里在被问及为何想要攀登珠穆朗玛峰时回答，“因为它就在那儿“，成为人们至今仍经常引用的名言。这句话可以用来回答许多极限运动领域中类似的问题。但是现在，对于极限运动的评论往往变成了”这就是为什么外国人这么少“之类的调侃。&lt;/p&gt;
 
-&lt;p&gt;我当然不会死板到因为这些评论的盛行就感慨世风不古，在跟朋友们一起看这些视频时，我也会做出此类调侃。但是静下心来细想，一定会是满满的敬意。&lt;/p&gt;</description>
+&lt;p&gt;我当然不会死板到因为这些评论的盛行就感慨世风不古，在跟朋友们一起看这些视频时，我也会做出此类调侃。但是静下心来细想，一定会是满满的敬意。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -264,7 +270,8 @@ Then the time come for you to be your own man and take on the world, and you did
 Let me tell you something you already know. The world ain&amp;rsquo;t all sunshine and rainbows. It&amp;rsquo;s a very mean and nasty place and I don&amp;rsquo;t care how tough you are it will beat you to your knees and keep you there permanently if you let it. You, me, or nobody is gonna hit as hard as life. But it ain&amp;rsquo;t about how hard ya hit. It&amp;rsquo;s about how hard you can get it and keep moving forward. How much you can take and keep moving forward. That&amp;rsquo;s how winning is done!&lt;br /&gt;
 Now if you know what you&amp;rsquo;re worth then go out and get what you&amp;rsquo;re worth. But ya gotta be willing to take the hits, and not pointing fingers saying you ain&amp;rsquo;t where you wanna be because of him, or her, or anybody! Cowards do that and that ain&amp;rsquo;t you! You&amp;rsquo;re better than that!&lt;br /&gt;
 I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&amp;rsquo;re my son and you&amp;rsquo;re my blood. You&amp;rsquo;re the best thing in my life. But until you start believing in yourself, ya ain&amp;rsquo;t gonna have a life. Don&amp;rsquo;t forget to visit your mother.&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+&lt;/blockquote&gt;
+</description>
       
     </item>
     
@@ -275,7 +282,9 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
       
       <guid>https://pureage.info/post/creed2/</guid>
       
-        <description>&lt;p&gt;作为洛奇系列电影的旁支，《奎迪》系列的第二部最近在国内院线上映了。作为一个拳击题材电影的影迷和现实生活中的拳迷，虽然不久前我已经在网上找到视频资源先睹为快了，在上映后仍去电影院重温了一下。&lt;/p&gt;
+        <description>
+
+&lt;p&gt;作为洛奇系列电影的旁支，《奎迪》系列的第二部最近在国内院线上映了。作为一个拳击题材电影的影迷和现实生活中的拳迷，虽然不久前我已经在网上找到视频资源先睹为快了，在上映后仍去电影院重温了一下。&lt;/p&gt;
 
 &lt;p&gt;总的来说，我对这部电影很满意。与上一部相比，加入了更多拳击之外的感情戏，导致中间会有一些沉闷，应该会引起一些争议。但拳击电影从来都不是从头到尾在擂台上拳拳到肉，如果缺了感情的铺垫，情绪没有累积上来，最后的决战就无法成为高潮。&lt;/p&gt;
 
@@ -306,7 +315,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;在与小德拉戈的第一场，一意孤行的奎迪，登台前紧张到发抖。在复赛中，取得爱人和洛奇支持的奎迪就沉稳的多。&lt;/p&gt;
 
-&lt;p&gt;仅仅是因为，他有没有明白自己是为何而战。&lt;/p&gt;</description>
+&lt;p&gt;仅仅是因为，他有没有明白自己是为何而战。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -379,7 +389,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;li&gt;方法论要坚持执行才有意义。&lt;/li&gt;
 &lt;li&gt;方法论不唯一。即使是数学考试这么个目标极其明确的事情，每个人都有自己的方法论。&lt;/li&gt;
 &lt;li&gt;选择了一个方法论，就要相信它。&lt;/li&gt;
-&lt;/ol&gt;</description>
+&lt;/ol&gt;
+</description>
       
     </item>
     
@@ -401,7 +412,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;但是也并不能完全排除这个可能，尤其是一些非知识性的心情随笔，可能思绪飘过，不抓住就飘远了，事后往往找不到当时的感觉。比如，2012年夏天我刚从成都到深圳工作时，住处的网络还没安装好，有几篇文章是我特意跑到网吧去写的，就是为了赶紧给当时的状态留下个痕迹。&lt;/p&gt;
 
-&lt;p&gt;本次测试表明，Hugo+Caddy配合起来非常棒，完全能胜任在手机端写作和发布的工作。&lt;/p&gt;</description>
+&lt;p&gt;本次测试表明，Hugo+Caddy配合起来非常棒，完全能胜任在手机端写作和发布的工作。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -430,7 +442,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;另外，Caddy还有与hugo适配的插件http.hugo，使用这个插件后，可以有跟动态网站相同的文章发布体验。&lt;/p&gt;
 
-&lt;p&gt;还有比这更完美的事情吗？&lt;/p&gt;</description>
+&lt;p&gt;还有比这更完美的事情吗？&lt;/p&gt;
+</description>
       
     </item>
     
@@ -476,7 +489,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;这话当然不是我杜撰的，具体见: &lt;a href=&#34;https://github.com/golang/go/issues/26746&#34;&gt;https://github.com/golang/go/issues/26746&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;连我这种软件行业的凡夫俗子，都知道遇到异常的合理处理方式是什么（例如我在2013年写的一篇文章：&lt;a href=&#34;http://pureage.info/2013/07/13/117.html&#34;&gt;再不判断异常分支就剁手&lt;/a&gt;），google 里绝对意义上的高手竟然对此毫不在意，实在让人大跌眼镜。&lt;/p&gt;</description>
+&lt;p&gt;连我这种软件行业的凡夫俗子，都知道遇到异常的合理处理方式是什么（例如我在2013年写的一篇文章：&lt;a href=&#34;http://pureage.info/2013/07/13/117.html&#34;&gt;再不判断异常分支就剁手&lt;/a&gt;），google 里绝对意义上的高手竟然对此毫不在意，实在让人大跌眼镜。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -497,7 +511,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;例如，假设想实现一个在A，B两地机房的三份冗余的存储，而且A机房作为主机房希望每个对象都在其上冗余两份，B机房作为次机房则只冗余一份。那么就在分别构建针对 A 和 B 的两个哈希环 RingA 和 RingB, RingA 在创建时指定其冗余份数为2，RingB 在创建时指定其冗余份数为1。在各自添加完设备并生成 ring 文件后，使用 swift 2.19.0 里新增的一个工具 swift-ring-composer，来将 RingA 和 RingB 组合成一个新的环，然后将这个新的环作为最终的环分发到各设备中去使用。&lt;/p&gt;
 
-&lt;p&gt;文档里称 swift-ring-composer 是个实验性质的工具，未来可能会修改或被删除，大家酌情使用。&lt;/p&gt;</description>
+&lt;p&gt;文档里称 swift-ring-composer 是个实验性质的工具，未来可能会修改或被删除，大家酌情使用。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -570,7 +585,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;200年后，美国哈佛大学经济学家朱丽叶·施罗尔在《过度消费的美国人》一书中，提出了一个新概念——“狄德罗效应”，或“配套效应”，专指人们在拥有了一件新的物品后，不断配置与其相适应的物品，以达到心理上平衡的现象。&lt;/p&gt;
 
-&lt;p&gt;是不是很有趣？&lt;/p&gt;</description>
+&lt;p&gt;是不是很有趣？&lt;/p&gt;
+</description>
       
     </item>
     
@@ -623,7 +639,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;li&gt;名字一经确定，就不再征求除妻子之外其他人的意见了。&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;我无法详实的记录这阶段取名的详细过程，只能给出之后的结果。最终确定的名字为“方立维”。取自文天祥《正气歌》里“地维赖以立，天柱赖以尊”这一句。古人认为天圆地方，大地靠几根绳子维系。将“维”和“立”在诗句中出现的顺序调换了一下，使其读起来更顺口。要说有什么寓意的话，希望小朋友以后做一个堂堂正正顶天立地的男子汉吧。&lt;/p&gt;</description>
+&lt;p&gt;我无法详实的记录这阶段取名的详细过程，只能给出之后的结果。最终确定的名字为“方立维”。取自文天祥《正气歌》里“地维赖以立，天柱赖以尊”这一句。古人认为天圆地方，大地靠几根绳子维系。将“维”和“立”在诗句中出现的顺序调换了一下，使其读起来更顺口。要说有什么寓意的话，希望小朋友以后做一个堂堂正正顶天立地的男子汉吧。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -634,7 +651,9 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
       
       <guid>https://pureage.info/post/howto-read-a-book/</guid>
       
-        <description>&lt;p&gt;在几位前辈的推荐下，读完了由莫提默·J.艾德勒和查尔斯·范多伦合著的《如何阅读一本书》，受益良多。&lt;/p&gt;
+        <description>
+
+&lt;p&gt;在几位前辈的推荐下，读完了由莫提默·J.艾德勒和查尔斯·范多伦合著的《如何阅读一本书》，受益良多。&lt;/p&gt;
 
 &lt;p&gt;如书名明示的那样，这是一本指导读者如何读书的书。时至今日，阅读的目标可以分为两种，一种是为获得资讯而阅读，另一种是为增进理解而阅读。这本书就是为希望从阅读中增进理解的读者而准备的。&lt;/p&gt;
 
@@ -766,7 +785,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;li&gt;如何阅读科学与数学&lt;/li&gt;
 &lt;li&gt;如何阅读哲学书&lt;/li&gt;
 &lt;li&gt;如何阅读社会科学&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+</description>
       
     </item>
     
@@ -815,7 +835,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;我个人也是在一年多以前就实现了这个功能，当时nginx的slice分片模块还没出来多久。现在看来这个功能应该是CDN服务的标配了。&lt;/p&gt;
 
-&lt;p&gt;但这确实是个必然要被淘汰的东西啊。想到这里，还真令人惆怅。&lt;/p&gt;</description>
+&lt;p&gt;但这确实是个必然要被淘汰的东西啊。想到这里，还真令人惆怅。&lt;/p&gt;
+</description>
       
     </item>
     
@@ -918,7 +939,8 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 
 &lt;p&gt;君不见在《古惑仔》风靡校园的时候，多少小县城的中学生们为了一个义字强行扭转了自己的人生轨迹？等到中年、老年的时候，他们会不会悔恨，会不会思考这一切有何意义？&lt;/p&gt;
 
-&lt;p&gt;史进，就像一个热血青年一样，就这样带着我们一头扎进了《水浒传》的世界里。&lt;/p&gt;</description>
+&lt;p&gt;史进，就像一个热血青年一样，就这样带着我们一头扎进了《水浒传》的世界里。&lt;/p&gt;
+</description>
       
     </item>
     

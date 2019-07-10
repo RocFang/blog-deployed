@@ -23,11 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
-lorotate的切割方式 以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。
-当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。
-当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。
-" />
+  <meta name="description" content="什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志" />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -36,7 +32,7 @@ lorotate的切割方式 以nginx为例，假设其错误日志放在/data/proclo
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2013/09/10/127.html" />
@@ -55,41 +51,21 @@ lorotate的切割方式 以nginx为例，假设其错误日志放在/data/proclo
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
 
 
 <meta property="og:title" content="漫谈logrotate与crond" />
-<meta property="og:description" content="什么是logrotate
-
-logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
-
-lorotate的切割方式
-
-以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。
-
-当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。
-
-当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。" />
+<meta property="og:description" content="什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2013/09/10/127.html" />
 <meta property="article:published_time" content="2013-09-10T15:11:00&#43;00:00"/>
 <meta property="article:modified_time" content="2013-09-10T15:11:00&#43;00:00"/>
 
 <meta itemprop="name" content="漫谈logrotate与crond">
-<meta itemprop="description" content="什么是logrotate
-
-logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
-
-lorotate的切割方式
-
-以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。
-
-当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。
-
-当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。">
+<meta itemprop="description" content="什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志">
 
 
 <meta itemprop="datePublished" content="2013-09-10T15:11:00&#43;00:00" />
@@ -101,17 +77,7 @@ lorotate的切割方式
 <meta itemprop="keywords" content="程序员,shell," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="漫谈logrotate与crond"/>
-<meta name="twitter:description" content="什么是logrotate
-
-logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
-
-lorotate的切割方式
-
-以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。
-
-当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。
-
-当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。"/>
+<meta name="twitter:description" content="什么是logrotate logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -176,6 +142,8 @@ lorotate的切割方式
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -237,6 +205,8 @@ lorotate的切割方式
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -310,6 +280,10 @@ lorotate的切割方式
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -345,7 +319,9 @@ lorotate的切割方式
 
     
     <div class="post-content">
-      <h1 id="什么是logrotate">什么是logrotate</h1>
+      
+
+<h1 id="什么是logrotate">什么是logrotate</h1>
 
 <p>logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。</p>
 
@@ -533,6 +509,7 @@ exit 0
 </code></pre>
 
 <p>与cront -u root -l回显一致。</p>
+
     </div>
 
     
@@ -707,6 +684,8 @@ exit 0
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 

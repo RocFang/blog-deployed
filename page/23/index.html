@@ -33,11 +33,11 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.55.4" />
 
 
 <link rel="canonical" href="https://pureage.info/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
+<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.ec807d8b802a40889537c26e014f733206312ea440d42e1f0dabed80918de1ac.css" integrity="sha256-7IB9i4AqQIiVN8JuAU9zMgYxLqRA1C4fDavtgJGN4aw=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
 
 
 
@@ -136,6 +136,8 @@
         
       </li>
     
+
+    
   </ul>
 </nav>
 
@@ -197,6 +199,8 @@
     </div>
     </div>
 </div>
+
+  
 
   
 
@@ -270,6 +274,10 @@
 
       </li>
     
+
+    
+    
+
     
   </ul>
 </nav>
@@ -306,9 +314,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？</p>
-
-<p>可是今天还是犯了一个这样的错误。</p>
+      一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有
     </div>
     <div class="read-more">
       <a href="/2013/07/13/117.html" class="read-more-link">阅读全文</a>
@@ -339,23 +345,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <h2 id="背景描述">背景描述</h2>
-
-<p>近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。</p>
-
-<h2 id="分工明确化">分工明确化</h2>
-
-<p>从始至终我们持有的一个观点就是，这个worker的功能要极度简化，就是去从tasklist中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个tasklist怎么来的，里面的任务是由谁来插入，worker一概不管。这样的话，有几个好处：</p>
-
-<ul>
-<li>worker的角色明确，目标清晰。直接的好处就是代码容易编写。<br /></li>
-<li>设计思想比较通用<br /></li>
-<li>tasklist的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的log中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。<br /></li>
-</ul>
-
-<h2 id="关于重试">关于重试</h2>
-
-<p>worker从tasklist中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。关于这个异常处理，在这里多说两句，讲一个亲身经历的例子：</p>
+      背景描述 近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去
     </div>
     <div class="read-more">
       <a href="/2013/06/27/116.html" class="read-more-link">阅读全文</a>
@@ -386,22 +376,7 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <h1 id="1-here-document">1.here document</h1>
-
-<p>here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：</p>
-
-<pre><code>ftp -n $HOST &lt;&lt;EOF
-quote USER $USER  
-quote PASS $PASS  
-binary  
-put $FileName  
-quit  
-EOF  
-</code></pre>
-
-<h1 id="2-踩到的坑">2.踩到的坑</h1>
-
-<p>在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。</p>
+      1.here document here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如： ftp -n $HOST &lt;&lt;EOF quote USER $USER quote PASS $PASS binary put $FileName quit EOF 2.踩到的坑 在工作中，涉及
     </div>
     <div class="read-more">
       <a href="/2013/05/24/115.html" class="read-more-link">阅读全文</a>
@@ -432,13 +407,7 @@ EOF
   <div class="post-content">
     
     <div class="post-summary">
-      <p>4月19日从前一家公司离职，下一家公司的报道日期是5月7号。报到时需要带的材料中，有一项是“居住证”。</p>
-
-<p>在网上找了广州市办理居住证的流程，发现各种说法不一，没有找到一个官方的说法。于是拉着一个在广州打工多年的亲戚带着我办。从亲戚口中得知，正常的流程应该是房东出具一份证明，拿着这份证明到居住地的社区继续弄齐材料，然后再到更高一级的机构去办理居住证。</p>
-
-<p>我问那亲戚，是不是需要先把房子租了才能去办呢，他说他和他房东关系不错，跟房东说一声，直接先开到他的住处就可以了，房子慢慢再找，现在先去社区摸清楚到底什么流程，毕竟每年政策可能不一样。我们在城中村里综合交错的小巷子里找了很久，才找到社区工作站A的位置。</p>
-
-<p>可是社区工作站的大门是紧锁着的。那天是5月3号，星期五，五一假期刚过，属于正常工作日。</p>
+      4月19日从前一家公司离职，下一家公司的报道日期是5月7号。报到时需要带的材料中，有一项是“居住证”。 在网上找了广州市办理居住证的流程，发现
     </div>
     <div class="read-more">
       <a href="/2013/05/06/114.html" class="read-more-link">阅读全文</a>
@@ -469,18 +438,7 @@ EOF
   <div class="post-content">
     
     <div class="post-summary">
-      <p>现在，一个年轻人说自己读成功学的书时，会觉得难以启齿吧？但曾经，在成功学还没被现在的某些大师搞臭时，还是能给人一些正面的力量的。老罗曾经在演讲里说过，他当年曾把各种成功学的书一斤一斤的堆在家里，当熬不下去的时候就随机发开一本，打打鸡血，继续干活，每次都能管一段时间。</p>
-
-<p>我对于成功学的了解，大概分为如下几个时期:</p>
-
-<h2 id="初窥-好奇">初窥&mdash;-好奇</h2>
-
-<p>最早看的一本成功学的书，是《方与圆》，顾名思义，全书就是教育读者想要出人头地的话，就要做到“外圆内方”。那时我还读小学，给我看这本书的是我的一个舅舅。</p>
-
-<p>我的这个舅舅是一个很有才华的人，但正因为他不够圆，从世俗的角度来看，他并不成功，颇有怀才不遇之感。很奇怪的是，他既然很多年前就知道自己不够圆，这么多年过去了，却并没有多大改变。简单分析一下，会有两个原因，一是他深知自己想要获得世俗的成功，就必须改变自己，但是他并不知道如何去实践。二是他内心里对这种改变抱有抵触。就他所处的实际情况而言，我认为主要是第一个原因。</p>
-
-<p>因此，《方与圆》这类书籍，代表了一类低端的成功学的书籍，它们一方面很难从内心说服你为什么要做出改变，另一方面可操作性极差。但是它们往往喜欢结合中国社会的具体国情，会让你觉得它的观点无可辩驳，你很难说服别人说”外圆内方更容易成功“这个观点是错的。<br />
-它的立足点就有问题，方圆之说，无法操作，无法度量。最终结果是，要么依然外方内方，要么就是外圆内圆，如果它从头到尾都在教育人们外圆内圆，我会对其更有好感。</p>
+      现在，一个年轻人说自己读成功学的书时，会觉得难以启齿吧？但曾经，在成功学还没被现在的某些大师搞臭时，还是能给人一些正面的力量的。老罗曾经在演
     </div>
     <div class="read-more">
       <a href="/2013/04/26/113.html" class="read-more-link">阅读全文</a>
@@ -1497,6 +1455,8 @@ EOF
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
+
+
 
 
 
