@@ -297,12 +297,12 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/2013/12/05/156.html">FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</a>
+      <a class="post-link" href="/2016/08/28/goto-qinghai-lake.html">青海湖骑行记</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2013-12-05" class="post-time">
-        2013-12-05
+      <time datetime="2016-08-28" class="post-time">
+        2016-08-28
       </time>
       
       
@@ -314,541 +314,83 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：</p>
-
-<p><strong>1. tcprecvdata_ex</strong></p>
-
-<pre><code>int tcprecvdata_ex(int sock, void *data, const int size, \  
-		const int timeout, int *count)  
-{  
-	int left_bytes;  
-	int read_bytes;  
-	int res;
-	int ret_code;  
-	unsigned char* p;  
-#ifdef USE_SELECT  
-	fd_set read_set;  
-	struct timeval t;  
-#else  
-	struct pollfd pollfds;  
-#endif  
-  
-#ifdef USE_SELECT  
-	FD_ZERO(&amp;read_set);  
-	FD_SET(sock, &amp;read_set);  
-#else  
-	pollfds.fd = sock;  
-	pollfds.events = POLLIN;  
-#endif  
-  
-	read_bytes = 0;  
-	ret_code = 0;  
-	p = (unsigned char*)data;  
-	left_bytes = size;  
-	while (left_bytes &gt; 0)  
-	{  
-  
-#ifdef USE_SELECT  
-		if (timeout &lt;= 0)  
-		{  
-			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
-		}  
-		else  
-		{  
-			t.tv_usec = 0;  
-			t.tv_sec = timeout;  
-			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
-		}  
-#else  
-		res = poll(&amp;pollfds, 1, 1000 * timeout);  
-		if (pollfds.revents &amp; POLLHUP)  
-		{  
-			ret_code = ENOTCONN;  
-			break;  
-		}  
-#endif  
-  
-		if (res &lt; 0)  
-		{  
-			ret_code = errno != 0 ? errno : EINTR;  
-			break;  
-		}  
-		else if (res == 0)  
-		{  
-			ret_code = ETIMEDOUT;  
-			break;  
-		}  
-	  
-		read_bytes = recv(sock, p, left_bytes, 0);  
-		if (read_bytes &lt; 0)  
-		{  
-			ret_code = errno != 0 ? errno : EINTR;  
-			break;  
-		}  
-		if (read_bytes == 0)  
-		{  
-			ret_code = ENOTCONN;  
-			break;  
-		}  
-  
-		left_bytes -= read_bytes;  
-		p += read_bytes;  
-	}  
-  
-	if (count != NULL)  
-	{  
-		*count = size - left_bytes;  
-	}  
-  
-	return ret_code;  
-}  
-</code></pre>
-
-<p><strong>2.tcprecvdata_nb_ex</strong></p>
-
-<pre><code>int tcprecvdata_nb_ex(int sock, void *data, const int size, \  
-		const int timeout, int *count)  
-{  
-	int left_bytes;  
-	int read_bytes;  
-	int res;  
-	int ret_code;  
-	unsigned char* p;  
-#ifdef USE_SELECT  
-	fd_set read_set;  
-	struct timeval t;  
-#else  
-	struct pollfd pollfds;  
-#endif  
-  
-#ifdef USE_SELECT  
-	FD_ZERO(&amp;read_set);  
-	FD_SET(sock, &amp;read_set);  
-#else  
-	pollfds.fd = sock;  
-	pollfds.events = POLLIN;  
-#endif  
-  
-	read_bytes = 0;  
-	ret_code = 0;  
-	p = (unsigned char*)data;  
-	left_bytes = size;  
-	while (left_bytes &gt; 0)  
-	{  
-		read_bytes = recv(sock, p, left_bytes, 0);  
-		if (read_bytes &gt; 0)  
-		{  
-			left_bytes -= read_bytes;  
-			p += read_bytes;  
-			continue;  
-		}  
-  
-		if (read_bytes &lt; 0)  
-		{  
-  
-			if (!(errno == EAGAIN || errno == EWOULDBLOCK))  
-			{  
-				ret_code = errno != 0 ? errno : EINTR;  
-				break;  
-			}  
-		}  
-		else  
-		{  
-			ret_code = ENOTCONN;  
-			break;  
-		}  
-  
-#ifdef USE_SELECT  
-		if (timeout &lt;= 0)  
-		{  
-			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
-		}  
-		else  
-		{  
-			t.tv_usec = 0;  
-			t.tv_sec = timeout;  
-			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
-		}  
-#else  
-		res = poll(&amp;pollfds, 1, 1000 * timeout);  
-		if (pollfds.revents &amp; POLLHUP)  
-		{  
-			ret_code = ENOTCONN;  
-			break;  
-		}  
-#endif  
-  
-		if (res &lt; 0)  
-		{  
-			ret_code = errno != 0 ? errno : EINTR;  
-			break;  
-		}  
-		else if (res == 0)  
-		{  
-			ret_code = ETIMEDOUT;  
-			break;  
-		}  
-	}  
-  
-	if (count != NULL)  
-	{  
-		*count = size - left_bytes;  
-	}  
-  
-	return ret_code;  
-}  
-</code></pre>
-
-<p>乍一眼看上去，这两个不是一样吗？仔细看下就会发现区别所在：nonblock版本在循环里把recv操作放在了select/poll之前，而block版本在循环里把recv操作放在了select/poll之后。其他地方几乎都是一模一样的。</p>
-
-<p>其实，这两个函数处理的socket在调用他们之前，都已经被设置为nonblock了，这是一个前提条件。也就是说，我们这两个函数是对一个nonblock的socket在细分为block和nonblock，有点拗口，既然这个socket都已经是nonblock的了，为什么这里还会有block和nonblock的区别呢?</p>
-
-<p>他们的区别在于，tcprecvdata_nb_ex会调用select/poll从而阻塞的唯一场合就是在一个recv返回EAGAIN错误或 EWOULDBLOCK时，而tcprecvdata_nb在每一次recv调用钱都会调用可能引起阻塞的select/poll。</p>
-
-<p>在这两个函数中学到了一个技巧，该技巧与这两个函数的区别无关。就是如何在一个nonblock的socket连接中获取希望获取的字节数。由于socket是nonblock的，调用recv马上返回，如果出错且错误是EAGAIN或EWOULDBLOCK，那么我们希望能再重试一下。但如果只是用一个while循环来主动一遍一遍的重试的话，超时该如何处理呢？其实这才是这两个函数中用到select/poll的真正意义所在。即，在一个非阻塞的套接字连接里，达到阻塞接收指定大小的数据的效果，但同时又有超时机制来保证并不会真正的阻塞。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/12/04/155.html">linux下获取本地ip的几种方法</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-12-04" class="post-time">
-        2013-12-04
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <h2 id="1-调用getifaddrs">1.调用getifaddrs</h2>
-
-<blockquote>
-<p>The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3.  Support of address families other than IPv4 is available only on kernels that support netlink.</p>
-</blockquote>
-
-e>
-
-<h2 id="2-调用ioctl">2.调用ioctl</h2>
-
-<pre><code>int getlocaladdrs(char ip_addrs[][IP_ADDRESS_SIZE], \  
-	const int max_count, int *count)  
-{  
-	int s;  
-	struct ifconf ifconf;  
-	struct ifreq ifr[32];  
-	int if_count;  
-	int i;  
-	int result;  
-  
-	*count = 0;  
-	s = socket(AF_INET, SOCK_STREAM, 0);  
-	if (s &lt; 0)  
-	{  
-		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-			&quot;socket create fail, errno: %d, error info: %s&quot;, \  
-			__LINE__, errno, STRERROR(errno));  
-		return errno != 0 ? errno : EMFILE;  
-	}  
-  
-	ifconf.ifc_buf = (char *) ifr;  
-	ifconf.ifc_len = sizeof(ifr);  
-	if (ioctl(s, SIOCGIFCONF, &amp;ifconf) &lt; 0)  
-	{  
-		result = errno != 0 ? errno : EMFILE;  
-		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-			&quot;call ioctl fail, errno: %d, error info: %s&quot;, \  
-			__LINE__, result, STRERROR(result));  
- 		close(s);  
-		return result;  
-	}  
-  
-	if_count = ifconf.ifc_len / sizeof(ifr[0]);  
-	if (max_count &lt; if_count)  
-	{  
-		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-			&quot;max_count: %d &lt; iterface count: %d&quot;, \  
-			__LINE__, max_count, if_count);  
- 		close(s);  
-		return ENOSPC;  
-	}  
-  
-	for (i = 0; i &lt; if_count; i++)  
-	{  
-		struct sockaddr_in *s_in;  
-    		s_in = (struct sockaddr_in *) &amp;ifr[i].ifr_addr;  
-    		if (!inet_ntop(AF_INET, &amp;s_in-&gt;sin_addr, \  
-			ip_addrs[*count], IP_ADDRESS_SIZE))  
-		{  
-			result = errno != 0 ? errno : EMFILE;  
-			logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-				&quot;call inet_ntop fail, &quot; \  
-				&quot;errno: %d, error info: %s&quot;, \  
-				__LINE__, result, STRERROR(result));  
- 			close(s);  
-			return result;  
-    		}  
-		(*count)++;  
-	}  
-  
-	close(s);  
-	return *count &gt; 0 ? 0 : ENOENT;  
-}  
-</code></pre>
-
-<h2 id="3-判断一个ip是否是本地ip的几种方法">3.判断一个ip是否是本地ip的几种方法：</h2>
-
-<p>（1）用该ip和指定一个端口号，执行bind操作，成功则说明是本地IP，否则不是。</p>
-
-<p>（2）上一种方法的问题在于，如果指定的端口被占用了，那么及时是本地Ip，bind也会出错。可以做如下修改：bind时指定0端口，让系统给分配一个可用的端口。</p>
-
-<p>（3）先用上面提到的获取本地Ip的两种方法把本地ip列表获取到，然后看目标ip是否在其中即可。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/12/02/154.html">梦境</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-12-02" class="post-time">
-        2013-12-02
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>很奇怪的一个梦。</p>
-
-<p>开始我似乎在一个黑暗的监狱里，浑身发抖，抱着膝盖蜷在墙角，像一条瑟瑟发抖的狗。忽然一道月光照下来，我慢慢站起来，展开双臂，发现臂下连着一双乌黑的翅膀。迎着月光，纵身一跃，化身为蝙蝠侠，滑翔在城市的夜空。滑翔了几分钟之后，猛然振翅向更高更亮处飞去，突然发现自己已经不是蝙蝠侠了，这次变成了阿凡达。</p>
-
-<p>梦是什么时候醒的不知道了，这段时间，特别是午休时，经常从噩梦中惊醒，或是在噩梦中挣扎着想醒来却动弹不得。能做一下美梦，挺好的，而且梦里几个镜头的衔接简直太漂亮了，闭上眼睛依然能有强烈的画面感在脑中回想。</p>
-
-<p>其实，原因很简单，就是近来经常看一些极限运动，特别是穿滑翔衣从直升机或山顶纵身而下的视频。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/12/01/153.html">strider教你巧记五度圈</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-12-01" class="post-time">
-        2013-12-01
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>五度圈在乐理中有很重要的地位，在布鲁斯口琴而言，最直接的用处就是确定不同把位之间调性的转换关系。在这篇文章里不会设计五度圈的来历、作用，仅仅是教您如何牢固的记忆五度圈，这样可以在调性转换的时候直接用到。</p>
-
-<p>如果你已经能够很顺利的将五度圈画下来，不管是通过什么方法，哪怕是死记硬背来的，这篇文章就不适合您。</p>
-
-<p>我假设您已经知道十二平均律是怎么回事，其实，只需要知道3,4和7,1之间是半音，其他各音之间是全音就可以了。一个八度内的音程被分成了12个半音，所以称为十二平均律。</p>
-
-<p>我们来看看五度圈是个什么样子：</p>
-
-<p><img src="/img/wuduquan-1.jpg" alt="wuduquan-1.jpg" /></p>
-
-<p>我们知道，那些带有升降符号的半音都有几种表示方法，这里统一用如图所示的记法，即以降号为主。</p>
-
-<p>想不通过死记硬背来画出这个圈，有三种方法，下面将一一道来。唯一需要你牢记的就是，五度圈上每相邻的两个音之间间隔了7个半音。没错，你只需要记住7这个数字就行了。</p>
-
-<p>第一种方法：</p>
-
-<p>我们把十二平均律的十二个记号用数字1到12一一对应，即</p>
-
-<ul>
-<li>C      1<br /></li>
-<li>Db     2<br /></li>
-<li>D  3<br /></li>
-<li>Eb     4<br /></li>
-<li>E  5<br /></li>
-<li>F  6<br /></li>
-<li>Gb     7<br /></li>
-<li>G  8<br /></li>
-<li>Ab     9<br /></li>
-<li>A  10<br /></li>
-<li>Bb     11<br /></li>
-<li>B  12<br />
-<br /></li>
-</ul>
-
-<p>以C为起点，他在五度圈上的下一个音是这么算出来的：1+7x1=8,由十二平均律的顺序，第8个音是G（最简单的是直接查上表），所以C的下一个音就是G。</p>
-
-<p>C之后的第二个音，即G后面的一个音：1+7x2=15,15除以12，余3。由十二平均律，第3个音是D，所以G后的音是D。</p>
-
-<p>依次类推：</p>
-
-<p>1+7x3=22,22除以12，余10。由十二平均律，紧接着是A。<br />
-1+7x4=29,29除以12，余5，即E。<br />
-1+7x5=36,26除以12，余0，由于上面标示12平均律的范围是1到12，不包括0，所以把0按12算，即B。<br />
-1+7x6=43,43除以12，余7，即Gb。<br />
-1+7x7=50,50除以12，余2，即Db。<br />
-1+7x8=57,50除以12，余9，即Ab。<br />
-1+7x9=64,64除以12，余4，即Eb。<br />
-1+7x10=71,71除以12，余11，即Bb。<br />
-1+7x11=78，78除以12，余6，即F。</p>
-
-<p>将上面推导出来的音按顺序排列出来，即是五度圈上标注的顺序。大功告成。</p>
-
-<p>第二种方法:</p>
-
-<p>第二种方法来自于晓松老师的网站，链接为：</p>
-
-<p><a href="http://www.soharp.com/index.php/lession/show/id/103。转述如下：">http://www.soharp.com/index.php/lession/show/id/103。转述如下：</a></p>
-
-<blockquote>
-<p>先分析一下上面的标准五度圈，如果把五度圈比作一个钟表盘的话，那么，C在12点的位置；顺时针由F到B，包括七个自然音；由#F到bB，又包括五个变化音，一共十二个音。<br />
-现在我们把F和B连成一条直线&ndash;蓝色点划线&ndash;我们姑且把它称作音区分隔线（乐理上没这叫法，别当真，只是为了方便说明问题），右上绿色部分是自然音区，左下红色部分是变化音区，如下图：<br />
-<img src="/img/wuduquan-2.jpg" alt="wuduquan-2.jpg" /><br />
-单独把自然音&mdash;-绿色部分提出来，如下图：<br />
-<img src="/img/wuduquan-3.jpg" alt="wuduquan-3.jpg" /><br />
- 貌似非常地杂乱无章啊，NO，是有规律的：<br />
- 首先，CDEFGAB，这个C大调音阶对大家来说，应该是已经烂熟于心了，就按照这个顺序，再加一点小方法一路写下去。方法如下：<br />
-1、确定C的位置，钟表盘的12点位置，顺时针开始，隔一个点写D，再隔一个点写E，再隔着五点钟的那个点写F，然后好像写不下去了，没关系，既然只是 研究自然音区，那么隔个B位置的那个点，直接转上去写F就好了，再隔一个已知的C写上G，再隔已经写出来的D点，写A，最后，隔着已经写的E，把五点钟的 B补上，于是，五度圈自然音部分就写完整了。书写顺序如下图：<br />
-<img src="/img/wuduquan-4.jpg" alt="wuduquan-4.jpg" /><br />
-2、既然自然音区众大神儿们已经归位，那么开始研究一下变化音区的音符都应该是哪几位，如下图：<br />
-<img src="/img/wuduquan-5.jpg" alt="wuduquan-5.jpg" /><br />
-当把自然区的七个音符都写出来的时候，那么，我们用区别于写自然音的另外一种方法，来排列变化区的音符：<br />
-仍然看已经写出来的自然区，从F开始，沿着我们所谓的那个分隔线看到B，再逆时针的看EADG，整个序列应该是 BEADG。<br />
- 那从，从B开始，把BEADG依次从F开始按逆时针顺序（不再像自然音那样隔着点来写了，依次写就OK。）写到变化音区里，如下图：<br />
- <img src="/img/wuduquan-6.jpg" alt="wuduquan-6.jpg" /><br />
-不伦不类啊，这都啥呀，怎么么成了自然音，这里明明应该是变化音的啊，那些升、降记号哪去了？？？<br />
-您别急啊，试着，把这哥五个都添上降记号看看是什么？如下图：<br />
- <img src="/img/wuduquan-7.jpg" alt="wuduquan-7.jpg" /><br />
-关于为什么都添上降记号，我是这样记忆的，因为是逆时针方向书写的BEADG，就写降记号咯，“逆”与“降”在汉字逻辑中还有一定关联性的吧？（您 可以试试，如果顺时针比照自然音部分，顺时针书写变化音部分，再加上升记号（#），也是这几个小东西&mdash;&ndash;如果括号内的话会把您看迷糊的话，请立刻忘 记！）<br />
- 如果再把刚才已经写出来的自然音部分合在一起，一个完全的五度圈就热乎乎、香喷喷滴新鲜出炉了：<br />
- <img src="/img/wuduquan-8.jpg" alt="wuduquan-8.jpg" /><br />
-吼吼，现在是不是已经能够默画下五度圈了呢？<br />
-其实变化音用降记号写出来，用升记号表示不难了吧、bB=#A   bE=#D    bA=#G    bD=#C    bG=#F      &mdash;&mdash;&mdash;&mdash;-这您是知道的！<br />
-PS:来个动画，每五秒钟翻一页，共十一页。<br />
- <img src="/img/wuduquan-9.gif" alt="wuduquan-9.gif" /></p>
-</blockquote>
-
-<p>第三种方法：</p>
-
-<p>第三种方法和第一种方法都是strider原创，如有雷同，纯属巧合。</p>
-
-<p>（1）首先，画一个圆，将其12等分，如下图所示：</p>
-
-<p><img src="/img/wuduquan-10.jpg" alt="wuduquan-10.jpg" /></p>
-
-<p>（2）将其按时钟终顺序标注次序，注意，该次序仅为画图过程的中间产物，与最终五度圈的顺序无关。如下图所示，仅仅是画一个时钟，很简单：</p>
-
-<p><img src="/img/wuduquan-11.jpg" alt="wuduquan-11.jpg" /></p>
-
-<p>（3）把12点标为第一个点（注意，从现在起，在时钟上标注的数字即为最终五度圈上各音的次序），12点与6点在一条直径上，连接12点与6点左边的一个点，将其标为2，以2为起点，连接其对应直径另一端的相邻的那个点，标为3：</p>
-
-<p><img src="/img/wuduquan-12.jpg" alt="wuduquan-12.jpg" /></p>
-
-<p>（4）以3为起点，连接其对应直径的另一端的旁边相邻的那个点，标为4点，以4为起点，连接其对应直径的另一端的旁边相邻的那个点，标为5点：</p>
-
-<p><img src="/img/wuduquan-13.jpg" alt="wuduquan-13.jpg" /></p>
-
-<p>（5）以5为起点，连接其对应直径的另一端的旁边相邻的那个点，标为6点，以6为起点，连接其对应直径的另一端的旁边相邻的那个点，标为7点：</p>
-
-<p><img src="/img/wuduquan-14.jpg" alt="wuduquan-14.jpg" /></p>
-
-<p>（6）以7为起点，连接其对应直径的另一端的旁边相邻的那个点，标为8点，以8为起点，连接其对应直径的另一端的旁边相邻的那个点，标为9点：</p>
-
-<p><img src="/img/wuduquan-15.jpg" alt="wuduquan-15.jpg" /></p>
-
-<p>（4）以9为起点，连接其对应直径的另一端的旁边相邻的那个点，标为10点，以10为起点，连接其对应直径的另一端的旁边相邻的那个点，标为11点：</p>
-
-<p><img src="/img/wuduquan-16.jpg" alt="wuduquan-16.jpg" /></p>
-
-<p>（4）以11为起点，连接其对应直径的另一端的旁边相邻的那个点，标为12点，至此，1到12全部标记完成。</p>
-
-<p><img src="/img/wuduquan-17.jpg" alt="wuduquan-17.jpg" /></p>
-
-<p>按上面那张十二平均律对应顺序的表格，将1到12对应的音按顺序标上去，就完成了五度圈的绘制：</p>
-
-<p><img src="/img/wuduquan-18.jpg" alt="wuduquan-18.jpg" /></p>
-
-<p>以上介绍了三种推导五度圈的方法，随便掌握一种即可让你在忘记五度圈的情况下，从头画出完整的一份。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/11/16/134.html">关于布鲁斯口琴</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-11-16" class="post-time">
-        2013-11-16
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>大概四年前迷上了布鲁斯口琴这个小玩意，一发不可收拾，从最初的Huang103，到horhner,suzuki等，手上的琴也有了几把；从最最初钟情于一些爱尔兰民谣和动漫音乐，到后来乃至现在热爱布鲁斯音乐。这几年身边发生了很多事情，但每次只要拿起这大概10公分长的小乐器，就会暂时忘掉各种烦恼。曾经有一段时间迷恋到每天看视频网站必须看看Bluesimon，张晓松等大神，嗜血安尔乐、晓月等后起之秀有没有更新，每天翻墙到Youtube上看看关注的各路大神的最新动态，不亦乐乎。</p>
-
-<p>喜欢一个乐器一般是从喜欢某首它演奏的曲子开始的，在国内，很多布鲁斯口琴爱好者都是从《星之所在》、《天空之城》、《爱尔兰画眉》、《素敌》等曲子开始的，我也一样。</p>
-
-<p>但你总会开始接触到布鲁斯风格，让布鲁斯口琴焕发生命光彩的风格。其实布鲁斯口琴最初并不是用来演奏布鲁斯音乐的，而是欧洲的一些民谣。但随着布鲁斯口琴传入到了美国，开始发生了一些变化。那时的美国，是牛仔的美国。口琴的轻便让它可以随时放在口袋里，那时候它仍然不是布鲁斯的。直到有一天，美国的黑人，赋予了口琴第二次生命。压音、超吹、把位变换等等，他们不断的压榨着它的性能，用它尽情的演奏布鲁斯音乐。</p>
-
-<p>每一种乐器，都有自己的历史和文化。学习布鲁斯口琴，理解布布鲁斯音乐，是一道迈不过去的坎。<br />
-布鲁斯音乐是一种很神奇的音乐。刚接触到时，觉得很难听，太喧闹，这哪里是音乐。但慢慢的，你会随着它的节奏开始晃动你的脑袋或身体，感受它的时而轻快，时而沉重，时而悲泣，时而低吟。闭上眼睛，仿佛你已置身密西西比，置身芝加哥。</p>
-
-<p>有一部电影叫《蓝调传奇》，用平铺直叙的方式讲述了几位大师们的一生。那样的年代，充斥着种族，暴力。生活太多苦难。Little Walter拿着口琴说，它才是我的妈妈，然后演出了《My Babe》。Chuck Berry一面接受滚石乐队朝圣般的膜拜，一面接受警察的痛打。电影的最后，没有辉煌，没有灯光。Little Walter死在了公寓里，伊塔·詹姆斯望着切斯的背影，唱出了《I’d Rather Go Blind》，肆意冲击你的泪腺。</p>
-
-<p>无论什么年代，生活中总是会有痛苦。越长大越明白，痛苦是无法战胜的。你只有经历它，活下去。口琴见证着，音乐见证着。</p>
-
-<p>很久没有更新关于口琴的文章了。事实上，通过搜索引擎找到这个小小的blog的访客，绝大部分是与口琴相关。很惭愧，没有写出有多少价值的文章。曾经做的一个翻译，也仅仅是为了加深自己的理解，而非供认阅读。有的朋友留言探讨翻译中的一些问题，有的朋友问我怎么不更新，希望steve baker的教程能继续。这些留言中有些还没来得及回，有一次却因为我不堪spam骚扰，清空了所有留言。这些朋友的留言再也找不回来了。想到这里，更是非常惭愧和抱歉。</p>
-
-<p>以后会继续写一些口琴方面的文章，虽然我技术很菜，但如果能帮到一点其他人，也就有它的价值。再加上现在手上有多余的硬件，再次讲口琴的内部构造时，可能会拿起螺丝刀拆开用图片说话。</p>
-
-<p>附上《蓝调传奇》片段：<br />
-<embed src="http://player.youku.com/player.php/sid/XMzExNTU1MjA4/v.swf" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash" /></p>
+      <p>七月底，终于和婷在婚假里完成了“蓄谋”已久的青海湖之行，骑行路上花了五天，其中骑行四天，休息一天，全部行程约360公里，这里简单的记录一下流水账。</p>
+
+<h3 id="第一天行程-西海镇-江西沟">第一天行程：西海镇-&gt;江西沟</h3>
+
+<p>在前一天下午到达西海镇，并将自行车租好之后，7月24号上午10点半，我们就正式从西海镇出发了。之所以这么晚才出发，是听说青海早晚温差大，早上起来早了会很冷。事后证明，这个出发时间是错误的，还是尽量早一点比较好。</p>
+
+<p>第一天上午在路上是很兴奋的，到处是Windows经典桌面般的蓝天白云。路上骑车的人，或独自前行，或三五成群。耳边不断响起的，有鸟鸣，有风声，还有骑友们随车携带的小音箱里飘出来的民谣和彼此的加油打气声。</p>
+
+<p>下午5点多时，到达了离湖不远的三叉口。在此处结识了两位在校大学生，于是结伴而行，目的地同是江西沟。</p>
+
+<p>六点多，到达二郎剑，此时距离江西沟还有26公里，短暂的休息之后继续。而这，又是一个错误的决定。</p>
+
+<p>本来青海湖周边应该是9点多才天黑的，这也是我们选择继续前进的原因。然而，随着天色渐暗，忽然就下起大雨来了。此时，我们四人早已又分散成两拨，我和婷在后面。雨中天黑的格外快，气温也骤降，虽然穿上了雨衣，冰冷的雨水仍不断渗到衣服和鞋里。婷渐渐体力不支，我们不得不骑一会就下来休息几分钟。</p>
+
+<p>很快天就完全黑了，我开始害怕起来，我们没带电灯。路上机动车辆少了许多，此时特别希望车从身后来，因为借着车灯，我们能看清一点路，惧怕对面的来车，因为对面的灯照过来就刺的我们什么都看不见。</p>
+
+<p>我第一次觉得骑车这么难熬。到江西沟的路是一条长长的上坡路，给自己设置的心理暗示作用的目标一个一个被超过，真正的目的地看上去还遥遥无期。</p>
+
+<p>身体还在僵持，意识逐渐涣散。忽然一辆车从对面开过来，在我们身后掉头又在前方停了下来。原来，那两位大学生不放心我们，在江西沟找了辆车沿路找过来了。</p>
+
+<p>其实他们的情况也好不了多少，大雨来临的时候，他们还在我们前方不远，这关头，他们其中一个车胎爆了。在大雨里面补胎困难，好在他们在江西沟有熟悉的客栈老板，于是打电话叫老板开车把他们接过去了。吃了点热饭热菜之后，他们就又原来返回来搜寻我们俩。</p>
+
+<p>其实这个时候，我们俩距离江西沟已经非常近了。他们在前面带路，我和婷仍旧在车上骑到了江西沟。剩余吃饭补充能量就不表了。</p>
+
+<h3 id="第二天行程-江西沟-石乃亥">第二天行程：江西沟-&gt;石乃亥</h3>
+
+<p>第二天上午，江西沟的雨一直在下。不想在雨中骑车了，我们四个就借机睡到了中午。等雨停后，下午一点左右，我们才出发。在路上仍然是他们俩一路，而我和婷一路，交替前行。</p>
+
+<p>下午三点左右到达了黑马河，而天气不是非常理想，所以四人讨论了一番，决定放弃去茶卡盐湖的计划，继续前往石乃亥。</p>
+
+<p>环湖西路是环湖全程最近接湖边的路段，沿途风景绝美，在穿过一片阵雨之后，我和婷在湖边逗留了一个多小时，拍照、玩水。大海一般的湖，让人不忍离去。</p>
+
+<p>当一位藏民知道我们的目的是石乃亥时，指了指前方黑压压逐渐聚拢的乌云，说，还有25公里，你们要快点了。我们应该做的正确决定，是就在附近藏民的帐篷里住下，而我们又选择了继续前进。</p>
+
+<p>此时，天空被分成了色彩分明的两部分，我们的身后艳阳高照，我们的前方，乌云越来越厚。视线所及，一条笔直的公路竟变成了墨绿色，壮美到无法言语。</p>
+
+<p>我们骑的很快，但雨还是来了，比昨天更大的雨，夹着狂风。</p>
+
+<p>眼镜早已被雨水模糊了，还不断打到眼睛里，眼睛已经几乎睁不开了。我朝身后的婷喊道，“不要往远处看，就盯着路边眼前的白线！”</p>
+
+<p>在爬过一个陡峭的山口时，头顶一片巨大的经幡在风雨中猎猎作响。此情此景，我忍不住停了下来，闭上眼睛，感受这充斥四周的巨大声响。这大概就是敬畏吧。</p>
+
+<p>在下这个山口时，路过一群藏族女孩子，看我们在雨中的狼狈样子，她们笑出了声，大喊加油，这时心里忽然安定了下来。</p>
+
+<p>最终，大概晚上九点，我们赶到了石乃亥，与另外两位回合。才发现，我们的眼睛都已被雨水打的通红。</p>
+
+<h3 id="第三天行程-休息">第三天行程：休息</h3>
+
+<p>经过连续两天的暴雨，我和婷商量，第三天就在石乃亥休息一天，恢复一下体力并把衣物等都烘干。而那两位学生决定继续前进，于是我们就在石乃亥别过。目送他们俩离开时，心想这一别不知以后能否再见面了。他们都很年轻，活力四射，祝福他们。</p>
+
+<h3 id="第四天行程-石乃亥-刚察">第四天行程：石乃亥-&gt;刚察</h3>
+
+<p>第四天早上，我们九点整出发，这一天大概要骑82公里。</p>
+
+<p>这一天的大部分时候，都骑得非常舒服，天气也非常给力。直到距离刚察还有不到10公里的时候，天气又开始变了。</p>
+
+<p>天空又被割裂成光明和黑暗两部分，而我们就正在向着黑暗前进，真是明知前有雨，偏向雨中行。</p>
+
+<p>经过半天的酝酿，老天爷终于爆发了。一股暴风猛然袭来，在我前方不远的婷，竟然直接被连人带车刮翻在地，而我也无法继续保持平衡，只好下车推行。婷尝试再次上车，又被风掀倒，而旁边又不断有大货车路过，非常危险。我们当机立断，就地停了下来，穿上雨衣蹲在公路旁的坡道下，这减缓了大部分的风力。没一会，冰雹就来了，砸在头盔上叮当作响。手机显示，当时气温只有9度。</p>
+
+<p>我们在路边蹲了差不多一个小时后，冰雹停了，风也小些了。于是上车继续，很快就到了刚察县内。</p>
+
+<h3 id="第五天行程-刚察-西海镇">第五天行程：刚察-&gt;西海镇</h3>
+
+<p>这一天的行程可以分成一两部分，前一部分就是不断的爬坡，偶尔的下坡之后就有一个更长的上坡在前面等着，爬到让人绝望。</p>
+
+<p>但是，当下半部分到来时，你就会觉得，前面所有的苦和累都是值得的。一个长达20多公里的大下坡，直接到达西海镇。</p>
+
+<h3 id="总结">总结</h3>
+
+<p>青海的高原风景非常壮美，不是城市景区的那种秀丽风光能比拟的。但是，如果你对骑行本身不是很感兴趣的话，那也会由于审美疲劳而感到无聊。而如果很喜欢骑行的话，那环青海湖这条路线简直就是天堂了。</p>
+
+<p>高原天气变化太快，我们这次出行中途遇到好几次意料之外的状况，所以出行前还是尽量做好准备。在出行过程中，尽量早点出发，不至于出现状况时发现自己处于前不着村后不着店的黑夜里。</p>
+
+<p>最后，曾经骑行作为三大俗被很多人笑话。但是经过环青海湖之后，对于这种言论我只会报以轻蔑的一笑了。连青海湖这么好的路况，短短五天（实际骑行只有四天）的路程，就让我体会到骑行真是对身体和意志的双重考验，而与那些穿行在川藏线、滇藏线、新疆等地的真正骑行爱好者相比，我遇到的这些困难不值一提。</p>
+
+<p>向他们表示敬意。</p>
     </div>
     
   </div>
@@ -1754,6 +1296,2946 @@ PS:来个动画，每五秒钟翻一页，共十一页。<br />
 
       
 
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
       
       
       <li><a href="/page/20/">»</a></li>
@@ -1761,7 +4243,7 @@ PS:来个动画，每五秒钟翻一页，共十一页。<br />
 
       
       
-      <li><a href="/page/36/">»»</a></li>
+      <li><a href="/page/176/">»»</a></li>
       
 
       </ul>

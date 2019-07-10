@@ -297,12 +297,12 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/2014/11/11/running-report-1.html">跑步阶段性总结（一）</a>
+      <a class="post-link" href="/post/composite-ring-of-swift/">openstack swift中的composite ring</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2014-11-11" class="post-time">
-        2014-11-11
+      <time datetime="2018-10-23" class="post-time">
+        2018-10-23
       </time>
       
       
@@ -314,662 +314,17 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>进入11月份，广州也开始降温了，白天都开始穿长裤衬衣了。所以跑步前还得去公司洗手间换上短袖短裤，这一个新的动作的引入，导致我匆匆出门时忘了带上导汗带。不过也没关系，我不是已经很久跑步时不戴MP3了么。</p>
+      <p>openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：<a href="https://docs.openstack.org/swift/latest/overview_global_cluster.html">Global Clusters</a>。</p>
 
-<p>还是在天河公园绕圈，这条线路现在我已经太熟了。知乎上有个问题，<a href="http://www.zhihu.com/question/25947722">叫你跑步的时候在想什么？</a>里面有各种令人忍俊不禁或是会心一笑的答案。今天，我大概想了这么几件事：</p>
+<p>这个功能乍看很实用，但是实际上很鸡肋，因为 swift 内部 ring 构建算法并不能保证各副本会均匀的分布在各 region 中。例如，如果你想通过两个 region 实现真正的跨机房备份的话是不行的，因为一个对象的所有副本可能都会在某一个机房的设备上，而另一个机房里一份副本都没有。如果连基本的均衡都做不到，之前的 global clusters 其实并无多大实际意义。</p>
 
-<ol>
-<li>今天能不能破一万米呢？</li>
-<li>今天还是不按圈计了，改成按每千米来计吧。<br /></li>
-<li>天冷了，跑步的人果然少了。看来能坚持的人也不是很多嘛！<br /></li>
-<li>到一千米了，三圈能刚好一万米吧？<br /></li>
-<li>又碰到前几天碰到的也来跑步的老外了。老外长得高，动作也轻盈舒展，不错。<br /></li>
-<li>leetcode上的那道题是怎么回事?<br /></li>
-<li>不好，开始下雨了。希望别下太大。<br /></li>
-<li>三千米了，这一圈快完了。<br /></li>
-<li>又碰到那个老外了。（我们在反方向绕圈）<br /></li>
-<li>这雨要是变大了还跑步跑了？还是跑吧！<br /></li>
-<li>回忆一下动作要领！<br /></li>
-<li>又碰到那个老外了。<br /></li>
-<li>&hellip;&hellip;(略)&hellip;&hellip;<br /></li>
-<li>终于跑完三圈了，可还没到一万米啊，怎么办？是继续跑一段再回来还是干脆再跑一圈？算了，继续马不停蹄往快餐店跑吧。<br /></li>
-</ol>
+<p>在最新的 swift 2.19.0 版本里，通过一个叫做组合环（compsite ring）的概念，这个情况才得以改善。它的实现方式如下。</p>
 
-<p>在绕着天河公园跑了三圈，出门后继续跑了一小段后，手机APP开始播报，您当前运动距离，10公里。小步停下，看了下统计数据：我用xxGPS跑步10.07公里，耗时01：02：54，平均时速9.61km/h，平均配速06:14。</p>
+<p>一个组合环是由两个或多个普通环组合而成，组合后的环，其副本冗余数量是这些普通环的冗余数量之和。各个普通环是在不同的 region 使用不同的设备独立构建的。</p>
 
-<p>就这样，我有生以来第一次连续跑了一万米。有必要来个阶段性陈述。</p>
+<p>例如，假设想实现一个在A，B两地机房的三份冗余的存储，而且A机房作为主机房希望每个对象都在其上冗余两份，B机房作为次机房则只冗余一份。那么就在分别构建针对 A 和 B 的两个哈希环 RingA 和 RingB, RingA 在创建时指定其冗余份数为2，RingB 在创建时指定其冗余份数为1。在各自添加完设备并生成 ring 文件后，使用 swift 2.19.0 里新增的一个工具 swift-ring-composer，来将 RingA 和 RingB 组合成一个新的环，然后将这个新的环作为最终的环分发到各设备中去使用。</p>
 
-<p>很遗憾，已经不记得今年开始跑步具体的日期了。但我第一篇关于跑步的博客<a href="http://pureage.info/2014/08/19/start-runngin-again.html">重新开始跑步</a>是写于2014年8月19号。那么，大概快三个月了。</p>
-
-<p>应该说，这三个月的进步是巨大的。即使是大学时曾有近一年都在坚持跑步，但从没跑过一万米，每次大概3000米就差不多了。而且，即使今天破万了，我也丝毫没有“坚持”的感觉。我想，这应该归功于科学的跑步姿势和认真的心态吧，而且后者的比重更大。以前跑步，其实都是在跟自己赌气，“我就要坚持每天跑。”但跑的过程，实在是难受。而现在，我已经做好了长期跑步的心理准备，所以反而能够认真的去对待跑步这件事情本身，例如，看一些跑步的经典著作，订阅一些跑步相关的专栏，逛一逛跑步的论坛，关注一下知乎上相关的热门话题，也有了自己心仪但还舍不得买的装备。不知不觉，跑步带来的享受由跑完后的如释重负，变成了跑步过程中的所闻所见所思，如果没有所闻所见所思，那么这享受便是来自身体自然的表达。</p>
-
-<p>一万米到了，距离我的第一次马拉松也不会太远了。考虑到广州马拉松对于初次参加马拉松比赛的选手，只允许跑半马，我想，明年的马拉松比赛怎么也能去小试一下牛刀了。当然，能不能抽到签是另一回事了。但这丝毫不重要。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/10/17/nginx-configure-of-define-and-have.html">Nginx如何控制某个特性是否打开</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-10-17" class="post-time">
-        2014-10-17
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
-
-<p>我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。</p>
-
-<p>Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.</p>
-
-<p>它们的内容极其简单，分别如下：
-1.auto/have:</p>
-
-<pre><code># Copyright (C) Igor Sysoev
-# Copyright (C) Nginx, Inc.  
-  
-  
-cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
-  
-#ifndef $have  
-#define $have 1  
-#endif  
-  
-END  
-</code></pre>
-
-<p>2.auto/define</p>
-
-<pre><code># Copyright (C) Igor Sysoev  
-# Copyright (C) Nginx, Inc.  
-  
-  
-cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
-  
-#ifndef $have  
-#define $have $value  
-#endif  
-  
-END  
-</code></pre>
-
-<p>可见，两个脚本只有一处不同，是将have变量定义成value变量还是将其定义为1，所以后面仅仅以have脚本为例进行说明。</p>
-
-<p>have脚本的用法：</p>
-
-<pre><code>have=XXXX  . auto/have  
-</code></pre>
-
-<p>就会在$NGX_AUTO_CONFIG_H所代表的文件里（默认为objs/ngx_auto_config.h)追加如下内容：</p>
-
-<pre><code>#ifndef XXXX  
-#define XXXX 1  
-#endif  
-</code></pre>
-
-<p>这样，就可以用XXXX宏是否定义来控制编译的过程。</p>
-
-<p>下面以ngx_memalign这个Nginx内部接口为例来进行详细的说明。<br />
-ngx_memalign是Nginx里最基本的接口之一，经常会被调用。从接口的名字就可以看出，这个接口是用来处理内存分配和对齐的。其定义在ngx_alloc.h中：</p>
-
-<pre><code>#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
-void *ngx_memalign(size_t alignment, size_t size, ngx_log_t *log); 
-#else 
-#define ngx_memalign(alignment, size, log) ngx_alloc(size, log) 
-#endif  
-</code></pre>
-
-<p>上面代码的意图是，如果定义了NGX_HAVE_POSIX_MEMALIGN宏或者NGX_HAVE_MEMALIGN宏，则声明函数ngx_memalign，否则，简单的对ngx_alloc进行一下封装（ngx_alloc是对malloc的简单封装）。</p>
-
-<p>我们在来看函数ngx_memalign在ngx_alloc.c中的定义：</p>
-
-<pre><code>#if (NGX_HAVE_POSIX_MEMALIGN)  
-  
-void *  
-ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)  
-{  
-    void *p;  
-    int err;  
-  
-    err = posix_memalign(&amp;p, alignment, size);  
-  
-    if (err) {  
-        ngx_log_error(NGX_LOG_EMERG, log, err,  
-                      &quot;posix_memalign(%uz, %uz) failed&quot;, alignment, size);  
-        p = NULL;  
-    }  
-  
-    ngx_log_debug3(NGX_LOG_DEBUG_ALLOC, log, 0,  
-                   &quot;posix_memalign: %p:%uz @%uz&quot;, p, size, alignment);  
-  
-    return p;  
-}  
-  
-#elif (NGX_HAVE_MEMALIGN)  
-  
-void *  
-ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)  
-{  
-    void *p;  
-  
-    p = memalign(alignment, size);  
-    if (p == NULL) {  
-        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,  
-                      &quot;memalign(%uz, %uz) failed&quot;, alignment, size);  
-    }  
-  
-    ngx_log_debug3(NGX_LOG_DEBUG_ALLOC, log, 0,  
-                   &quot;memalign: %p:%uz @%uz&quot;, p, size, alignment);  
-  
-    return p;  
-}  
-  
-#endif  
-</code></pre>
-
-<p>上面代码的意图为，如果定义了NGX_HAVE_POSIX_MEMALIGN，那么ngx_memalign就是对posix_memalign的简单封装，否则，如果定义了NGX_HAVE_MEMALIGN，则ngx_memalign是对memalign的简单封装。</p>
-
-<p>那么NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN又是什么时候被定义呢？</p>
-
-<p>过程如下：<br />
-在auto/unix脚本，列出需要检查的接口，这里就是memalign和posix_memalign了，交给auto/feature脚本来逐一处理，auto/feature脚本会对针对每一个带检查的接口，生成一个最基本的临时c源文件，该源文件会调用该接口。feature脚本然后对该源文件进行编译并判断最终生成的目标文件的可执行性。用这种动态检测的方法来判断该接口在当前系统中是否支持。</p>
-
-<p>如果feature脚本验证出posix_memalign和memalign接口在当前系统中都可用后，则会逐一调用have脚本：</p>
-
-<pre><code>have=$ngx_have_feature . auto/have  
-</code></pre>
-
-<p>这里，变量ngx_have_feature即是NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN。</p>
-
-<p>最终，have在configure、auto/unix、auto/feature、auto/have各个脚本的通力合作下，在objs/ngx_auto_config.h中就有了对NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN的定义，进而影响到ngx_memalign接口的实现。</p>
-
-<p>让我们从需求出发，将接口ngx_memalign的需求描述一遍：<br />
-1. 如果系统支持posix_memalign，则ngx_memalign是对posix_memalign的简单封装。<br />
-2. 如果系统不支持posix_memalign，但支持memalign，则ngx_memalign是对memalign的简单封装。<br />
-3. 如果系统竟然对posix_memalign和memalign都不支持，则ngx_memalign是对malloc的简单封装。</p>
-
-<p>实现需求很简单，但如何实现的优雅，则是另一回事。Nginx向我们展示了，一个在C上尽力把服务器性能做到极致的项目，是如何在脚本上也尽最大努力做得漂亮。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/09/28/running-is-a-happy-sport.html">跑步是一件快乐的事情</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-09-28" class="post-time">
-        2014-09-28
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>跑步是一件快乐的事情，这似乎是无庸置疑的，不然无法解释每年各地举办的马拉松比赛都爆满甚至要用抽签来决定参赛名单的现象。如果跑步不是一个快乐的事情，这些人怎么能忍受几个小时的枯燥乏味呢，更别说身体上的煎熬。</p>
-
-<p>但对我来说，跑步真正是一件简单、快乐的事情，是最近才有的。</p>
-
-<p>之前有过一年坚持每天跑步，但那个时候，“成就感”的驱动大于快乐的驱动。跑步已经不仅仅是一项运动了，它似乎变成了一种精神象征，只要我还在跑，那么我就没被打倒。但跑步本身的乐趣却被忽略。</p>
-
-<p>这个转变是由两本书促成的，<a href="http://book.douban.com/subject/3369600/">《当我谈跑步时我谈些什么》</a>和<a href="http://book.douban.com/subject/22993407/">《跑步，该怎么跑？》</a>。</p>
-
-<p>《当》主要讲的是村上春树回忆、分析自己的跑步经历。他是一个取得了很高成就的作家，却也是一个跑者，这让我大吃一惊。不仅如此，他还几十年如一日的保持着简单、规律的生活方式，相比于一些作家或艺术家从毒品、性中寻找灵感，这真是一个充满正能量的故事。我们无法通过模仿他的文笔写出传世的作品，但成为一个跑者，确实有可能的。把跑步变成一种生活方式，不是坚持一个星期一个月，而是几年，几十年，这本身就已经是一个非常励志的故事了。</p>
-
-<p>当思想上接受了把跑步变成自己生活的一部分后，跑步在心里的地位也就变了。跑步不是为了锤炼毅力，不是为了通过跑步获得其他方面的成功。跑步就是跑步。</p>
-
-<p>人类发展至今，任何一个活动、兴趣的背后，都有着极为庞大的知识体系。既然决定了要成为一个跑者，就不能不去了解这些知识。于是，就把《跑步，应该怎么跑》看完了，当然这只是一个开始。</p>
-
-<p>当我开始跑步，并且开始了解跑步这项运动后，跑步就变得轻松愉快了。它不再是一个需要毅力来完成的运动了，在奔跑中倾听自己的脚本声，感受汗珠从毛孔里一点点挣脱出来的，这种感觉棒极了。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/08/25/hiding-302-using-proxy-pass.html">用proxy_intercept_errors和recursive_error_pages代理多次302</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-08-25" class="post-time">
-        2014-08-25
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.</p>
-
-<p>302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。</p>
-
-<p>比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。</p>
-
-<p>上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。</p>
-
-<p>我们来看一个例子，打开一个网易视频播放页面，抓一下包，找到302状态的那个url。例如：</p>
-
-<pre><code>http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre>
-
-<p>我们把它复制到浏览器地址栏中，会发现地址栏迅速的变为了另外一个url，这个Url是不定的，有可能为：</p>
-
-<pre><code>http://14.18.140.83/f6c00af500000000-1408987545-236096587/data6/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre>
-
-<p>用curl工具会更清楚的看到整个过程：</p>
-
-<pre><code>curl -I &quot;http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
-HTTP/1.1 302 Moved Temporarily 
-Server: nginx 
-Date: Mon, 25 Aug 2014 14:49:43 GMT 
-Content-Type: text/html 
-Content-Length: 154 
-Connection: keep-alive 
-NG: CCN-SW-1-5L2 
-X-Mod-Name: GSLB/3.1.0 
-Location: http://119.134.254.9/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-  
-HTTP/1.1 302 Moved Temporarily 
-Server: nginx 
-Date: Mon, 25 Aug 2014 14:49:41 GMT 
-Content-Type: text/html 
-Content-Length: 154 
-Connection: keep-alive 
-X-Mod-Name: Mvod-Server/4.3.3 
-Location: http://119.134.254.7/cc89fdac00000000-1408983581-2095617481/data4/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-NG: CHN-SW-1-3Y1 
-  
-HTTP/1.1 200 OK 
-Server: nginx 
-Date: Mon, 25 Aug 2014 14:49:41 GMT 
-Content-Type: video/mp4 
-Content-Length: 3706468 
-Last-Modified: Mon, 25 Aug 2014 00:23:50 GMT 
-Connection: keep-alive 
-Cache-Control: no-cache 
-ETag: &quot;53fa8216-388e64&quot; 
-NG: CHN-SW-1-3g6 
-X-Mod-Name: Mvod-Server/4.3.3 
-Accept-Ranges: bytes 
-</code></pre>
-
-<p>可以看到，这中间经历了两次302。</p>
-
-<p>先暂时将这个例子放在一边，再来说说另一个重要的术语：proxy.我们通常会戏称，某些领导是302类型的，某些领导是proxy类型的。302类型的领导，一件事情经过他的手，会迅速的转给他人，而proxy类型的领导则会参与到事情中来，甚至把事情全部做完。</p>
-
-<p>回到上面的例子，如果访问一个url中途会有多个302，那如果需要用Nginx设计一个proxy，来隐藏掉中间所有的这些302，该怎么做呢？</p>
-
-<h3 id="1-原始proxy">1.原始Proxy</h3>
-
-<p>我们知道，Nginx本身就是一个优秀的代理服务器。因此，首先我们来架设一个Nginx正向代理，服务器IP为192.168.109.128（我的一个测试虚拟机）。</p>
-
-<p>初始配置简化如下：</p>
-
-<pre><code>server {  
-        listen 80;  
-        location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
-        }  
-  
-        location ~ /proxy-to/([^/]+)(.*) {  
-                proxy_pass http://$1$2$is_args$query_string;  
-  
-        }  
-}  
-</code></pre>
-
-<p>实现的功能是，当使用</p>
-
-<pre><code>http://192.168.109.128/xxxxxx  
-</code></pre>
-
-<p>访问该代理时，会proxy到xxxxxx所代表的真实服务器。</p>
-
-<p>测试结果如下：</p>
-
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
-HTTP/1.1 302 Moved Temporarily 
-Server: nginx/1.4.6 
-Date: Mon, 25 Aug 2014 14:50:54 GMT 
-Content-Type: text/html 
-Content-Length: 154 
-Connection: keep-alive 
-NG: CCN-SW-1-5L2 
-X-Mod-Name: GSLB/3.1.0 
-Location: http://183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-  
-HTTP/1.1 302 Moved Temporarily 
-Server: nginx 
-Date: Mon, 25 Aug 2014 14:50:55 GMT 
-Content-Type: text/html 
-Content-Length: 154 
-Connection: keep-alive 
-X-Mod-Name: Mvod-Server/4.3.3 
-Location: http://183.61.140.20/540966e500000000-1408983655-236096587/data1/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-NG: CHN-ZJ-4-3M4 
-  
-HTTP/1.1 200 OK 
-Server: nginx 
-Date: Mon, 25 Aug 2014 14:50:55 GMT 
-Content-Type: video/mp4 
-Content-Length: 3706468 
-Last-Modified: Mon, 25 Aug 2014 00:31:03 GMT 
-Connection: keep-alive 
-Cache-Control: no-cache 
-ETag: &quot;53fa83c7-388e64&quot; 
-NG: CHN-ZJ-4-3M4 
-X-Mod-Name: Mvod-Server/4.3.3 
-Accept-Ranges: bytes  
-</code></pre>
-
-<p>可见，虽然使用proxy，但过程与原始访问没有什么区别。访问过程为，当访问</p>
-
-<pre><code>http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre>
-
-<p>时，Nginx会将该请求proxy到</p>
-
-<pre><code>http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre>
-
-<p>而后者马上就会返回一个302，所以Nginx作为proxy，将该302传回到客户端，客户端重新发起请求，进而重复之前的多次302.这里说明一个问题，一旦Nginx的proxy的后端返回302后，客户端即与Nginx这个proxy脱离关系了，Nginx无法起到完整的代理的作用。</p>
-
-<h3 id="2-第1次修改">2. 第1次修改</h3>
-
-<p>将配置文件修改为：</p>
-
-<pre><code>server {  
-        listen 80;  
-        location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
-        }  
-  
-        location ~ /proxy-to/([^/]+)(.*) {  
-                proxy_pass http://$1$2$is_args$query_string;  
-                error_page 302 = @error_page_302;  
-  
-        }  
-        location @error_page_302 {  
-                rewrite_by_lua '  
-                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
-                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
-                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
-                ';  
-  
-        }  
-}  
-</code></pre>
-
-<p>与上面的区别在于，使用了一个error_page，目的是当发现proxy的后端返回302时，则用这个302的目的location继续proxy，而不是直接返回给客户端。并且这个逻辑里面包含着递归的意思，一路跟踪302，直到最终返回200的那个地址。测试结果如下：</p>
-
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
-HTTP/1.1 302 Moved Temporarily 
-Server: nginx/1.4.6 
-Date: Mon, 25 Aug 2014 15:01:17 GMT 
-Content-Type: text/html 
-Content-Length: 154 
-Connection: keep-alive 
-NG: CCN-SW-1-5L2 
-X-Mod-Name: GSLB/3.1.0 
-Location: http://183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-  
-HTTP/1.1 302 Moved Temporarily 
-Server: nginx 
-Date: Mon, 25 Aug 2014 15:01:17 GMT 
-Content-Type: text/html 
-Content-Length: 154 
-Connection: keep-alive 
-X-Mod-Name: Mvod-Server/4.3.3 
-Location: http://183.61.140.20/a90a952900000000-1408984277-236096587/data1/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-NG: CHN-ZJ-4-3M4 
-  
-HTTP/1.1 200 OK 
-Server: nginx 
-Date: Mon, 25 Aug 2014 15:01:17 GMT 
-Content-Type: video/mp4 
-Content-Length: 3706468 
-Last-Modified: Mon, 25 Aug 2014 00:31:03 GMT 
-Connection: keep-alive 
-Cache-Control: no-cache 
-ETag: &quot;53fa83c7-388e64&quot; 
-NG: CHN-ZJ-4-3M4 
-X-Mod-Name: Mvod-Server/4.3.3 
-Accept-Ranges: bytes  
-</code></pre>
-
-<p>可见，本次修改仍然没有成功！<br />
-为什么呢？分析一下，我们在@error_page_302这个location里已经加了一个头部打印语句，可是在测试中，该头部并没有打出来，可见流程并没有进入到@error_page_302这个location。</p>
-
-<p>原因在于</p>
-
-<pre><code>error_page 302 = @error_page_302;  
-</code></pre>
-
-<p>error_page默认是本次处理的返回码。作为proxy，本次处理，只要转发上游服务器的响应成功，应该状态码都是200.即，我们真正需要检查的，是proxy的后端服务器返回的状态码，而不是proxy本身返回的状态码。查一下Nginx的wiki,proxy_intercept_errors指令正是干这个的:</p>
-
-<pre><code>Syntax:	proxy_intercept_errors on | off;  
-Default:	  
-proxy_intercept_errors off;  
-Context:	http, server, location  
-Determines whether proxied responses with codes greater than or equal to 300 should be passed to a client or be redirected to nginx for processing with the error_page directive.  
-</code></pre>
-
-<h3 id="3-第二次修改">3. 第二次修改</h3>
-
-<pre><code>server {  
-        listen 80;  
-        proxy_intercept_errors on;  
-        location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
-        }  
-        location ~ /proxy-to/([^/]+)(.*) {  
-                proxy_pass http://$1$2$is_args$query_string;  
-                error_page 302 = @error_page_302;  
-  
-        }  
-        location @error_page_302 {  
-                rewrite_by_lua '  
-                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
-                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
-                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
-                ';  
-        }  
-}  
-</code></pre>
-
-<p>与上一次修改相比，区别仅仅在于增加了一个proxy_intercept_errors指令。测试结果如下：</p>
-
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L 
-HTTP/1.1 302 Moved Temporarily  
-Server: nginx/1.4.6  
-Date: Mon, 25 Aug 2014 15:05:54 GMT  
-Content-Type: text/html  
-Content-Length: 160  
-Connection: keep-alive  
-zzzz: /proxy-to/183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-</code></pre>
-
-<p>这次更神奇了，直接返回一个302状态完事，也不继续跳转了。<br />
-问题出在，虽然第一次302，请求成功的进入到@error_page_302，但后续的error_page指令却没起作用。也就是说，error_page只检查了第一次后端返回的状态码，而没有继续检查后续的后端状态码。</p>
-
-<p>查一下资料，这个时候，另一个指令 recursive_error_pages就派上用场了。</p>
-
-<h3 id="4-第3次修改">4. 第3次修改</h3>
-
-<pre><code>server {  
-        listen 80;  
-        proxy_intercept_errors on;  
-        recursive_error_pages on;  
-        location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
-        }  
-        location ~ /proxy-to/([^/]+)(.*) {  
-                proxy_pass http://$1$2$is_args$query_string;  
-                error_page 302 = @error_page_302;  
-  
-        }  
-        location @error_page_302 {  
-                rewrite_by_lua '  
-                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
-                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
-                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
-                ';  
-        }  
-}  
-</code></pre>
-
-<p>与上一次相比，仅仅增加了recursive_error_pages on这条指令。测试结果如下：</p>
-
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L 
-HTTP/1.1 200 OK 
-Server: nginx/1.4.6 
-Date: Mon, 25 Aug 2014 15:09:04 GMT 
-Content-Type: video/mp4 
-Content-Length: 3706468 
-Connection: keep-alive 
-zzzz: /proxy-to/14.18.140.83/f48bad0100000000-1408984745-236096587/data6/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-Last-Modified: Mon, 25 Aug 2014 00:21:07 GMT 
-Cache-Control: no-cache 
-ETag: &quot;53fa8173-388e64&quot; 
-NG: CHN-MM-4-3FE 
-X-Mod-Name: Mvod-Server/4.3.3 
-Accept-Ranges: bytes  
-</code></pre>
-
-<p>可见，Nginx终于成功的返回200了。此时，Nginx才真正起到了一个Proxy的功能，隐藏了一个请求原本的多个302链路，只返回客户端一个最终结果。</p>
-
-<h3 id="5-小结">5. 小结</h3>
-
-<p>综上，通过proxy_pass、error_page、proxy_intercept_errors、recursive_error_pages这几个指令的配合使用，可以向客户端隐藏一条请求的跳转细节，直接返回用户一个状态码为200的最终结果。</p>
-
-<p>奇怪的是，在Nginx的官方wiki中并没有recursive_error_pages指令的相关说明。</p>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/08/24/what-i-talk-about-when-i-talk-about-running.html">读《当我谈跑步时我谈些什么》有感</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-08-24" class="post-time">
-        2014-08-24
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>从来都不会想到，村上会是一个生活极其规律，几十年如一日坚持跑步训练，长期参与世界各地的马拉松比赛，甚至是铁人三项比赛的人。</p>
-
-<p>在看完这本书并了解到这一点后，我又很难想象这样一个人居然是《挪威的森林》的作者。</p>
-
-<p>其实，村上在书中某一章详细的回忆了当初是如何开始跑步的。他跑步的初衷不能说不简单，就是保持身体健康，以能写出更多更好的小说来：</p>
-
-<blockquote>
-<p>打算作为小说家度过今后漫长的人生，就必须找到一个既能维持体力，又可将体重保持得恰到好处的方法。</p>
-</blockquote>
-
-<p>是的，这就是他跑步几十年最原始的动力。娓娓道来，平淡如水。</p>
-
-<p>可我读起来，总觉得哪里不对劲。直到我把书都看完了，才想起为什么不对劲来。</p>
-
-<blockquote>
-<p>打算作为小说家度过今后漫长的人生，就必须找到一个既能维持体力，又可将体重保持得恰到好处的方法。</p>
-</blockquote>
-
-<p>按照这种说法，可以衍生出无数的句子，例如：</p>
-
-<ol>
-<li>打算作为程序员度过今后漫长的人生，就必须找到一个既能维持体力，又可将体重保持得恰到好处的方法。<br /></li>
-<li>打算作为产品经理度过今后漫长的人生，就必须找到一个既能维持体力，又可将体重保持得恰到好处的方法。<br /></li>
-<li>打算作为投行从业者度过今后漫长的人生，就必须找到一个既能维持体力，又可将体重保持得恰到好处的方法。<br /></li>
-<li>&hellip;&hellip;<br />
-<br /></li>
-</ol>
-
-<p>会直接或间接导致使身体健康恶化的职业，如果有个排名，我想怎么也轮不到作家吧。但为什么这样一个似乎不能构成强大动力的理由，为什么能支撑他走这么久，而我们却很难做到呢？</p>
-
-<p>我想，主要是有两点。</p>
-
-<p>第一，他真正了解自己。</p>
-
-<p>那年他三十三岁，在开始跑步时已经知道自己会作为小说家度过今后漫长的人生。而我们很多人，即使到了三十三岁，恐怕也不知道该以哪一种角色度过这一生。确定了这个简单的目标后，保持身体健康，创作出更多更好的作品是很自然的事情。</p>
-
-<p>以前有段时间很喜欢路遥。看了他的《早晨从中午开始》后更是感动流涕，但现在想想，如果能够保持好的健康状态，即使一辈子只写一本书，是否也能让《平凡的世界》更好一些呢？</p>
-
-<p>第二，极端的自律。</p>
-
-<p>书中有一段讲到，在比赛时，太累的时候，一般人都会用类似于快走的节奏来调整自己的步伐。但他却是会站在原地休息，只要是开始，那就一定是跑。他参加比赛，是来跑步的，不是走路的。</p>
-
-<p>看到这里，读者应该都能知道，即使这是一场有着明确规则和标准的比赛，他仍然坚持自己的一套原则。至于慢走调整步伐合不合理，科不科学，他一概不管。</p>
-
-<p>所以，我认为正是这两点，是他几十年坚持跑步的原因。</p>
-
-<p>书的结尾：</p>
-
-<blockquote>
-<p>假如有我的墓志铭，而且上面的文字可以自己选择，我愿意它是这么写的：<br />
-村上春树<br />
-作家（兼跑者）<br />
-1949-20xx<br />
-他至少是跑到了最后</p>
-
-<p>此时此刻，这，便是我的愿望。</p>
-</blockquote>
+<p>文档里称 swift-ring-composer 是个实验性质的工具，未来可能会修改或被删除，大家酌情使用。</p>
     </div>
     
   </div>
@@ -1875,6 +1230,2946 @@ Accept-Ranges: bytes
 
       
 
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
       
       
       <li><a href="/page/14/">»</a></li>
@@ -1882,7 +4177,7 @@ Accept-Ranges: bytes
 
       
       
-      <li><a href="/page/36/">»»</a></li>
+      <li><a href="/page/176/">»»</a></li>
       
 
       </ul>
