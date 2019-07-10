@@ -1,67 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>进程间传递文件描述符 - 纯真年代</title>
-  
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta name="MobileOptimized" content="width"/>
-<meta name="HandheldFriendly" content="true"/>
-
-
-<meta name="applicable-device" content="pc,mobile">
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="author" content="strider" />
-  <meta name="description" content="首先，必须声明，“进程间传递文件描述符”这个说法是错误的。
- 在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。
-《深入理解Linux内核架构》
- 这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。
-" />
-
-  <meta name="keywords" content="程序员, 文学, 生活" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.55.4" />
-
-
-<link rel="canonical" href="https://pureage.info/2015/03/19/passing-file-descriptors.html" />
-
-
-
-<link rel="icon" href="/favicon.ico" />
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
-
-
-
-
-
-<meta property="og:title" content="进程间传递文件描述符" />
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>进程间传递文件描述符 - 纯真年代</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="进程间传递文件描述符" />
 <meta property="og:description" content="首先，必须声明，“进程间传递文件描述符”这个说法是错误的。
 
 
@@ -74,25 +16,6 @@
 <meta property="og:url" content="https://pureage.info/2015/03/19/passing-file-descriptors.html" />
 <meta property="article:published_time" content="2015-03-19T08:46:00&#43;00:00"/>
 <meta property="article:modified_time" content="2015-03-19T08:46:00&#43;00:00"/>
-
-<meta itemprop="name" content="进程间传递文件描述符">
-<meta itemprop="description" content="首先，必须声明，“进程间传递文件描述符”这个说法是错误的。
-
-
-在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。
-《深入理解Linux内核架构》
-
-
-这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。">
-
-
-<meta itemprop="datePublished" content="2015-03-19T08:46:00&#43;00:00" />
-<meta itemprop="dateModified" content="2015-03-19T08:46:00&#43;00:00" />
-<meta itemprop="wordCount" content="4120">
-
-
-
-<meta itemprop="keywords" content="程序员,nginx," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="进程间传递文件描述符"/>
 <meta name="twitter:description" content="首先，必须声明，“进程间传递文件描述符”这个说法是错误的。
@@ -103,248 +26,56 @@
 
 
 这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。"/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:500,100,300" rel="stylesheet">
 
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
-
-
-
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" /><script src="/js/main.js"></script>
 </head>
+
 <body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">纯真年代</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/">首页</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
-          
-        
-      </li>
-    
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title">纯真年代</h1>
+	<div class="site-description"><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
 
-    
-  </ul>
-</nav>
-
-
-  
-    
-
-
-
-
-
-
-  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
-  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
-
-
-
-
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-<div class="pswp__bg"></div>
-
-<div class="pswp__scroll-wrap">
-    
-    <div class="pswp__container">
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-    </div>
-    
-    <div class="pswp__ui pswp__ui--hidden">
-    <div class="pswp__top-bar">
-      
-      <div class="pswp__counter"></div>
-      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-      <button class="pswp__button pswp__button--share" title="Share"></button>
-      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-      
-      
-      <div class="pswp__preloader">
-        <div class="pswp__preloader__icn">
-          <div class="pswp__preloader__cut">
-            <div class="pswp__preloader__donut"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-      <div class="pswp__share-tooltip"></div>
-    </div>
-    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-    </button>
-    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-    </button>
-    <div class="pswp__caption">
-      <div class="pswp__caption__center"></div>
-    </div>
-    </div>
-    </div>
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">首页</a>
+			</li>
+			
+			<li>
+				<a href="/posts">归档</a>
+			</li>
+			
+			<li>
+				<a href="/about">关于</a>
+			</li>
+			
+			<li>
+				<a href="/tags">标签</a>
+			</li>
+			
+			<li>
+				<a href="/tags">工具</a>
+			</li>
+			
+		</ul>
+	</nav>
 </div>
 
-  
 
-  
+		<div class="post-header">
+			<h1 class="title">进程间传递文件描述符</h1>
+			<div class="meta">Posted at &mdash; Mar 19, 2015</div>
+		</div>
 
-  
-
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
-  <a href="/" class="logo">
-    
-      纯真年代
-    
-  </a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/">首页</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
-          
-
-        
-
-      </li>
-    
-
-    
-    
-
-    
-  </ul>
-</nav>
-
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">进程间传递文件描述符</h1>
-      
-      <div class="post-meta">
-        <time datetime="2015-03-19" class="post-time">
-          2015-03-19
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-    
-    <div class="post-content">
-      <p>首先，必须声明，“进程间传递文件描述符”这个说法是错误的。</p>
+		<div class="markdown">
+			<p>首先，必须声明，“进程间传递文件描述符”这个说法是错误的。</p>
 
 <blockquote>
 <p>在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。<br />
@@ -370,13 +101,10 @@ function to create a pair of unnamed, connected, UNIX domain sockets.</p>
 </blockquote>
 
 <p>socketpair的原型为：</p>
-
-<pre><code>#include &lt;sys/types.h&gt;  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">#include &lt;sys/types.h&gt;  
 #include &lt;sys/socket.h&gt;  
   
-int socketpair(int d, int type, int protocol, int sv[2]);  
-</code></pre>
-
+int socketpair(int d, int type, int protocol, int sv[2]);  </pre></div>
 <p>传入的参数sv为一个整型数组，有两个元素。当调用成功后，这个数组的两个元素即为2个文件描述符。</p>
 
 <p>一对连接起来的Unix匿名域套接字就建立起来了，它们就像一个全双工的管道，每一端都既可读也可写。</p>
@@ -393,14 +121,10 @@ int socketpair(int d, int type, int protocol, int sv[2]);
 3. sendmsg/recvmsg. 通过sendmsg,可以用msghdr参数，来指定多个缓冲区来发送数据，与writev系统调用类似。</p>
 
 <p>sendmsg函数原型如下:</p>
-
-<pre><code>#include &lt;sys/socket.h&gt;  
-ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);  
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">#include &lt;sys/socket.h&gt;  
+ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);  </pre></div>
 <p>其中，根据POSIX.1 msghdr的定义至少应该包含下面几个成员：</p>
-
-<pre><code>struct msghdr {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">struct msghdr {  
     void *msg_name; /* optional address */  
     socklen_t msg_namelen; /* address size in bytes */  
     struct iovec *msg_iov; /* array of I/O buffers */  
@@ -408,12 +132,9 @@ ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
     void *msg_control; /* ancillary data */  
     socklen_t msg_controllen; /* number of ancillary bytes */  
     int msg_flags; /* flags for received message */  
-};  
-</code></pre>
-
+};  </pre></div>
 <p>在Linux的manual page中，msghdr的定义为:</p>
-
-<pre><code>struct msghdr {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">struct msghdr {  
     void         *msg_name;       /* optional address */  
     socklen_t     msg_namelen;    /* size of address */  
     struct iovec *msg_iov;        /* scatter/gather array */  
@@ -421,12 +142,9 @@ ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
     void         *msg_control;    /* ancillary data, see below */  
     socklen_t     msg_controllen; /* ancillary data buffer len */  
     int           msg_flags;      /* flags on received message */  
-};  
-</code></pre>
-
+};  </pre></div>
 <p>查看Linux内核源代码(3.18.1)，可知msghdr的准确定义为：</p>
-
-<pre><code>struct msghdr {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">struct msghdr {  
 	void		*msg_name;	/* ptr to socket address structure */  
 	int		msg_namelen;	/* size of socket address structure */  
 	struct iovec	*msg_iov;	/* scatter/gather array */  
@@ -435,27 +153,19 @@ ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);
 	__kernel_size_t	msg_controllen;	/* ancillary data buffer length */  
 	unsigned int	msg_flags;	/* flags on received message */  
 };  
-  
-</code></pre>
-
+  </pre></div>
 <p>可见，与Manual paga中的描述一致。</p>
 
 <p>其中，前两个成员msg_name和msg_namelen是用来在发送datagram时，指定目的地址的。如果是面向连接的，这两个成员变量可以不用。</p>
 
 <p>接下来的两个成员,msg_iov和msg_iovlen，则是用来指定发送缓冲区数组的。其中，msg_iovlen是iovec类型的元素的个数。每一个缓冲区的起始地址和大小由iovec类型自包含，iovec的定义为：</p>
-
-<pre><code>struct iovec {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">struct iovec {  
     void *iov_base;   /* Starting address */  
     size_t iov_len;   /* Number of bytes */  
-};  
-</code></pre>
-
+};  </pre></div>
 <p>成员msg_flags用来描述接受到的消息的性质,由调用recvmsg时传入的flags参数设置。recvmsg的函数原型为:</p>
-
-<pre><code>#include &lt;sys/socket.h&gt;  
-ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);  
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">#include &lt;sys/socket.h&gt;  
+ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);  </pre></div>
 <p>与sendmsg相对应，recvmsg用msghdr结构指定多个缓冲区来存放读取到的结果。flags参数用来修改recvmsg的默认行为。传入的flags参数在调用完recvmsg后，会被设置到msg所指向的msghdr类型的msg_flags变量中。flags可以为如下值:<br />
 <img src="/img/ipc-2.jpg" alt="ipc-2.jpg" /></p>
 
@@ -469,27 +179,21 @@ ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);
 &gt;To create ancillary data, first initialize the msg_controllen member of the msghdr with the length of the control message buffer.  Use CMSG_FIRSTHDR() on the msghdr to get the first control  message  and CMSG_NEXTHDR  to  get  all  subsequent  ones.   In  each  control  message, initialize cmsg_len (with CMSG_LEN), the other cmsghdr header fields, and the  data  portion  using  CMSG_DATA.   Finally,  the msg_controllen  field of the msghdr should be set to the sum of the CMSG_SPACE() of the length of all control messages in the buffer.</p>
 
 <p>在Linux 的Manual page(man cmsg)中,cmsghdr的定义为:</p>
-
-<pre><code>struct cmsghdr {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">struct cmsghdr {  
     socklen_t   cmsg_len;   /* data byte count, including header */  
     int         cmsg_level; /* originating protocol */  
     int         cmsg_type;  /* protocol-specific type */  
     /* followed by  unsigned char   cmsg_data[]; */  
-};  
-</code></pre>
-
+};  </pre></div>
 <p>注意,控制信息的数据部分,是直接存储在cmsg_type之后的。但中间可能有一些由于对齐产生的填充字节,由于这些填充数据的存在，对于这些控制数据的访问,必须使用Linux提供的一些专用宏来完成。这些宏包括如下几个:</p>
-
-<pre><code>#include &lt;sys/socket.h&gt;  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">#include &lt;sys/socket.h&gt;  
   
 struct cmsghdr *CMSG_FIRSTHDR(struct msghdr *msgh);  
 struct cmsghdr *CMSG_NXTHDR(struct msghdr *msgh, struct cmsghdr *cmsg);  
 size_t CMSG_ALIGN(size_t length);  
 size_t CMSG_SPACE(size_t length);  
 size_t CMSG_LEN(size_t length);  
-unsigned char *CMSG_DATA(struct cmsghdr *cmsg);  
-</code></pre>
-
+unsigned char *CMSG_DATA(struct cmsghdr *cmsg);  </pre></div>
 <p>其中:</p>
 
 <p>CMSG_FIRSTHDR()返回msgh所指向的msghdr类型的缓冲区中的第一个cmsghdr结构体的指针。</p>
@@ -522,8 +226,7 @@ unsigned char *CMSG_DATA(struct cmsghdr *cmsg);
 <p>关于如何在进程间传递文件描述符,我们已经理的差不多了。下面看看Nginx中是如何做的。</p>
 
 <p>Nginx中发送文件描述符的相关代码为:</p>
-
-<pre><code>ngx_int_t  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">ngx_int_t  
 ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,  
     ngx_log_t *log)  
 {  
@@ -597,20 +300,17 @@ ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,
             return NGX_AGAIN;  
         }  
   
-        ngx_log_error(NGX_LOG_ALERT, log, err, &quot;sendmsg() failed&quot;);  
+        ngx_log_error(NGX_LOG_ALERT, log, err, &#34;sendmsg() failed&#34;);  
         return NGX_ERROR;  
     }  
   
     return NGX_OK;  
 }  
-  
-</code></pre>
-
+  </pre></div>
 <p>其中,参数s就是一个用socketpair创建的管道的一端,要传送的文件描述符位于参数ch所指向的结构体中。ch结构体本身,包含要传送的文件描述符和其他成员,则通过io_vec类型的成员msg_iov传送。</p>
 
 <p>接收部分的代码为:</p>
-
-<pre><code>ngx_int_t  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">ngx_int_t  
 ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)  
 {  
     ssize_t             n;  
@@ -651,18 +351,18 @@ ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)
             return NGX_AGAIN;  
         }  
   
-        ngx_log_error(NGX_LOG_ALERT, log, err, &quot;recvmsg() failed&quot;);  
+        ngx_log_error(NGX_LOG_ALERT, log, err, &#34;recvmsg() failed&#34;);  
         return NGX_ERROR;  
     }  
   
     if (n == 0) {  
-        ngx_log_debug0(NGX_LOG_DEBUG_CORE, log, 0, &quot;recvmsg() returned zero&quot;);  
+        ngx_log_debug0(NGX_LOG_DEBUG_CORE, log, 0, &#34;recvmsg() returned zero&#34;);  
         return NGX_ERROR;  
     }  
   
     if ((size_t) n &lt; sizeof(ngx_channel_t)) {  
         ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                      &quot;recvmsg() returned not enough data: %z&quot;, n);  
+                      &#34;recvmsg() returned not enough data: %z&#34;, n);  
         return NGX_ERROR;  
     }  
   
@@ -672,15 +372,15 @@ ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)
   
         if (cmsg.cm.cmsg_len &lt; (socklen_t) CMSG_LEN(sizeof(int))) {  
             ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                          &quot;recvmsg() returned too small ancillary data&quot;);  
+                          &#34;recvmsg() returned too small ancillary data&#34;);  
             return NGX_ERROR;  
         }  
   
         if (cmsg.cm.cmsg_level != SOL_SOCKET || cmsg.cm.cmsg_type != SCM_RIGHTS)  
         {  
             ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                          &quot;recvmsg() returned invalid ancillary data &quot;  
-                          &quot;level %d or type %d&quot;,  
+                          &#34;recvmsg() returned invalid ancillary data &#34;  
+                          &#34;level %d or type %d&#34;,  
                           cmsg.cm.cmsg_level, cmsg.cm.cmsg_type);  
             return NGX_ERROR;  
         }  
@@ -692,7 +392,7 @@ ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)
   
     if (msg.msg_flags &amp; (MSG_TRUNC|MSG_CTRUNC)) {  
         ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                      &quot;recvmsg() truncated data&quot;);  
+                      &#34;recvmsg() truncated data&#34;);  
     }  
   
 #else  
@@ -700,7 +400,7 @@ ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)
     if (ch-&gt;command == NGX_CMD_OPEN_CHANNEL) {  
         if (msg.msg_accrightslen != sizeof(int)) {  
             ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                          &quot;recvmsg() returned no ancillary data&quot;);  
+                          &#34;recvmsg() returned no ancillary data&#34;);  
             return NGX_ERROR;  
         }  
   
@@ -710,197 +410,31 @@ ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)
 #endif  
   
     return n;  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>该代码配合发送部分的代码来读,意义很明确。只不过,在我们上面所讲的基础上,Nginx将ch变量作为发送和接收的数据(此数据指放在iovec缓冲区中的数据,而非控制信息中的数据部分),并用一个成员ch-&gt;command实现了一个简单的协议,使得这一对函数功能更通用。</p>
-    </div>
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
 
-    
-    
-<div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">文章作者</span>
-    <span class="item-content">strider</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">上次更新</span>
-    <span class="item-content">2015-03-19</span>
-  </p>
-  
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = '';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>
-
-
-    
-    
-
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          <a href="https://pureage.info/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
-        
-          <a class="prev" href="/2015/03/28/ipc-of-nginx.html">
-            
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="18" height="18">
-  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
-</svg>
-
-            </i>
-            <span class="prev-text nav-default">Nginx中的进程间通信</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2015/03/18/qingyuan-marathon-1.html">
-            <span class="next-text nav-default">记在清远马拉松之后</span>
-            <span class="prev-text nav-mobile">下一篇</span>
-            
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="18" height="18">
-  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
-</svg>
-
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-
-  
-  
-
-  
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-    
-
-        </div>
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="icon-links">
-  
-
-
-<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
-    class="iconfont" title="rss" target="_blank">
-    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="30" height="30">
-  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
-</svg>
-
-  </a>
-   
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div><a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
 </div>
-
-<div class="copyright">
-  <span class="power-by">
-    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
-  </span>
-  <span class="division">|</span>
-  <span class="theme-info">
-    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
-  </span>
-
-  <span class="copyright-year">
-    &copy;
-    
-      2011 -
-    2019
-    <span class="heart">
-      
-      <i class="iconfont">
-        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="14" height="14">
-  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
-   fill="#8a8a8a"></path>
-</svg>
-
-      </i>
-    </span><span class="author">
-        strider
-        
-      </span></span>
-
-  
-  
-
-  
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="35" height="35">
-  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
-</svg>
-
-      </i>
-    </div>
-  </div>
-  
-<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-
-
-
-
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
-
-
-
-
-
-
-  
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
-    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
-    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </body>

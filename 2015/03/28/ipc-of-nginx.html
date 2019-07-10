@@ -1,71 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Nginx中的进程间通信 - 纯真年代</title>
-  
-
-<meta name="renderer" content="webkit" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-<meta name="MobileOptimized" content="width"/>
-<meta name="HandheldFriendly" content="true"/>
-
-
-<meta name="applicable-device" content="pc,mobile">
-
-<meta name="theme-color" content="#f8f5ec" />
-<meta name="msapplication-navbutton-color" content="#f8f5ec">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
-
-<meta name="mobile-web-app-capable" content="yes">
-
-<meta name="author" content="strider" />
-  <meta name="description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
- 套接字（匿名套接字对）
- 共享内存
- 信号
-  本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。
-1. Nginx中的channel通信机制 1.1概述 首先简单的说一下Nginx中channel通信的机制。
-Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。
-我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。
-" />
-
-  <meta name="keywords" content="程序员, 文学, 生活" />
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.55.4" />
-
-
-<link rel="canonical" href="https://pureage.info/2015/03/28/ipc-of-nginx.html" />
-
-
-
-<link rel="icon" href="/favicon.ico" />
-
-
-
-
-
-
-
-
-
-
-
-<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
-
-
-
-
-
-<meta property="og:title" content="Nginx中的进程间通信" />
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Nginx中的进程间通信 - 纯真年代</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Nginx中的进程间通信" />
 <meta property="og:description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
 
 
@@ -90,37 +28,6 @@ Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(
 <meta property="og:url" content="https://pureage.info/2015/03/28/ipc-of-nginx.html" />
 <meta property="article:published_time" content="2015-03-28T12:39:00&#43;00:00"/>
 <meta property="article:modified_time" content="2015-03-28T12:39:00&#43;00:00"/>
-
-<meta itemprop="name" content="Nginx中的进程间通信">
-<meta itemprop="description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
-
-
-套接字（匿名套接字对）
-共享内存
-信号
-
-
-
-本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。
-
-1. Nginx中的channel通信机制
-
-1.1概述
-
-首先简单的说一下Nginx中channel通信的机制。
-
-Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。
-
-我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。">
-
-
-<meta itemprop="datePublished" content="2015-03-28T12:39:00&#43;00:00" />
-<meta itemprop="dateModified" content="2015-03-28T12:39:00&#43;00:00" />
-<meta itemprop="wordCount" content="7992">
-
-
-
-<meta itemprop="keywords" content="nginx," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Nginx中的进程间通信"/>
 <meta name="twitter:description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
@@ -143,248 +50,56 @@ Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(
 Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。
 
 我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。"/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:500,100,300" rel="stylesheet">
 
-<!--[if lte IE 9]>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-<![endif]-->
-
-
-
-
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" /><script src="/js/main.js"></script>
 </head>
+
 <body>
-  <div id="mobile-navbar" class="mobile-navbar">
-  <div class="mobile-header-logo">
-    <a href="/" class="logo">纯真年代</a>
-  </div>
-  <div class="mobile-navbar-icon">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-</div>
-<nav id="mobile-menu" class="mobile-menu slideout-menu">
-  <ul class="mobile-menu-list">
-    <li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/">首页</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
-          
-        
-      </li><li class="mobile-menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
-          
-        
-      </li>
-    
+	<div class="container wrapper post">
+		<div class="header">
+	<h1 class="site-title">纯真年代</h1>
+	<div class="site-description"><nav class="nav social">
+			<ul class="flat"></ul>
+		</nav>
+	</div>
 
-    
-  </ul>
-</nav>
-
-
-  
-    
-
-
-
-
-
-
-  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
-  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
-
-
-
-
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-<div class="pswp__bg"></div>
-
-<div class="pswp__scroll-wrap">
-    
-    <div class="pswp__container">
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-    </div>
-    
-    <div class="pswp__ui pswp__ui--hidden">
-    <div class="pswp__top-bar">
-      
-      <div class="pswp__counter"></div>
-      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-      <button class="pswp__button pswp__button--share" title="Share"></button>
-      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-      
-      
-      <div class="pswp__preloader">
-        <div class="pswp__preloader__icn">
-          <div class="pswp__preloader__cut">
-            <div class="pswp__preloader__donut"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-      <div class="pswp__share-tooltip"></div>
-    </div>
-    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-    </button>
-    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-    </button>
-    <div class="pswp__caption">
-      <div class="pswp__caption__center"></div>
-    </div>
-    </div>
-    </div>
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">首页</a>
+			</li>
+			
+			<li>
+				<a href="/posts">归档</a>
+			</li>
+			
+			<li>
+				<a href="/about">关于</a>
+			</li>
+			
+			<li>
+				<a href="/tags">标签</a>
+			</li>
+			
+			<li>
+				<a href="/tags">工具</a>
+			</li>
+			
+		</ul>
+	</nav>
 </div>
 
-  
 
-  
+		<div class="post-header">
+			<h1 class="title">Nginx中的进程间通信</h1>
+			<div class="meta">Posted at &mdash; Mar 28, 2015</div>
+		</div>
 
-  
-
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
-  <a href="/" class="logo">
-    
-      纯真年代
-    
-  </a>
-</div>
-
-<nav class="site-navbar">
-  <ul id="menu" class="menu">
-    
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/">首页</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
-          
-
-        
-
-      </li>
-    
-        <li class="menu-item">
-        
-          
-          
-            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
-          
-
-        
-
-      </li>
-    
-
-    
-    
-
-    
-  </ul>
-</nav>
-
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">Nginx中的进程间通信</h1>
-      
-      <div class="post-meta">
-        <time datetime="2015-03-28" class="post-time">
-          2015-03-28
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-    
-    <div class="post-content">
-      <p>我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:</p>
+		<div class="markdown">
+			<p>我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:</p>
 
 <ul>
 <li>套接字（匿名套接字对）<br /></li>
@@ -432,13 +147,9 @@ Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(
 <h3 id="1-2-nginx中的具体实现">1.2 Nginx中的具体实现</h3>
 
 <p>在ngx_process.c中，定义了一个全局的数组ngx_processes:</p>
-
-<pre><code>ngx_process_t    ngx_processes\[NGX\_MAX\_PROCESSES\];  
-</code></pre>
-
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">ngx_process_t    ngx_processes\[NGX\_MAX\_PROCESSES\];  </pre></div>
 <p>其中,ngx_process_t类型定义为:</p>
-
-<pre><code>typedef struct {
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">typedef struct {
     ngx_pid_t           pid;  
     int                 status;  
     ngx_socket_t        channel\[2\];  
@@ -452,9 +163,7 @@ Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(
     unsigned            detached:1;  
     unsigned            exiting:1;  
     unsigned            exited:1;  
-} ngx_process_t;  
-</code></pre>
-
+} ngx_process_t;  </pre></div>
 <p>在这里,我们只关心成员channel成员，这个两元素的数组即用来存放一个匿名套接字对。</p>
 
 <p>我们假设程序运行后，有1个master进程和4个worker进程。那么，对这5个进程而言，每个进程都有一个4元素的数组ngx_processes[4]，数组中每个元素都是一个ngx_process_t类型的结构体，包含了相应的某个worker进程的相关信息。我们这里关心的是每个结构体的channel数组成员。</p>
@@ -484,8 +193,7 @@ Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(
 <p>越是后生成的worker进程，其ngx_processes数组的元素中，channel[ 0 ]与父进程对应的ngx_processes数组的元素中的channel[ 0 ]值相同的越多，因为基本都是继承而来，但前面生成的worker进程，其channel[ 0 ]是通过进程间调用sendmsg传递获得的，所以与父进程对应的channel[ 0 ]不一定相等。比如，如果worker0向worker3发送消息，需要使用worker0进程的ngx_processes[ 3 ]元素的channel[ 0 ],即描述符10，而对应master进程的ngx_processes[ 3 ]元素的channel[ 0 ]却是12。虽然它们在各自进程里表现为不同的整型数字，但在内核里表示同一个描述符结构，即不管是worker0往描述符10写数据，还是master往描述符12写数据，worker3都能通过描述符13正确读取到这些数据，至于worker3怎么识别它读到的数据是来自worker0，还是master，就得靠其他收到的数据特征，比如pid，来做标记区分。</p>
 
 <p>关于上段讲的，一个子进程如何区分接收到的数据是来自哪一个进程，我们可以看一下Nginx-1.6.2中的一段代码:</p>
-
-<pre><code>ngx_int_t  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">ngx_int_t  
 ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,  
     ngx_log_t *log)  
 {  
@@ -559,24 +267,19 @@ ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,
             return NGX_AGAIN;  
         }  
   
-        ngx_log_error(NGX_LOG_ALERT, log, err, &quot;sendmsg() failed&quot;);  
+        ngx_log_error(NGX_LOG_ALERT, log, err, &#34;sendmsg() failed&#34;);  
         return NGX_ERROR;  
     }  
   
     return NGX_OK;  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>在调用时，参数ch即为发送的数据部分，其类型定义如下:</p>
-
-<pre><code>typedef struct {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">typedef struct {  
      ngx_uint_t  command;  
      ngx_pid_t   pid;  
      ngx_int_t   slot;  
      ngx_fd_t    fd;  
-} ngx_channel_t;  
-</code></pre>
-
+} ngx_channel_t;  </pre></div>
 <p>可见，其中就包含了发送方的pid。</p>
 
 <p>最后，就目前Nginx代码来看，子进程并没有往父进程发送任何消息，子进程之间也没有相互通信的逻辑。也许是因为Nginx有其他一些更好的进程通信方式，比如共享内存等，所以这种channel通信目前仅作为父进程往子进程发送消息使用。但由于有这个架构在，可以很轻松使用channel机制来完成各进程间的通信任务。</p>
@@ -586,35 +289,28 @@ ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,
 <p>下面，将上面所讲的内容，在Nginx代码中的流程，大概梳理一遍。本文所有代码片段，均来自于nginx-1.6.2。</p>
 
 <p>首先是main函数调用ngx_master_process_cycle:</p>
-
-<pre><code>    if (ngx_process == NGX_PROCESS_SINGLE) {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">    if (ngx_process == NGX_PROCESS_SINGLE) {  
         ngx_single_process_cycle(cycle);  
   
     } else {  
         ngx_master_process_cycle(cycle);  
     }  
   
-    return 0;  
-</code></pre>
-
+    return 0;  </pre></div>
 <p>ngx_master_process_cycle调用ngx_start_worker_processes:</p>
-
-<pre><code>ccf = (ngx_core_conf_t *) ngx_get_conf(cycle-&gt;conf_ctx, ngx_core_module);  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">ccf = (ngx_core_conf_t *) ngx_get_conf(cycle-&gt;conf_ctx, ngx_core_module);  
   
 ngx_start_worker_processes(cycle, ccf-&gt;worker_processes,  
                            NGX_PROCESS_RESPAWN);  
-ngx_start_cache_manager_processes(cycle, 0);  
-</code></pre>
-
+ngx_start_cache_manager_processes(cycle, 0);  </pre></div>
 <p>在ngx_start_worker_processes函数中，完成对所有worker进程的fork操作:</p>
-
-<pre><code>static void  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">static void  
 ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)  
 {  
     ngx_int_t      i;  
     ngx_channel_t  ch;  
   
-    ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &quot;start worker processes&quot;);  
+    ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &#34;start worker processes&#34;);  
   
     ngx_memzero(&amp;ch, sizeof(ngx_channel_t));  
   
@@ -623,7 +319,7 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
     for (i = 0; i &lt; n; i++) {  
   
         ngx_spawn_process(cycle, ngx_worker_process_cycle,  
-                          (void *) (intptr_t) i, &quot;worker process&quot;, type);  
+                          (void *) (intptr_t) i, &#34;worker process&#34;, type);  
   
         ch.pid = ngx_processes[ngx_process_slot].pid;  
         ch.slot = ngx_process_slot;  
@@ -631,12 +327,9 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
   
         ngx_pass_open_channel(cycle, &amp;ch);  
     }  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>上述代码调用的ngx_spawn_process即完成具体的socketpair()操作和fork操作:</p>
-
-<pre><code>ngx_pid_t  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">ngx_pid_t  
 ngx_spawn_process(ngx_cycle_t *cycle, ngx_spawn_proc_pt proc, void *data,  
      char *name, ngx_int_t respawn)  
 {  
@@ -644,7 +337,7 @@ ngx_spawn_process(ngx_cycle_t *cycle, ngx_spawn_proc_pt proc, void *data,
        if (socketpair(AF_UNIX, SOCK_STREAM, 0, ngx_processes[s].channel) == -1)  
         {  
             ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
-                          &quot;socketpair() failed while spawning \&quot;%s\&quot;&quot;, name);  
+                          &#34;socketpair() failed while spawning \&#34;%s\&#34;&#34;, name);  
             return NGX_INVALID_PID;  
         }  
         ......  
@@ -653,22 +346,19 @@ ngx_spawn_process(ngx_cycle_t *cycle, ngx_spawn_proc_pt proc, void *data,
         ngx_process_slot = s;  
         pid = fork();  
         ......  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>在上一段代码中可以看到，master进程在调用socketpair后，将生成的channel[ 1 ]保存在全局变量ngx_channel中,ngx_channel全局变量的作用是，子进程中会使用该全局变量，并加入到自己的事件中，达到的效果即是子进程将channel[ 1 ]加入到自己的事件中。</p>
 
 <p>话分两头，我们先来具体看看子进程的流程。</p>
 
 <p>在主进程执行完fork之后，ngx_start_worker_processes会调用proc回调:</p>
-
-<pre><code>   pid = fork();  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">   pid = fork();  
   
     switch (pid) {  
   
     case -1:  
         ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
-                      &quot;fork() failed while spawning \&quot;%s\&quot;&quot;, name);  
+                      &#34;fork() failed while spawning \&#34;%s\&#34;&#34;, name);  
         ngx_close_channel(ngx_processes[s].channel, cycle-&gt;log);  
         return NGX_INVALID_PID;  
   
@@ -679,12 +369,9 @@ ngx_spawn_process(ngx_cycle_t *cycle, ngx_spawn_proc_pt proc, void *data,
   
     default:  
         break;  
-    }  
-</code></pre>
-
+    }  </pre></div>
 <p>其中,proc即为ngx_worker_process_cycle。ngx_worker_process_cycle会调用ngx_worker_process_init函数，子进程将从父进程处继承到的channel[ 1 ]加入到自己的事件集中，就是在这个函数中完成的:</p>
-
-<pre><code>static void  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">static void  
 ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)  
 {  
 ......  
@@ -704,13 +391,13 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
   
         if (close(ngx_processes[n].channel[1]) == -1) {  
             ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
-                          &quot;close() channel failed&quot;);  
+                          &#34;close() channel failed&#34;);  
         }  
     }  
   
     if (close(ngx_processes[ngx_process_slot].channel[0]) == -1) {  
         ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
-                      &quot;close() channel failed&quot;);  
+                      &#34;close() channel failed&#34;);  
     }  
   
 #if 0  
@@ -725,41 +412,35 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
         exit(2);  
     }  
 ......  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>具体的将channel[ 1 ]添加到事件集中的操作，是由ngx_add_channel_event来完成的，对应的回调处理函数为ngx_channel_handler,同时我们看到，在添加之前，还进行了很多close的工作，这就于之前的示例表里，那些描述符为-1的表项相对应了。</p>
 
 <p>此时，子进程已经将从父进程那里继承来的channel[ 1 ]加入到了自己的监听事件集中，这样，一个子进程从自己的ngx_processses数组中，对应自己的那一个元素中的channel[ 1 ]中，即可读取来自其他进程的消息。收到消息时，将执行设置好的回调函数ngx_channel_handler，把接收到的新子进程的相关信息存储在自己的全局变量ngx_processes数组内。见下面的代码:</p>
-
-<pre><code>static void  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">static void  
 ngx_channel_handler(ngx_event_t *ev)  
 {  
     ......  
           case NGX_CMD_OPEN_CHANNEL:  
   
             ngx_log_debug3(NGX_LOG_DEBUG_CORE, ev-&gt;log, 0,  
-                           &quot;get channel s:%i pid:%P fd:%d&quot;,  
+                           &#34;get channel s:%i pid:%P fd:%d&#34;,  
                            ch.slot, ch.pid, ch.fd);  
   
             ngx_processes[ch.slot].pid = ch.pid;  
             ngx_processes[ch.slot].channel[0] = ch.fd;  
             break;  
     ......  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>我们再回到父进程中。</p>
 
 <p>父进程在从ngx_spawn_process返回后，回来继续执行ngx_start_worker_processes:</p>
-
-<pre><code>static void  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">static void  
 ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)  
 {  
     ngx_int_t      i;  
     ngx_channel_t  ch;  
   
-    ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &quot;start worker processes&quot;);  
+    ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &#34;start worker processes&#34;);  
   
     ngx_memzero(&amp;ch, sizeof(ngx_channel_t));  
   
@@ -768,7 +449,7 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
     for (i = 0; i &lt; n; i++) {  
   
         ngx_spawn_process(cycle, ngx_worker_process_cycle,  
-                          (void *) (intptr_t) i, &quot;worker process&quot;, type);  
+                          (void *) (intptr_t) i, &#34;worker process&#34;, type);  
   
         ch.pid = ngx_processes[ngx_process_slot].pid;  
         ch.slot = ngx_process_slot;  
@@ -776,22 +457,16 @@ ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)
   
         ngx_pass_open_channel(cycle, &amp;ch);  
     }  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>其中的for循环即表示，父进程会把刚刚生成的子进程的channel[ 0 ],放在一条消息的内容中发送给之前生成的子进程。消息的格式定义为:</p>
-
-<pre><code>typedef struct {  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">typedef struct {  
      ngx_uint_t  command;  
      ngx_pid_t   pid;  
      ngx_int_t   slot;  
      ngx_fd_t    fd;  
-} ngx_channel_t;  
-</code></pre>
-
+} ngx_channel_t;  </pre></div>
 <p>我们看下ngx_pass_open_channel函数:</p>
-
-<pre><code>static void  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">static void  
 ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)  
 {  
     ngx_int_t  i;  
@@ -806,7 +481,7 @@ ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)
         }  
   
         ngx_log_debug6(NGX_LOG_DEBUG_CORE, cycle-&gt;log, 0,  
-                      &quot;pass channel s:%d pid:%P fd:%d to s:%i pid:%P fd:%d&quot;,  
+                      &#34;pass channel s:%d pid:%P fd:%d to s:%i pid:%P fd:%d&#34;,  
                       ch-&gt;slot, ch-&gt;pid, ch-&gt;fd,  
                       i, ngx_processes[i].pid,  
                       ngx_processes[i].channel[0]);  
@@ -816,9 +491,7 @@ ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)
         ngx_write_channel(ngx_processes[i].channel[0],  
                           ch, sizeof(ngx_channel_t), cycle-&gt;log);  
     }  
-}  
-</code></pre>
-
+}  </pre></div>
 <p>从该函数定义中，可以很清晰的看到“往之前生成的每个进程发送消息”。对之前的每个子进程，具体消息发送工作，是由函数ngx_write_channel完成的。</p>
 
 <p>ngx_write_channel函数的第一个参数是之前某个进程从master进程继承来的channel[ 0 ],第二个参数发送的内容。其中包含了当前进程的pid,slot号，command等信息，最重要的是，包含了当前子进程的channel[ 0 ]，其实是实现了一个简单的协议。注意，当前子进程的channel[ 0 ]虽然存在ngx_channel_t类型的消息体中，但真正文件描述符的传递操作，是ngx_write_channel通过发送控制信息来完成的。接收进程虽然在接收到的消息体中获得了发送进程的channel[ 0 ]这个值，但并不能直接使用，必须根据控制信息来获取一个新的文件描述符。参看<a href="jin_cheng_jian_chuan_di_wen_jian_miao_shu_fu.md">进程间传递文件描述符</a>。</p>
@@ -856,8 +529,7 @@ ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)
 <h3 id="2-2-nginx中的实现">2.2 Nginx中的实现</h3>
 
 <p>那么，在Nginx中，到底是选用mmap映射到/dev/null，还是使用MAP_ANON选项调用mmap，或者是使用shmget呢？看相关实现的代码就会一目了然:</p>
-
-<pre><code>/*  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">/*  
  * Copyright (C) Igor Sysoev  
  * Copyright (C) Nginx, Inc.  
  */  
@@ -878,7 +550,7 @@ ngx_shm_alloc(ngx_shm_t *shm)
   
     if (shm-&gt;addr == MAP_FAILED) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;mmap(MAP_ANON|MAP_SHARED, %uz) failed&quot;, shm-&gt;size);  
+                      &#34;mmap(MAP_ANON|MAP_SHARED, %uz) failed&#34;, shm-&gt;size);  
         return NGX_ERROR;  
     }  
   
@@ -891,7 +563,7 @@ ngx_shm_free(ngx_shm_t *shm)
 {  
     if (munmap((void *) shm-&gt;addr, shm-&gt;size) == -1) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;munmap(%p, %uz) failed&quot;, shm-&gt;addr, shm-&gt;size);  
+                      &#34;munmap(%p, %uz) failed&#34;, shm-&gt;addr, shm-&gt;size);  
     }  
 }  
   
@@ -902,11 +574,11 @@ ngx_shm_alloc(ngx_shm_t *shm)
 {  
     ngx_fd_t  fd;  
   
-    fd = open(&quot;/dev/zero&quot;, O_RDWR);  
+    fd = open(&#34;/dev/zero&#34;, O_RDWR);  
   
     if (fd == -1) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;open(\&quot;/dev/zero\&quot;) failed&quot;);  
+                      &#34;open(\&#34;/dev/zero\&#34;) failed&#34;);  
         return NGX_ERROR;  
     }  
   
@@ -915,12 +587,12 @@ ngx_shm_alloc(ngx_shm_t *shm)
   
     if (shm-&gt;addr == MAP_FAILED) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;mmap(/dev/zero, MAP_SHARED, %uz) failed&quot;, shm-&gt;size);  
+                      &#34;mmap(/dev/zero, MAP_SHARED, %uz) failed&#34;, shm-&gt;size);  
     }  
   
     if (close(fd) == -1) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;close(\&quot;/dev/zero\&quot;) failed&quot;);  
+                      &#34;close(\&#34;/dev/zero\&#34;) failed&#34;);  
     }  
   
     return (shm-&gt;addr == MAP_FAILED) ? NGX_ERROR : NGX_OK;  
@@ -932,7 +604,7 @@ ngx_shm_free(ngx_shm_t *shm)
 {  
     if (munmap((void *) shm-&gt;addr, shm-&gt;size) == -1) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;munmap(%p, %uz) failed&quot;, shm-&gt;addr, shm-&gt;size);  
+                      &#34;munmap(%p, %uz) failed&#34;, shm-&gt;addr, shm-&gt;size);  
     }  
 }  
   
@@ -951,21 +623,21 @@ ngx_shm_alloc(ngx_shm_t *shm)
   
     if (id == -1) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;shmget(%uz) failed&quot;, shm-&gt;size);  
+                      &#34;shmget(%uz) failed&#34;, shm-&gt;size);  
         return NGX_ERROR;  
     }  
   
-    ngx_log_debug1(NGX_LOG_DEBUG_CORE, shm-&gt;log, 0, &quot;shmget id: %d&quot;, id);  
+    ngx_log_debug1(NGX_LOG_DEBUG_CORE, shm-&gt;log, 0, &#34;shmget id: %d&#34;, id);  
   
     shm-&gt;addr = shmat(id, NULL, 0);  
   
     if (shm-&gt;addr == (void *) -1) {  
-        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno, &quot;shmat() failed&quot;);  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno, &#34;shmat() failed&#34;);  
     }  
   
     if (shmctl(id, IPC_RMID, NULL) == -1) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;shmctl(IPC_RMID) failed&quot;);  
+                      &#34;shmctl(IPC_RMID) failed&#34;);  
     }  
   
     return (shm-&gt;addr == (void *) -1) ? NGX_ERROR : NGX_OK;  
@@ -977,13 +649,11 @@ ngx_shm_free(ngx_shm_t *shm)
 {  
     if (shmdt(shm-&gt;addr) == -1) {  
         ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
-                      &quot;shmdt(%p) failed&quot;, shm-&gt;addr);  
+                      &#34;shmdt(%p) failed&#34;, shm-&gt;addr);  
     }  
 }  
   
-#endif  
-</code></pre>
-
+#endif  </pre></div>
 <p>上面的代码即是Nginx源代码中的src/os/unix/ngx_shemem.c的全部内容。可见，整个文件只是为了提供两个接口：ngx_shm_alloc和ngx_shm_free。而这两个接口的实现，按如下逻辑来决定:<br />
 1. 如果当前系统的mmap系统调用支持MAP_ANON选项，则使用带MAP_ANON选项的mmap。<br />
 2. 如果1不满足，则如果当前系统mmap系统调用支持映射/dev/zero设备，则使用mmap映射/dev/zero的方式来实现。<br />
@@ -996,192 +666,29 @@ ngx_shm_free(ngx_shm_t *shm)
 <h2 id="3-channel机制和共享内存在nginx中的使用情况">3. channel机制和共享内存在Nginx中的使用情况</h2>
 
 <p>前面讲Nginx中的channel机制时提到，Nginx虽然提供了这种机制，但目前很少用到，而共享内存却相对用的比较多了。例如，为了统计Nginx总体的http请求处理情况，需要跨越多个worker来计算，Nginx自带的http模块ngx_http_stub_status_module即主要依赖共享内存的方式。</p>
-    </div>
+		</div><div id="disqus_thread"></div>
+<script type="text/javascript">
+	(function () {
+		
+		
+		if (window.location.hostname == "localhost")
+			return;
 
-    
-    
-<div class="post-copyright">
-  <p class="copyright-item">
-    <span class="item-title">文章作者</span>
-    <span class="item-content">strider</span>
-  </p>
-  <p class="copyright-item">
-    <span class="item-title">上次更新</span>
-    <span class="item-content">2015-03-28</span>
-  </p>
-  
-  <p class="copyright-item">
-    <span class="item-title">许可协议</span>
-    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
-  </p>
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		var disqus_shortname = '';
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+		Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 </div>
-
-
-    
-    
-
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
-        
-          <a class="prev" href="/2015/06/25/nginx-proxy-cache-and-etag.html">
-            
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="18" height="18">
-  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
-</svg>
-
-            </i>
-            <span class="prev-text nav-default">nginx proxy_cache与etag配合的问题</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2015/03/19/passing-file-descriptors.html">
-            <span class="next-text nav-default">进程间传递文件描述符</span>
-            <span class="prev-text nav-mobile">下一篇</span>
-            
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="18" height="18">
-  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
-</svg>
-
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
-
-  
-  
-
-  
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-    
-
-        </div>
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="icon-links">
-  
-
-
-<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
-    class="iconfont" title="rss" target="_blank">
-    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="30" height="30">
-  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
-</svg>
-
-  </a>
-   
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div><a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
 </div>
-
-<div class="copyright">
-  <span class="power-by">
-    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
-  </span>
-  <span class="division">|</span>
-  <span class="theme-info">
-    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
-  </span>
-
-  <span class="copyright-year">
-    &copy;
-    
-      2011 -
-    2019
-    <span class="heart">
-      
-      <i class="iconfont">
-        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="14" height="14">
-  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
-   fill="#8a8a8a"></path>
-</svg>
-
-      </i>
-    </span><span class="author">
-        strider
-        
-      </span></span>
-
-  
-  
-
-  
-</div>
-
-    </footer>
-
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="35" height="35">
-  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
-</svg>
-
-      </i>
-    </div>
-  </div>
-  
-<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
-
-
-
-
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
-
-
-
-
-
-
-  
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
-    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
-    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </body>
