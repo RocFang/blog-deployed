@@ -1,9 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>从HTTP Range请求谈标准是如何被破坏的 - 纯真年代</title><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta property="og:title" content="从HTTP Range请求谈标准是如何被破坏的" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>从HTTP Range请求谈标准是如何被破坏的 - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
+但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
+背景 A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.55.4" />
+
+
+<link rel="canonical" href="https://pureage.info/2014/02/26/how-standard-is-broken.html" />
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="从HTTP Range请求谈标准是如何被破坏的" />
 <meta property="og:description" content="如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
 
 但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
@@ -15,6 +72,24 @@ A是中国目前最大的互联网公司之一，它的视频当然流量也很�
 <meta property="og:url" content="https://pureage.info/2014/02/26/how-standard-is-broken.html" />
 <meta property="article:published_time" content="2014-02-25T16:14:00&#43;00:00"/>
 <meta property="article:modified_time" content="2014-02-25T16:14:00&#43;00:00"/>
+
+<meta itemprop="name" content="从HTTP Range请求谈标准是如何被破坏的">
+<meta itemprop="description" content="如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
+
+但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
+
+背景
+
+A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。">
+
+
+<meta itemprop="datePublished" content="2014-02-25T16:14:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-02-25T16:14:00&#43;00:00" />
+<meta itemprop="wordCount" content="1649">
+
+
+
+<meta itemprop="keywords" content="程序员," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="从HTTP Range请求谈标准是如何被破坏的"/>
 <meta name="twitter:description" content="如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
@@ -24,56 +99,248 @@ A是中国目前最大的互联网公司之一，它的视频当然流量也很�
 背景
 
 A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。"/>
-<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:500,100,300" rel="stylesheet">
 
-	<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" /><script src="/js/main.js"></script>
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
-
 <body>
-	<div class="container wrapper post">
-		<div class="header">
-	<h1 class="site-title">纯真年代</h1>
-	<div class="site-description"><nav class="nav social">
-			<ul class="flat"></ul>
-		</nav>
-	</div>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
 
-	<nav class="nav">
-		<ul class="flat">
-			
-			<li>
-				<a href="/">首页</a>
-			</li>
-			
-			<li>
-				<a href="/post">归档</a>
-			</li>
-			
-			<li>
-				<a href="/about">关于</a>
-			</li>
-			
-			<li>
-				<a href="/tags">标签</a>
-			</li>
-			
-			<li>
-				<a href="/tools">工具</a>
-			</li>
-			
-		</ul>
-	</nav>
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
 </div>
 
+  
 
-		<div class="post-header">
-			<h1 class="title">从HTTP Range请求谈标准是如何被破坏的</h1>
-			<div class="meta">Posted at &mdash; Feb 25, 2014</div>
-		</div>
+  
 
-		<div class="markdown">
-			<p>如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。</p>
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">从HTTP Range请求谈标准是如何被破坏的</h1>
+      
+      <div class="post-meta">
+        <time datetime="2014-02-25" class="post-time">
+          2014-02-25
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。</p>
 
 <p>但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。</p>
 
@@ -82,7 +349,10 @@ A是中国目前最大的互联网公司之一，它的视频当然流量也很�
 <p>A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。</p>
 
 <p>最近，运维发现服务器上有很多416请求。416是Range错误的响应码，除去一些正常的416外，运维还发现有一类416请求的Range头是:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">Range: byptes=XXXX-0</pre></div>
+
+<pre><code>Range: byptes=XXXX-0
+</code></pre>
+
 <p>XXXX是个非0的数。很明显，这是一个错误的Range请求，之所以会出现这样的Range，是因为对方的播放器bug导致。但A公司要求，把XXX-0按照xxx-来处理。</p>
 
 <p>我们知道，在HTTP协议中规定的是，一个Range头可以有如下形式（假设文件大小为1000个字节）：</p>
@@ -107,7 +377,8 @@ bytes=0-0,-1（第一个字节和最后一个字节）</p>
 <h3 id="实现">实现</h3>
 
 <p>以Nginx为例，我们来看看代码中是如何处理的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">static ngx_int_t  
+
+<pre><code>static ngx_int_t  
 ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,  
     ngx_uint_t ranges)  
 {  
@@ -125,26 +396,26 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
         end = 0;  
         suffix = 0;  
   
-        while (*p == &#39; &#39;) { p++; }  
+        while (*p == ' ') { p++; }  
   
-        if (*p != &#39;-&#39;) {  
-            if (*p &lt; &#39;0&#39; || *p &gt; &#39;9&#39;) {  
+        if (*p != '-') {  
+            if (*p &lt; '0' || *p &gt; '9') {  
                 return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
             }  
   
-            while (*p &gt;= &#39;0&#39; &amp;&amp; *p &lt;= &#39;9&#39;) {  
-                start = start * 10 + *p++ - &#39;0&#39;;  
+            while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
+                start = start * 10 + *p++ - '0';  
             }  
   
-            while (*p == &#39; &#39;) { p++; }  
+            while (*p == ' ') { p++; }  
   
-            if (*p++ != &#39;-&#39;) {  
+            if (*p++ != '-') {  
                 return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
             }  
   
-            while (*p == &#39; &#39;) { p++; }  
+            while (*p == ' ') { p++; }  
   
-            if (*p == &#39;,&#39; || *p == &#39;\0&#39;) {  
+            if (*p == ',' || *p == '\0') {  
                 end = content_length;  
                 goto found;  
             }  
@@ -154,17 +425,17 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
             p++;  
         }  
   
-        if (*p &lt; &#39;0&#39; || *p &gt; &#39;9&#39;) {  
+        if (*p &lt; '0' || *p &gt; '9') {  
             return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
         }  
   
-        while (*p &gt;= &#39;0&#39; &amp;&amp; *p &lt;= &#39;9&#39;) {  
-            end = end * 10 + *p++ - &#39;0&#39;;  
+        while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
+            end = end * 10 + *p++ - '0';  
         }  
   
-        while (*p == &#39; &#39;) { p++; }  
+        while (*p == ' ') { p++; }  
   
-        if (*p != &#39;,&#39; &amp;&amp; *p != &#39;\0&#39;) {  
+        if (*p != ',' &amp;&amp; *p != '\0') {  
             return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
         }  
   
@@ -198,7 +469,7 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
             }  
         }  
   
-        if (*p++ != &#39;,&#39;) {  
+        if (*p++ != ',') {  
             break;  
         }  
     }  
@@ -212,9 +483,12 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
     }  
   
     return NGX_OK;  
-}  </pre></div>
+}  
+</code></pre>
+
 <p>其中，</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"> found:  
+
+<pre><code> found:  
   
         if (start &lt; end) {  
             range = ngx_array_push(&amp;ctx-&gt;ranges);  
@@ -230,7 +504,9 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
             if (ranges-- == 0) {  
                 return NGX_DECLINED;  
             }  
-        }  </pre></div>
+        }  
+</code></pre>
+
 <p>表明，只有start&lt;end的，才会后续进行range处理。这里的start，是指bytes=a-b中的a，end指的是b+1。</p>
 
 <p>所以，在HTTP服务器的典型实现上，Range: bytes=500-0也是错误的请求。</p>
@@ -244,29 +520,192 @@ ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,
 <p>解决起来很简单，非常简单。但是，好好的标准就这么被破坏了。可以想象，A是Top级的互联网大佬，某家cdn帮他们解决这种Range错误了，它肯定会对其他cdn商家说，这个很简单，那谁都是这么处理的。然后，中国所有的cdn商家都这么处理了。再然后，没人记的这东西是否遵循标准了，即使有人拿标准说起，也会被老人们这么教育：&rdquo;标准只是理想情况，现实中的实现，是复杂多变的&hellip;&rdquo;</p>
 
 <p>更没人会记得，罪魁祸首是某个倒霉的播放器程序猿。</p>
-		</div><div id="disqus_thread"></div>
-<script type="text/javascript">
-	(function () {
-		
-		
-		if (window.location.hostname == "localhost")
-			return;
+    </div>
 
-		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-		var disqus_shortname = '';
-		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
-		Disqus.</a></noscript>
-<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">2014-02-25</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
 </div>
-	<div class="footer wrapper">
-	<nav class="nav">
-		<div><a href="https://github.com/vividvilla/ezhil">Ezhil theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
-	</nav>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/03/31/difference-of-rd-and-sales.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">研发与销售的一些区别</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2014/02/23/gift-not-sent-out.html">
+            <span class="next-text nav-default">送礼要抓紧</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
 </div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2019
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </body>
