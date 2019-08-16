@@ -33,11 +33,11 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.4" />
+<meta name="generator" content="Hugo 0.55.6" />
 
 
 <link rel="canonical" href="https://pureage.info/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
+<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/index.xml%20https://pureage.info/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
 
 
 
@@ -53,7 +53,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.57ebe9c198f36b136ba71149c7220932b765de3524fd1fa898395521ed819be1.css" integrity="sha256-V&#43;vpwZjzaxNrpxFJxyIJMrdl3jUk/R&#43;omDlVIe2Bm&#43;E=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.af20b78e95c84de86b00a0242a4a77bd2601700e1b250edf27537d957ac0041d.css" integrity="sha256-ryC3jpXITehrAKAkKkp3vSYBcA4bJQ7fJ1N9lXrABB0=" media="screen" crossorigin="anonymous">
 
 
 
@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-05-29T13:25:01&#43;08:00"/>
+<meta property="og:updated_time" content="2019-08-16T23:59:34&#43;08:00"/>
 
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
@@ -297,6 +297,46 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2013/12/06/157.html">AF_INET与PF_INET的区别</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2013-12-06" class="post-time">
+        2013-12-06
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>在一些开源项目的socket相关代码中，会同时看到AF_IENT和PF_INET，这两者有什么区别呢？</p>
+
+<p>其实这两个东西就是当年设计上的误差而已。AF=Adress Family;PF=Protocal Family，原来的设计是设想一个AF会支持多个PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux源代码为证：</p>
+
+<pre><code>/* Protocol families, same as address families. */  
+#define PF_UNSPEC	AF_UNSPEC  
+#define PF_UNIX	 AF_UNIX  
+#define PF_LOCAL	AF_LOCAL  
+#define PF_INET	 AF_INET  
+</code></pre>
+    </div>
+    <div class="read-more">
+      <a href="/2013/12/06/157.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+    
+      <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2013/12/05/156.html">FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</a>
     </h1>
     
@@ -427,41 +467,6 @@
     </div>
     <div class="read-more">
       <a href="/2013/12/01/153.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-    
-      <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/11/16/134.html">关于布鲁斯口琴</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-11-16" class="post-time">
-        2013-11-16
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>大概四年前迷上了布鲁斯口琴这个小玩意，一发不可收拾，从最初的Huang103，到horhner,suzuki等，手上的琴也有了几把；从最最初钟情于一些爱尔兰民谣和动漫音乐，到后来乃至现在热爱布鲁斯音乐。这几年身边发生了很多事情，但每次只要拿起这大概10公分长的小乐器，就会暂时忘掉各种烦恼。曾经有一段时间迷恋到每天看视频网站必须看看Bluesimon，张晓松等大神，嗜血安尔乐、晓月等后起之秀有没有更新，每天翻墙到Youtube上看看关注的各路大神的最新动态，不亦乐乎。</p>
-
-<p>喜欢一个乐器一般是从喜欢某首它演奏的曲子开始的，在国内，很多布鲁斯口琴爱好者都是从《星之所在》、《天空之城》、《爱尔兰画眉》、《素敌》等曲子开始的，我也一样。</p>
-
-<p>但你总会开始接触到布鲁斯风格，让布鲁斯口琴焕发生命光彩的风格。其实布鲁斯口琴最初并不是用来演奏布鲁斯音乐的，而是欧洲的一些民谣。但随着布鲁斯口琴传入到了美国，开始发生了一些变化。那时的美国，是牛仔的美国。口琴的轻便让它可以随时放在口袋里，那时候它仍然不是布鲁斯的。直到有一天，美国的黑人，赋予了口琴第二次生命。压音、超吹、把位变换等等，他们不断的压榨着它的性能，用它尽情的演奏布鲁斯音乐。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/11/16/134.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>

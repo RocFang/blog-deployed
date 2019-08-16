@@ -3,20 +3,17 @@
   
   <url>
     <loc>https://pureage.info/en/categories/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/en/tags/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/en/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
+    <priority>0</priority>
   </url>
   
 </urlset>
