@@ -6,15 +6,24 @@
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 09 May 2019 10:43:17 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 16 Aug 2019 23:59:34 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Rust</title>
+      <link>https://pureage.info/tags/rust/</link>
+      <pubDate>Fri, 16 Aug 2019 23:59:34 +0800</pubDate>
+      
+      <guid>https://pureage.info/tags/rust/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>读书</title>
       <link>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</link>
-      <pubDate>Thu, 09 May 2019 10:43:17 +0800</pubDate>
+      <pubDate>Fri, 16 Aug 2019 23:59:34 +0800</pubDate>
       
       <guid>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</guid>
       <description></description>
@@ -179,15 +188,6 @@
       <pubDate>Sun, 01 Dec 2013 09:32:00 +0000</pubDate>
       
       <guid>https://pureage.info/tags/%E5%8F%A3%E7%90%B4/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>python</title>
-      <link>https://pureage.info/tags/python/</link>
-      <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/tags/python/</guid>
       <description></description>
     </item>
     

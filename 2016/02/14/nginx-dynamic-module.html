@@ -42,7 +42,7 @@ headers when using HTTP/2.
 
 
 
-<meta name="generator" content="Hugo 0.55.4" />
+<meta name="generator" content="Hugo 0.57.0" />
 
 
 <link rel="canonical" href="https://pureage.info/2016/02/14/nginx-dynamic-module.html" />
@@ -90,9 +90,8 @@ Changes with nginx 1.9.11                                        09 Feb 2016
 从使用的角度上来说，是增加了一个指令 load_modules 指令，来加载编译为 so 形式的动态模块。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2016/02/14/nginx-dynamic-module.html" />
-<meta property="article:published_time" content="2016-02-14T14:57:00&#43;00:00"/>
-<meta property="article:modified_time" content="2016-02-14T14:57:00&#43;00:00"/>
-
+<meta property="article:published_time" content="2016-02-14T14:57:00+00:00" />
+<meta property="article:modified_time" content="2016-02-14T14:57:00+00:00" />
 <meta itemprop="name" content="关于Nginx-1.9.11的动态模块">
 <meta itemprop="description" content="我们知道，原生 Nginx 增加、修改一个第三方模块，需要重新编译源代码，所有的模块都是用静态链接的形式组织起来的。而 Tengine 有一个增强的功能，即动态模块加载 DSO(Dynamic Shared Objects), 可以实现运行时动态加载模块，而不用每次都要重新编译Tengine。
 
