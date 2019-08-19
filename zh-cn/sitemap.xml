@@ -4,19 +4,22 @@
   <url>
     <loc>https://pureage.info/post/</loc>
     <lastmod>2019-08-16T23:59:34+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/rust/</loc>
     <lastmod>2019-08-16T23:59:34+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/</loc>
     <lastmod>2019-08-16T23:59:34+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -29,13 +32,15 @@
   <url>
     <loc>https://pureage.info/</loc>
     <lastmod>2019-08-16T23:59:34+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</loc>
     <lastmod>2019-08-16T23:59:34+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -69,18 +74,27 @@
   <url>
     <loc>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</loc>
     <lastmod>2019-04-07T17:51:22+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</loc>
     <lastmod>2019-03-25T10:45:26+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</loc>
     <lastmod>2019-03-25T10:45:26+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/tags/golang/</loc>
+    <lastmod>2019-03-18T14:49:45+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -93,12 +107,6 @@
   </url>
   
   <url>
-    <loc>https://pureage.info/tags/golang/</loc>
-    <lastmod>2019-03-18T14:49:45+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://pureage.info/post/free-solo/</loc>
     <lastmod>2019-03-12T14:09:22+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -108,7 +116,8 @@
   <url>
     <loc>https://pureage.info/tags/%E7%94%B5%E5%BD%B1/</loc>
     <lastmod>2019-03-12T14:09:22+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -135,7 +144,8 @@
   <url>
     <loc>https://pureage.info/tags/%E6%80%9D%E8%80%83/</loc>
     <lastmod>2019-01-02T14:24:49+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -183,7 +193,8 @@
   <url>
     <loc>https://pureage.info/tags/%E8%82%B2%E5%84%BF/</loc>
     <lastmod>2018-09-04T18:15:20+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -217,13 +228,15 @@
   <url>
     <loc>https://pureage.info/tags/%E6%B0%B4%E6%B5%92/</loc>
     <lastmod>2017-05-29T03:46:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/%E6%97%85%E8%A1%8C/</loc>
     <lastmod>2016-08-28T03:46:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -236,7 +249,8 @@
   <url>
     <loc>https://pureage.info/tags/nginx/</loc>
     <lastmod>2016-07-04T15:17:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -249,7 +263,8 @@
   <url>
     <loc>https://pureage.info/tags/%E4%BC%BC%E6%B0%B4%E6%B5%81%E5%B9%B4/</loc>
     <lastmod>2016-06-11T09:30:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -318,7 +333,8 @@
   <url>
     <loc>https://pureage.info/tags/%E8%BF%90%E5%8A%A8/</loc>
     <lastmod>2016-01-22T13:58:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -345,7 +361,8 @@
   <url>
     <loc>https://pureage.info/tags/%E6%A2%A6/</loc>
     <lastmod>2016-01-04T15:04:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -379,7 +396,8 @@
   <url>
     <loc>https://pureage.info/tags/%E6%89%AF%E6%B7%A1/</loc>
     <lastmod>2015-12-28T17:04:05+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -630,7 +648,8 @@
   <url>
     <loc>https://pureage.info/tags/shell/</loc>
     <lastmod>2014-04-30T15:43:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -671,7 +690,8 @@
   <url>
     <loc>https://pureage.info/tags/%E8%A7%82%E5%AF%9F/</loc>
     <lastmod>2014-03-31T10:27:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -726,7 +746,8 @@
   <url>
     <loc>https://pureage.info/tags/%E6%83%85%E6%84%9F/</loc>
     <lastmod>2014-01-19T14:21:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -779,16 +800,17 @@
   </url>
   
   <url>
-    <loc>https://pureage.info/2013/12/05/156.html</loc>
+    <loc>https://pureage.info/tags/fastdfs/</loc>
     <lastmod>2013-12-05T15:33:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://pureage.info/tags/fastdfs/</loc>
+    <loc>https://pureage.info/2013/12/05/156.html</loc>
     <lastmod>2013-12-05T15:33:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -815,7 +837,8 @@
   <url>
     <loc>https://pureage.info/tags/%E5%8F%A3%E7%90%B4/</loc>
     <lastmod>2013-12-01T09:32:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -835,7 +858,8 @@
   <url>
     <loc>https://pureage.info/tags/python/</loc>
     <lastmod>2013-11-14T11:20:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -967,7 +991,8 @@
   <url>
     <loc>https://pureage.info/tags/%E8%B4%9F%E8%83%BD%E9%87%8F/</loc>
     <lastmod>2013-05-06T08:06:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -1064,13 +1089,15 @@
   <url>
     <loc>https://pureage.info/tags/%E5%8E%86%E5%8F%B2/</loc>
     <lastmod>2012-08-21T12:30:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/%E9%9F%B3%E4%B9%90/</loc>
     <lastmod>2012-08-21T12:30:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -1418,7 +1445,8 @@
   
   <url>
     <loc>https://pureage.info/categories/</loc>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
 </urlset>

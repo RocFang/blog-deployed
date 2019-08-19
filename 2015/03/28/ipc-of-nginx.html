@@ -40,7 +40,7 @@ Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.57.0" />
 
 
 <link rel="canonical" href="https://pureage.info/2015/03/28/ipc-of-nginx.html" />
@@ -88,9 +88,8 @@ Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(
 我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2015/03/28/ipc-of-nginx.html" />
-<meta property="article:published_time" content="2015-03-28T12:39:00&#43;00:00"/>
-<meta property="article:modified_time" content="2015-03-28T12:39:00&#43;00:00"/>
-
+<meta property="article:published_time" content="2015-03-28T12:39:00+00:00" />
+<meta property="article:modified_time" content="2015-03-28T12:39:00+00:00" />
 <meta itemprop="name" content="Nginx中的进程间通信">
 <meta itemprop="description" content="我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:
 

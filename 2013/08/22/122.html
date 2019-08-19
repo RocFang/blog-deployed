@@ -34,7 +34,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.57.0" />
 
 
 <link rel="canonical" href="https://pureage.info/2013/08/22/122.html" />
@@ -65,9 +65,8 @@
 如果就这么过去了，多没意思，我觉得有必要深究一下while的运行机制。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2013/08/22/122.html" />
-<meta property="article:published_time" content="2013-08-22T03:06:00&#43;00:00"/>
-<meta property="article:modified_time" content="2013-08-22T03:06:00&#43;00:00"/>
-
+<meta property="article:published_time" content="2013-08-22T03:06:00+00:00" />
+<meta property="article:modified_time" content="2013-08-22T03:06:00+00:00" />
 <meta itemprop="name" content="bash中while循环的一个大坑">
 <meta itemprop="description" content="起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。
 

@@ -36,7 +36,7 @@ location /test1 { set $hello hello; rewrite /test1 /test2 last; } location /test
 
 
 
-<meta name="generator" content="Hugo 0.55.6" />
+<meta name="generator" content="Hugo 0.57.0" />
 
 
 <link rel="canonical" href="https://pureage.info/2014/04/26/pitfall-of-nginx.html" />
@@ -84,9 +84,8 @@ location /test2 {
 虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2014/04/26/pitfall-of-nginx.html" />
-<meta property="article:published_time" content="2014-04-26T13:18:00&#43;00:00"/>
-<meta property="article:modified_time" content="2014-04-26T13:18:00&#43;00:00"/>
-
+<meta property="article:published_time" content="2014-04-26T13:18:00+00:00" />
+<meta property="article:modified_time" content="2014-04-26T13:18:00+00:00" />
 <meta itemprop="name" content="Nginx踩坑记（一）">
 <meta itemprop="description" content="1. 预备知识
 
