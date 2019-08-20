@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-08-20T23:19:51+08:00" />
+<meta property="og:updated_time" content="2019-08-16T23:59:34+08:00" />
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
 
@@ -299,47 +299,6 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/2014/12/29/running-feelings.html">跑步随感</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-12-29" class="post-time">
-        2014-12-29
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <h3 id="1-节奏比速度重要">1. 节奏比速度重要</h3>
-
-<p>当然，这一条针对的是长跑。节奏比速度重要，一方面是因为找准自己的节奏，更容易完成自己的目标，我们普通人参加长跑运动，更多的是与自己的对话。另一方面，长跑没有节奏增大了受伤的几率，一旦受伤，实在得不偿失。</p>
-
-<h3 id="2-长跑不需要成为多任务工作应用的场景">2. 长跑不需要成为多任务工作应用的场景</h3>
-
-<p>之前看过很多关于时间管理的书，关于多任务工作是这些书中重点讲述的内容。一种被普遍接受的观点是，一些重要的工作不适合多任务工作，要排除一切干扰静下心来去完成，这样效率较高。而对于那些不重要的，或者是一些机械重复的工作，可以多个工作同时进行，而这时，往往跑步会作为例子被提出，例如，可以在跑步时听歌，可以在跑步时思考等等。</p>
-
-<p>总体上，我同意这种观点，但这个例子举得不对。</p>
-
-<p>只要一定程度上接触过长跑的人都会知道，伤病是跑者的一大威胁。膝盖、小腿、脚部关节等等都一不小心就会受伤。而受伤的一大原因在于跑步姿势不对，跑步姿势不对的一大原因又在于跑步过程太过散漫。长跑的时候为了让自己保持正确的姿势，需要时刻以第三者的视角来观察自己，给自己纠错。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/12/29/running-feelings.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
       <a class="post-link" href="/2014/12/28/highly-effective-leargning.html">豆瓣阅读《高效的学习技巧》笔记</a>
     </h1>
     
@@ -487,6 +446,43 @@
     </div>
     <div class="read-more">
       <a href="/2014/09/28/running-is-a-happy-sport.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/2014/08/25/hiding-302-using-proxy-pass.html">用proxy_intercept_errors和recursive_error_pages代理多次302</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-08-25" class="post-time">
+        2014-08-25
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.</p>
+
+<p>302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。</p>
+
+<p>比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。</p>
+
+<p>上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/08/25/hiding-302-using-proxy-pass.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
