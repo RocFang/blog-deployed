@@ -6,10 +6,21 @@
     <description>Recent content in Rust on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 16 Aug 2019 23:59:34 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 20 Aug 2019 23:25:18 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/tags/rust/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>用rust写了一个博客的客户端发布工具</title>
+      <link>https://pureage.info/post/test-for-blog-writer-by-rust/</link>
+      <pubDate>Tue, 20 Aug 2019 23:25:18 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/test-for-blog-writer-by-rust/</guid>
+      <description>&lt;p&gt;这个事情本身没有什么好说的，算是刚刷完Rust Book之后自己额外写的一个hello world级的程序，只是这个程序对我自己还有点实际用处而已，用来简化了我写博客的一些流程。&lt;/p&gt;
+
+&lt;p&gt;本来这种事情我是最擅长用shell来解决，强迫自己用Rust来写实在很别扭，但是这恐怕是不可避免的阵痛了，希望自己能尽快渡过这个不适期。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>在阅读《Rust编程之道》时的一次抬杠经历</title>

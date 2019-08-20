@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-08-16T23:59:34+08:00" />
+<meta property="og:updated_time" content="2019-08-20T23:25:18+08:00" />
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
 
@@ -299,6 +299,43 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2013/09/02/125.html">nil、null与ngx.null</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2013-09-02" class="post-time">
+        2013-09-02
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <h1 id="问题概述">问题概述</h1>
+
+<p>今天第一次在nginx+lua架构下，写了个需要操作Redis的后台接口，该接口的功能主要是接受客户端的json格式的post请求，实现对保存在redis中的任务插入、删除、查询等。虽然nginx，lua等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。</p>
+
+<p>在Redis中记录的任务其实很简单，每插入一个任务，就在redis中增加一个HASH结构，每次查询返回该SET的各个Field和对应的Value值，例如md5，filesize等。由于任务类型的不同，有的Field可能在该任务中不存在，此时在以json格式将查询结果返回时不应显示该Field。</p>
+
+<p>以md5域为例，在对当前任务以md5域执行hget后，应该对返回结果做一个判断，如果该HASH结构并没有设置md5这个域，则跳过，继续执行后面的逻辑，如果设置了md5域，则把该域的Value取出来，插入到结果table中，后续再作为json格式返回结果的一部分，返回给后台。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/09/02/125.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2013/08/30/124.html">无题</a>
     </h1>
     
@@ -435,53 +472,6 @@
     </div>
     <div class="read-more">
       <a href="/2013/08/13/121.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/08/05/120.html">sort命令中-k、-t选项的用法</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-08-05" class="post-time">
-        2013-08-05
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <h1 id="需求">需求：</h1>
-
-<p>假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：</p>
-
-<pre><code>group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
-group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
-......(略）......  
-</code></pre>
-
-<p>如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？</p>
-
-<h1 id="方法">方法：</h1>
-
-<pre><code>cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
-</code></pre>
-
-<p>其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&hellip;groupn的顺序排列。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/08/05/120.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
