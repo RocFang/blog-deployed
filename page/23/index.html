@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-08-16T23:59:34+08:00" />
+<meta property="og:updated_time" content="2019-08-20T23:19:51+08:00" />
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
 
@@ -299,6 +299,53 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2013/08/05/120.html">sort命令中-k、-t选项的用法</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2013-08-05" class="post-time">
+        2013-08-05
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <h1 id="需求">需求：</h1>
+
+<p>假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：</p>
+
+<pre><code>group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
+group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
+......(略）......  
+</code></pre>
+
+<p>如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？</p>
+
+<h1 id="方法">方法：</h1>
+
+<pre><code>cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
+</code></pre>
+
+<p>其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&hellip;groupn的顺序排列。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/08/05/120.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2013/07/21/119.html">bash下如何实现perl中seek的功能？</a>
     </h1>
     
@@ -450,43 +497,6 @@ EOF
     </div>
     <div class="read-more">
       <a href="/2013/05/24/115.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/05/06/114.html">一张居住证的诞生</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-05-06" class="post-time">
-        2013-05-06
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>4月19日从前一家公司离职，下一家公司的报道日期是5月7号。报到时需要带的材料中，有一项是“居住证”。</p>
-
-<p>在网上找了广州市办理居住证的流程，发现各种说法不一，没有找到一个官方的说法。于是拉着一个在广州打工多年的亲戚带着我办。从亲戚口中得知，正常的流程应该是房东出具一份证明，拿着这份证明到居住地的社区继续弄齐材料，然后再到更高一级的机构去办理居住证。</p>
-
-<p>我问那亲戚，是不是需要先把房子租了才能去办呢，他说他和他房东关系不错，跟房东说一声，直接先开到他的住处就可以了，房子慢慢再找，现在先去社区摸清楚到底什么流程，毕竟每年政策可能不一样。我们在城中村里综合交错的小巷子里找了很久，才找到社区工作站A的位置。</p>
-
-<p>可是社区工作站的大门是紧锁着的。那天是5月3号，星期五，五一假期刚过，属于正常工作日。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/05/06/114.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
