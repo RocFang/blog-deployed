@@ -6,10 +6,25 @@
     <description>Recent content on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 20 Aug 2019 23:25:18 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 21 Aug 2019 21:26:11 +0800</lastBuildDate>
     
         <atom:link href="https://pureage.info/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Rust已经让我爱不释手了</title>
+      <link>https://pureage.info/post/refine-my-first-rust-project/</link>
+      <pubDate>Wed, 21 Aug 2019 21:26:11 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/refine-my-first-rust-project/</guid>
+      
+        <description>&lt;p&gt;在昨天写了自己的第一个rust程序后，今天抽了一点时间把代码结构优化了一下，另外引入了clap这个第三方crate来做参数解析。&lt;/p&gt;
+
+&lt;p&gt;在github上找到了pingcap的&lt;a href=&#34;https://github.com/pingcap/talent-plan&#34;&gt;Rust培训计划&lt;/a&gt;，下一步会把它这个教程完整的走一遍，在夯实语言基础的同时，看看业界在实践中是怎么做的。&lt;/p&gt;
+
+&lt;p&gt;就这短短的几天时间，Rust已经让我爱不释手了，好像重新找到了大学时刚学编程的那个兴奋劲，有好多东西等着自己去深挖。&lt;/p&gt;</description>
+      
+    </item>
     
     <item>
       <title>用rust写了一个博客的客户端发布工具</title>
@@ -854,55 +869,6 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;li&gt;如何阅读哲学书&lt;/li&gt;
 &lt;li&gt;如何阅读社会科学&lt;/li&gt;
 &lt;/ul&gt;</description>
-      
-    </item>
-    
-    <item>
-      <title>过时的技术</title>
-      <link>https://pureage.info/post/obsolescent-technology/</link>
-      <pubDate>Tue, 10 Oct 2017 15:01:38 +0000</pubDate>
-      
-      <guid>https://pureage.info/post/obsolescent-technology/</guid>
-      
-        <description>&lt;p&gt;互联网技术的世界很奇怪。&lt;/p&gt;
-
-&lt;p&gt;大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。&lt;/p&gt;
-
-&lt;p&gt;但有时候又会情不自禁的感慨，有些过时的东西，淘汰的也太慢了。&lt;/p&gt;
-
-&lt;p&gt;这些东西，你明知道它们早晚要被淘汰，但你就是不知道它们到底会撑到什么时候。&lt;/p&gt;
-
-&lt;p&gt;举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。&lt;/p&gt;
-
-&lt;p&gt;这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。&lt;/p&gt;
-
-&lt;p&gt;在HTML5流行之前，web上的视频播放，是Adobe Flash的天下。这个时候，mp4点播服务的伪流化大概是这样的：Flash播放器会将一次拖拽操作，变成一个带着start、end参数的请求发给服务端，服务端根据传入的start、end参数和原始mp4文件的moov数据，生成一个新的mp4封装发给播放器。除了mp4，其他封装的视频格式比如flv，大概也是如此。&lt;/p&gt;
-
-&lt;p&gt;互联网上的视频点播服务诞生了多久，这种技术就用了多久。掐指一算，十几年是有的了。&lt;/p&gt;
-
-&lt;p&gt;根据上面的描述，可以看到，伪流化功能主要是在服务端实现的，比如Nginx的ngx_http_mp4_module模块。非官方的还有一个nginx_mod_h264_streaming模块，使用Nginx提供mp4服务的，八九不离十就是在这两个模块上面改。其他web server，比如lighttpd，也是类似。&lt;/p&gt;
-
-&lt;p&gt;我们可以并且应该思考一下，这个功能如果放在播放器上来做会怎样呢？这个功能只需要客户端能拿到原始moov和根据计算之后的偏移量指定的数据即可。你一定想到了，http range不就是干这个的吗？&lt;/p&gt;
-
-&lt;p&gt;事实却是如此，一些客户端播放器，比如VLC，正是这么实现拖拽的。&lt;/p&gt;
-
-&lt;p&gt;但是在web上，就没这么简单了，因为这个领域事实上的标准是Adobe Flash Player。所以流行的web server不管愿意不愿意，都要去兼容Flash Player的行为，在服务端实现伪流化。&lt;/p&gt;
-
-&lt;p&gt;随着html5开始流行，事情才开始不一样了。mp4的播放和伪流化，变成了一个浏览器内置的功能。不难想象，伪流化这一部分，仍是基于http range。这种场景下，服务器上的原始视频文件只要提供静态文件服务并且支持range请求就行了。&lt;/p&gt;
-
-&lt;p&gt;多美好的事情。况且现在连flv都有flv.js这种在浏览器上不依赖Adobe Flash Player的开源方案了。&lt;/p&gt;
-
-&lt;p&gt;但是如果恰好是一个CDN服务商，你会发现，在点播服务上等到html5普及，还不知道要等到猴年马月呢。&lt;/p&gt;
-
-&lt;p&gt;可能你会问了，用Adobe Flash Player播放器的，就沿用以前的方案不就OK了吗，没什么好纠结的啊？问题在于其他领域的技术都在不断更新，而独这一块维持不变的话，就会引入一些额外的不必要的工作。&lt;/p&gt;
-
-&lt;p&gt;比如说缓存服务。不管你用的是哪种cache server(squid、ats等)，要实现一遍cache中的mp4伪流化吧？&lt;/p&gt;
-
-&lt;p&gt;而现在分片缓存流行了（譬如nginx的slice module)，又要让你的cache server中的mp4伪流化支持分片缓存的场景吧？&lt;/p&gt;
-
-&lt;p&gt;我个人也是在一年多以前就实现了这个功能，当时nginx的slice分片模块还没出来多久。现在看来这个功能应该是CDN服务的标配了。&lt;/p&gt;
-
-&lt;p&gt;但这确实是个必然要被淘汰的东西啊。想到这里，还真令人惆怅。&lt;/p&gt;</description>
       
     </item>
     

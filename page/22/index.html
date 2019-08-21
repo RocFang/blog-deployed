@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-08-20T23:25:18+08:00" />
+<meta property="og:updated_time" content="2019-08-21T21:26:11+08:00" />
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
 
@@ -299,6 +299,51 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2013/09/09/126.html">uniq、sort不得不注意的尾部空格（trailing whitespaces)</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2013-09-09" class="post-time">
+        2013-09-09
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <h1 id="问题产生背景">问题产生背景</h1>
+
+<p>自己写的一个基于FastDFS的客户端软件的日志格式如下：</p>
+
+<pre><code>[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
+[2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
+[2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
+[2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
+[2013-09-06 08:57:01] 1734272 group6/M00/00/28/Kj4ZK1IpKL-AZF8OABp2gDqh-sA949.mp3 ;fuckgfw.com/mp3k18/a2/1429_9466.mp3  
+[2013-09-06 08:57:01] 2453888 group6/M00/00/2D/Kj4ZKlIpKL6AOkQ-ACVxgMD1aRE474.mp3 ;fuckgfw.com/mp3k18/a2/1429_9460.mp3  
+[2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3  
+[2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
+[2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
+[2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
+</code></pre>
+    </div>
+    <div class="read-more">
+      <a href="/2013/09/09/126.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2013/09/02/125.html">nil、null与ngx.null</a>
     </h1>
     
@@ -435,43 +480,6 @@
     </div>
     <div class="read-more">
       <a href="/2013/08/22/122.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/08/13/121.html">久旱逢甘雨----读《国家》有感</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-08-13" class="post-time">
-        2013-08-13
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>读完《易中天中华史之国家》，真有一种久旱逢甘雨的畅快之感。</p>
-
-<p>历史书本来可以用三类来概括的，正史、野史和人教版课本。前两者历史久远，最后一个实在臭名昭著，从小学、初中、高中、大学、研究生，都只在说一件事情：没我哪有你。</p>
-
-<p>但是现在，又有一类历史类书籍异常火爆，就是借历史上的一些故事来讲如何混社会。这种书我是绝不敢在公共场合下看的，怕我憨厚木讷的脸上突然多了四个字：老奸巨猾。</p>
-
-<p>正儿八斤的历史类著作，读过吕思勉先生的《中国通史》和斯塔夫里阿诺斯的《全球通史》等。但这些书在读的时候总有一种中国与世界割裂开来的感觉，单纯的中国历史书籍自然不说，世界史类书籍也是如此。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/08/13/121.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>

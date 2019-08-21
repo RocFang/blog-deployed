@@ -3,34 +3,41 @@
   
   <url>
     <loc>https://pureage.info/post/</loc>
-    <lastmod>2019-08-20T23:25:18+08:00</lastmod>
+    <lastmod>2019-08-21T21:26:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/rust/</loc>
-    <lastmod>2019-08-20T23:25:18+08:00</lastmod>
+    <lastmod>2019-08-21T21:26:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/refine-my-first-rust-project/</loc>
+    <lastmod>2019-08-21T21:26:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/</loc>
-    <lastmod>2019-08-20T23:25:18+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/post/test-for-blog-writer-by-rust/</loc>
-    <lastmod>2019-08-20T23:25:18+08:00</lastmod>
+    <lastmod>2019-08-21T21:26:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/</loc>
+    <lastmod>2019-08-21T21:26:11+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/test-for-blog-writer-by-rust/</loc>
     <lastmod>2019-08-20T23:25:18+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
