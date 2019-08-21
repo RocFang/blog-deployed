@@ -6,10 +6,19 @@
     <description>Recent content in Posts on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 20 Aug 2019 23:25:18 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 21 Aug 2019 18:55:43 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>试用一下clap</title>
+      <link>https://pureage.info/post/test-for-clap/</link>
+      <pubDate>Wed, 21 Aug 2019 18:55:43 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/test-for-clap/</guid>
+      <description>&lt;p&gt;这是一篇测试文章，请勿打开。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>用rust写了一个博客的客户端发布工具</title>
@@ -257,19 +266,6 @@
 &lt;p&gt;举个例子，mp4点播服务的伪流化(pseudo-streaming)功能。&lt;/p&gt;
 
 &lt;p&gt;这个功能是干什么的呢，简单描述一下，就是提供了对在线mp4点播服务的拖拽功能，或者称为seek。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>梁山一百单八将为何第一个出场的是他</title>
-      <link>https://pureage.info/2017/05/29/shijin.html</link>
-      <pubDate>Mon, 29 May 2017 03:46:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/2017/05/29/shijin.html</guid>
-      <description>&lt;p&gt;我们都知道,《水浒传》中有一百零八员好汉聚义于梁山泊，从文学创作的角度来说，这么多性格各异的人物要讲清楚是一件难度非常大的事情,而施耐庵很好的完成了这个任务。如同程序里指针的使用一样，通过一人一事，引出另一人一事，逐渐将所有的人物串联起来，这种写作技巧其实是很高超的。&lt;/p&gt;
-
-&lt;p&gt;近些年火热的魔幻史诗小说《冰与火之歌》，让POV这种写作手法被粉丝们津津乐道，其实跟《水浒传》采用的技巧很类似，并无多大新意。&lt;/p&gt;
-
-&lt;p&gt;那么在这众多人物的出场中，第一个出场的人就很重要了。这被很多人忽略，但值得一品。&lt;/p&gt;</description>
     </item>
     
   </channel>
