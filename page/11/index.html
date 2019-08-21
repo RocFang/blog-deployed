@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-08-21T18:55:43+08:00" />
+<meta property="og:updated_time" content="2019-08-20T23:25:18+08:00" />
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
 
@@ -299,43 +299,6 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/2015/11/27/throw-that-book-away.html">扔掉那本书</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2015-11-27" class="post-time">
-        2015-11-27
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>这几天搬家，收拾东西基本就是一个扔东西的过程，伴随着阵阵惊呼：“我竟然还有这个东西，扔&hellip;”</p>
-
-<p>最重的东西，其实是书。</p>
-
-<p>有些书，翻出来的时候还能清楚的记得当时将它保留下来时的心理活动，例如这本《射频模拟电路》，毕业前邮寄物品的时候，内心挣扎着：张玉兴老师的这本书写的这么好，一定要保留下来，以后还要好好学学。真实情况是，当时我就知道以后不会从事电子方面的工作，而且，我并不是真的喜欢学射频，学的也不好，张玉兴老师究竟有多牛，我也不知道。那为什么我觉得它好呢？恐怕真实原因是大家都说它好吧。同样类型的书，还有《电路基础》、《模拟电路》等等。</p>
-
-<p>于是没有怎么犹豫，就把这类书都扔了。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/11/27/throw-that-book-away.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
       <a class="post-link" href="/2015/11/11/non-standard-nginx-programming.html">不规范的 Nginx 开发</a>
     </h1>
     
@@ -484,6 +447,56 @@
     </div>
     <div class="read-more">
       <a href="/2015/06/25/nginx-proxy-cache-and-etag.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/2015/03/28/ipc-of-nginx.html">Nginx中的进程间通信</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2015-03-28" class="post-time">
+        2015-03-28
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:</p>
+
+<ul>
+<li>套接字（匿名套接字对）<br /></li>
+<li>共享内存<br /></li>
+<li>信号<br />
+<br /></li>
+</ul>
+
+<p>本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。</p>
+
+<h2 id="1-nginx中的channel通信机制">1. Nginx中的channel通信机制</h2>
+
+<h3 id="1-1概述">1.1概述</h3>
+
+<p>首先简单的说一下Nginx中channel通信的机制。</p>
+
+<p>Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。</p>
+
+<p>我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2015/03/28/ipc-of-nginx.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
