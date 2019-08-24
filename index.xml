@@ -6,10 +6,69 @@
     <description>Recent content on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 21 Aug 2019 21:26:11 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 24 Aug 2019 11:10:10 +0800</lastBuildDate>
     
         <atom:link href="https://pureage.info/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Rust中struct与其method定义中的范型标识符</title>
+      <link>https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/</link>
+      <pubDate>Sat, 24 Aug 2019 11:10:10 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/</guid>
+      
+        <description>&lt;p&gt;Rust中，在struct定义中使用范型的方法，是在struct名称后跟&amp;lt;范型标识符&amp;gt;，例如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rust&#34;&gt;struct Int&amp;lt;T&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;而在struct的方法的定义中使用范型，则是形如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rust&#34;&gt;impl&amp;lt;T&amp;gt; Int&amp;lt;T&amp;gt; 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意这里有两个范型标识&lt;T&gt;。&lt;/p&gt;
+
+&lt;p&gt;impl后面的&lt;T&gt;并不是可有可无的，如果其后有&lt;T&gt;，则后面struct名字后面的&lt;T&gt;才会被编译器认为是范型，否则编译器它是一个具体类型。&lt;/p&gt;
+
+&lt;p&gt;Rust使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。&lt;/p&gt;
+
+&lt;p&gt;如下面的代码所示，x方法为所有Int实例所共有，但x32方法和x64方法则分别仅为具体类型为i32和i64的Int实例所有：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rust&#34;&gt;struct Int&amp;lt;T&amp;gt; {
+    x: T,
+}
+impl&amp;lt;T&amp;gt; Int&amp;lt;T&amp;gt; {
+    fn x(&amp;amp;self) -&amp;gt; &amp;amp;T {
+        &amp;amp;self.x
+    }
+}
+impl Int&amp;lt;i32&amp;gt; {
+    fn x32(&amp;amp;self) -&amp;gt; &amp;amp;i32 {
+        &amp;amp;self.x
+    }
+}
+impl Int&amp;lt;i64&amp;gt; {
+    fn x64(&amp;amp;self) -&amp;gt; &amp;amp;i64 {
+        &amp;amp;self.x
+    }
+}
+fn main() {
+    let p = Int { x: 5};
+    println!(&amp;quot;p.x = {}&amp;quot;, p.x());
+    println!(&amp;quot;p.x32 = {}&amp;quot;, p.x32());
+    //下面的注释掉的是错误语句
+    //println!(&amp;quot;p.x64={}&amp;quot;, p.x64());
+    let p2 = Int {x: 5i64};
+    println!(&amp;quot;p2.x = {}&amp;quot;, p2.x());
+    //下面的注释掉的是错误语句
+    //println!(&amp;quot;p2.x32 = {}&amp;quot;, p2.x32());
+    println!(&amp;quot;p2.x64 = {}&amp;quot;, p2.x64());
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+      
+    </item>
     
     <item>
       <title>Rust已经让我爱不释手了</title>
@@ -726,149 +785,6 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;/ol&gt;
 
 &lt;p&gt;我无法详实的记录这阶段取名的详细过程，只能给出之后的结果。最终确定的名字为“方立维”。取自文天祥《正气歌》里“地维赖以立，天柱赖以尊”这一句。古人认为天圆地方，大地靠几根绳子维系。将“维”和“立”在诗句中出现的顺序调换了一下，使其读起来更顺口。要说有什么寓意的话，希望小朋友以后做一个堂堂正正顶天立地的男子汉吧。&lt;/p&gt;</description>
-      
-    </item>
-    
-    <item>
-      <title>《如何阅读一本书》读书笔记</title>
-      <link>https://pureage.info/post/howto-read-a-book/</link>
-      <pubDate>Tue, 14 Nov 2017 13:45:01 +0000</pubDate>
-      
-      <guid>https://pureage.info/post/howto-read-a-book/</guid>
-      
-        <description>&lt;p&gt;在几位前辈的推荐下，读完了由莫提默·J.艾德勒和查尔斯·范多伦合著的《如何阅读一本书》，受益良多。&lt;/p&gt;
-
-&lt;p&gt;如书名明示的那样，这是一本指导读者如何读书的书。时至今日，阅读的目标可以分为两种，一种是为获得资讯而阅读，另一种是为增进理解而阅读。这本书就是为希望从阅读中增进理解的读者而准备的。&lt;/p&gt;
-
-&lt;p&gt;在阅读一本书之前，我们或多或少对其有一些期许，认为作者有义务努力的把书写好。本书提出作为读者也有自己该履行的义务。书中有一个比喻，在一场阅读的过程中，作者与读者就像是棒球赛场中的一对投手和捕手。写作与阅读的东西就像那只球一样，是被主动、有活力的双方所共有的，由一方开始，另一方终结。&lt;/p&gt;
-
-&lt;p&gt;本文的主要内容概括如下。&lt;/p&gt;
-
-&lt;h1 id=&#34;四个基本问题&#34;&gt;四个基本问题&lt;/h1&gt;
-
-&lt;p&gt;只要是超越基础阅读的阅读层次，阅读的艺术就是要以适当的顺序提出适当的问题。关于一本书，你一定要提出四个主要的问题。&lt;/p&gt;
-
-&lt;p&gt;(1) 整体来说，这本书到底在谈些什么？你一定要想办法找出这本书的主题，作者如何依次发展这个主题，如何逐步从核心主题分解出从属的关键议题来。&lt;/p&gt;
-
-&lt;p&gt;(2) 作者细部说了什么，怎么说的？你一定要想办法找出主要的想法、声明与论点。这些组合成作者想要传达的特殊讯息。&lt;/p&gt;
-
-&lt;p&gt;(3) 这本书说得有道理吗？是全部有道理，还是部分有道理？除非你能回答前两个问题，否则你没法回答这个问题。在你判断这本书是否有道理之前，你必须先了解整本书在说些什么才行。然而，等你了解了一本书，如果你又读得很认真的话，你会觉得有责任为这本书做个自己的判断。光是知道作者的想法是不够的。&lt;/p&gt;
-
-&lt;p&gt;(4) 这本书跟你有什么关系？如果这本书给了你一些资讯，你一定要问问这些资讯有什么意义。为什么这位作者会认为知道这件事很重要？你真的有必要去了解吗？如果这本书不只提供了资讯，还启发了你，就更有必要找出其他相关的、更深的含意或建议，以获得更多的启示。&lt;/p&gt;
-
-&lt;h1 id=&#34;阅读的层次&#34;&gt;阅读的层次&lt;/h1&gt;
-
-&lt;p&gt;阅读分为四个层次，分别是基础阅读、检视阅读、分析阅读和主题阅读。这些层次的关系是渐进的，较低的层次会包含在较高的层次中。&lt;/p&gt;
-
-&lt;h2 id=&#34;基础阅读&#34;&gt;基础阅读&lt;/h2&gt;
-
-&lt;p&gt;在熟练这个层次的过程中，一个人可以学习到阅读的基本艺术，接受基础的阅读训练，获得初步的阅读技巧。我们之所以喜欢“基础阅读”这个名称，是因为这个阅读层次的学习通常是在小学时完成的。这个层次所解决的问题是：“这个句子在说什么？”&lt;/p&gt;
-
-&lt;h2 id=&#34;检视阅读&#34;&gt;检视阅读&lt;/h2&gt;
-
-&lt;p&gt;在这个层次上，我们的目标是从表面上去观察这本书，学习到光是书的表象所教给我们的一切。这个层次的典型问题是：“这本书在谈什么？”，“这本书的架构如何？”，“这本书包含了哪些部分？”。&lt;/p&gt;
-
-&lt;p&gt;检视阅读包含有两个步骤，有经验的阅读者可以同时运用这两个步骤，对于刚起步的阅读者来说，最好是将两者区别为不同的步骤与活动。&lt;/p&gt;
-
-&lt;h3 id=&#34;检视阅读一-有系统的略读或粗度&#34;&gt;检视阅读一：有系统的略读或粗度&lt;/h3&gt;
-
-&lt;p&gt;（1）先看书名页，然后如果有序就先看序。要很快地看过去。特别注意副标题，或其他的相关说明或宗旨，或是作者写作本书的特殊角度。在完成这个步骤之前，你对这本书的主题已经有概念了。如果你愿意，你会暂停一下，在你脑海中将这本书归类为某个特定的类型。而在那个类型中，已经包含了哪些书。&lt;/p&gt;
-
-&lt;p&gt;（2）研究目录页，对这本书的基本架构做概括性的理解。&lt;/p&gt;
-
-&lt;p&gt;（3）如果书中附有索引，也要检阅一下——大多数论说类的书籍都会有索引。快速评估一下这本书涵盖了哪些议题的范围，以及所提到的书籍种类与作者等等。&lt;/p&gt;
-
-&lt;p&gt;（4）如果那是本包着书衣的新书，不妨读一下出版者的介绍。&lt;/p&gt;
-
-&lt;p&gt;（5）从你对一本书的目录很概略，甚至有点模糊的印象当中，开始挑几个看来跟主题息息相关的篇章来看。&lt;/p&gt;
-
-&lt;p&gt;（6）最后一步，把书打开来，东翻翻西翻翻，念个一两段，有时候连续读几页，但不要太多。就用这样的方法把全书翻过一遍，随时寻找主要论点的讯号，留意主题的基本脉动。最重要的是，不要忽略最后的两三页。&lt;/p&gt;
-
-&lt;h3 id=&#34;检视阅读二-粗浅的阅读&#34;&gt;检视阅读二：粗浅的阅读&lt;/h3&gt;
-
-&lt;p&gt;从头到尾先读完一遍，碰到不懂的地方不要停下来查询或思索。在第一次阅读一本难读的书时，不要企图了解每一个字句，这是最最重要的一个规则。&lt;/p&gt;
-
-&lt;h2 id=&#34;分析阅读&#34;&gt;分析阅读&lt;/h2&gt;
-
-&lt;p&gt;分析阅读是这本书中话费笔墨最多的部分，可以分为三个阶段，每个阶段又由若干规则组成。&lt;/p&gt;
-
-&lt;h3 id=&#34;分析阅读的第一个阶段&#34;&gt;分析阅读的第一个阶段&lt;/h3&gt;
-
-&lt;p&gt;分析阅读的第一阶段：找出一本书在谈些什么的规则。包含以下若干规则：&lt;/p&gt;
-
-&lt;p&gt;(1) 依照书的种类与主题来分类。&lt;/p&gt;
-
-&lt;p&gt;(2) 使用最简短的文字说明整本书在谈些什么。&lt;/p&gt;
-
-&lt;p&gt;(3) 将主要部分按顺序与关联性列举出来。将全书的大纲列举出来，并将各个部分的大纲也列出来。&lt;/p&gt;
-
-&lt;p&gt;(4) 确定作者想要解决的问题。&lt;/p&gt;
-
-&lt;h3 id=&#34;分析阅读的第二个阶段&#34;&gt;分析阅读的第二个阶段&lt;/h3&gt;
-
-&lt;p&gt;分析阅读的第二阶段：诠释一本书的内容规则。包含以下若干规则：&lt;/p&gt;
-
-&lt;p&gt;(5) 诠释作者的关键字，与他达成共识。&lt;/p&gt;
-
-&lt;p&gt;(6) 由最重要的句子中，抓住作者的重要主旨。&lt;/p&gt;
-
-&lt;p&gt;(7) 知道作者的论述是什么，从内容中找出相关的句子，再重新架构出来。&lt;/p&gt;
-
-&lt;p&gt;(8) 确定作者已经解决了哪些问题，还有哪些是没解决的。再判断哪些是作者知道他没解决的问题。&lt;/p&gt;
-
-&lt;h3 id=&#34;分析阅读的第三个阶段&#34;&gt;分析阅读的第三个阶段&lt;/h3&gt;
-
-&lt;p&gt;分析阅读的第三阶段：像是沟通知识一样地评论一本书的规则&lt;/p&gt;
-
-&lt;p&gt;A．智慧礼节的一般规则&lt;/p&gt;
-
-&lt;p&gt;(9) 除非你已经完成大纲架构，也能诠释整本书了，否则不要轻易批评。（在你说出：“我读懂了!”之前，不要说你同意、不同意或暂缓评论。）&lt;/p&gt;
-
-&lt;p&gt;(10) 不要争强好胜，非辩到底不可。&lt;/p&gt;
-
-&lt;p&gt;(11) 在说出评论之前，你要能证明自己区别得出真正的知识与个人观点的不同。&lt;/p&gt;
-
-&lt;p&gt;B. 批评观点的特别标准&lt;/p&gt;
-
-&lt;p&gt;(12) 证明作者的知识不足。&lt;/p&gt;
-
-&lt;p&gt;(13) 证明作者的知识错误。&lt;/p&gt;
-
-&lt;p&gt;(14) 证明作者不合逻辑。&lt;/p&gt;
-
-&lt;p&gt;(15) 证明作者的分析与理由是不完整的。&lt;/p&gt;
-
-&lt;p&gt;注意：关于最后这四点，前三点是表示不同意见的准则，如果你无法提出相关的佐证，就必须同意作者的说法，或至少一部分说法。你只能因为最后一点理由，对这本书暂缓评论。&lt;/p&gt;
-
-&lt;h2 id=&#34;主题阅读&#34;&gt;主题阅读&lt;/h2&gt;
-
-&lt;p&gt;这是所有阅读中最复杂也最系统化的阅读。在做主题阅读时，阅读者会读很多书，而不是一本书，并列举出这些书之间相关之处，提出一个所有的书都谈到的主题。但只是书本字里行间的比较还不够。主题阅读涉及的远不止此。借助他所阅读的书籍，主题阅读者要能够架构出一个可能在哪一本书里都没提过的主题分析。因此，很显然的，主题阅读是最主动、也最花力气的一种阅读。&lt;/p&gt;
-
-&lt;h3 id=&#34;主题阅读的步骤&#34;&gt;主题阅读的步骤&lt;/h3&gt;
-
-&lt;ol&gt;
-&lt;li&gt;找到书中与主题相关的章节&lt;/li&gt;
-&lt;li&gt;带引作者与你达成共识&lt;/li&gt;
-&lt;li&gt;厘清问题&lt;/li&gt;
-&lt;li&gt;界定议题&lt;/li&gt;
-&lt;li&gt;分析讨论&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&#34;其他&#34;&gt;其他&lt;/h1&gt;
-
-&lt;p&gt;上面所述的各种规则，是针对一般性的论述类型的书籍而言的通用规则。某些具体类型的书籍有一些特殊的要求。作者也针对这些类型的书列出了不同的阅读规则。&lt;/p&gt;
-
-&lt;p&gt;主要包括：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;如何阅读实用型的书&lt;/li&gt;
-&lt;li&gt;如何阅读想象文学&lt;/li&gt;
-&lt;li&gt;阅读故事、戏剧与诗的一些建议&lt;/li&gt;
-&lt;li&gt;如何阅读历史书&lt;/li&gt;
-&lt;li&gt;如何阅读科学与数学&lt;/li&gt;
-&lt;li&gt;如何阅读哲学书&lt;/li&gt;
-&lt;li&gt;如何阅读社会科学&lt;/li&gt;
-&lt;/ul&gt;</description>
       
     </item>
     

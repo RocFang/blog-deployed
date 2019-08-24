@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Rust · 纯真年代</title>
+  <title>Rust中struct与其method定义中的范型标识符 - 纯真年代</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="纯真年代" />
+  <meta name="description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&amp;lt;范型标识符&amp;gt;，例如：
+struct Int&amp;lt;T&amp;gt; " />
+
   <meta name="keywords" content="程序员, 文学, 生活" />
 
 
@@ -34,8 +36,7 @@
 <meta name="generator" content="Hugo 0.57.2" />
 
 
-<link rel="canonical" href="https://pureage.info/tags/rust/" />
-<link href="%7balternate%20%7bRSS%20application/rss&#43;xml%20%20index%20alternate%20%20false%20false%20true%20false%20false%200%7d%20/tags/rust/index.xml%20https://pureage.info/tags/rust/index.xml%7d" rel="alternate" type="application/rss+xml" title="纯真年代" />
+<link rel="canonical" href="https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/" />
 
 
 
@@ -57,18 +58,35 @@
 
 
 
-<meta property="og:title" content="Rust" />
-<meta property="og:description" content="纯真年代" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://pureage.info/tags/rust/" />
+<meta property="og:title" content="Rust中struct与其method定义中的范型标识符" />
+<meta property="og:description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：
 
-<meta property="og:updated_time" content="2019-08-24T11:10:10+08:00" />
-<meta itemprop="name" content="Rust">
-<meta itemprop="description" content="纯真年代">
+struct Int&lt;T&gt; 
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/" />
+<meta property="article:published_time" content="2019-08-24T11:10:10+08:00" />
+<meta property="article:modified_time" content="2019-08-24T11:10:10+08:00" />
+<meta itemprop="name" content="Rust中struct与其method定义中的范型标识符">
+<meta itemprop="description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：
 
+struct Int&lt;T&gt; 
+">
+
+
+<meta itemprop="datePublished" content="2019-08-24T11:10:10&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-24T11:10:10&#43;08:00" />
+<meta itemprop="wordCount" content="362">
+
+
+
+<meta itemprop="keywords" content="rust," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Rust"/>
-<meta name="twitter:description" content="纯真年代"/>
+<meta name="twitter:title" content="Rust中struct与其method定义中的范型标识符"/>
+<meta name="twitter:description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：
+
+struct Int&lt;T&gt; 
+"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -285,88 +303,152 @@
     <main id="main" class="main bg-llight">
       <div class="content-wrapper">
         <div id="content" class="content container">
-          
-
-<section id="archive" class="archive">
-  
+          <article class="post bg-white">
     
-      <div class="archive-title tag">
-        <h2 class="archive-name">标签： Rust</h2>
+    <header class="post-header">
+      <h1 class="post-title">Rust中struct与其method定义中的范型标识符</h1>
+      
+      <div class="post-meta">
+        <time datetime="2019-08-24" class="post-time">
+          2019-08-24
+        </time>
+        
+        
+
+        
+        
+
+        
+        
       </div>
+    </header>
+
     
-  
+    
 
-  
-    <div class="archive-post">
-      <time datetime="2019-08-24" class="archive-post-time">
-        2019-08-24
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/generic-type-identifier-in-struct-and-method-definition/" class="archive-post-link">
-          Rust中struct与其method定义中的范型标识符
-        </a>
-      </span>
+    
+    <div class="post-content">
+      <p>Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：</p>
+
+<pre><code class="language-rust">struct Int&lt;T&gt; 
+</code></pre>
+
+<p>而在struct的方法的定义中使用范型，则是形如：</p>
+
+<pre><code class="language-rust">impl&lt;T&gt; Int&lt;T&gt; 
+</code></pre>
+
+<p>注意这里有两个范型标识<T>。</p>
+
+<p>impl后面的<T>并不是可有可无的，如果其后有<T>，则后面struct名字后面的<T>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
+
+<p>Rust使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。</p>
+
+<p>如下面的代码所示，x方法为所有Int实例所共有，但x32方法和x64方法则分别仅为具体类型为i32和i64的Int实例所有：</p>
+
+<pre><code class="language-rust">struct Int&lt;T&gt; {
+    x: T,
+}
+impl&lt;T&gt; Int&lt;T&gt; {
+    fn x(&amp;self) -&gt; &amp;T {
+        &amp;self.x
+    }
+}
+impl Int&lt;i32&gt; {
+    fn x32(&amp;self) -&gt; &amp;i32 {
+        &amp;self.x
+    }
+}
+impl Int&lt;i64&gt; {
+    fn x64(&amp;self) -&gt; &amp;i64 {
+        &amp;self.x
+    }
+}
+fn main() {
+    let p = Int { x: 5};
+    println!(&quot;p.x = {}&quot;, p.x());
+    println!(&quot;p.x32 = {}&quot;, p.x32());
+    //下面的注释掉的是错误语句
+    //println!(&quot;p.x64={}&quot;, p.x64());
+    let p2 = Int {x: 5i64};
+    println!(&quot;p2.x = {}&quot;, p2.x());
+    //下面的注释掉的是错误语句
+    //println!(&quot;p2.x32 = {}&quot;, p2.x32());
+    println!(&quot;p2.x64 = {}&quot;, p2.x64());
+}
+</code></pre>
     </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2019-08-24
+      
+    </span>
+  </p>
   
-    <div class="archive-post">
-      <time datetime="2019-08-21" class="archive-post-time">
-        2019-08-21
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/refine-my-first-rust-project/" class="archive-post-link">
-          Rust已经让我爱不释手了
-        </a>
-      </span>
-    </div>
-  
-    <div class="archive-post">
-      <time datetime="2019-08-20" class="archive-post-time">
-        2019-08-20
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/test-for-blog-writer-by-rust/" class="archive-post-link">
-          用Rust写了一个博客的客户端发布工具
-        </a>
-      </span>
-    </div>
-  
-    <div class="archive-post">
-      <time datetime="2019-08-16" class="archive-post-time">
-        2019-08-16
-      </time>
-      <span class="archive-post-title">
-        <a href="/post/a-misunderstanding-of-tao-of-rust/" class="archive-post-link">
-          在阅读《Rust编程之道》时的一次抬杠经历
-        </a>
-      </span>
-    </div>
-  
-</section>
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
 
 
+    
+    
 
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/rust/">rust</a>
+          
+        </div>
 
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/refine-my-first-rust-project/">
+            <span class="next-text nav-default">Rust已经让我爱不释手了</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
 
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
 
   
   
+
+  
+  
+
   
 
   
   
 
   
-  
 
   
-  
 
   
-  
 
-
-
-
+    
 
         </div>
       </div>

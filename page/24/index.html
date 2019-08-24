@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-08-21T21:26:11+08:00" />
+<meta property="og:updated_time" content="2019-08-24T11:10:10+08:00" />
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
 
@@ -299,6 +299,53 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2013/06/27/116.html">好的设计真是一念之间吗？</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2013-06-27" class="post-time">
+        2013-06-27
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <h2 id="背景描述">背景描述</h2>
+
+<p>近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。</p>
+
+<h2 id="分工明确化">分工明确化</h2>
+
+<p>从始至终我们持有的一个观点就是，这个worker的功能要极度简化，就是去从tasklist中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个tasklist怎么来的，里面的任务是由谁来插入，worker一概不管。这样的话，有几个好处：</p>
+
+<ul>
+<li>worker的角色明确，目标清晰。直接的好处就是代码容易编写。<br /></li>
+<li>设计思想比较通用<br /></li>
+<li>tasklist的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的log中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。<br /></li>
+</ul>
+
+<h2 id="关于重试">关于重试</h2>
+
+<p>worker从tasklist中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。关于这个异常处理，在这里多说两句，讲一个亲身经历的例子：</p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/06/27/116.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2013/05/24/115.html">记一个here document的坑</a>
     </h1>
     
@@ -455,41 +502,6 @@ EOF
     </div>
     <div class="read-more">
       <a href="/2013/04/11/112.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/02/24/110.html">记在《霍比特人》观影前</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-02-24" class="post-time">
-        2013-02-24
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>如果说有什么电影是我非看不可的话，那就是伊斯特伍德的新片和《指环王》系列了。</p>
-
-<p>伊斯特伍德老爷子已经是83岁高龄了，电影是看一部少一部，不需要多说。而看到《霍比特人》，则让我想起那些情迷中土的黄金岁月。</p>
-
-<p>附上一段自己在2006年写的一点东西，以资纪念。既然是纪念，原文中的错别字也一并保留了。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/02/24/110.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
