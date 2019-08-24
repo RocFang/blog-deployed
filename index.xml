@@ -28,9 +28,9 @@
 &lt;pre&gt;&lt;code class=&#34;language-rust&#34;&gt;impl&amp;lt;T&amp;gt; Int&amp;lt;T&amp;gt; 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;注意这里有两个范型标识&lt;T&gt;。&lt;/p&gt;
+&lt;p&gt;注意这里有两个范型标识符&lt;code&gt;&amp;lt;T&amp;gt;&lt;/code&gt;。&lt;/p&gt;
 
-&lt;p&gt;impl后面的&lt;T&gt;并不是可有可无的，如果其后有&lt;T&gt;，则后面struct名字后面的&lt;T&gt;才会被编译器认为是范型，否则编译器它是一个具体类型。&lt;/p&gt;
+&lt;p&gt;impl后面的&lt;code&gt;&amp;lt;T&amp;gt;&lt;/code&gt;并不是可有可无的，如果其后有&lt;code&gt;&amp;lt;T&amp;gt;&lt;/code&gt;，则后面struct名字后面的&lt;code&gt;&amp;lt;T&amp;gt;&lt;/code&gt;才会被编译器认为是范型，否则编译器它是一个具体类型。&lt;/p&gt;
 
 &lt;p&gt;Rust使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。&lt;/p&gt;
 

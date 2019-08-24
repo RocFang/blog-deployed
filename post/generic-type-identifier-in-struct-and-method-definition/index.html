@@ -76,7 +76,7 @@ struct Int&lt;T&gt;
 
 <meta itemprop="datePublished" content="2019-08-24T11:10:10&#43;08:00" />
 <meta itemprop="dateModified" content="2019-08-24T11:10:10&#43;08:00" />
-<meta itemprop="wordCount" content="362">
+<meta itemprop="wordCount" content="399">
 
 
 
@@ -338,9 +338,9 @@ struct Int&lt;T&gt;
 <pre><code class="language-rust">impl&lt;T&gt; Int&lt;T&gt; 
 </code></pre>
 
-<p>注意这里有两个范型标识<T>。</p>
+<p>注意这里有两个范型标识符<code>&lt;T&gt;</code>。</p>
 
-<p>impl后面的<T>并不是可有可无的，如果其后有<T>，则后面struct名字后面的<T>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
+<p>impl后面的<code>&lt;T&gt;</code>并不是可有可无的，如果其后有<code>&lt;T&gt;</code>，则后面struct名字后面的<code>&lt;T&gt;</code>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
 
 <p>Rust使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。</p>
 
