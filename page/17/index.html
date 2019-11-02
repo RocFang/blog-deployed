@@ -64,7 +64,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://pureage.info/" />
 
-<meta property="og:updated_time" content="2019-08-30T17:36:06+08:00" />
+<meta property="og:updated_time" content="2019-11-03T00:01:46+08:00" />
 <meta itemprop="name" content="纯真年代">
 <meta itemprop="description" content="纯真年代">
 
@@ -299,6 +299,45 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2014/04/12/agentzh.html">程序员中的标杆人物-章亦春</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-04-11" class="post-time">
+        2014-04-11
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>这标题，怎么读着这么别扭。</p>
+
+<p>接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如Linus就不用多说了，身边的同学和同事中，技术牛人性格也一般比较桀骜。桀骜的表现之一就是不会浪费时间去回答一些基本的问题，最著名的就是那篇流传已久的论坛发帖指南了吧。</p>
+
+<p>自己虽然算不上牛人，但在某些方面也会有同事来求助，碰到一些比较低端的问题，其实心里会有烦躁的。烦躁的程度与当时的心情、手里有多少活正在干等因素相关。</p>
+
+<p>直到有一天我接触到了章哥。</p>
+
+<p>章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/04/12/agentzh.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2014/03/31/difference-of-rd-and-sales.html">研发与销售的一些区别</a>
     </h1>
     
@@ -442,43 +481,6 @@
     </div>
     <div class="read-more">
       <a href="/2014/02/22/host-variable-in-nginx.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/01/27/176.html">依赖一个RPM来制作新的RPM</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-01-27" class="post-time">
-        2014-01-27
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。</p>
-
-<p>在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。</p>
-
-<p>再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。</p>
-
-<p>最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2014/01/27/176.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>

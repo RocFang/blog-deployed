@@ -3,14 +3,35 @@
   
   <url>
     <loc>https://pureage.info/post/</loc>
-    <lastmod>2019-08-30T17:36:06+08:00</lastmod>
+    <lastmod>2019-11-03T00:01:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/</loc>
-    <lastmod>2019-08-30T17:36:06+08:00</lastmod>
+    <lastmod>2019-11-03T00:01:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/why-this-blog-not-update-so-long/</loc>
+    <lastmod>2019-11-03T00:01:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2019-11-03T00:01:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/</loc>
+    <lastmod>2019-11-03T00:01:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -24,13 +45,6 @@
   
   <url>
     <loc>https://pureage.info/tags/%E6%89%AF%E6%B7%A1/</loc>
-    <lastmod>2019-08-30T17:36:06+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/</loc>
     <lastmod>2019-08-30T17:36:06+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -109,13 +123,6 @@
   <url>
     <loc>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</loc>
     <lastmod>2019-04-07T17:51:22+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/tags/%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2019-03-25T10:45:26+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

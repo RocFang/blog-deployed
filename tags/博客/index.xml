@@ -6,10 +6,19 @@
     <description>Recent content in 博客 on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 25 Mar 2019 10:45:26 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 03 Nov 2019 00:01:46 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>为什么这两个月没更新博客</title>
+      <link>https://pureage.info/post/why-this-blog-not-update-so-long/</link>
+      <pubDate>Sun, 03 Nov 2019 00:01:46 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/why-this-blog-not-update-so-long/</guid>
+      <description>&lt;p&gt;最近这两个月，我没有在本博客上更新一篇文章。这也不是什么罕见的事情，因为各种借口不愿意写文章在过去也发生过很多次。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>将域名转到Namesilo</title>
