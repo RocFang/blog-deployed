@@ -6,10 +6,19 @@
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 03 Nov 2019 00:01:46 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 15 Nov 2019 16:46:29 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>存储</title>
+      <link>https://pureage.info/tags/%E5%AD%98%E5%82%A8/</link>
+      <pubDate>Fri, 15 Nov 2019 16:46:29 +0800</pubDate>
+      
+      <guid>https://pureage.info/tags/%E5%AD%98%E5%82%A8/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>博客</title>
@@ -179,15 +188,6 @@
       <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
       
       <guid>https://pureage.info/tags/fastdfs/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>口琴</title>
-      <link>https://pureage.info/tags/%E5%8F%A3%E7%90%B4/</link>
-      <pubDate>Sun, 01 Dec 2013 09:32:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/tags/%E5%8F%A3%E7%90%B4/</guid>
       <description></description>
     </item>
     

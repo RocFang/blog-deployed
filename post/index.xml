@@ -6,10 +6,27 @@
     <description>Recent content in Posts on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 03 Nov 2019 00:01:46 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 15 Nov 2019 16:46:29 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>掀桌子的 MinIO</title>
+      <link>https://pureage.info/post/scalability-of-minio/</link>
+      <pubDate>Fri, 15 Nov 2019 16:46:29 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/scalability-of-minio/</guid>
+      <description>&lt;p&gt;MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一个不支持扩容的存储也配叫存储？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。&lt;/p&gt;
+
+&lt;p&gt;但是一年以后，我的看法有一个 360 度的改变，并对 MinIO 团队产生了非常高的敬意。这个敬意来自于，他们敢于打破桎梏，敢于“掀桌子”。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>为什么这两个月没更新博客</title>
@@ -243,21 +260,6 @@
       
       <guid>https://pureage.info/post/composite-ring-of-swift/</guid>
       <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>王小波和狄德罗</title>
-      <link>https://pureage.info/post/wangxiaobo-and-diderot/</link>
-      <pubDate>Sat, 20 Oct 2018 00:13:41 +0800</pubDate>
-      
-      <guid>https://pureage.info/post/wangxiaobo-and-diderot/</guid>
-      <description>&lt;p&gt;在《似水流年》里，王二曾经很想把肚子划破，掏出肠子挂到敌人脖子上去。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;在和平年月里，生活只是挖坑种粮的竞争。虽然生的人高马大，我却比不过别人。这是因为：第一，我不是从小干惯了这种活计；第二，我有腰疼病，干农活没有腰不成。所以我盼望另一种竞争。在战场上，我的英勇会超过一切人。假如做了俘虏，我会偷偷捡块玻璃，把肚子划破，掏出肠子挂到敌人脖子上去。像我这样的兵员一定大为有用。但是不发生战争，我就像刘老先生一样没用。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;在经历了一系列的变故后，他逐渐放弃了这个想法。&lt;/p&gt;</description>
     </item>
     
   </channel>

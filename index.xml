@@ -6,10 +6,70 @@
     <description>Recent content on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 03 Nov 2019 00:01:46 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 15 Nov 2019 16:46:29 +0800</lastBuildDate>
     
         <atom:link href="https://pureage.info/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>掀桌子的 MinIO</title>
+      <link>https://pureage.info/post/scalability-of-minio/</link>
+      <pubDate>Fri, 15 Nov 2019 16:46:29 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/scalability-of-minio/</guid>
+      
+        <description>&lt;p&gt;MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;一个不支持扩容的存储也配叫存储？&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。&lt;/p&gt;
+
+&lt;p&gt;但是一年以后，我的看法有一个 360 度的改变，并对 MinIO 团队产生了非常高的敬意。这个敬意来自于，他们敢于打破桎梏，敢于“掀桌子”。&lt;/p&gt;
+
+&lt;p&gt;前面说到，一个普遍的认识是分布式存储必须要能扩容。但是，扩容做起来像说起来这么容易吗？我相信绝大多数在一定量级以上做过扩容操作的人都会认同这是一个痛苦的事情。&lt;/p&gt;
+
+&lt;p&gt;痛苦是正常的，因为这个事情的复杂性是逃不掉的，在存储容量到达一定量级之后，无论你选择的存储是中心结构的，还是非中心结构的，是基于数据库，还是使用各种改进型的一致性哈希，都会涉及到大量的数据迁移。而在迁移的过程中，当然旧文件的读，新文件的写不能停。理论上大多数分布式存储都能做到热迁移，实际执行起来需要注意的事情太多，服务多少都会受到影响。&lt;/p&gt;
+
+&lt;p&gt;面对一个棘手的场景，该怎么继续走下去？比较明显的分成了两派意见，一派是大多数人的做法，坚持把迁移过程做到稳定可靠，小心驶得万年船。另一派就是 MinIO 团队的做法，“我不玩了”，干脆不支持这种传统意义上的横向扩容，数据不用迁移。&lt;/p&gt;
+
+&lt;p&gt;看到这里，你可能会觉得，这是一种弱者的玩法。但事实并非如此，MinIO 团队就是原 GlusterFS 的主要开发者。在存储这个领域摸爬滚打这么多年，选择这样一个设计，这中间必然融入了他们深入的思考和血泪的教训。&lt;/p&gt;
+
+&lt;p&gt;MinIO 的典型使用场景是在私有云存储，一个集群部署好之后，基本上就不用再费劲去维护它。底层使用纠删码保证数据的安全，坏盘只要不超过一半数量（默认情况，可调），数据就是可用的。由于没有内部的数据迁移，架构和功能变得极简单，稳定性也因而增强了很多。&lt;/p&gt;
+
+&lt;p&gt;但是横向扩展仍然让人如鲠在喉，是不是他们就真的完全放弃扩容这一场景呢？&lt;/p&gt;
+
+&lt;p&gt;其实并非如此，MinIO 同样具有横向扩展能力，只是它走了另一条路，
+他们巧妙的将一个已经被公认为分布式存储自身的复杂问题，变成了一个部署问题。简单的说，就是如果要扩容，就再增加新的独立的集群，业务方自行决定使用具体哪一个集群。&lt;/p&gt;
+
+&lt;p&gt;具体实施起来，我随便说几个方案。&lt;/p&gt;
+
+&lt;p&gt;第一种方案，把集群信息编码到 url 中， 从 url 中定位到具体的集群。其实 MinIO 官方推荐的联邦模式也是这一种方案，只不过它具体针对的是 bucket 名做处理。&lt;/p&gt;
+
+&lt;p&gt;第二种方案，调用方在 header 里指定集群，负载均衡服务做转发。&lt;/p&gt;
+
+&lt;p&gt;这两种方案针对的场景比较有限，那就是私有云下，资源由业务方自己控制，集群信息也因而可以自己指定。&lt;/p&gt;
+
+&lt;p&gt;那么，如果是在公有云的场景下，是不是就完全不能做呢？还是有一些方法的。&lt;/p&gt;
+
+&lt;p&gt;第三种方案，部署双集群，每次写入都做双写，其中一个是备份集群，平时只写不读。当需要扩容的时候，启动新的大容量的集群，原只写不读的备份集群变成只读不写，写入则落到新的集群。读的时候，新集群里如果没有，再从备份集群中读，并慢慢将旧数据迁到新集群中去。&lt;/p&gt;
+
+&lt;p&gt;第四种方案，使用一个中心的 kv，将每个资源与集群的关系对应起来。这种方案看起来这个中心的 kv 会变成瓶颈或者单点，可以使用一些高性能的分布式 kv 来做，比如 tikv。退一步说，即使 kv 完全挂掉甚至数据完全丢失，我们仍然可以通过对集群做轮询来重建映射关系，当然要付出在重建映射期间轮训带来的性能损失。&lt;/p&gt;
+
+&lt;p&gt;第五种方案，使用一致性哈希或者各种改进型的一致性哈希方案，计算 url 对应的集群。扩容的时候，写入操作查询新哈希，读取操作先查新哈希，再查旧哈希。同时，集群中各设备慢慢将自己硬盘上需要迁移的数据迁到新的哈希关系决定的目标设备中去。&lt;/p&gt;
+
+&lt;p&gt;这最后两种方案，大家可能会禁不住暗笑。这不就是完全借用了传统的分布式存储中资源到节点映射关系的两种典型方案吗？&lt;/p&gt;
+
+&lt;p&gt;当然，这些方案都是我随意冒出来的想法，实际落地肯定需要根据自己的业务做大量严格的测试。你肯定也有自己的想法。&lt;/p&gt;
+
+&lt;p&gt;写到这里，我们对 MinIO 的横向扩展做一个总结。如果你是用来做私有云存储，那 MinIO 非常适合你。横向扩展简单，且完全不会有数据的迁移。如果你是用来做公有的云存储，那 MinIO 不能直接使用，你需要在外围自行设计一个扩容的方案。&lt;/p&gt;
+
+&lt;p&gt;为什么我现在会对 MinIO 团队有很高的敬意呢？&lt;/p&gt;
+
+&lt;p&gt;因为 GlusterFS 项目证明了他们有能力做出复杂的系统，而 MinIO 项目又证明他们不仅有能力做出复杂的系统，还有能力从泥潭中&lt;strong&gt;跳脱&lt;/strong&gt;出来，放弃一些东西，做出一个简单的系统，开创一片新的天地。这种思维，值得我们去学习。&lt;/p&gt;</description>
+      
+    </item>
     
     <item>
       <title>为什么这两个月没更新博客</title>
@@ -676,27 +736,6 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;p&gt;这话当然不是我杜撰的，具体见: &lt;a href=&#34;https://github.com/golang/go/issues/26746&#34;&gt;https://github.com/golang/go/issues/26746&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;连我这种软件行业的凡夫俗子，都知道遇到异常的合理处理方式是什么（例如我在2013年写的一篇文章：&lt;a href=&#34;http://pureage.info/2013/07/13/117.html&#34;&gt;再不判断异常分支就剁手&lt;/a&gt;），google 里绝对意义上的高手竟然对此毫不在意，实在让人大跌眼镜。&lt;/p&gt;</description>
-      
-    </item>
-    
-    <item>
-      <title>openstack swift中的composite ring</title>
-      <link>https://pureage.info/post/composite-ring-of-swift/</link>
-      <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
-      
-      <guid>https://pureage.info/post/composite-ring-of-swift/</guid>
-      
-        <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;这个功能乍看很实用，但是实际上很鸡肋，因为 swift 内部 ring 构建算法并不能保证各副本会均匀的分布在各 region 中。例如，如果你想通过两个 region 实现真正的跨机房备份的话是不行的，因为一个对象的所有副本可能都会在某一个机房的设备上，而另一个机房里一份副本都没有。如果连基本的均衡都做不到，之前的 global clusters 其实并无多大实际意义。&lt;/p&gt;
-
-&lt;p&gt;在最新的 swift 2.19.0 版本里，通过一个叫做组合环（compsite ring）的概念，这个情况才得以改善。它的实现方式如下。&lt;/p&gt;
-
-&lt;p&gt;一个组合环是由两个或多个普通环组合而成，组合后的环，其副本冗余数量是这些普通环的冗余数量之和。各个普通环是在不同的 region 使用不同的设备独立构建的。&lt;/p&gt;
-
-&lt;p&gt;例如，假设想实现一个在A，B两地机房的三份冗余的存储，而且A机房作为主机房希望每个对象都在其上冗余两份，B机房作为次机房则只冗余一份。那么就在分别构建针对 A 和 B 的两个哈希环 RingA 和 RingB, RingA 在创建时指定其冗余份数为2，RingB 在创建时指定其冗余份数为1。在各自添加完设备并生成 ring 文件后，使用 swift 2.19.0 里新增的一个工具 swift-ring-composer，来将 RingA 和 RingB 组合成一个新的环，然后将这个新的环作为最终的环分发到各设备中去使用。&lt;/p&gt;
-
-&lt;p&gt;文档里称 swift-ring-composer 是个实验性质的工具，未来可能会修改或被删除，大家酌情使用。&lt;/p&gt;</description>
       
     </item>
     
