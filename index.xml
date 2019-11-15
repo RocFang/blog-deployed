@@ -67,7 +67,14 @@
 
 &lt;p&gt;为什么我现在会对 MinIO 团队有很高的敬意呢？&lt;/p&gt;
 
-&lt;p&gt;因为 GlusterFS 项目证明了他们有能力做出复杂的系统，而 MinIO 项目又证明他们不仅有能力做出复杂的系统，还有能力从泥潭中&lt;strong&gt;跳脱&lt;/strong&gt;出来，放弃一些东西，做出一个简单的系统，开创一片新的天地。这种思维，值得我们去学习。&lt;/p&gt;</description>
+&lt;p&gt;因为 GlusterFS 项目证明了他们有能力做出复杂的系统，而 MinIO 项目又证明他们不仅有能力做出复杂的系统，还有能力从泥潭中&lt;strong&gt;跳脱&lt;/strong&gt;出来，放弃一些东西，做出一个简单的系统，开创一片新的天地。这种思维，值得我们去学习。&lt;/p&gt;
+
+&lt;p&gt;附一些 issue 作为参考：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/minio/minio/issues/7986&#34;&gt;https://github.com/minio/minio/issues/7986&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/minio/minio/issues/4364&#34;&gt;https://github.com/minio/minio/issues/4364&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
       
     </item>
     
