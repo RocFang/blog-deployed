@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Rust中struct与其method定义中的范型标识符 - 纯真年代</title>
+  <title>Rust 中 struct 与其 method 定义中的范型标识符 - 纯真年代</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,8 +23,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&amp;lt;范型标识符&amp;gt;，例如：
-struct Int&amp;lt;T&amp;gt;  而在struct的方法的定义中使用范型，则是形如：
+  <meta name="description" content="Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&amp;lt;范型标识符&amp;gt;，例如：
+struct Int&amp;lt;T&amp;gt;  而在 struct 的方法的定义中使用范型，则是形如：
 impl&amp;lt;T&amp;gt; Int&amp;lt;T&amp;gt; " />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
@@ -61,13 +61,13 @@ impl&amp;lt;T&amp;gt; Int&amp;lt;T&amp;gt; " />
 
 
 
-<meta property="og:title" content="Rust中struct与其method定义中的范型标识符" />
-<meta property="og:description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：
+<meta property="og:title" content="Rust 中 struct 与其 method 定义中的范型标识符" />
+<meta property="og:description" content="Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&lt;范型标识符&gt;，例如：
 
 struct Int&lt;T&gt; 
 
 
-而在struct的方法的定义中使用范型，则是形如：
+而在 struct 的方法的定义中使用范型，则是形如：
 
 impl&lt;T&gt; Int&lt;T&gt; 
 " />
@@ -75,13 +75,13 @@ impl&lt;T&gt; Int&lt;T&gt;
 <meta property="og:url" content="https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/" />
 <meta property="article:published_time" content="2019-08-24T11:10:10+08:00" />
 <meta property="article:modified_time" content="2019-08-24T11:10:10+08:00" />
-<meta itemprop="name" content="Rust中struct与其method定义中的范型标识符">
-<meta itemprop="description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：
+<meta itemprop="name" content="Rust 中 struct 与其 method 定义中的范型标识符">
+<meta itemprop="description" content="Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&lt;范型标识符&gt;，例如：
 
 struct Int&lt;T&gt; 
 
 
-而在struct的方法的定义中使用范型，则是形如：
+而在 struct 的方法的定义中使用范型，则是形如：
 
 impl&lt;T&gt; Int&lt;T&gt; 
 ">
@@ -89,19 +89,19 @@ impl&lt;T&gt; Int&lt;T&gt;
 
 <meta itemprop="datePublished" content="2019-08-24T11:10:10&#43;08:00" />
 <meta itemprop="dateModified" content="2019-08-24T11:10:10&#43;08:00" />
-<meta itemprop="wordCount" content="399">
+<meta itemprop="wordCount" content="358">
 
 
 
 <meta itemprop="keywords" content="rust," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Rust中struct与其method定义中的范型标识符"/>
-<meta name="twitter:description" content="Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：
+<meta name="twitter:title" content="Rust 中 struct 与其 method 定义中的范型标识符"/>
+<meta name="twitter:description" content="Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&lt;范型标识符&gt;，例如：
 
 struct Int&lt;T&gt; 
 
 
-而在struct的方法的定义中使用范型，则是形如：
+而在 struct 的方法的定义中使用范型，则是形如：
 
 impl&lt;T&gt; Int&lt;T&gt; 
 "/>
@@ -324,7 +324,7 @@ impl&lt;T&gt; Int&lt;T&gt;
           <article class="post bg-white">
     
     <header class="post-header">
-      <h1 class="post-title">Rust中struct与其method定义中的范型标识符</h1>
+      <h1 class="post-title">Rust 中 struct 与其 method 定义中的范型标识符</h1>
       
       <div class="post-meta">
         <time datetime="2019-08-24" class="post-time">
@@ -346,23 +346,23 @@ impl&lt;T&gt; Int&lt;T&gt;
 
     
     <div class="post-content">
-      <p>Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：</p>
+      <p>Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&lt;范型标识符&gt;，例如：</p>
 
 <pre><code class="language-rust">struct Int&lt;T&gt; 
 </code></pre>
 
-<p>而在struct的方法的定义中使用范型，则是形如：</p>
+<p>而在 struct 的方法的定义中使用范型，则是形如：</p>
 
 <pre><code class="language-rust">impl&lt;T&gt; Int&lt;T&gt; 
 </code></pre>
 
 <p>注意这里有两个范型标识符<code>&lt;T&gt;</code>。</p>
 
-<p>impl后面的<code>&lt;T&gt;</code>并不是可有可无的，如果其后有<code>&lt;T&gt;</code>，则后面struct名字后面的<code>&lt;T&gt;</code>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
+<p>impl 后面的<code>&lt;T&gt;</code>并不是可有可无的，如果其后有<code>&lt;T&gt;</code>，则后面 struct 名字后面的<code>&lt;T&gt;</code>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
 
-<p>Rust使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。</p>
+<p>Rust 使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。</p>
 
-<p>如下面的代码所示，x方法为所有Int实例所共有，但x32方法和x64方法则分别仅为具体类型为i32和i64的Int实例所有：</p>
+<p>如下面的代码所示，x 方法为所有 Int 实例所共有，但 x32 方法和 x64 方法则分别仅为具体类型为 i32 和 i64 的 Int 实例所有：</p>
 
 <pre><code class="language-rust">struct Int&lt;T&gt; {
     x: T,

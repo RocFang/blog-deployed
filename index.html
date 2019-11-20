@@ -456,7 +456,7 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/generic-type-identifier-in-struct-and-method-definition/">Rust中struct与其method定义中的范型标识符</a>
+      <a class="post-link" href="/post/generic-type-identifier-in-struct-and-method-definition/">Rust 中 struct 与其 method 定义中的范型标识符</a>
     </h1>
     
     <div class="post-meta">
@@ -473,23 +473,23 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>Rust中，在struct定义中使用范型的方法，是在struct名称后跟&lt;范型标识符&gt;，例如：</p>
+      <p>Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&lt;范型标识符&gt;，例如：</p>
 
 <pre><code class="language-rust">struct Int&lt;T&gt; 
 </code></pre>
 
-<p>而在struct的方法的定义中使用范型，则是形如：</p>
+<p>而在 struct 的方法的定义中使用范型，则是形如：</p>
 
 <pre><code class="language-rust">impl&lt;T&gt; Int&lt;T&gt; 
 </code></pre>
 
 <p>注意这里有两个范型标识符<code>&lt;T&gt;</code>。</p>
 
-<p>impl后面的<code>&lt;T&gt;</code>并不是可有可无的，如果其后有<code>&lt;T&gt;</code>，则后面struct名字后面的<code>&lt;T&gt;</code>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
+<p>impl 后面的<code>&lt;T&gt;</code>并不是可有可无的，如果其后有<code>&lt;T&gt;</code>，则后面 struct 名字后面的<code>&lt;T&gt;</code>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
 
-<p>Rust使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。</p>
+<p>Rust 使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。</p>
 
-<p>如下面的代码所示，x方法为所有Int实例所共有，但x32方法和x64方法则分别仅为具体类型为i32和i64的Int实例所有：</p>
+<p>如下面的代码所示，x 方法为所有 Int 实例所共有，但 x32 方法和 x64 方法则分别仅为具体类型为 i32 和 i64 的 Int 实例所有：</p>
 
 <pre><code class="language-rust">struct Int&lt;T&gt; {
     x: T,

@@ -47,17 +47,17 @@
     </item>
     
     <item>
-      <title>Rust中struct与其method定义中的范型标识符</title>
+      <title>Rust 中 struct 与其 method 定义中的范型标识符</title>
       <link>https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/</link>
       <pubDate>Sat, 24 Aug 2019 11:10:10 +0800</pubDate>
       
       <guid>https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/</guid>
-      <description>&lt;p&gt;Rust中，在struct定义中使用范型的方法，是在struct名称后跟&amp;lt;范型标识符&amp;gt;，例如：&lt;/p&gt;
+      <description>&lt;p&gt;Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&amp;lt;范型标识符&amp;gt;，例如：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-rust&#34;&gt;struct Int&amp;lt;T&amp;gt; 
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;而在struct的方法的定义中使用范型，则是形如：&lt;/p&gt;
+&lt;p&gt;而在 struct 的方法的定义中使用范型，则是形如：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-rust&#34;&gt;impl&amp;lt;T&amp;gt; Int&amp;lt;T&amp;gt; 
 &lt;/code&gt;&lt;/pre&gt;</description>
