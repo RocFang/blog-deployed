@@ -300,12 +300,12 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/annoying-golang-import/">Golang 中令人不那么愉悦的 import</a>
+      <a class="post-link" href="/2015/11/11/non-standard-nginx-programming.html">不规范的 Nginx 开发</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2019-03-18" class="post-time">
-        2019-03-18
+      <time datetime="2015-11-11" class="post-time">
+        2015-11-11
       </time>
       
       
@@ -317,40 +317,856 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>众所周知，在 github 上参与开源项目的一般流程如下：</p>
+      <p>最近这一年多， 见识过很多基于 Nginx 开发的项目， 在这个过程中也遇到了几个很常见的不规范的做法。</p>
+
+<h2 id="离主分支过远">离主分支过远</h2>
+
+<p>Nginx 是一个很有生命力的项目， 不断的在开发一些新的特性， 基于这种项目开发的项目，从一开始就要想到版本同步升级的问题。</p>
+
+<p>Nginx 本身提供了强大的模块开发机制， 在做自己的业务开发时， 应该尽可能用模块去解决， 而不要乱动 Nginx 核心代码。其实， 如果不是业务场景特殊， 或者对性能有更苛刻的要求， 开发者都不应该去修改核心代码。 如果实在到了不动核心代码不行或者解决方案非常憋屈的时候， 也应该尽量先做好同步升级的方案， 比如经常不定期合入主干代码等。 连开发阵容强大的 Tengine, 都会跟进 Nginx 的更新， 你有什么理由不这样做呢。</p>
+
+<p>这不， 我就见过一个基于 Nginx 的某个上古版本(0.7.x)开发的系统， 随着业务的积累， 已经将 Nginx 原始代码改的不像样子了， 甚至连基础的进程架构都改了。 但业务需求越来越多， 这种方式明显跟不上节奏了， 一方面是新特性用不了， 另一方面是过多的改动导致潜在的 bug 很多。直到现在不得不痛下决心， 彻底更新 Nginx 版本， 去掉之前的那些核心改动。 虽然比较痛苦， 但方向是对的。当业界都在利用 Openresty 这一利器， 用 lua 开心的写着业务逻辑， 你还在一行一行的用 c 来写业务， 这项目怎么能维护得下去。</p>
+
+<p>提到 Openresty, 不得不赞叹章宜春的版本策略。首先 Openresty 是一个bundle，其核心是 ngx_lua 模块， 这个模块本身是不会依赖对 Nginx 核心的改动。 而且 Openresty 跟进 Nginx 版本的速度也很快， 当前 Openresty 的 release 已经到 Nginx-1.9.3 了。</p>
+
+<h2 id="真的是一定要动核心吗">真的是一定要动核心吗？</h2>
+
+<p>事实上，并不是。 很多时候， 所谓 “不得不” 进行的对核心的修改， 只是因为开发者对 Nginx 本身理解的不够透彻。</p>
+
+<p>例如， 一个简单的场景： 一个模块 A 需要为当前请求生成几个内部变量， 既然是与当前请求相关的， 很自然的会想到在 ngx_http_request_s 结构体里增加一个成员。 可是， Nginx 已经提供了请求上下文的的 ctx 机制了， 使用起来干净、简单。</p>
+
+<p>再例如， Nginx 的各模块之间本应互相独立的。 但出于代码复用等目的， 实际项目里会出现模块之间互相依赖的情况。 比方说， A 模块固定完成一个功能， 所有其他的业务模块， 都去操作当前请求的对应 A 模块的上下文 ctx， 而 A 模块只去根据 ctx 做相应的处理。 这种做法看上去很精明， 却毫不优雅。 导致了模块之间的耦合， 编译 B 模块就必须把 A 模块一起编译进来。 其实深入思考一下， 这些都可以用很好的方式来实现。</p>
+
+<h2 id="末尾">末尾</h2>
+
+<p>这篇文章似乎是在吐槽一些开发者， 但实际不是得。 从公司的角度， 不管使用什么办法， 能撑起业务来， 就是英雄， 相应的， 开发周期的制定里， 并不会去给那么多时间让开发者去透彻理解一个系统后再开始开发。</p>
+
+<p>所以，当我们看到这些 “老旧” 的系统， 虽然他们可能很难维护， 但我们还是应该对当初开发的人持有敬意。</p>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/2015/10/23/preparing-for-guangzhou-marason.html">跑步近况-准备广州马拉松</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2015-10-23" class="post-time">
+        2015-10-23
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>最近这几周，具体是九月的一整月和十月初，都没怎么跑步。客观原因主要有两个：</p>
+
+<ul>
+<li>我换工作了<br /></li>
+<li>我结婚了
+<br /></li>
+</ul>
+
+<p>关于跑步的好消息也有一个，那就是报名十二月份的广州马拉松，中签了。广马麻烦的地方有两个：<br />
+1. 需要抽签<br />
+2. 报名有资格要求：必须有以往参加过马拉松比赛的经历</p>
+
+<p>第一个条件很正常， 很多有名气的马拉松都是要抽签的，因为人满为患嘛。第二个条件却引起骂声一片，因为涉及到鸡生蛋还是蛋生鸡的问题，很多广州本地人，就想在自己的城市参加第一次马拉松，却没有资格。</p>
+
+<p>而我，由于今年三月份已经参加了一次清远的半马，再加上抽签时的一点运气，就成功报上名了。</p>
+
+<p>报名成功后的感受， 已经远不如年初报名清远马拉松时那么激动了。一切都是理所当然，顺理成章。即使广州报名失败， 也会转而去报名深圳的。 刚好今年深圳和广州在同一天举办马拉松。</p>
+
+<p>平淡归平淡，训练还是要的。</p>
+
+<p>于是，本周开始了正式的准备工作。我上班的地方早上在高峰期坐公交车大概需要 50 分钟， 晚上不堵车也要四十分钟。如果每天这样上下班，留给跑步的时间就很少了。某天我突发奇想，要不就晚上下班时跑回家算了。于是，这条下班的路就成了我的固定跑步路线。</p>
+
+<p>经过两次测试，发现跑步下班居然跟坐公交车的时间差不多，当然，跑步的路线是经过优化的。</p>
+
+<p>重新开始跑步的感觉真好。</p>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/2015/08/12/baiyuanzhilian.html">我们来拍拍肩吧，《百元之恋》观后感</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2015-08-12" class="post-time">
+        2015-08-12
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>《百元之恋》讲述了迷茫、堕落的一子，在经历各种屈辱、挫折之后，选择学习拳击的故事。</p>
+
+<p>豆瓣对该电影的类型归纳为“剧情、喜剧、运动”，说是剧情和运动片无可厚非，但喜剧二字却让人啼笑皆非。电影前大半段都是弥漫着压抑、颓废甚至绝望的气氛，最后小半段转向奋进、激昂。跟喜剧八竿子打不着。</p>
+
+<p>女性、拳击、失败，这些关键词不由让人们想到伊斯特伍德的《百万美元宝贝》，珠玉在前，其实这部电影想拍的出彩，还是挺难的。但看完电影之后，不得不说，它做到了。</p>
+
+<p>那么，它吸引人的地方在哪里呢？我认为主要在于两个字，真实。</p>
+
+<p>因为真实，所以能让观众产生很强的共鸣。</p>
+
+<p>当一子在半夜骑着辆在路边顺来的自行车去超市时，我想到了，曾经有段时间我在床上一躺躺一整天，晚上饿的要晕了，晃晃悠悠爬起来去学校超市买东西吃。在昏黄的路灯下，没有什么比行尸走肉这个词更贴切了。</p>
+
+<p>当一子在家里和妹妹在地上扭打在一起的时候，我想到了，曾经有段时间，因为种种原因，我异常暴躁，面对女友和家人，火气一触即发，自己还特别痛苦。王小波说，“人的一切痛苦，本质都是对自己无能的愤怒”。是的，那段时间，确实对很多事情挺无能的。</p>
+
+<p>当一子刚在超市工作，力不从心的时候，我想到了，我刚工作时其实也是这样。手足无措，疲于奔命。</p>
+
+<p>还有很多，我想很多人都或多或少能从中找到自己之前或现在的一点影子。</p>
+
+<p>这样的颓废伴着时而响起的布鲁斯口琴，持续了一大半的时间，如果观众没有从中找到点共鸣，或者没有耐心，早就看不下去了。但当最后女主开始专心训练的时候，节奏忽而转快，像换了一部电影。此前积攒了这么久的情绪，就像被压到底的弹簧一下子被释放出来，怎一个燃字了得。最后当一子踏上拳台的时候，那几个特写让人很难相信，这还是之前那个弱鸡姑娘吗？</p>
+
+<p>最终比赛还是输了，尽管一子是那么想赢。她没忘记自己学拳的初衷：奋力的搏斗，结束后互相拍拍肩。片尾，她伤心的痛哭，自己是那么的想赢，哪怕只赢一次也好啊。但是所有人其实都知道，她其实已经赢了。在她向这狗屎一样的生活奋力挥出一拳时，她就赢了。</p>
+
+<p>影片看完后，我在想，为什么一子在三十二岁左右的时候，会如此颓废？为什么一个拳击就能这么大的改变她？我自己给出的答案是，活着的感觉。通过拳击，她找到了之前没有的活着的感觉。哪怕后面的生活，她依然会一次次的被击倒，但她已经知道该怎么做了，那就是“奋力搏斗，最后互相拍拍肩”。</p>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/2015/06/25/nginx-proxy-cache-and-etag.html">nginx proxy_cache与etag配合的问题</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2015-06-25" class="post-time">
+        2015-06-25
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p><strong>首先谈谈遇到的问题:</strong></p>
+
+<p>一个Nginx架在一个后端服务的前面，Nginx proxy_pass到它并开启proxy_cache,假设这个后端服务总是会吐Etag响应头。
+在应用中，我们发现当nginx 的proxy_cache成功将后端的页面cache住时,浏览器多次对该页面发起请求，会命中nginx的cache,但即使浏览器请求带了If-None-Match请求头，nginx却不会响应304，而是响应200.<br />
+这样带来的问题是，即使nginx的cache将请求阻挡在后端应用之外，但是:<br />
+（1）命中后每次响应200导致我们nginx所在的服务器和客户浏览器双方都有流量损耗<br />
+（2）更重要的是增长了我们的服务响应时间。因为，如果是304的话，nginx不需要向浏览器吐数据，只用告诉浏览器用本地的缓存就好了。</p>
+
+<p>排查过程涉及个版本的测试和代码比对，这里就省略了，下面说下结论:</p>
+
+<p><strong>一. nginx-1.7.3之前的版本:</strong></p>
+
+<ul>
+<li>nginx很早就支持etag，但是nginx-1.7.3之前不支持弱etag。<br /></li>
+<li>nginx-1.7.3之前版本在proxy_cache时，会有上面提到的问题。<br /></li>
+<li>之所以会遇到上面的问题，是因为nginx里面有很多filter模块，比如ssl,xsl,gzip等等，这些filter模块本质上算是对响应做出了修改。所以，Nginx为了严格遵循etag的本意，这种情况下就认为etag应该失效。而早期版本又不支持弱etag验证，所以干脆就不承认etag，每次都返回200,而不是304.<br />
+<br /></li>
+</ul>
+
+<p><strong>二.nginx-1.7.3及其之后的版本:</strong></p>
+
+<p>首先我们看看nginx-1.7.3的changelog：</p>
+
+<blockquote>
+<p>Changes with nginx 1.7.3                                         08 Jul 2014<br />
+   *) Feature: weak entity tags are now preserved on response<br />
+      modifications, and strong ones are changed to weak.<br />
+   *) Feature: cache revalidation now uses If-None-Match header if<br />
+      possible.<br />
+   *) Feature: the &ldquo;ssl_password_file&rdquo; directive.<br />
+   *) Bugfix: the If-None-Match request header line was ignored if there<br />
+      was no Last-Modified header in a response returned from cache.<br />
+   *) Bugfix: &ldquo;peer closed connection in SSL handshake&rdquo; messages were<br />
+      logged at &ldquo;info&rdquo; level instead of &ldquo;error&rdquo; while connecting to<br />
+      backends.<br />
+   *) Bugfix: in the ngx_http_dav_module module in nginx/Windows.<br />
+   *) Bugfix: SPDY connections might be closed prematurely if caching was<br />
+      used.</p>
+</blockquote>
+
+<p><strong>可以看到，主要有两点：</strong></p>
+
+<ul>
+<li>增加了弱etag检验功能：对于那些修改了响应的filter模块，nginx启用弱etag检验。<br /></li>
+<li>cache住的文件，其验证会优先采用If-None-Match校验，即Etag校验。<br />
+<br /></li>
+</ul>
+
+<p>那么，在nginx-1.7.3及其以后的版本，其Etag功能可以描述如下:</p>
 
 <ol>
-<li>将开源项目 fork 到自己的名下。</li>
-<li>在本地开发环境中 clone 自己在上一步中 fork 的项目。</li>
-<li>本地完成开发测试和代码提交，再 push 到自己名下的仓库中。</li>
-<li>从自己名下的这个项目中，对原始项目发起一个 pull request。</li>
-<li>发起的 pull request 被上游 merge 后，自己的代码就进入开源项目中了。</li>
+<li>Etag功能得到增强，既有强Etag，又有弱Etag.其实，但是所谓的强弱，只是为了遵循标准而分出来的两种说法而已。<br /></li>
+<li>对于Nginx本地的静态文件，是强Etag验证。<br /></li>
+<li>对于Nginx本地的非静态内容，不做Etag验证。这里可以用nginx-lua模块ngx.say来简单验证。<br /></li>
+<li>对于proxy_cache缓存住的文件,无论该文件是后端的静态文件，或是后端动态产生的页面，只要后端吐出了Etag响应头，则Nginx对客户端过来的请求，都会启动Etag校验。即，第一次请求，Nginx会将后端吐出的Etag头传给客户端，客户端后面再请求时，会带上 If-None-Match请求头，如果校验通过，会直接返回304.（这就解决了我们的问题)<br /></li>
+<li>注意，上面这一点又可以分为两种情况，第一种是如果Nginx在将cache住的内容吐给浏览器时，如果Nginx不启用filter模块来修改响应，则Etag的强弱跟后端传过来的相同。第二种情况，如果Nginx在将cache住的内容吐给浏览器时，如果启用了filter模块，即响应头或体被修改，那么Nginx会将后端的强Etag转换为弱Etag.例如：如果后端本来返回的Etag为ETag: &ldquo;12345&rdquo;,则Nginx会将其弱化，吐给浏览器，即改为Etag: W/&ldquo;12345&rdquo;, 浏览器下次请求的If-None-Match请求头也变为If-None-Match: W/&ldquo;12345&rdquo;。<br /></li>
 </ol>
+    </div>
+    
+  </div>
+</article>
 
-<p>虽然具体 workflow 的细节上可能有些差异，但总体流程大概就是这样。</p>
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
+      <a class="post-link" href="/2015/03/28/ipc-of-nginx.html">Nginx中的进程间通信</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2015-03-28" class="post-time">
+        2015-03-28
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:</p>
 
-<p>但是在参与 Golang 的开源项目中，由于 gopath 的限制，这个流程就会有问题。举个例子，有一个项目为 github.com/userA/project，fork 之后，有一个新的仓库，路径为 github.com/userB/project。而这个 project 中大概率会有内部 package 引用，比如在 main.go中，import 了 github.com/userA/project/moduleA，这样在 go get 自己的仓库时，仍然会引用到原始的仓库路径。将会导致诸如构建失败等一些问题。</p>
+<ul>
+<li>套接字（匿名套接字对）<br /></li>
+<li>共享内存<br /></li>
+<li>信号<br />
+<br /></li>
+</ul>
 
-<p>为什么基于 c/c++ 的开源项目就没有这个问题呢，因为 c/c++ 的构建更原始更简单。include 只有两种形式，要么是在标准路径中或项目子目录中去查找，要么在非标准路径下，但能通过编译器的选项来告诉编译器去哪里找，而代码本身则是非常干净的，不会有硬编码的特定路径在源码里面。而 Golang 的 import，是一个完整的 url，这样可以让 go get 之类的工具自动化的进行一些操作。</p>
+<p>本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。</p>
 
-<p>上面可以解释 Golang 项目在引用外部包的时候使用完整 url 的做法，但是在引用项目内部包时，仍然使用完整 url 的做法就多少让人觉得有点不能理解。如果 import 能支持相对路径，就不会有前面提到的问题了。Golang 的开发者们当然对这个问题有自己的考虑，参考这个 issue：<a href="https://github.com/golang/go/issues/3515">https://github.com/golang/go/issues/3515</a> 。</p>
+<h2 id="1-nginx中的channel通信机制">1. Nginx中的channel通信机制</h2>
 
-<p>不能简单的说 Golang 的这种构建方式不对，因为它的出现必然是有自己的优点和解决了一些问题的，所以从实用的角度出发，我们只能将其称之为“特点”，并去适应它。</p>
+<h3 id="1-1概述">1.1概述</h3>
 
-<p>解决办法有几个，但都看上去有些丑陋。比如：</p>
+<p>首先简单的说一下Nginx中channel通信的机制。</p>
 
-<p>在本地开发的时候，使用的路径仍然是原始项目的路径，将自己名下的仓库作为一个 remote upstream，push 的时候将修改 push 到自己名下的仓库中，然后再向原始仓库提交 pull request。</p>
+<p>Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。</p>
 
-<p>对于一般的开源项目，这种“临时”的方法就够用了。但在下面的几个场景种，这种方法显然会很令人不适：</p>
+<p>我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。</p>
 
-<ol>
-<li>原始项目已经不维护了，你想自己长期维护一个 fork。</li>
-<li>原始项目仍然在积极维护，但是你仍然想自己长期维护一个 fork。</li>
-</ol>
+<p>那么,当父进程在调用了socketpair创建出一对匿名套接字对(A1,B1)后,fork出一个子进程,那么此时子进程也继承了这一对套接字对(A2,B2)。在这个基础上,父子进程即可进行通信了。例如,父进程对A1进行写操作,子进程可通过B2进行相应的读操作;子进程对B2进行写操作,父进程可以通过A1来进行相应的读操作等等。</p>
 
-<p>在上述情况下，其实我们是把原始项目和自己的 fork 当作两个相对独立的项目，我们希望在构建的时候能直接 go build 就行了，不希望有其他额外的操作。如果有第三个人，他想 fork 我们这个 fork 并进行并列开发，按上面的方法将会非常麻烦。</p>
+<p>我们假设,父进程依次fork了N个子进程,在每次fork之前,均如前所述调用了socketpair建立起一个匿名套接字对,这样,父进程与各个子进程之间即可通过各自的套接字对来进行通信。</p>
 
-<p>对于这种情况，我选择将项目内所有源码中的 import 路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。</p>
+<p>但是各子进程之间能否使用匿名套接字对来进行通信呢？</p>
+
+<p>我们假设父进程A中,它与子进程B之间的匿名套接字对为AB[2],它与子进程C之间的匿名套接字对为AC[2]。且进程B在进程C之前被fork出来。</p>
+
+<p>对进程B而言，当它被fork出来后，它就继承了父进程创建的套接字对,命名为BA[2],这样父进程通过操作AB[2]，子进程B通过操作BA[2],即可实现父子进程之间的通信。</p>
+
+<p>对进程C而言,当它被fork出来后，他就继承了父进程穿件的套接字对，命名为CA[2],这样父进程通过操作AC[2]，子进程C通过操作CA[2]，即可实现父子进程之间的通信。</p>
+
+<p>但B和C有一点不同。由于B进程在C之前被fork，B进程无法从父进程中继承到父进程与C进程之间的匿名套接字对,而C进程在后面被fork出来，它却从父进程处继承到了父进程与子进程B之间的匿名套接字对。</p>
+
+<p>这样，之后被fork出来的进程C,可以通过它从父进程那里继承到的与B进程相关联的匿名套接字对来向进程B发送消息，但进程B却无法向进程C发送消息。</p>
+
+<p>当子进程数量比较多时，就会造成这样的情况：即后面的进程拥有前面每一个子进程的一个匿名套接字，但前面的进程则没有后面任何一个子进程的匿名套接字。</p>
+
+<p>那么这个问题该如何解决呢？这就涉及到进程间传递文件描述符这个话题了。可以参考这里:<a href="http://pureage.info/2015/03/19/passing-file-descriptors.html">进程之间传递文件描述符</a>。一个子进程被fork出来后，它可以依次向它之前被fork出来的所有子进程传递自己的描述符（匿名套接字对中的一个)。</p>
+
+<p>通过这种机制,子进程之间也可以进行通信了。</p>
+
+<p>Nginx中也就是这么做的。</p>
+
+<h3 id="1-2-nginx中的具体实现">1.2 Nginx中的具体实现</h3>
+
+<p>在ngx_process.c中，定义了一个全局的数组ngx_processes:</p>
+
+<pre><code>ngx_process_t    ngx_processes\[NGX\_MAX\_PROCESSES\];  
+</code></pre>
+
+<p>其中,ngx_process_t类型定义为:</p>
+
+<pre><code>typedef struct {
+    ngx_pid_t           pid;  
+    int                 status;  
+    ngx_socket_t        channel\[2\];  
+
+    ngx_spawn_proc_pt   proc;  
+    void               *data;  
+    char               *name;  
+  
+    unsigned            respawn:1;  
+    unsigned            just_spawn:1;  
+    unsigned            detached:1;  
+    unsigned            exiting:1;  
+    unsigned            exited:1;  
+} ngx_process_t;  
+</code></pre>
+
+<p>在这里,我们只关心成员channel成员，这个两元素的数组即用来存放一个匿名套接字对。</p>
+
+<p>我们假设程序运行后，有1个master进程和4个worker进程。那么，对这5个进程而言，每个进程都有一个4元素的数组ngx_processes[4]，数组中每个元素都是一个ngx_process_t类型的结构体，包含了相应的某个worker进程的相关信息。我们这里关心的是每个结构体的channel数组成员。</p>
+
+<p>绘制成表如下:<br />
+<img src="/img/ipc-4.jpg" alt="ipc-4.jpg" /></p>
+
+<p>上表的每一列表示每个进程的ngx_processes数组的各个元素的channel成员。</p>
+
+<p>其中，master进程列中的每一个元素，表示master进程与对应的每个worker进程之间的匿名套接字对。</p>
+
+<p>而每一个worker进程列中的每一个元素，表示该worker进程与对应的每个worker进程之间的匿名套接字对。当然这只是一个粗略的说法，与真实情况并不完全相符，还有很多细节需要进一步阐述。</p>
+
+<p>我们直接借助《深入剖析Nginx》，直接看下图的实例:<br />
+<img src="/img/ipc-5.jpg" alt="ipc-5.jpg" /></p>
+
+<p>再次感谢《深入剖析Nginx》的作者高群凯，觉得在这里我没法表达的比他更好了。所以下面会引用很多该书中的内容。</p>
+
+<p>在上表中，每一个单元格的内容分别表示channel[ 0 ]和channel[ 1 ]的值，-1表示这之前是描述符，但在之后被主动close()掉了，0表示这一直都无对应的描述符，其他数字表示对应的描述符值。</p>
+
+<p>每一列数据都表示该列所对应进程与其他进程进行通信的描述符，如果当前列所对应进程为父进程，那么它与其它进程进行通信的描述符都为channel[ 0 ](其实channel[ 1 ]也可以)；如果当前列所对应的进程为子进程，那么它与父进程进行通信的描述符为channel[ 1 ]（注：这里书中说的太简略，应该为如果当前列所对应的进程为子进程，那么它与父进程进行通信的描述符为该进程的ngx_processes数组中，与本进程对应的元素中的channel[ 1 ]，在图中即为标粗的对角线部分，即[-1,7],[-1,9],[-1,11],[-1,13]这四对），与其它子进程进行通信的描述符都为本进程的ngx_processes数组中与该其它进程对应元素的channel[ 0 ]。</p>
+
+<p>比如，[3,7]单元格表示，如果父进程向worker0发送消息，需要使用channel[ 0 ]，即描述符3，实际上channel[ 1 ]也可以，它的channel[ 1 ]为7，没有被close()关闭掉，但一直也没有被使用，所以没有影响，不过按道理应该关闭才是。</p>
+
+<p>再比如，[-1,7]单元格表示如果worker0向master进程发送消息，需要使用channel[ 1 ]，即描述符7，它的channel[ 0 ]为-1，表示已经close()关闭掉了（Nginx某些地方调用close()时并没有设置对应变量为-1，这里只是为了更好的说明，将已经close()掉的描述符全部标记为-1）。</p>
+
+<p>越是后生成的worker进程，其ngx_processes数组的元素中，channel[ 0 ]与父进程对应的ngx_processes数组的元素中的channel[ 0 ]值相同的越多，因为基本都是继承而来，但前面生成的worker进程，其channel[ 0 ]是通过进程间调用sendmsg传递获得的，所以与父进程对应的channel[ 0 ]不一定相等。比如，如果worker0向worker3发送消息，需要使用worker0进程的ngx_processes[ 3 ]元素的channel[ 0 ],即描述符10，而对应master进程的ngx_processes[ 3 ]元素的channel[ 0 ]却是12。虽然它们在各自进程里表现为不同的整型数字，但在内核里表示同一个描述符结构，即不管是worker0往描述符10写数据，还是master往描述符12写数据，worker3都能通过描述符13正确读取到这些数据，至于worker3怎么识别它读到的数据是来自worker0，还是master，就得靠其他收到的数据特征，比如pid，来做标记区分。</p>
+
+<p>关于上段讲的，一个子进程如何区分接收到的数据是来自哪一个进程，我们可以看一下Nginx-1.6.2中的一段代码:</p>
+
+<pre><code>ngx_int_t  
+ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,  
+    ngx_log_t *log)  
+{  
+    ssize_t             n;  
+    ngx_err_t           err;  
+    struct iovec        iov[1];  
+    struct msghdr       msg;  
+  
+#if (NGX_HAVE_MSGHDR_MSG_CONTROL)  
+  
+    union {  
+        struct cmsghdr  cm;  
+        char            space[CMSG_SPACE(sizeof(int))];  
+    } cmsg;  
+  
+    if (ch-&gt;fd == -1) {  
+        msg.msg_control = NULL;  
+        msg.msg_controllen = 0;  
+  
+    } else {  
+        msg.msg_control = (caddr_t) &amp;cmsg;  
+        msg.msg_controllen = sizeof(cmsg);  
+  
+        ngx_memzero(&amp;cmsg, sizeof(cmsg));  
+  
+        cmsg.cm.cmsg_len = CMSG_LEN(sizeof(int));  
+        cmsg.cm.cmsg_level = SOL_SOCKET;  
+        cmsg.cm.cmsg_type = SCM_RIGHTS;  
+  
+        /*  
+         * We have to use ngx_memcpy() instead of simple  
+         *   *(int *) CMSG_DATA(&amp;cmsg.cm) = ch-&gt;fd;  
+         * because some gcc 4.4 with -O2/3/s optimization issues the warning:  
+         *   dereferencing type-punned pointer will break strict-aliasing rules  
+         *  
+         * Fortunately, gcc with -O1 compiles this ngx_memcpy()  
+         * in the same simple assignment as in the code above  
+         */  
+  
+        ngx_memcpy(CMSG_DATA(&amp;cmsg.cm), &amp;ch-&gt;fd, sizeof(int));  
+    }  
+  
+    msg.msg_flags = 0;  
+  
+#else  
+  
+    if (ch-&gt;fd == -1) {  
+        msg.msg_accrights = NULL;  
+        msg.msg_accrightslen = 0;  
+  
+    } else {  
+        msg.msg_accrights = (caddr_t) &amp;ch-&gt;fd;  
+        msg.msg_accrightslen = sizeof(int);  
+    }  
+  
+#endif  
+  
+    iov[0].iov_base = (char *) ch;  
+    iov[0].iov_len = size;  
+  
+    msg.msg_name = NULL;  
+    msg.msg_namelen = 0;  
+    msg.msg_iov = iov;  
+    msg.msg_iovlen = 1;  
+  
+    n = sendmsg(s, &amp;msg, 0);  
+  
+    if (n == -1) {  
+        err = ngx_errno;  
+        if (err == NGX_EAGAIN) {  
+            return NGX_AGAIN;  
+        }  
+  
+        ngx_log_error(NGX_LOG_ALERT, log, err, &quot;sendmsg() failed&quot;);  
+        return NGX_ERROR;  
+    }  
+  
+    return NGX_OK;  
+}  
+</code></pre>
+
+<p>在调用时，参数ch即为发送的数据部分，其类型定义如下:</p>
+
+<pre><code>typedef struct {  
+     ngx_uint_t  command;  
+     ngx_pid_t   pid;  
+     ngx_int_t   slot;  
+     ngx_fd_t    fd;  
+} ngx_channel_t;  
+</code></pre>
+
+<p>可见，其中就包含了发送方的pid。</p>
+
+<p>最后，就目前Nginx代码来看，子进程并没有往父进程发送任何消息，子进程之间也没有相互通信的逻辑。也许是因为Nginx有其他一些更好的进程通信方式，比如共享内存等，所以这种channel通信目前仅作为父进程往子进程发送消息使用。但由于有这个架构在，可以很轻松使用channel机制来完成各进程间的通信任务。</p>
+
+<h3 id="1-3-nginx中的相关代码流程">1.3 Nginx中的相关代码流程</h3>
+
+<p>下面，将上面所讲的内容，在Nginx代码中的流程，大概梳理一遍。本文所有代码片段，均来自于nginx-1.6.2。</p>
+
+<p>首先是main函数调用ngx_master_process_cycle:</p>
+
+<pre><code>    if (ngx_process == NGX_PROCESS_SINGLE) {  
+        ngx_single_process_cycle(cycle);  
+  
+    } else {  
+        ngx_master_process_cycle(cycle);  
+    }  
+  
+    return 0;  
+</code></pre>
+
+<p>ngx_master_process_cycle调用ngx_start_worker_processes:</p>
+
+<pre><code>ccf = (ngx_core_conf_t *) ngx_get_conf(cycle-&gt;conf_ctx, ngx_core_module);  
+  
+ngx_start_worker_processes(cycle, ccf-&gt;worker_processes,  
+                           NGX_PROCESS_RESPAWN);  
+ngx_start_cache_manager_processes(cycle, 0);  
+</code></pre>
+
+<p>在ngx_start_worker_processes函数中，完成对所有worker进程的fork操作:</p>
+
+<pre><code>static void  
+ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)  
+{  
+    ngx_int_t      i;  
+    ngx_channel_t  ch;  
+  
+    ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &quot;start worker processes&quot;);  
+  
+    ngx_memzero(&amp;ch, sizeof(ngx_channel_t));  
+  
+    ch.command = NGX_CMD_OPEN_CHANNEL;  
+  
+    for (i = 0; i &lt; n; i++) {  
+  
+        ngx_spawn_process(cycle, ngx_worker_process_cycle,  
+                          (void *) (intptr_t) i, &quot;worker process&quot;, type);  
+  
+        ch.pid = ngx_processes[ngx_process_slot].pid;  
+        ch.slot = ngx_process_slot;  
+        ch.fd = ngx_processes[ngx_process_slot].channel[0];  
+  
+        ngx_pass_open_channel(cycle, &amp;ch);  
+    }  
+}  
+</code></pre>
+
+<p>上述代码调用的ngx_spawn_process即完成具体的socketpair()操作和fork操作:</p>
+
+<pre><code>ngx_pid_t  
+ngx_spawn_process(ngx_cycle_t *cycle, ngx_spawn_proc_pt proc, void *data,  
+     char *name, ngx_int_t respawn)  
+{  
+       ......  
+       if (socketpair(AF_UNIX, SOCK_STREAM, 0, ngx_processes[s].channel) == -1)  
+        {  
+            ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
+                          &quot;socketpair() failed while spawning \&quot;%s\&quot;&quot;, name);  
+            return NGX_INVALID_PID;  
+        }  
+        ......  
+        ngx_channel = ngx_processes[s].channel[1];  
+        ......  
+        ngx_process_slot = s;  
+        pid = fork();  
+        ......  
+}  
+</code></pre>
+
+<p>在上一段代码中可以看到，master进程在调用socketpair后，将生成的channel[ 1 ]保存在全局变量ngx_channel中,ngx_channel全局变量的作用是，子进程中会使用该全局变量，并加入到自己的事件中，达到的效果即是子进程将channel[ 1 ]加入到自己的事件中。</p>
+
+<p>话分两头，我们先来具体看看子进程的流程。</p>
+
+<p>在主进程执行完fork之后，ngx_start_worker_processes会调用proc回调:</p>
+
+<pre><code>   pid = fork();  
+  
+    switch (pid) {  
+  
+    case -1:  
+        ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
+                      &quot;fork() failed while spawning \&quot;%s\&quot;&quot;, name);  
+        ngx_close_channel(ngx_processes[s].channel, cycle-&gt;log);  
+        return NGX_INVALID_PID;  
+  
+    case 0:  
+        ngx_pid = ngx_getpid();  
+        proc(cycle, data);  
+        break;  
+  
+    default:  
+        break;  
+    }  
+</code></pre>
+
+<p>其中,proc即为ngx_worker_process_cycle。ngx_worker_process_cycle会调用ngx_worker_process_init函数，子进程将从父进程处继承到的channel[ 1 ]加入到自己的事件集中，就是在这个函数中完成的:</p>
+
+<pre><code>static void  
+ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)  
+{  
+......  
+   for (n = 0; n &lt; ngx_last_process; n++) {  
+  
+        if (ngx_processes[n].pid == -1) {  
+            continue;  
+        }  
+  
+        if (n == ngx_process_slot) {  
+            continue;  
+        }  
+  
+        if (ngx_processes[n].channel[1] == -1) {  
+            continue;  
+        }  
+  
+        if (close(ngx_processes[n].channel[1]) == -1) {  
+            ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
+                          &quot;close() channel failed&quot;);  
+        }  
+    }  
+  
+    if (close(ngx_processes[ngx_process_slot].channel[0]) == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, cycle-&gt;log, ngx_errno,  
+                      &quot;close() channel failed&quot;);  
+    }  
+  
+#if 0  
+    ngx_last_process = 0;  
+#endif  
+  
+    if (ngx_add_channel_event(cycle, ngx_channel, NGX_READ_EVENT,  
+                              ngx_channel_handler)  
+        == NGX_ERROR)  
+    {  
+        /* fatal */  
+        exit(2);  
+    }  
+......  
+}  
+</code></pre>
+
+<p>具体的将channel[ 1 ]添加到事件集中的操作，是由ngx_add_channel_event来完成的，对应的回调处理函数为ngx_channel_handler,同时我们看到，在添加之前，还进行了很多close的工作，这就于之前的示例表里，那些描述符为-1的表项相对应了。</p>
+
+<p>此时，子进程已经将从父进程那里继承来的channel[ 1 ]加入到了自己的监听事件集中，这样，一个子进程从自己的ngx_processses数组中，对应自己的那一个元素中的channel[ 1 ]中，即可读取来自其他进程的消息。收到消息时，将执行设置好的回调函数ngx_channel_handler，把接收到的新子进程的相关信息存储在自己的全局变量ngx_processes数组内。见下面的代码:</p>
+
+<pre><code>static void  
+ngx_channel_handler(ngx_event_t *ev)  
+{  
+    ......  
+          case NGX_CMD_OPEN_CHANNEL:  
+  
+            ngx_log_debug3(NGX_LOG_DEBUG_CORE, ev-&gt;log, 0,  
+                           &quot;get channel s:%i pid:%P fd:%d&quot;,  
+                           ch.slot, ch.pid, ch.fd);  
+  
+            ngx_processes[ch.slot].pid = ch.pid;  
+            ngx_processes[ch.slot].channel[0] = ch.fd;  
+            break;  
+    ......  
+}  
+</code></pre>
+
+<p>我们再回到父进程中。</p>
+
+<p>父进程在从ngx_spawn_process返回后，回来继续执行ngx_start_worker_processes:</p>
+
+<pre><code>static void  
+ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n, ngx_int_t type)  
+{  
+    ngx_int_t      i;  
+    ngx_channel_t  ch;  
+  
+    ngx_log_error(NGX_LOG_NOTICE, cycle-&gt;log, 0, &quot;start worker processes&quot;);  
+  
+    ngx_memzero(&amp;ch, sizeof(ngx_channel_t));  
+  
+    ch.command = NGX_CMD_OPEN_CHANNEL;  
+  
+    for (i = 0; i &lt; n; i++) {  
+  
+        ngx_spawn_process(cycle, ngx_worker_process_cycle,  
+                          (void *) (intptr_t) i, &quot;worker process&quot;, type);  
+  
+        ch.pid = ngx_processes[ngx_process_slot].pid;  
+        ch.slot = ngx_process_slot;  
+        ch.fd = ngx_processes[ngx_process_slot].channel[0];  
+  
+        ngx_pass_open_channel(cycle, &amp;ch);  
+    }  
+}  
+</code></pre>
+
+<p>其中的for循环即表示，父进程会把刚刚生成的子进程的channel[ 0 ],放在一条消息的内容中发送给之前生成的子进程。消息的格式定义为:</p>
+
+<pre><code>typedef struct {  
+     ngx_uint_t  command;  
+     ngx_pid_t   pid;  
+     ngx_int_t   slot;  
+     ngx_fd_t    fd;  
+} ngx_channel_t;  
+</code></pre>
+
+<p>我们看下ngx_pass_open_channel函数:</p>
+
+<pre><code>static void  
+ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)  
+{  
+    ngx_int_t  i;  
+  
+    for (i = 0; i &lt; ngx_last_process; i++) {  
+  
+        if (i == ngx_process_slot  
+            || ngx_processes[i].pid == -1  
+            || ngx_processes[i].channel[0] == -1)  
+        {  
+            continue;  
+        }  
+  
+        ngx_log_debug6(NGX_LOG_DEBUG_CORE, cycle-&gt;log, 0,  
+                      &quot;pass channel s:%d pid:%P fd:%d to s:%i pid:%P fd:%d&quot;,  
+                      ch-&gt;slot, ch-&gt;pid, ch-&gt;fd,  
+                      i, ngx_processes[i].pid,  
+                      ngx_processes[i].channel[0]);  
+  
+        /* TODO: NGX_AGAIN */  
+  
+        ngx_write_channel(ngx_processes[i].channel[0],  
+                          ch, sizeof(ngx_channel_t), cycle-&gt;log);  
+    }  
+}  
+</code></pre>
+
+<p>从该函数定义中，可以很清晰的看到“往之前生成的每个进程发送消息”。对之前的每个子进程，具体消息发送工作，是由函数ngx_write_channel完成的。</p>
+
+<p>ngx_write_channel函数的第一个参数是之前某个进程从master进程继承来的channel[ 0 ],第二个参数发送的内容。其中包含了当前进程的pid,slot号，command等信息，最重要的是，包含了当前子进程的channel[ 0 ]，其实是实现了一个简单的协议。注意，当前子进程的channel[ 0 ]虽然存在ngx_channel_t类型的消息体中，但真正文件描述符的传递操作，是ngx_write_channel通过发送控制信息来完成的。接收进程虽然在接收到的消息体中获得了发送进程的channel[ 0 ]这个值，但并不能直接使用，必须根据控制信息来获取一个新的文件描述符。参看<a href="jin_cheng_jian_chuan_di_wen_jian_miao_shu_fu.md">进程间传递文件描述符</a>。</p>
+
+<p>至此，父子进程间的配合，使得所有的子进程均拥有了其他子进程的channel[ 0 ]，而另一方面，由于所有子进程的channel[ 1 ]已加入到自己的监听事件集，所以子进程之间的通信通道即被建立起来。</p>
+
+<p>值得一提的是，父进程在调用socketpair()产生一个匿名套接字对后，再fork出一个子进程，那么现在有4个文件描述符了。其实对这4个文件描述符中的任何一个进行写入，从其他3个描述符中的任何一个均可以进行读取操作。</p>
+
+<p>但Nginx通过一些close()操作,有意达到这样一种目的:<br />
+* 对任何一个子进程，其ngx_processes数组中，对应其它进程的元素,其channel[ 0 ]用来向该&rdquo;其他进程&rdquo;发送消息。<br />
+* 对任何一个子进程，其ngx_processes数组中，对应本进程的元素,其channel[ 1 ]用来接收来自其他进程的消息，这个其他进程既包括其他子进程，也包括master进程。至于如何区分是来自哪个进程，以及该消息是用来做什么的，则通过判断ngx_channel_t类型的消息的command,pid,slot等成员来协商。<br />
+* 对master进程, 其ngx_processes数组的中，对应相应子进程的元素的channel[ 0 ],用来向该子进程发送消息。注:其实channel[ 1 ]也可以，但按常理，master进程的ngx_processes数组所有元素的channel[ 1 ]应该关闭的。</p>
+
+<h2 id="2-nginx中的共享内存">2. Nginx中的共享内存</h2>
+
+<h3 id="2-1-概述">2.1 概述</h3>
+
+<blockquote>
+<p>共享内存是Linux下提供的最基本的进程间通信方法，它通过mmap或者shmget系统调用在内存中创建了一块连续的线性地址空间，而通过munmap或者shmdt系统调用可以释放这块内存。使用共享内存的好处是当多个进程使用同一块共享内存时，在任何一个进程修改了共享内存中的内容后，其他进程通过访问这段共享内存都能够得到修改后的内容。</p>
+
+<p>陶辉《深入理解Nginx》</p>
+</blockquote>
+
+<p>共享内存可以说是最有用的进程间通信方式，也是最快的IPC形式。两个不同进程A、B共享内存的意思是，同一块物理内存被映射到进程A、B各自的进程地址空间。进程A可以即时看到进程B对共享内存中数据的更新，反之亦然。由于多个进程共享同一块内存区域，必然需要某种同步机制，互斥锁和信号量都可以。</p>
+
+<p>采用共享内存通信的一个显而易见的好处是效率高，因为进程可以直接读写内存，而不需要任何数据的拷贝。对于像管道和消息队列等通信方式，则需要在内核和用户空间进行四次的数据拷贝，而共享内存则只拷贝两次数据：一次从输入文件到共享内存区，另一次从共享内存区到输出文件。实际上，进程之间在共享内存时，并不总是读写少量数据后就解除映射，有新的通信时，再重新建立共享内存区域。而是保持共享区域，直到通信完毕为止，这样，数据内容一直保存在共享内存中，并没有写回文件。共享内存中的内容往往是在解除映射时才写回文件的。因此，采用共享内存的通信方式效率是非常高的。</p>
+
+<p>Linux中，共享内存可以通过两个系统系统调用来获得，mmap和shmget，分别属于不同的标准，这不在本文的关注范围之内。mmap语义上比shmget更通用，因为它最一般的做法，是将一个打开的实体文件，映射到一段连续的内存中，各个进程可以根据各自的权限对该段内存进行相应的读写操作，其他进程则可以看到其他进程写入的结果。而shmget在语义上相当于是匿名的mmap，即不关注实体文件，直接在内存中开辟这块共享区域，mmap通过设置调用时的参数，也可达到这种效果，一种方法是映射/dev/zero设备,另一种是使用MAP_ANON选项。至于mmap和shmget的效率，跟不同的内核实现相关，不在本文关注范围内。</p>
+
+<p>除了上面的简单描述外，本文不打算仔细介绍mmap和shmget的使用。有如下相关资料可以参考:<br />
+1. <a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part5/index1.html">Linux环境进程间通信（五）: 共享内存（上）</a><br />
+2. <a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part5/index2.html">Linux环境进程间通信（五）: 共享内存（下）</a><br />
+3. APUE,14.8,15.9</p>
+
+<h3 id="2-2-nginx中的实现">2.2 Nginx中的实现</h3>
+
+<p>那么，在Nginx中，到底是选用mmap映射到/dev/null，还是使用MAP_ANON选项调用mmap，或者是使用shmget呢？看相关实现的代码就会一目了然:</p>
+
+<pre><code>/*  
+ * Copyright (C) Igor Sysoev  
+ * Copyright (C) Nginx, Inc.  
+ */  
+  
+  
+#include &lt;ngx_config.h&gt;  
+#include &lt;ngx_core.h&gt;  
+  
+  
+#if (NGX_HAVE_MAP_ANON)  
+  
+ngx_int_t  
+ngx_shm_alloc(ngx_shm_t *shm)  
+{  
+    shm-&gt;addr = (u_char *) mmap(NULL, shm-&gt;size,  
+                                PROT_READ|PROT_WRITE,  
+                                MAP_ANON|MAP_SHARED, -1, 0);  
+  
+    if (shm-&gt;addr == MAP_FAILED) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;mmap(MAP_ANON|MAP_SHARED, %uz) failed&quot;, shm-&gt;size);  
+        return NGX_ERROR;  
+    }  
+  
+    return NGX_OK;  
+}  
+  
+  
+void  
+ngx_shm_free(ngx_shm_t *shm)  
+{  
+    if (munmap((void *) shm-&gt;addr, shm-&gt;size) == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;munmap(%p, %uz) failed&quot;, shm-&gt;addr, shm-&gt;size);  
+    }  
+}  
+  
+#elif (NGX_HAVE_MAP_DEVZERO)  
+  
+ngx_int_t  
+ngx_shm_alloc(ngx_shm_t *shm)  
+{  
+    ngx_fd_t  fd;  
+  
+    fd = open(&quot;/dev/zero&quot;, O_RDWR);  
+  
+    if (fd == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;open(\&quot;/dev/zero\&quot;) failed&quot;);  
+        return NGX_ERROR;  
+    }  
+  
+    shm-&gt;addr = (u_char *) mmap(NULL, shm-&gt;size, PROT_READ|PROT_WRITE,  
+                                MAP_SHARED, fd, 0);  
+  
+    if (shm-&gt;addr == MAP_FAILED) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;mmap(/dev/zero, MAP_SHARED, %uz) failed&quot;, shm-&gt;size);  
+    }  
+  
+    if (close(fd) == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;close(\&quot;/dev/zero\&quot;) failed&quot;);  
+    }  
+  
+    return (shm-&gt;addr == MAP_FAILED) ? NGX_ERROR : NGX_OK;  
+}  
+  
+  
+void  
+ngx_shm_free(ngx_shm_t *shm)  
+{  
+    if (munmap((void *) shm-&gt;addr, shm-&gt;size) == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;munmap(%p, %uz) failed&quot;, shm-&gt;addr, shm-&gt;size);  
+    }  
+}  
+  
+#elif (NGX_HAVE_SYSVSHM)  
+  
+#include &lt;sys/ipc.h&gt;  
+#include &lt;sys/shm.h&gt;  
+  
+  
+ngx_int_t  
+ngx_shm_alloc(ngx_shm_t *shm)  
+{  
+    int  id;  
+  
+    id = shmget(IPC_PRIVATE, shm-&gt;size, (SHM_R|SHM_W|IPC_CREAT));  
+  
+    if (id == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;shmget(%uz) failed&quot;, shm-&gt;size);  
+        return NGX_ERROR;  
+    }  
+  
+    ngx_log_debug1(NGX_LOG_DEBUG_CORE, shm-&gt;log, 0, &quot;shmget id: %d&quot;, id);  
+  
+    shm-&gt;addr = shmat(id, NULL, 0);  
+  
+    if (shm-&gt;addr == (void *) -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno, &quot;shmat() failed&quot;);  
+    }  
+  
+    if (shmctl(id, IPC_RMID, NULL) == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;shmctl(IPC_RMID) failed&quot;);  
+    }  
+  
+    return (shm-&gt;addr == (void *) -1) ? NGX_ERROR : NGX_OK;  
+}  
+  
+  
+void  
+ngx_shm_free(ngx_shm_t *shm)  
+{  
+    if (shmdt(shm-&gt;addr) == -1) {  
+        ngx_log_error(NGX_LOG_ALERT, shm-&gt;log, ngx_errno,  
+                      &quot;shmdt(%p) failed&quot;, shm-&gt;addr);  
+    }  
+}  
+  
+#endif  
+</code></pre>
+
+<p>上面的代码即是Nginx源代码中的src/os/unix/ngx_shemem.c的全部内容。可见，整个文件只是为了提供两个接口：ngx_shm_alloc和ngx_shm_free。而这两个接口的实现，按如下逻辑来决定:<br />
+1. 如果当前系统的mmap系统调用支持MAP_ANON选项，则使用带MAP_ANON选项的mmap。<br />
+2. 如果1不满足，则如果当前系统mmap系统调用支持映射/dev/zero设备，则使用mmap映射/dev/zero的方式来实现。<br />
+3. 如果上面1和2都不满足，且如果当前系统支持shmget系统调用的话，则使用该系统调用来实现。</p>
+
+<p>看到这里，也许大家就有疑问了，如果当前3个条件都不满足怎么办，那就没辙了，ngx_shm_alloc接口没有相应的定义，只能在链接的时候就不成功了。</p>
+
+<p>另外，关于上面三种情况的判断，都是通过相应的宏是否定义来进行的，而相应的宏的定义，是在auto/unix脚本中进行的，该脚本会写一端测试程序来判断相应的系统调用是否支持，如果支持，则在configure后自动生成的objs/ngx_auto_config.h文件中定义对应的宏。</p>
+
+<h2 id="3-channel机制和共享内存在nginx中的使用情况">3. channel机制和共享内存在Nginx中的使用情况</h2>
+
+<p>前面讲Nginx中的channel机制时提到，Nginx虽然提供了这种机制，但目前很少用到，而共享内存却相对用的比较多了。例如，为了统计Nginx总体的http请求处理情况，需要跨越多个worker来计算，Nginx自带的http模块ngx_http_stub_status_module即主要依赖共享内存的方式。</p>
     </div>
     
   </div>
@@ -1277,3072 +2093,6 @@
 
       
 
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-
-          
-
-        
-        
-
-        
-        
-
-      
-
       
       
       <li><a href="/page/13/">»</a></li>
@@ -4350,7 +2100,7 @@
 
       
       
-      <li><a href="/page/183/">»»</a></li>
+      <li><a href="/page/37/">»»</a></li>
       
 
       </ul>
