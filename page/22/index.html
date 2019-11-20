@@ -329,9 +329,95 @@
 此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。</p>
 
 <p>（2）目标地址中带uri。即proxy_pass的参数形如“<a href="http://127.0.0.1:8090/dir1/dir2&quot;">http://127.0.0.1:8090/dir1/dir2&quot;</a></p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/10/31/130.html" class="read-more-link">阅读全文</a>
+
+<p>此时新的目标url中，匹配的uri部分将会被修改为该参数中的uri，如&rdquo;<a href="http://127.0.0.1:8888/dir1/dir2.&quot;">http://127.0.0.1:8888/dir1/dir2.&quot;</a></p>
+
+<p>有人说，你没有讨论ip和端口后带不带”/“的区别。其实是不需要的，因为&rdquo;/&ldquo;本身就是一种uri，很明显属于上面的第二种情况，只不过是把原来的uri修改为了现在的uri（”/&rdquo;)，看上去，像是删除了原url中匹配的部分。如果不理解这一点，就会总想着去牢记、区分结尾带不带&rdquo;/&ldquo;的情况。<br />
+官方文档也是这么叙述的，根本没有提及半句“/&ldquo;：</p>
+
+<blockquote>
+<p>A request URI is passed to the server as follows:</p>
+
+<p>If the proxy_pass directive is specified with a URI, then when a request is passed to the server, the part of a normalized request URI matching the location is replaced by a URI specified in the directive:<br />
+location /name/ {<br />
+    proxy_pass <a href="http://127.0.0.1/remote/">http://127.0.0.1/remote/</a>;<br />
+}<br />
+If proxy_pass is specified without a URI, the request URI is passed to the server in the same form as sent by a client when the original request is processed, or the full normalized request URI is passed when processing the changed URI:<br />
+location /some/path/ {<br />
+    proxy_pass <a href="http://127.0.0.1">http://127.0.0.1</a>;<br />
+}</p>
+</blockquote>
+
+<p>测试部分如下。</p>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                proxy_pass <a href="http://127.0.0.1:8090">http://127.0.0.1:8090</a>;<br />
+                }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test1/test2/echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/test1/test2  
+</code></pre>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                proxy_pass <a href="http://127.0.0.1:8090/">http://127.0.0.1:8090/</a>;<br />
+                }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/  
+</code></pre>
+
+<p>如果配置为：<br />
+&gt;server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                        proxy_pass <a href="http://127.0.0.1:8090/test1">http://127.0.0.1:8090/test1</a>;<br />
+                        }<br />
+            }</p>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test1echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:8090/test1  
+</code></pre>
+
+<p>如果配置为：</p>
+
+<blockquote>
+<p>server {<br />
+                listen 9090;<br />
+                access_log /home/strider/project/nginx/nginx-1.4.2/log/access_9090.log;<br />
+                location /test1/test2/{<br />
+                        proxy_pass <a href="http://127.0.0.1:8090/test3/test4/test5">http://127.0.0.1:8090/test3/test4/test5</a>;<br />
+                        }<br />
+            }</p>
+</blockquote>
+
+<p>则有如下对应关系：</p>
+
+<pre><code>127.0.0.1:9090/test1/test2/echo1-----&gt;127.0.0.1:8090/test3/test4/test5echo1  
+127.0.0.1:9090/test1/test2/----&gt;127.0.0.1:80990/test3/test4/test5  
+</code></pre>
     </div>
     
   </div>
@@ -377,9 +463,8 @@ EOF
 gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
 output=$(./a.out)  
 </code></pre>
-    </div>
-    <div class="read-more">
-      <a href="/2013/10/08/129.html" class="read-more-link">阅读全文</a>
+
+<p>上面的代码摘自FastDFS的make.sh。</p>
     </div>
     
   </div>
@@ -416,9 +501,140 @@ output=$(./a.out)
 </ol>
 
 <p>如果你想简化操作，并且和我一样苦逼的用着虚拟主机，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/10/01/128.html" class="read-more-link">阅读全文</a>
+
+<p><strong>1.linux</strong></p>
+
+<p>（1） 将下面脚本中config标记部分需要自己配置，意义如下：</p>
+
+<ul>
+<li>backup_path：content目录和sql文件要存放的目录<br /></li>
+<li>emlog_domain:你的博客域名，例如：<a href="http://www.pureage.info">http://www.pureage.info</a><br /></li>
+<li>emlog_user:你博客的登录名<br /></li>
+<li>emlog_password：你博客的登陆密码<br /></li>
+<li>remotecontent：你ftp上content目录的完整url，带上你的ftp账号和密码信息，例如：     <a href="ftp://admin:password@127.0.0.1/domains/xxxx.com/public_html/content">ftp://admin:password@127.0.0.1/domains/xxxx.com/public_html/content</a> 将admin,password改成你自己的ftp账号、密码，把127.0.0.1改成你ftp的IP（通常就是主机IP）,domains/xxxx.com/public_html/contentg改成你自己的content在ftp上的目录即可。<br />
+<br /></li>
+</ul>
+
+<p>（2）假设将该脚本命名为emlog_backup.sh，执行chmod +x emlog_backup.sh，赋予可执行属性。</p>
+
+<p>（3）执行./emlog_backup.sh:</p>
+
+<ul>
+<li>如果不带参数，或执行./emlog_backup.sh all 则先备份数据库，再备份content目录<br /></li>
+<li>如果是执行./emlog_backup.sh sql，则只备份数据库<br /></li>
+
+<li><p>如果是执行./emlog_backup.sh content，则只备份content目录</p>
+
+<pre><code>#!/bin/bash  
+  
+#-----config------------  
+backup_path=&quot;/home/strider/blog/backup&quot;  
+emlog_domain=&quot;http://www.pureage.info&quot;  
+emlog_user=&quot;aaaaa&quot;  
+emlog_password=123456  
+remote_content=&quot;ftp://admin:123456@127.0.0.1/domains/pureage.info/public_html/content&quot;  
+#----------------------  
+  
+  
+#-----  
+mkdir -p &quot;$backup_path&quot;  
+  
+if [ -d &quot;$backup_path/content&quot; ];then  
+mv &quot;$backup_path/content&quot; &quot;$backup_path/content_old&quot;  
+fi  
+  
+  
+  
+backup_database()  
+{  
+    #----get the cookie----  
+    curl -d &quot;user=$emlog_user&amp;pw=$emlog_password&quot;  &quot;$emlog_domain&quot;/admin/index.php?action=login -c &quot;$backup_path/cookie&quot;  
+  
+  
+    #----back up database----  
+    table_backup=(  
+    &quot;emlog_attachment&quot;  
+    &quot;emlog_blog&quot;  
+    &quot;emlog_comment&quot;  
+    &quot;emlog_options&quot;  
+    &quot;emlog_navi&quot;  
+    &quot;emlog_reply&quot;  
+    &quot;emlog_sort&quot;  
+    &quot;emlog_link&quot;  
+    &quot;emlog_tag&quot;  
+    &quot;emlog_trackback&quot;  
+    &quot;emlog_twitter&quot;  
+    &quot;emlog_user&quot;  
+    )  
+    table_box=$(  
+    let i=0;  
+    for((i=0;i&lt;${#table_backup[@]}-1;i=i+1))  
+    do  
+    echo -n &quot;table_box[$i]=${table_backup[$i]}&amp;&quot;  
+    done  
+    echo -n &quot;table_box[$i]=${table_backup[$i]}&quot;  
+    )  
+    echo $table_box  
+  
+    sql_file=&quot;$(date &quot;+%Y_%m_%d_%H_%M_%S&quot;).sql&quot;  
+  
+    curl  -b &quot;$backup_path/cookie&quot; -L    -d &quot;$table_box&quot;  &quot;$emlog_domain&quot;/admin/data.php?action=bakstart&gt;&quot;$backup_path/$sql_file&quot;  
+  
+    #----delete the cookie----  
+    rm -rf &quot;$backup_path/cookie&quot;  
+}  
+  
+backup_content()  
+{  
+    wget  -r  -nH --cut-dirs=3  -nv &quot;$remote_content&quot; -P &quot;$backup_path&quot;  
+  
+    #----delete old content  
+    if  [ -d &quot;$backup__path/content&quot; ];then  
+            rm -rf &quot;$backup_path/content&quot;  
+    fi  
+}  
+  
+  
+if [ $# -eq 0 ];then  
+    backup_database  
+    backup_content  
+    exit 0  
+  
+elif [ $# -eq 1 ];then  
+    if [ &quot;$1&quot; == &quot;all&quot; ];then  
+            backup_database  
+            backup_content  
+            exit 0  
+  
+    elif [ &quot;$1&quot; == &quot;sql&quot; ];then  
+            backup_database  
+            exit 0  
+  
+    elif [ &quot;$1&quot; == &quot;content&quot; ];then  
+            backup_content  
+            exit 0  
+    else  
+            echo &quot;operation not supported!&quot;  
+            exit 1  
+    fi  
+  
+else  
+    echo &quot;operation not supported!&quot;  
+    exit 1  
+fi  
+</code></pre></li>
+</ul>
+
+<p><strong>2.windows</strong></p>
+
+<p>由于对bat不熟，所以没有写成上面那种比较详细的脚本。但其实上面真正有用的只有三句：两个curl语句和一个wget语句。而curl和wget都有windows版本的。也很好写，最简单的例子，把下面的内容复制到一个文本里，将其改名为emlog_backup.bat，也可以工作：</p>
+
+<pre><code>curl -d &quot;user=xxxx&amp;pw=123456&quot;  http://www.pureage.info/admin/index.php?action=login -c cookie  
+  
+curl  -b cookie -L -d &quot;table_box[0]=emlog_attachment&amp;table_box[1]=emlog_blog&amp;table_box[2]=emlog_comment&amp;table_box[3]=emlog_options&amp;table_box[4]=emlog_navi&amp;table_box[5]=emlog_reply&amp;table_box[6]=emlog_sort&amp;table_box[7]=emlog_link&amp;table_box[8]=emlog_tag&amp;table_box[9]=emlog_trackback&amp;table_box[10]=emlog_twitter&amp;table_box[11]=emlog_user&quot;  www.pureage.info/admin/data.php?action=bakstart&gt;myemlog.sql  
+  
+wget  -r  -nH --cut-dirs=3 -nv  ftp://admin:123456@127.0.0.1/domains/pureage.info/public_html/content  
+</code></pre>
     </div>
     
   </div>
@@ -457,9 +673,183 @@ output=$(./a.out)
 <p>当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。</p>
 
 <p>当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/09/10/127.html" class="read-more-link">阅读全文</a>
+
+<p>依次类推。</p>
+
+<p>至于到底会保留多少份nginx_error.log.N(N代表数字)，则是在logrotate的配置文件一个参数rotate设置的。例如，当rotate设置为3时，则只会保留nginx_error.log.1、nginx_error.log.2和nginx_error.log.3，老的文件会被删除。</p>
+
+<h1 id="logrotate与crond">logrotate与crond</h1>
+
+<p>logrotate默认会放在cron.daily目录下，每天自动运行。 执行：</p>
+
+<pre><code>vim /etc/cron.daily/logrotate  
+</code></pre>
+
+<p>看到该文件内容如下：</p>
+
+<pre><code>#!/bin/sh  
+  
+/usr/sbin/logrotate /etc/logrotate.conf  
+EXITVALUE=$?  
+if [ $EXITVALUE != 0 ]; then  
+    /usr/bin/logger -t logrotate &quot;ALERT exited abnormally with [$EXITVALUE]&quot;  
+fi  
+</code></pre>
+
+<p>上面的shell脚本主要是执行/usr/sbin/logrotate程序，并检查执行状态，如果执行出错，则通过logger程序向系统日志中发送一条错误消息。</p>
+
+<p>注意，现在说道的logrotate有两个，一个是shell脚本，位于/etc/cron.daily下，一个是可执行文件，位于/usr/sbin目录下。</p>
+
+<p>继续看上面的logrotate脚本，其中错误处理语句中，logger程序是怎么运行的呢？我们可以做个小测试。 执行：</p>
+
+<pre><code>/usr/bin/logger -t strider &quot;Good Morning&quot;  
+</code></pre>
+
+<p>屏幕没有任何打印信息，但我们可以查看/var/log/message:</p>
+
+<pre><code>tail /var/log/messages  
+</code></pre>
+
+<p>观察最后一条信息：</p>
+
+<pre><code>Sep 10 06:53:55 localhost strider: Good Morning  
+</code></pre>
+
+<p>可见logrotate脚本的错误信息通过通过logger程序送到系统日志中去了。</p>
+
+<h1 id="etc-cron-daily-etc-crontab">/etc/cron.daily、/etc/crontab</h1>
+
+<p>上面我们说到，logrotate脚本放在/etc/cron.daily目录下，所以它会每天定期执行一次。为什么放在cron.daily目录下就会有此效果呢？而且，到底是在每天的什么时候执行呢？<br />
+linux下的定时任务是由系统服务crond来管理的。crond的配置文件是/etc/crontab,可以打开观察一下：</p>
+
+<pre><code>vim /etc/crontab  
+</code></pre>
+
+<p>会看到如下内容：</p>
+
+<pre><code>SHELL=/bin/bash  
+PATH=/sbin:/bin:/usr/sbin:/usr/bin  
+MAILTO=root  
+HOME=/  
+  
+### run-parts  
+01 * * * * root run-parts /etc/cron.hourly  
+02 4 * * * root run-parts /etc/cron.daily  
+22 4 * * 0 root run-parts /etc/cron.weekly  
+42 4 1 * * root run-parts /etc/cron.monthly  
+</code></pre>
+
+<p>其中，SHELL字段、PATH字段等内容不用多说，重点看下下面的字段。如果你用crontab -e指令来写过crontab定时任务的话，一定会觉得跟crontab中的格式一模一样。其实这是错觉，/etc/crontab的配置中，每一行都多了一个root，表示以什么用户来执行，而crontab -e配置中，则没有这一个用户名字段。</p>
+
+<p>虽然有这一点区别，其他地方意义还是一样的，例如：</p>
+
+<pre><code>02 4 * * * root run-parts /etc/cron.daily  
+</code></pre>
+
+<p>就表明，每天凌晨的4:02时刻，以root身份执行run-parts /etc/cron.daily命令。我们大概也能猜出来了，run-parts的作用就是执行后面目录下的所有脚本，所以放在cron.daily目录下的脚本，会每天被执行一次。cron.hourly、cron.weekly、cron.monthly等也是如此。</p>
+
+<h1 id="run-parts">run-parts</h1>
+
+<p>那么run-parts到底是怎么做的呢？我们可以确定一下，执行：</p>
+
+<pre><code>whereis run-parts  
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>run-parts: /usr/bin/run-parts  
+</code></pre>
+
+<p>查看run-parts类型，执行：</p>
+
+<pre><code>file /usr/bin/run-parts  
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>/usr/bin/run-parts: Bourne-Again shell script text executable  
+</code></pre>
+
+<p>可见run-parts是一个bash脚本，其内容及注释如下：</p>
+
+<pre><code>#!/bin/bash  
+  
+# run-parts - concept taken from Debian  
+  
+# keep going when something fails  
+#当shell中某些命令或子shell执行错误时，该脚本让然能够执行下去。  
+set +e  
+  
+#如果参数小于1，则打印用法信息，并退出  
+if [ $# -lt 1 ]; then  
+        echo &quot;Usage: run-parts &lt;dir&gt;&quot;  
+        exit 1  
+fi  
+  
+#如果所带参数不是一个目录，则报错，并退出  
+if [ ! -d $1 ]; then  
+        echo &quot;Not a directory: $1&quot;  
+        exit 1  
+fi  
+  
+# Ignore *~ and *, scripts  
+#忽略该目录下，文件名中带有~和,的脚本  
+for i in $1/*[^~,] ; do  
+        #忽略子目录  
+        [ -d $i ] &amp;&amp; continue  
+  
+        #忽略rpmsave、rpmorig、rpmnew、swp、v格式的文件  
+        # Don't run *.{rpmsave,rpmorig,rpmnew,swp} scripts  
+        [ &quot;${i%.rpmsave}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
+        [ &quot;${i%.rpmorig}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
+        [ &quot;${i%.rpmnew}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
+        [ &quot;${i%.swp}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
+        [ &quot;${i%,v}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
+  
+        #如果该文件可执行，则执行之  
+        if [ -x $i ]; then  
+                $i 2&gt;&amp;1 | awk -v &quot;progname=$i&quot; \  
+                              'progname {  
+                                   print progname &quot;:\n&quot;  
+                                   progname=&quot;&quot;;  
+                               }  
+                               { print; }'  
+        fi  
+done  
+  
+exit 0  
+</code></pre>
+
+<h1 id="etc-crontab和crontab-e">/etc/crontab和crontab -e</h1>
+
+<p>与前面所说的logrotate一样，也有两个都叫crontab的文件，一个是/etc/crontab，是crond的配置文件，另一个是一个程序，是用户与crond交互的外部接口。</p>
+
+<p>一面已经提到,/etc/crontab与 crontab的配置格式是不一样的，例如：</p>
+
+<p>/etc/crontab中：</p>
+
+<pre><code>...(略）  
+02 4 * * * root run-parts /etc/cron.daily  
+</code></pre>
+
+<p>与程序crontab对比一下，执行crontab -u root -l，可得到：</p>
+
+<pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
+* * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
+</code></pre>
+
+<p>可见，通过crontab程序设置crond时，是不需要添加用户的。原因很简单，crontab必须在执行时指定用户名（如果不指定，则默认为当前登录的用户），执行crontab -u username -e设置完规则后，这些规则会保存在/var/spool/cron/username文件中,每个用户的crontab配置都会保存在属于该用户的文件中。例如：</p>
+
+<pre><code>vim /var/spool/cron/root  
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
+* * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
+</code></pre>
+
+<p>与cront -u root -l回显一致。</p>
     </div>
     
   </div>
@@ -502,9 +892,107 @@ output=$(./a.out)
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
 </code></pre>
-    </div>
-    <div class="read-more">
-      <a href="/2013/09/09/126.html" class="read-more-link">阅读全文</a>
+
+<p>每一行中用分号开始的域是url,且有可能会存在该url域相同的行，现在要做的是在一个有13635条记录的日志中找出这些重复的url。</p>
+
+<h1 id="awk">awk</h1>
+
+<p>接触过shell的童鞋可能都会马上想到用一条awk语句即可：</p>
+
+<pre><code>awk '{print $5}' sum_stat.log | sort | uniq  -d  
+</code></pre>
+
+<p>结果在意料之中：</p>
+
+<pre><code>;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
+;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
+;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
+</code></pre>
+
+<p>如果想算出对url去重后的行数，则是：</p>
+
+<pre><code>awk '{print $5}' sum_stat.log | sort | uniq | wc -l  
+</code></pre>
+
+<p>结果为：</p>
+
+<pre><code>13632  
+</code></pre>
+
+<p>问题本身到这里其实就解决了，找到那些重复的url。但如果仅仅这样，也没必要写篇文章记录一下了。 从上面的结果可知，虽然url域重复的行找出来了，但仅仅只是打印出了该域部分，而无法把整条记录打印出来。如果需要的话，该怎么做呢？</p>
+
+<h1 id="sort-uniq">sort、uniq</h1>
+
+<p>上面的需求用几个纯粹的awk语句就可以实现，可惜对于awk我只会简单的print以及利用几个常见的内置变量如NR，NF来做下最基本的处理，因此暂时考虑用sort和uniq来完成。</p>
+
+<p>由于平时这两个命令用的比较多，马上写出下面的语句来打印出url域重复的行的完整内容：</p>
+
+<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4  -d  
+</code></pre>
+
+<p>但是执行后，结果却是为空，没有任何东西打印出来。也就是说，用上面的语句无法找出url域重复的那些行。 为了再次确认，试着用下面的语句打印出sort和uniq处理后的行数：</p>
+
+<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4 | wc -l  
+</code></pre>
+
+<p>打印出：</p>
+
+<pre><code>13635  
+</code></pre>
+
+<p>如前所属，本文件一共有13635行，url域重复的域一共有3行。显然，确实上面的sort和uniq语句没能找出url重复的行。</p>
+
+<h1 id="罪魁祸首">罪魁祸首</h1>
+
+<p>反复确认脚本没有问题后，我猜可能是这些行中，有某些行的结尾有空格或tab。<br />
+用万能的awk找出结尾有whtespace的行：</p>
+
+<pre><code>awk '/[[:space:]]$/  {print NR, $0}' sum_stat.log  
+</code></pre>
+
+<p>结果如下：</p>
+
+<pre><code>1538 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3 
+1600 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3 
+1633 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
+</code></pre>
+
+<p>可见，第1538、1600、1633这三行的结尾有多余的空白符。其实也可以猜出，这三行中的url就是那三个重复的url。</p>
+
+<p>把这三行的行末空白去掉后，再次运行：</p>
+
+<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4  -d -c  
+</code></pre>
+
+<p>结果如下：</p>
+
+<pre><code>2 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
+2 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
+2 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
+</code></pre>
+
+<p>这样就顺利完成任务了。 如果打印出url域重复，且没去重的所有行，只需把uniq参数的-d改成-D即可：</p>
+
+<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4  -D  
+</code></pre>
+
+<p>产生如下输出：</p>
+
+<pre><code>[2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
+[2013-09-06 00:35:54] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
+[2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
+[2013-09-06 00:33:54] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
+[2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
+[2013-09-06 00:33:54] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
+</code></pre>
+
+<p>这样就可以实现原来打算的功能了。</p>
+
+<h1 id="原因">原因</h1>
+
+<p>为什么有行尾空格不行呢？</p>
+
+<p>因为sort不会去除行尾空格，即使你指定了-k选项，而行中间的空格则不会有此问题。而uniq用了-f选项来跳过前面的不许考虑的域，同样也只能把行中间的空格略过，不会处理行尾的空格，这样导致了行尾的空格参与了比较，因而uniq不会把与之内容除行尾空格外均相同的行视为相同的行来去重了。</p>
     </div>
     
   </div>

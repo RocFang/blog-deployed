@@ -318,9 +318,8 @@
     
     <div class="post-summary">
       <p>本网站所使用的域名pureage.info自2011年注册开始，一直托管在godaddy上。当年国外的域名注册商家中，只有godaddy支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/transfer-domain-from-godaddy-to-namesilo/" class="read-more-link">阅读全文</a>
+
+<p>直到最近，域名又要续费了，而这个info的域名现在居然到了150元人民币一年，干脆趁这个机会转出到namesilo了。整个过程用了不到五分钟，namesilo一年的费用是80多块，还借机体验了一下域名转出的流程，真是何乐而不为呢。</p>
     </div>
     
   </div>
@@ -359,9 +358,29 @@
 </ol>
 
 <p>虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/annoying-golang-import/" class="read-more-link">阅读全文</a>
+
+<p>但是在参与Golang的开源项目中，由于gopath的限制，这个流程就会有问题。举个例子，有一个项目为github.com/userA/project，fork之后，有一个新的仓库，路径为github.com/userB/project。而这个project中大概率会有内部package引用，比如在main.go中，import了github.com/userA/project/moduleA，这样在go get自己的仓库时，仍然会引用到原始的仓库路径。将会导致诸如构建失败等一些问题。</p>
+
+<p>为什么基于c/c++的开源项目就没有这个问题呢，因为c/c++的构建更原始更简单。include只有两种形式，要么是在标准路径中或项目子目录中去查找，要么在非标准路径下，但能通过编译器的选项来告诉编译器去哪里找，而代码本身则是非常干净的，不会有硬编码的特定路径在源码里面。而Golang的import，是一个完整的url，这样可以让go get之类的工具自动化的进行一些操作。</p>
+
+<p>上面可以解释Golang项目在引用外部包的时候使用完整url的做法，但是在引用项目内部包时，仍然使用完整url的做法就多少让人觉得有点不能理解。如果import能支持相对路径，就不会有前面提到的问题了。Golang的开发者们当然对这个问题有自己的考虑，参考这个issue：<a href="https://github.com/golang/go/issues/3515">https://github.com/golang/go/issues/3515</a> 。</p>
+
+<p>不能简单的说Golang的这种构建方式不对，因为它的出现必然是有自己的优点和解决了一些问题的，所以从实用的角度出发，我们只能将其称之为“特点”，并去适应它。</p>
+
+<p>解决办法有几个，但都看上去有些丑陋。比如：</p>
+
+<p>在本地开发的时候，使用的路径仍然是原始项目的路径，将自己名下的仓库作为一个remote upstream，push的时候将修改push到自己名下的仓库中，然后再向原始仓库提交pull request。</p>
+
+<p>对于一般的开源项目，这种“临时”的方法就够用了。但在下面的几个场景种，这种方法显然会很令人不适：</p>
+
+<ol>
+<li>原始项目已经不维护了，你想自己长期维护一个fork。</li>
+<li>原始项目仍然在积极维护，但是你仍然想自己长期维护一个fork。</li>
+</ol>
+
+<p>在上述情况下，其实我们是把原始项目和自己的fork当作两个相对独立的项目，我们希望在构建的时候能直接go build就行了，不希望有其他额外的操作。如果有第三个人，他想fork我们这个fork并进行并列开发，按上面的方法将会非常麻烦。</p>
+
+<p>对于这种情况，我选择将项目内所有源码中的import路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。</p>
     </div>
     
   </div>
@@ -394,9 +413,12 @@
 <p>以后我才知道，原来有一项叫徒手攀岩的极限运动，我在那些恶梦中所处的场景，是这项运动的爱好者们的日常。不同的是，这不是梦。一个闪失，他们就会粉身碎骨，成为不断增长的死亡列表里的一个新的名字。</p>
 
 <p>纪录片《徒手攀岩》，就讲述了Alex Honnold在无保护措施下成功攀登酋长岩的经过。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/free-solo/" class="read-more-link">阅读全文</a>
+
+<p>当我们在看一部极限运动的纪录片时，我们看的是什么？对于我自己，是在试图了解这个人，他的动机，他的情感。我觉得当一个人醉心于一种一不留神就会让自己丧命的运动中时，他一定是接近甚至超越一个哲学家的存在。Alex Honnold确实也是这样，对生死、亲情、友情、爱情都有着自己深刻的理解。</p>
+
+<p>英国探险家乔治·马洛里在被问及为何想要攀登珠穆朗玛峰时回答，“因为它就在那儿“，成为人们至今仍经常引用的名言。这句话可以用来回答许多极限运动领域中类似的问题。但是现在，对于极限运动的评论往往变成了”这就是为什么外国人这么少“之类的调侃。</p>
+
+<p>我当然不会死板到因为这些评论的盛行就感慨世风不古，在跟朋友们一起看这些视频时，我也会做出此类调侃。但是静下心来细想，一定会是满满的敬意。</p>
     </div>
     
   </div>
@@ -429,9 +451,18 @@
 <p>后来你成年就独立了，踏入社会，表现得很好。但不知道什么时候，你变了，不再是原本的你。你让人用手指着你的脸，骂你没用。遇到困难就开始怪罪别人，好像活在阴影下似的。</p>
 
 <p>跟你说一件你已经知道的事。人生未必都是美好的，世间险恶又无情。不管你有多坚强，你一松懈，就会被逼的屈膝臣服。谁打你，都不会比人生的打击更重。但重点不是你出手多重，而是你能忍耐多少，继续向前迈进。你能承受多少还能向前迈进！这样才能赢啊！</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/a-line-in-rocky6/" class="read-more-link">阅读全文</a>
+
+<p>知道自己的斤两就极力去争取吧，但你要愿意承受打击，不要用手指着别人，说你失败是因为他或她或是任何人。懦夫才会这样，你不是懦夫，你很坚强。</p>
+
+<p>我会永远爱你，不管发生什么事，你是我的儿子，我的骨肉，是我这辈子最珍贵的礼物。但在你建立自信以前，你都不会有自己的人生。别忘了去看你妈。</p>
+
+<blockquote>
+<p>You ain&rsquo;t gonna believe this, but you used to fit right here. I&rsquo;d hold you up to say to your mother, &ldquo;this kid&rsquo;s gonna be the best kid in the world. This kid&rsquo;s gonna be somebody better than anybody I ever knew.&rdquo; And you grew up good and wonderful. It was great just watching you, every day was like a privilige.<br />
+Then the time come for you to be your own man and take on the world, and you did. But somewhere along the line, you changed. You stopped being you. You let people stick a finger in your face and tell you you&rsquo;re no good. And when things got hard, you started looking for something to blame, like a big shadow.<br />
+Let me tell you something you already know. The world ain&rsquo;t all sunshine and rainbows. It&rsquo;s a very mean and nasty place and I don&rsquo;t care how tough you are it will beat you to your knees and keep you there permanently if you let it. You, me, or nobody is gonna hit as hard as life. But it ain&rsquo;t about how hard ya hit. It&rsquo;s about how hard you can get it and keep moving forward. How much you can take and keep moving forward. That&rsquo;s how winning is done!<br />
+Now if you know what you&rsquo;re worth then go out and get what you&rsquo;re worth. But ya gotta be willing to take the hits, and not pointing fingers saying you ain&rsquo;t where you wanna be because of him, or her, or anybody! Cowards do that and that ain&rsquo;t you! You&rsquo;re better than that!<br />
+I&rsquo;m always gonna love you no matter what. No matter what happens. You&rsquo;re my son and you&rsquo;re my blood. You&rsquo;re the best thing in my life. But until you start believing in yourself, ya ain&rsquo;t gonna have a life. Don&rsquo;t forget to visit your mother.</p>
+</blockquote>
     </div>
     
   </div>
@@ -464,9 +495,33 @@
 <p>总的来说，我对这部电影很满意。与上一部相比，加入了更多拳击之外的感情戏，导致中间会有一些沉闷，应该会引起一些争议。但拳击电影从来都不是从头到尾在擂台上拳拳到肉，如果缺了感情的铺垫，情绪没有累积上来，最后的决战就无法成为高潮。</p>
 
 <p>说一说这个电影除了主角奎迪的成长之外，有意思的两个地方。</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/creed2/" class="read-more-link">阅读全文</a>
+
+<h3 id="小德拉戈-傅红雪">小德拉戈/傅红雪</h3>
+
+<p>老德拉戈当年在擂台上打死了奎迪的父亲阿波罗，在当时的冷战背景下，在苏联国内荣誉达到顶峰，但随后在与洛奇的比赛中败北，被国家、被妻子抛弃，又失去一切。只有小德拉戈是他唯一的希望。</p>
+
+<p>所以小德拉戈是一个在仇恨中长大的孩子。他要用拳头把父亲丢失的东西再赢回来。</p>
+
+<p>是不是很像《边城浪子》里的傅红雪？</p>
+
+<blockquote>
+<p>风在呼啸。<br />
+她看着他慢慢地走出去，走入黑暗的夜色中，他的人似已渐渐与黑暗溶为一体。<br />
+他手里的刀，似也渐渐与黑暗溶为一体。<br />
+这时黑暗已笼罩大地。</p>
+</blockquote>
+
+<p>但他还毕竟比傅红雪幸运的多。最后当父亲蹒跚着扔出表示认输的白手帕时，他可能才发现，从小到大一直用仇恨激励他的父亲，对他极其严厉的父亲，其实内心是深爱着他的，他并不仅仅是一个用来复仇的工具。那一刻，在拳台上他在父亲面前哭的像个孩子。</p>
+
+<p>影片结尾，不光是属于洛奇和奎迪的，也是属于他们父子的。当老德拉戈和小德拉戈在清晨的街道中并肩跑步训练时，他们彼此一定获得了全新的力量。</p>
+
+<h3 id="赛前紧张的奎迪">赛前紧张的奎迪</h3>
+
+<p>在上一部中，奎迪在一次比赛前，紧张的脱掉拳套去上厕所。在这一部中，妻子会在登台前对其比一个手势，那意思是问他大便了吗？这一部奎迪主要有三场比赛，第一场和最后一场，妻子赛前做了这个手势，奎迪赢得了比赛。第二场，也就是和小德拉戈的第一场比赛，妻子没有这个动作，奎迪输了比赛。有没有这个手势，是表示他们之间是否是处于全力彼此支持的状态。</p>
+
+<p>在与小德拉戈的第一场，一意孤行的奎迪，登台前紧张到发抖。在复赛中，取得爱人和洛奇支持的奎迪就沉稳的多。</p>
+
+<p>仅仅是因为，他有没有明白自己是为何而战。</p>
     </div>
     
   </div>

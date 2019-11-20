@@ -332,9 +332,113 @@
 <p>其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。</p>
 
 <p>第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/08/connection-header-in-nginx.html" class="read-more-link">阅读全文</a>
+
+<h3 id="2-nginx-是如何做的">2.Nginx 是如何做的</h3>
+
+<p>注:以下代码均来自 Nginx-1.8.0</p>
+
+<p>对于请求中的 Connection 头， Nginx 在 http 解析时调用 ngx_http_process_connection 方法：</p>
+
+<pre><code>static ngx_int_t  
+ngx_http_process_connection(ngx_http_request_t *r, ngx_table_elt_t *h,  
+    ngx_uint_t offset)  
+{  
+    if (ngx_strcasestrn(h-&gt;value.data, &quot;close&quot;, 5 - 1)) {  
+        r-&gt;headers_in.connection_type = NGX_HTTP_CONNECTION_CLOSE;  
+  
+    } else if (ngx_strcasestrn(h-&gt;value.data, &quot;keep-alive&quot;, 10 - 1)) {  
+        r-&gt;headers_in.connection_type = NGX_HTTP_CONNECTION_KEEP_ALIVE;  
+    }  
+  
+    return NGX_OK;  
+}  
+</code></pre>
+
+<p>可见，该方法主要功能只涉及到上面所述的 Connection 作用的第2个作用，而没有第1个。这应该算的上是实现对标准的支持不完整吧。</p>
+
+<p>不管怎么样，我们继续分析一下 Nginx 在管理持久连接上具体是怎么做的，上面的代码逻辑很简单：<br />
+（1）如果 Connection 头是 close（不区分大小写），则 r-&gt;headers_in.connection_type 被置为 NGX_HTTP_CONNECTION_CLOSE</p>
+
+<p>（2）如果 Connection 头是 keep-alive（不区分大小写），则 r-&gt;headers_in.connection_type 被设置为 NGX_HTTP_CONNECTION_KEEP_ALIVE</p>
+
+<p>（3）如果不是以上两种情况，则什么都不做，此时 r-&gt;headers_in.connection_type 默认为0.</p>
+
+<p>可以看到，ngx_http_process_connection 的作用仅仅是设置了一个标记r-&gt;headers_in.connection_type，我们继续看这个标记是如何被使用的。</p>
+
+<p>要想完整的讲述这个过程，不可避免需要涉及一些 Nginx 配置解析、解析 HTTP 协议相关的流程，但这些都不是本文的重点，下面均一笔带过。</p>
+
+<p>Nginx 的各历史版本中，对于 http 协议解析的过程，细节稍微有些变化。在 Nginx-1.8.0 中，过程如下：</p>
+
+<p>（0）我们知道，Nginx 是一个主进程加多子进程的架构，配置解析发生在 fork 子进程之前，在这个过程中很多操作都是对于全局变量 cycle 的操作。在 fork 之后，每个子进程均会继承一份这个全局变量 cycle(这里不考虑COW)。</p>
+
+<p>（1）http 配置解析的入口为 ngx_http_block，这是个很复杂的函数。因为 Nginx 的配置文件分层级，可以有包含关系，为了对这个特性提供支持，配置文件的解析涉及到配置项的内存布局的设计，最终落实下来，就是全局变量 cycle 的 conf_ctx 成员，这是个四重指针。配置解析的这部分是另一个话题，本文不打算细说。这里要关注的是，在 ngx_http_block 函数的最后，调用了ngx_http_optimize_servers 方法，在这个方法里，完成了这样一个事情：配置文件里的监听套接字（可能是多个），最终被复制到了全局变量 ngx_cycle 的 listening 数组里。整个调用关系为，nginx.c-&gt;main()-&gt;ngx_init_cycle-&gt;ngx_http_block(在 ngx_init_cycle里通过钩子被回调)-&gt;ngx_http_optimize_servers-&gt;ngx_http_init_listening-&gt;ngx_http_add_listening-&gt;ngx_create_listening, 有兴趣的同学可以深入进去看看。</p>
+
+<p>（2）在上面的这个调用链里，ngx_http_add_listening 做了另外一个事情：将所有的ngx_listening_t 类型的监听套接字的 handler 钩子设置为 ngx_http_init_connection，这个在后面会用到。</p>
+
+<p>（3）nginx fork 出多个子进程，每个子进程会在 ngx_worker_process_init 方法里调用各个nginx 模块 init_process 钩子，其中当然也包括 NGX_EVENT_MODULE 类型的ngx_event_core_module 模块，其 init_process 钩子为 ngx_event_process_init。在ngx_event_process_init 里，每一个 ngx_listening_t 类型的监听套接字变量 ls[i]，根据ngx_get_connection 从 nginx 的 connections 储备池里获得一个与之相关的ngx_connection_t 类型的变量 c ,这两个变量均有一个指针成员指向对方，以此保持互相联系。从这里开始，我们将注意力转移到这个 ngx_connection_t 类型的变量 c 上。在 ngx_event_process_init 的后面，这个 ngx_connection_t 类型的变量的读事件的 handler，被置为 ngx_event_accept。然后这个读事件被添加到 epoll 中。</p>
+
+<p>（4）当一个请求来临时，ngx_event_accpet 被回调，其中上面第（2）步里为监听套接字设置的 handler,即 ngx_http_init_connection 被调用：</p>
+
+<pre><code>ls-&gt;handler(c);  
+</code></pre>
+
+<p>这个调用非常有趣，ls 实质上是代表着监听套接字，而参数 c 则是 accept 后建立起来的连接套接字，根据 socket 的基本知识，该连接上后续客户端与 Nginx 之间的信息传输，都通过这个连接套接字上的读写来进行。</p>
+
+<p>（5）从 ngx_http_init_connection 开始，就着手进行一系列 HTTP 协议解析。中间涉及到ngx_http_wait_request_handler、ngx_http_create_request、ngx_http_process_request_line、ngx_http_process_request_headers 等解析方法。</p>
+
+<p>似乎已经偏题太远了，我们回到最初的 Connection 请求头，在上面所讲的ngx_http_process_connection 中，根据 Connection 头，将 r-&gt;headers_in.connection_type 置为NGX_HTTP_CONNECTION_CLOSE、NGX_HTTP_CONNECTION_KEEP_ALIVE 或者默认初始值 0.</p>
+
+<p>那么这个过程发生在上面所述的一系列流程的哪个阶段呢？当然是发生在ngx_http_process_request_headers 里了，在个方法里，全局数组 ngx_http_headers_in 的对应元素的 handler 被调用，对于 Connection 请求头，就是 ngx_http_process_connection了。</p>
+
+<p>讲明白了 ngx_http_process_connection 发生的前因，我们再来看看后果。</p>
+
+<p>ngx_http_process_connection 的直接影响只有一个，即对 r-&gt;headers_in.connection_type进行赋值，close 为 NGX_HTTP_CONNECTION_CLOSE，keep-alive 为NGX_HTTP_CONNECTION_KEEP_ALIVE，其它情况为 0（初始值）。</p>
+
+<p>（6）在第（5）步里，在 ngx_http_process_request_line方法调用完 ngx_http_process_request_headers 后，继续调用 ngx_http_process_request，进而开始正式的在业务上处理HTTP请求。ngx_http_process_request的核心内容是对 ngx_http_handler 的调用。</p>
+
+<p>（7）在 ngx_http_handler 里，有这样一段代码：</p>
+
+<pre><code>if (!r-&gt;internal) {  
+        switch (r-&gt;headers_in.connection_type) {  
+        case 0:  
+            r-&gt;keepalive = (r-&gt;http_version &gt; NGX_HTTP_VERSION_10);  
+            break;  
+  
+        case NGX_HTTP_CONNECTION_CLOSE:  
+            r-&gt;keepalive = 0;  
+            break;  
+  
+        case NGX_HTTP_CONNECTION_KEEP_ALIVE:  
+            r-&gt;keepalive = 1;  
+            break;  
+        }  
+  
+        r-&gt;lingering_close = (r-&gt;headers_in.content_length_n &gt; 0  
+                              || r-&gt;headers_in.chunked);  
+        r-&gt;phase_handler = 0;  
+  
+    } else {  
+        cmcf = ngx_http_get_module_main_conf(r, ngx_http_core_module);  
+        r-&gt;phase_handler = cmcf-&gt;phase_engine.server_rewrite_index;  
+    }  
+</code></pre>
+
+<p>所以，到现在为止，客户端请求里带来的 Connection 头部，落在了 r-&gt;keepalive 上了。规则如下：</p>
+
+<ul>
+<li>如果 Connection 头部里为&rdquo;close&rdquo;,则 r-&gt;keepalive 为 0.<br /></li>
+<li>如果 Connection 头部里为&rdquo;keep-alive&rdquo;,则 r-&gt;keepalive为 1.<br /></li>
+<li>如果不是以上两种情况，则按照 HTTP 协议走默认情况：如果是 HTTP 1.0 以上，则 r-&gt;keepalive 默认为 1，如果是 HTTP 1.0及以下，则 r-&gt;keepalive默认为 0.这一点是与 HTTP 协议相符合的.<br />
+<br /></li>
+</ul>
+
+<p>到目前为止，我们所讲的都算是 r-&gt;keepalive 是怎么产生的，还没有涉及到它是如何被使用的。</p>
+
+<p>r-&gt;keepalive 的使用主要是在函数 ngx_http_finalize_connection 中，而ngx_http_finalize_connection 在 Nginx 中，仅被 ngx_http_finalize_request 调用。顾名思义，ngx_http_finalize_request 讲的是怎么结束一个 HTTP 请求的。</p>
+
+<p>（8）在 ngx_http_finalize_connection 中，如果 r-&gt;keepalive 为1，则会调用ngx_http_set_keepalive 并返回。ngx_http_set_keepalive 方法完成将当前连接设为keepalive 状态的实质性工作。它实际上会把表示请求的 ngx_http_request_t 结构体释放，却又不会调用 ngx_http_close_connection 方法关闭连接，同时也在检测 keepalive 连接是否超时。</p>
+
+<p>至此，Connection 头部在 Nginx 里的处理流程差不多都讲完了，具体细节可按照这个脉络查看相应的代码。</p>
     </div>
     
   </div>
@@ -367,9 +471,20 @@
 <p>关于天气，用天公作美来形容再贴切不过了。广州经过多次试探，终于找到了入冬的节奏，气温骤降，还有阵阵小雨。本来以为这次会像三月份的清远马拉松一样冒雨奔跑，还在担心这寒冷的天气淋雨可能会吃不消，结果当天突然风和日丽，蓝天白云。真是一个惊喜。</p>
 
 <p>这次半马，我的准备工作其实是不足的。最近已经有两周没有跑步了，而且当天早上还没有任何进食，直接空腹开跑，但还好之前还是积累了一定的跑量，再加上之前已经有一次半马的经验了，所以心理上并没有什么压力。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/07/guangzhou-marathon.html" class="read-more-link">阅读全文</a>
+
+<p>有一个让我非常兴奋的地方是，整个过程中我的膝盖没有任何不适。倒是双脚有些疼痛，尤其是脚拇指，估计是鞋的问题，到现在脚趾头还是淤青的。另外，大腿、臀部肌肉酸痛感强烈，这恰恰说明我的跑步姿势是没问题的，所以膝盖才会感觉良好。总体上说，身体没有什么不良反应。这也算是一个惊喜，说明在这方面的努力没有白费。</p>
+
+<p>比赛组织上，广马比清远马拉松更有经验，不得不提，赛后的姜汤简直是久旱甘霖。当天凭借广马参赛号码布，在广州市内还能免费乘坐地铁，比赛成绩也是当天就用短信发到手机上等等，做的好的地方真的还是挺多的。</p>
+
+<p>目前在考虑是否明年跑一次全马，主要思想斗争集中在如下几点:</p>
+
+<ul>
+<li>我是个平底足。平时走路稍微距离长一点脚都会痛，如果我能控制好膝盖，那么跑全马的瓶颈应该就在脚上了。本着健康第一的原则，我不适合去跑全马。<br /></li>
+<li>但是如果每年都去参加几次半马，时间长了肯定也会腻。<br />
+<br /></li>
+</ul>
+
+<p>暂时并没有得出结论，明年先跑一次半马再说，如果确实很轻松了，再考虑全马的事。</p>
     </div>
     
   </div>
@@ -404,9 +519,30 @@
 <p>这个时期，我大概七点半起床，八点左右到达公交站，公交站里已经是人头攒动了。想挤上去绝对是个体力活。而且，大家似乎都有这么一种心理，当自己是往上挤的一方时，就希望车里的人往里面动一动，腾出点空间，可如果自己在里面站定了后，到了后面的站时，却又不愿意给后来人腾出地方了。这种情况就导致了车门口附近的区域变成噩梦一般的存在。</p>
 
 <p>必须得想办法了。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/12/02/cram-in-the-bus.html" class="read-more-link">阅读全文</a>
+
+<h3 id="2-多走几分钟路-就有座位了">2. 多走几分钟路，就有座位了</h3>
+
+<p>有一路车的起点站就在我最近的站点的上一站。于是我开始每天步行一站路，到始发站排队上车。这样，虽然多走了几百米，但是每次都有座位了。坐在车窗边，看到下一站很多人蜂拥而上却挤不进来，或者即使挤进来了也被挤成肉干的样子，就忍不住暗暗得意，就这么几百米的距离，为什么不多走几步呢。多走几百米路，就换来一个小时的舒适，简直太划算了。</p>
+
+<h3 id="3-早起半个小时-多出一个小时">3. 早起半个小时，多出一个小时</h3>
+
+<p>上一个阶段持续了一个月，虽然每天都能美滋滋的在座位上看看书和手机，然后偶尔抬起头看看车门挤成一锅粥的其他人，享受一下幸福感爆表的心情，但是仍然有个问题让人不满意。不管有没有座位，路况却都是一样的堵。算上到公司附近吃早餐的时间，我仍然在迟到的边缘徘徊。</p>
+
+<p>还是得想办法。</p>
+
+<p>在某天早上，一咬牙，提前半个小时起床了，一个超乎想象的惊喜突然砸到了我面前。由于早起了半个小时，离我最近的那个车站等车的人少了很多，所以我不用再额外步行到前一站就能坐到座位了。并且，由于早起了半个小时，路上就不堵车了，本来一个小时的车程半个小时就到了。这样算下来，早上的时间，硬生生的多出了一个多小时。从此，我再也不迟到了。</p>
+
+<h3 id="4-大师有话说">4. 大师有话说</h3>
+
+<p>我把这段时间坐车经历就这样平铺直叙的告诉了我体内的大师。大师沉吟片刻，摇头晃脑的说道：</p>
+
+<ul>
+<li>比别人多走一点，其实并不用走多远，你就能比大部分人从容得多<br /></li>
+<li>比别人早出发一点，其实并不用早多少，你就能大幅延长生命的长度<br />
+<br /></li>
+</ul>
+
+<p>我看了一眼大师，当然，他在我体内，我是看不到的，只能假装与他对话：“大师，你赢了。”</p>
     </div>
     
   </div>
@@ -450,9 +586,16 @@
 <li>《这才是心理学》<br /></li>
 <li>《思考，快与慢》<br /></li>
 </ul>
-    </div>
-    <div class="read-more">
-      <a href="/2015/11/28/some-books.html" class="read-more-link">阅读全文</a>
+
+<p>到今天为止，《自私的基因》已经看完，《机器人叛乱》看了一大半。看一遍肯定是不够的，至于是整个书单完整看完再回过头来翻阅，还是一本的一本的深入看下去，视情况而定。</p>
+
+<p>为什么要看这几本书？因为我忽然想明白了一件事情，人具有自我反思的能力，也就具有了不断自主将自己的思维升级的能力。从这个角度上说，人应该是一个完美的生物。可是现实中，为什么到处都是相反的例子。小到怒路一族，大到恐怖袭击，这中间一定有一些深奥的东西，所以我想去了解一下。</p>
+
+<p>我希望这几本书我能认真看完。认真看完的意思是指看完后，大脑里能有一个体系结构，这个体系不一定完全正确，但一定要在逻辑上站得住脚，用它可以去解释很多让人疑惑的事情，如果能对自己的生活有一些指导意义就更好了。</p>
+
+<p>读书笔记是必须要有的。到了这个年龄段，我是再也不相信自己的记忆力了，虽然我在某些方面的记忆力确实是惊人的，例如，我至今仍清楚的记得很多和初中、小学同学之间的琐碎的点点滴滴，而当我和他们说起时，他们大吃一惊。再例如，在大学时，有次把水杯丢了，我很沮丧，走进超市一下买了两个水杯，这个过程的心理活动、动作、两个杯子的细节等等，历历在目。</p>
+
+<p>那是我第十次去上自习时丢水杯。</p>
     </div>
     
   </div>
@@ -487,9 +630,16 @@
 <p>有些书，翻出来的时候还能清楚的记得当时将它保留下来时的心理活动，例如这本《射频模拟电路》，毕业前邮寄物品的时候，内心挣扎着：张玉兴老师的这本书写的这么好，一定要保留下来，以后还要好好学学。真实情况是，当时我就知道以后不会从事电子方面的工作，而且，我并不是真的喜欢学射频，学的也不好，张玉兴老师究竟有多牛，我也不知道。那为什么我觉得它好呢？恐怕真实原因是大家都说它好吧。同样类型的书，还有《电路基础》、《模拟电路》等等。</p>
 
 <p>于是没有怎么犹豫，就把这类书都扔了。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2015/11/27/throw-that-book-away.html" class="read-more-link">阅读全文</a>
+
+<p>有些书，翻出来后能仍然觉得它真的是好。这种感觉一定是自己曾经亲身感受到的。例如，奥本海姆的《信号与系统》，是我本科时候遇到最好的一本教材了。很庆幸，当时老师给我们推荐了这本教材，而不是那些国内大学编纂的其他版本。那些各色版本的《信号与系统》，基本就是各类公式的推导和罗列（甚至大部分连推导都没有），这类书也不是一无是处，它们其实本质上都是为考试服务的，所以，靠前用这类书突击一下准没错，考完试后就扔掉吧。而奥本海姆版的，公式是在不知不觉中给你推导出来的，等你看到公式的部分时，你早就明白它的历史由来和应用场景了。</p>
+
+<p>这本书还见证了我和我过去的女友，现在的妻子的一段美好时光。当时我读研一，她大四备考我所在学校的研究生，《信号与系统》是初试指定专业课之一。我跟她说，不要看别的书了，现在时间还够，好好把奥本海姆的版本研读一遍吧，然后把这本书给她邮寄过去了，哦，对了，当时还是异地恋。由于这本书我是认真看了的，上面都保留着我的笔记和一些随手写的心得，所以她看的时候得心应手，有时候还在我做的批注下面进行二次批注。后来她考上了，这本书也依然保留下来了。同样类型的书，还有《小王子》等。</p>
+
+<p>毫不犹豫，这类书依然会保留。</p>
+
+<p>总体上来说，小部分优秀的引进的或者自己认真研读过的教材、一些软件开发经典书籍和感兴趣的人文类的书会留下来，大部分书都扔掉了。</p>
+
+<p>毕业前的一段时间，通往食堂的路的两边，都是毕业生们待售的教材和各种课外书。路过的时候隔三差五会想，这本书怎么也要卖掉啊？现在想到当时的心理活动，我很脸红。</p>
     </div>
     
   </div>
