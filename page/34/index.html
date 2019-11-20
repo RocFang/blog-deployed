@@ -300,12 +300,12 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/2012/01/07/37.html">博客心理学之 “写博客如做人，都要能抵制诱惑”</a>
+      <a class="post-link" href="/2016/02/14/nginx-dynamic-module.html">关于Nginx-1.9.11的动态模块</a>
     </h1>
     
     <div class="post-meta">
-      <time datetime="2012-01-07" class="post-time">
-        2012-01-07
+      <time datetime="2016-02-14" class="post-time">
+        2016-02-14
       </time>
       
       
@@ -317,217 +317,185 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>这个博客开了一个多月，在google中搜索“纯真年代”已经能排在第一页了。昨天发表了一篇带有google过滤词的文章，很快的，再搜索“纯真年代”，点了几十页都没看到这个博客的影子。</p>
+      <p>我们知道，原生 Nginx 增加、修改一个第三方模块，需要重新编译源代码，所有的模块都是用静态链接的形式组织起来的。而 Tengine 有一个增强的功能，即动态模块加载 DSO(Dynamic Shared Objects), 可以实现运行时动态加载模块，而不用每次都要重新编译Tengine。</p>
 
-<p>在带着些许失意不断翻页时，我忽然愣住了。然后苦笑一下，关掉了google。</p>
+<p>在 2016 年农历春节期间，Nginx 官方发布了最新版本 Nginx-1.9.11，也增加了该功能。</p>
 
-<p>回想一下，我为什么要开始写博客呢？主要有两个目的：</p>
+<p>Nginx-1.9.11 的Changelog 如下:</p>
 
-<ol>
-<li>给自己一个练习写文章的地方。<br /></li>
-<li>在时间的推移中，总结、思考一些东西。<br />
+<blockquote>
+<p>Changes with nginx 1.9.11                                        09 Feb 2016</p>
+
+<p>*) Feature: TCP support in resolver.</p>
+
+<p>*) Feature: dynamic modules.</p>
+
+<p>*) Bugfix: the $request_length variable did not include size of request<br />
+      headers when using HTTP/2.</p>
+
+<p>*) Bugfix: in the ngx_http_v2_module.</p>
+</blockquote>
+
+<p>从使用的角度上来说，是增加了一个指令 <a href="http://nginx.org/en/docs/ngx_core_module.html#load_module">load_modules</a> 指令，来加载编译为 so 形式的动态模块。</p>
+
+<p>该功能的实现还是挺简单的，主要包括如下几个方面:</p>
+
+<ul>
+<li>将模块相关的类型定义和操作方法调整到新的文件 ngx_module.h 和 ngx_module.c 中<br /></li>
+<li>添加 dlopen 的封装<br /></li>
+<li>调整编译脚本<br /></li>
+<li>少量 Nginx 核心代码的调整。主要是为 cycle 新增了一个成员modules, 用来取代之前的全局变量 ngx_modules, 并将之前初始化时对于 ngx_modules 的操作封装成几个函数，放在 init_cycle 里调用。<br />
 <br /></li>
-</ol>
+</ul>
 
-<p>所以，从一开始，我就毫不理会什么SEO之类的东西，就当每年花个一百多块钱买个日记本了。我一直以为我都是这么做的。如果没有发生本文开头提到的事情，我甚至都不会意识到，原来我经常（几乎每天）都有在google中搜索“纯真年代”的习惯。想到了一个笑话，某人宣称：“我最讨厌三种人，一种是种族主义者，一种是黑人”。顿时心里涌起一阵寒意。原来尽管我总是自己告诉自己，我丝毫不关心任何访问量的问题，但实际上却在每天干着关心访问量的事，而且是无意识的。反思之后，我又是一阵喜悦，因为我大概又成熟一点了。</p>
+<p>我认为我们需要重点关注的是如下几个:</p>
 
-<p>我们必须承认，人下意识的行为都是有原因的。思考一下，得出结论：关注能否在搜索引擎中靠前的搜索出自己的博客，其实就是我的一种虚荣心在作怪。当然由于很多网站自身的定位，它必须关注各种SEO技巧，这也是它们存在的意义，例如我开了一个公司，并为之做了一个网站，我当然得关注这个网站的一切数据，此时虽然也有虚荣心在其中，但已是可以忽略不计了的非主要因素了。但我既然我的博客定位仅仅是上面两条，这个定位已然是自己深思熟虑的结果，为什么还会让虚荣心左右我的行为呢？这是个值得思考的问题。</p>
-
-<p>首先，我们必须承认，人是有虚荣心的。就像人都是自私的一样，这个是继续展开讨论的前提。既然虚荣心是无法根除的，那么经常告诉自己“我不关注访问量，这个博客只是写给自己看的”就是在掩耳盗铃，是非理性的，因为如果真的严格按照“丝毫不关心访问量”来执行的话，就类似于否认人的虚荣心。所以虽然表面上我的大脑和我本身达成了一致，但实际上这些自我对话并没有真正说服自己。</p>
-
-<p>那么，应该怎么解决呢？</p>
-
-<p>第一，承认自己还是比较关心博客的访问量的，即真正承认自己虚荣心的确存在。所以我这段时间经常关注排名并不是什么不对的事情，如果说我现在有些自责，那是因为这些行为浪费了很多时间。但如果仅仅是为我本来就不可能做到的一件事情（完全不关注访问量）而自责，这个自责本身也是在浪费时间，so，恶性循环。所以我需要跳出这个思维怪圈。</p>
-
-<p>第二，真正说服自己。在承认自己还是比较关注博客的访问量的基础上，我也必须承认，我的时间和精力是有限的：经营这个博客只是自己众多业余爱好中的一件事，我不可能在上面花很多精力。但是如果仅仅这样，还是无法真正说服自己，因为目前为止只承认了两个事实：</p>
-
-<ol>
-<li>我关心博客访问量是正常的。<br /></li>
-<li>我的精力是有限的，不应该过度关注。<br />
+<ul>
+<li>编译脚本有了较大的变化，在以后的模块编程中，尽量要让自己的模块能够静态链接和动态链接。这就需要适应一下新的编译框架。<br /></li>
+<li>不光旧的模块需要考虑兼容性，新的模块也要考虑对于旧的 Nginx 版本的兼容性。这包括两个方面，一个是 c 语言层面，要关注动态模块对于 Nginx 框架的调整，例如之前凡是用到全局变量 ngx_modules 的地方，要修改为 cycle-&gt;modules，当然正确的做法应该是用宏开关来判断当前 Nginx 版本是否大于 1.9.11 来决定是否调整；另一个是编译脚本，也需要判断版本，从而做出一些开关的选择，重点是对 ngx_module_link 变量的判断。<br />
 <br /></li>
-</ol>
+</ul>
 
-<p>事实上这两点我一开始就知道，但我还是在无意识的状态下作了过多的关注。原因在于这两点没能达到互相良好的作用，在具体实施起来时，比如说我现在就在google中搜索“纯真年代”，我到底是该告诉自己我这是在做一件正确的事情并继续搜索出结果，还是该告诉自己我已经开始过度关注了并关闭搜索引擎呢？</p>
+<p>举个例子，对于 nginx-rtmp 模块，我们要将其修改为既能在 Nginx-1.9.11 及其以后的版本中，同时支持静态链接(&ndash;add-module)和动态链接(&ndash;add-dynamic-module)，又要让其在老的版本中依然能支持旧的编译框架下的静态链接(&ndash;add-module)。</p>
 
-<p>所以，真正意义上的说服，必须建立在两者的统一上。仔细想一下，博客的排名和访问量会不会因为我每天去查看它而变化呢？当然不会，博客的排名和访问量必须建立在博客长期以来形成的质量的基础上。而我先前做的那些事情，对于提高博客质量根本没有丝毫作用，有这些时间，不如用来阅读、思考、写作。这样，关心博客访问量和避免浪费时间就走在了同一条战线上。</p>
+<p>为了达到这个目的，我做了如下测试，首先将 nginx-rtmp 的 congfig 文件修改为:</p>
 
-<p>记住，任何有意义的事情都不可能一蹴而就，要想让博客有质量，就要花更多时间去提高自己上。博客只是把你的思考用文字表达出来而已。例如，酷壳的高质量和广受欢迎，不是一两年才建立起来的，酷壳的作者陈皓早在七八年前就在CSDN上写技术博客，并发表了在互联网上广为流传的《跟我一起写makefile》和《用GDB调试程序》（我个人就是这两份资料的受益者，然后主动搜索才知道陈皓，进而知道并关注酷壳的），这么多年的积累，才造就了今天的陈皓和酷壳。至于我这个博客，虽然定位并不是想达到那么多人关注，但提高每一篇文章的质量无论是于己还是于人，都是必须的。</p>
-    </div>
-    
-  </div>
-</article>
-
+<pre><code>ngx_addon_name=&quot;ngx_rtmp_module&quot;  
+RTMP_CORE_MODULES=&quot;ngx_rtmp_module                             \  
+                   ngx_rtmp_core_module                        \  
+                   ngx_rtmp_cmd_module                         \  
+                   ngx_rtmp_codec_module                       \  
+                   ngx_rtmp_access_module                      \  
+                   ngx_rtmp_record_module                      \  
+                   ngx_rtmp_live_module                        \  
+                   ngx_rtmp_play_module                        \  
+                   ngx_rtmp_flv_module                         \  
+                   ngx_rtmp_mp4_module                         \  
+                   ngx_rtmp_netcall_module                     \  
+                   ngx_rtmp_relay_module                       \  
+                   ngx_rtmp_exec_module                        \  
+                   ngx_rtmp_auto_push_module                   \  
+                   ngx_rtmp_notify_module                      \  
+                   ngx_rtmp_log_module                         \  
+                   ngx_rtmp_limit_module                       \  
+                   ngx_rtmp_hls_module                         \  
+                   ngx_rtmp_dash_module                        \  
+                   &quot;  
+RTMP_HTTP_MODULES=&quot;ngx_rtmp_stat_module                        \  
+                   ngx_rtmp_control_module                        \  
+                  &quot;  
+RTMP_DEPS=&quot;$ngx_addon_dir/ngx_rtmp_amf.h               \  
+           $ngx_addon_dir/ngx_rtmp_bandwidth.h         \  
+           $ngx_addon_dir/ngx_rtmp_cmd_module.h        \  
+           $ngx_addon_dir/ngx_rtmp_codec_module.h      \  
+           $ngx_addon_dir/ngx_rtmp_eval.h              \  
+           $ngx_addon_dir/ngx_rtmp.h                   \  
+           $ngx_addon_dir/ngx_rtmp_version.h           \  
+           $ngx_addon_dir/ngx_rtmp_live_module.h       \  
+           $ngx_addon_dir/ngx_rtmp_netcall_module.h    \  
+           $ngx_addon_dir/ngx_rtmp_play_module.h       \  
+           $ngx_addon_dir/ngx_rtmp_record_module.h     \  
+           $ngx_addon_dir/ngx_rtmp_relay_module.h      \  
+           $ngx_addon_dir/ngx_rtmp_streams.h           \  
+           $ngx_addon_dir/ngx_rtmp_bitop.h             \  
+           $ngx_addon_dir/ngx_rtmp_proxy_protocol.h    \  
+           $ngx_addon_dir/hls/ngx_rtmp_mpegts.h        \  
+           $ngx_addon_dir/dash/ngx_rtmp_mp4.h          \  
+           &quot;  
+RTMP_CORE_SRCS=&quot;$ngx_addon_dir/ngx_rtmp.c                   \  
+                $ngx_addon_dir/ngx_rtmp_init.c              \  
+                $ngx_addon_dir/ngx_rtmp_handshake.c         \  
+                $ngx_addon_dir/ngx_rtmp_handler.c           \  
+                $ngx_addon_dir/ngx_rtmp_amf.c               \  
+                $ngx_addon_dir/ngx_rtmp_send.c              \  
+                $ngx_addon_dir/ngx_rtmp_shared.c            \  
+                $ngx_addon_dir/ngx_rtmp_eval.c              \  
+                $ngx_addon_dir/ngx_rtmp_receive.c           \  
+                $ngx_addon_dir/ngx_rtmp_core_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_cmd_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_codec_module.c      \  
+                $ngx_addon_dir/ngx_rtmp_access_module.c     \  
+                $ngx_addon_dir/ngx_rtmp_record_module.c     \  
+                $ngx_addon_dir/ngx_rtmp_live_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_play_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_flv_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_mp4_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_netcall_module.c    \  
+                $ngx_addon_dir/ngx_rtmp_relay_module.c      \  
+                $ngx_addon_dir/ngx_rtmp_bandwidth.c         \  
+                $ngx_addon_dir/ngx_rtmp_exec_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_auto_push_module.c  \  
+                $ngx_addon_dir/ngx_rtmp_notify_module.c     \  
+                $ngx_addon_dir/ngx_rtmp_log_module.c        \  
+                $ngx_addon_dir/ngx_rtmp_limit_module.c      \  
+                $ngx_addon_dir/ngx_rtmp_bitop.c             \  
+                $ngx_addon_dir/ngx_rtmp_proxy_protocol.c    \  
+                $ngx_addon_dir/hls/ngx_rtmp_hls_module.c    \  
+                $ngx_addon_dir/dash/ngx_rtmp_dash_module.c  \  
+                $ngx_addon_dir/hls/ngx_rtmp_mpegts.c        \  
+                $ngx_addon_dir/dash/ngx_rtmp_mp4.c          \  
+                &quot;  
+RTMP_HTTP_SRCS=&quot;$ngx_addon_dir/ngx_rtmp_stat_module.c       \  
+                $ngx_addon_dir/ngx_rtmp_control_module.c    \  
+                &quot;  
   
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2012/01/06/36.html">Son of a bitch 的给力翻译</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2012-01-06" class="post-time">
-        2012-01-06
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
+#nginx version &gt;= 1.9.11  
+if test -n &quot;$ngx_module_link&quot;; then  
+    ngx_module_incs=$ngx_addon_dir  
+    ngx_module_deps=$RTMP_DEPS  
+    if [ $ngx_module_link = DYNAMIC ] ; then  
+        ngx_module_name=&quot;$RTMP_CORE_MODULES $RTMP_HTTP_MODULES&quot;  
+        ngx_module_srcs=&quot;$RTMP_CORE_SRCS $RTMP_HTTP_SRCS&quot;  
+        . auto/module  
+    elif [ $ngx_module_link = ADDON ] ; then  
+        ngx_module_type=CORE  
+        ngx_module_name=$RTMP_CORE_MODULES  
+        ngx_module_srcs=$RTMP_CORE_SRCS  
+        . auto/module  
+        ngx_module_type=HTTP  
+        ngx_module_name=$RTMP_HTTP_MODULES  
+        ngx_module_srcs=$RTMP_HTTP_SRCS  
+        . auto/module  
+    fi  
   
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>自从学英语开始，很多骂人的单词都是从英文电影里学会的，尤其是f字母打头的那个单词更是满天飞，据有人统计，一部《低俗小说》里“fuck&rdquo;出现的次数是271次。除了fuck外，另外一个常见的骂人的短语就是”son of a bitch&rdquo;了，经常被翻译为“狗娘养的”、“婊子养的”、“王八羔子”等等。那么除此之外呢？看看下面的两张电影截图吧：</p>
-
-<ol>
-<li>&ldquo;son of a bitch!&rdquo; 翻译为”牛逼啊!&rdquo;<br />
-<img src="/img/son-of-bitch-1.jpg" alt="son-of-bitch-1.jpg" /><br /></li>
-<li>&ldquo;you such a son of a bitch!&ldquo;翻译为“你这个傻逼！”<br />
-<img src="/img/son-of-bitch-2.jpg" alt="son-of-bitch-2.jpg" /><br /></li>
-</ol>
-
-<p>根据电影中的上下文语境，这两处翻译都很给力。尤其是第一幅图中，确实没有单纯骂人的意思。看来同样的一个son of a bitch，用不同的语调说出来意思大相径庭。</p>
-    </div>
-    
-  </div>
-</article>
-
+#nginx version &lt; 1.9.11  
+else  
+    CORE_MODULES=&quot;$CORE_MODULES  
+                  $RTMP_CORE_MODULES&quot;  
+    HTTP_MODULES=&quot;$HTTP_MODULES  
+                  $RTMP_HTTP_MODULES&quot;  
+    NGX_ADDON_DEPS=&quot;$NGX_ADDON_DEPS \  
+                    $RTMP_DEPS&quot;  
+    NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS  
+                    $RTMP_CORE_SRCS  
+                    $RTMP_HTTP_SRCS&quot;  
+    CFLAGS=&quot;$CFLAGS -I$ngx_addon_dir&quot;  
+fi  
   
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2012/01/06/33.html">那些西部电影中中国劳工的身影</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2012-01-06" class="post-time">
-        2012-01-06
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>在西部电影中，经常可以看到中国劳工的身影，基本都是以两种形象出现：1.洗衣工，2.铁路工人。在电影中，他们地位低下，不记得是哪部电影中有这么一个场景：一个铁路老板对他的手下说，下次多雇点黑鬼，这些中国人干活太差劲了。</p>
+USE_OPENSSL=YES  
+</code></pre>
 
-<p>我的一些截图：</p>
+<p>然后调整所有 c 源文件里使用 ngx_modules 的地方，可以添加类似如下的代码片段:</p>
 
-<ol>
-<li>Seraphim Falls (2006)（王牌对决/天使降临/堕落天使/追杀双雄）<br />
-<img src="/img/laogong-1.jpg" alt="laogong-1.jpg" /><br /></li>
-<li>3:10 to Yuma（2007）（决战犹马镇/决斗犹马镇/决战3:10）<br />
-<img src="/img/laogong-2.jpg" alt="laogong-2.jpg" /><br /></li>
-<li>Gunless (2010)（无枪/无枪侠）<br />
-<img src="/img/laogong-3.jpg" alt="laogong-3.jpg" /><br /></li>
-<li>C&rsquo;era una volta il West (1968)（Once Upon a Time in the West/西部往事/狂沙十万里/万里狂沙万里愁）<br />
-<img src="/img/laogong-4.jpg" alt="laogong-4.jpg" /><br />
+<pre><code>#if defined(nginx_version) &amp;&amp; nginx_version &gt;= 1009011  
+    modules = cf-&gt;cycle-&gt;modules;  
+#else  
+    modules = ngx_modules;  
+#endif  
+</code></pre>
+
+<p>这样就可以达到我们的目的了。</p>
+
+<p>具体关于编译脚本的调整，我们参考一下官方的几个文档即可：</p>
+
+<ul>
+<li><a href="https://www.nginx.com/resources/wiki/extending/converting/">Converting Static Modules to Dynamic Modules</a><br /></li>
+<li><a href="https://www.nginx.com/resources/wiki/extending/new_config/">New Config Shell File</a><br /></li>
+<li><a href="https://www.nginx.com/resources/wiki/extending/old_config/">Old Config Shell File</a><br />
 <br /></li>
-</ol>
+</ul>
 
-<p>以上是一些西部电影中中国劳工的身影。  除了西部电影外，其他一些经典电影里也有华人的身影，例如《美国往事》里的中国烟馆。而且，中国人的形象在美国电影中也是变化的，这些当然是由各种复杂的社会背景决定的。关于华人在美国电影中的形象的发展与变化，涉及到的知识点和工作量太多，非我目前所能完成。</p>
-
-<p>再附两张图：</p>
-
-<ol>
-<li>Once Upon a Time in America (1984)（美国往事/四海兄弟/义薄云天）<br />
-<img src="/img/laogong-5.jpg" alt="laogong-5.jpg" /><br /></li>
-<li>The Dead Pool (1988)（赌彩黑名单/虎探追魂）克林特伊斯特伍德《肮脏的哈里》系列之一<br />
-<img src="/img/laogong-6.jpg" alt="laogong-6.jpg" /><br />
-<br />
-<br /></li>
-</ol>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2012/01/05/26.html">本书简介(The Harp Handbook)</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2012-01-05" class="post-time">
-        2012-01-05
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>全音阶布鲁斯口琴，也叫10孔单音Richter口琴，可以说是一种奇怪的乐器。口琴是一个庞大的家族，包括低音口琴（Bass）、和弦口琴（Chord）、半音阶口琴（Chromatic Harmonica）、复音口琴（Tremolo）、重音口琴（Octave-tuned Harmonica）以及其它许多新奇的乐器，当然布鲁斯口琴也是其中之一。毫无疑问，其中布鲁斯口琴是其中分布最广的乐器。</p>
-
-<p>尽管布鲁斯口琴现在的模样已经诞生了至少150年，而且在各种音乐环境中被成功使用，但它从来就没有被真正视作一种严肃的乐器。当你说你是一个布鲁斯口琴手时，那些演奏“正规乐器”的“真正的音乐家”会对你嗤之以鼻。</p>
-
-<p>这种态度也并不是完全没有道理。一方面布鲁斯口琴有着它与生俱来的局限性，另一方面，理论背景、教学资料以及从好的老师身上学习的机会的缺少，应该为口琴目前的这种可疑的地位负相当程度的责任。在听到布鲁斯口琴能够演奏出动人的音乐后，很多人仍然会觉得相当惊奇，因为他们一直以为这东西只能发出噪音。尽管也有很多相反的争论，但布鲁斯口琴的应用经常被一种陈词滥调所局限，按照这些说法，口琴适合演奏的仅仅是“篝火音乐、特效音乐、布鲁斯音乐”等，而不是真正的音乐。</p>
-
-<p>尽管今天有着比以前更多的优秀的布鲁斯口琴演奏者，他们能用以前无法想象的方式来表演，但现在仍然存在着巨大的信息鸿沟。许多杰出的口琴手并不真正知道他们手中的乐器是如何工作的，以及能够在多大程度上克服其内在的限制。我之所以要写这本书，就是想尽我所能，弥补这个信息鸿沟，让其他人有机会提高演奏的水平，增进对这种乐器的理解。</p>
-
-<p>跟许多其他的乐手一样，我花了好多年才弄清楚口琴是怎么工作的，而事实上，如果当初我身边有人可以向我口传心授的话，我可以只花半个小时就把这些简单的东西弄明白。这本书的读者可以是任何一个希望弄懂布鲁斯口琴机理、知道如何使用它的人。这不是一本歌曲集，也不是一份口琴使用说明的教程。尽管主要针对的读者是那些稍微有一些吹奏基础的人，但这本书包含许多对初学者有用的材料，基本上它可以被当做一本参考书，按照你的需要来使用。</p>
-
-<p>本书的章节涵盖了不同把位（第一把位、第二把位等等）的知识、一些重要的演奏技巧、各种风格（布鲁斯、乡村、摇滚、爵士等）、以及不同的音阶。一个扩展的小节涵盖了布鲁斯口琴如何工作以及解释了哪些音可以通过压音或超吹获得（据我所知，这是第一次有人系统的解释这些东西），以及能够压音或超吹到什么程度及为什么能这么做。我也对布鲁斯口琴的历史做了一个简单的介绍，对它的生产加工做出了一些描述，也给出了单独的一节来讲述关于口琴维修、保养、调音以及一些尝试性的话题。最后给出了一章来讲述带电演奏以及一些让你的技巧更加纯熟的练习，还给出了一份不完全的唱片列表。</p>
-
-<p>有两个朋友为本书贡献了一些内容，Klaus Kilian贡献了关于布鲁斯口琴风格的发展部分，Lars Luis Linek描述了他用口琴表演现代爵士乐的方法。</p>
-
-<p>人们被布鲁斯口琴吸引的首要原因之一是仅需很少的乐理知识就可以学会如何用它演奏简单的乐曲，所以初学者很快会获得一种成就感。布鲁斯口琴是一种鼓励用非乐理的方法演奏的乐器，即兴表达而不考虑你到底演奏的是什么是一件很令人愉悦的事情。某种程度上说，这样就足够了，但如果你真的想要掌握它，有必要认识到所有优秀的口琴师们会有意无意的把自己的演奏结构化，这样会让你的表演更有乐感。</p>
-
-<p>我不打算把这本书写成一本乐理教材，事实上我也写不出来。但是如果你想和其他人一起演奏的话，就有必要开始接触一些音乐理论的知识。这些乐理知识应用在表演12小节布鲁斯、爵士乐以及其他音乐时。布鲁斯是一种非常简单的音乐形式，所以乐理知识的水平不需要太高。许多伟大的口琴家门凭借直觉演奏，并且否认运用了任何乐理知识。尽管他们不能清晰的表达出来他们是如何演奏的，但他们知道他们在做什么，他们知道在哪些和弦上哪些音会动听。这是一种实践中的音乐理论。</p>
-
-<p>为了讲述吹奏口琴的各个方面，我用了一些音乐上的术语，也许不是所有的读者都能看懂，所以，我试图把所有的东西用图表和乐谱的形式表现出来。例如，我不知道如何描述不同把位的模态特征，但无论如何，如果你不懂我在说什么，尝试着按照我在图表中所画的那样吹奏出来，你就会理解我想表达什么了。</p>
-
-<p>布鲁斯口琴是一种独一无二的乐器，它独特的声音有强烈的表现力，而且，如果有好的教学，它会在现代音乐中扮演比当前更重要更广泛的角色。我希望本书中的信息能鼓励其他人对这个小巧漂亮的能提供令人惊异的可能性的乐器产生兴趣。有意识的去开发口琴的表演潜能的人越多，口琴终有一天会获得它应有的音乐地位的可能性就越大。</p>
-
-<p>布鲁斯口琴手是一群奇怪的人。我们手中的并不引人注目的乐器对它的追随者有着异乎寻常的吸引力，人们却不会无故谈论“口琴怪胎”。或许这是因为布鲁斯口琴是如此怪异的乐器，它表面上看非常简单，但你越接近它，就会发现它越复杂。这是一本由一个“口琴怪胎”写的书，献给那些“口琴怪胎”们。事实上我无法想象挣扎着进入布鲁斯口琴世界的其他任何人，所以，如果你正在那么做，大概这就是一种命中注定。作为开篇，我希望这几页中唠唠叨叨的长篇大论能够有一些帮助，记住：当有疑惑时，拿出口琴吹就行了！</p>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2012/01/04/25.html">两个奔跑的男人--------3:10 to Yuma(决战犹马镇）观后感</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2012-01-04" class="post-time">
-        2012-01-04
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>我看电影向来慢一拍，这部2007年的电影到现在才看也算正常，如果不是最近扫荡各种西部片扫到它了，也不知道什么时候会看。</p>
-
-<p>对整部电影的印象都定格在两个在枪林弹雨中奔跑的男人身上。</p>
-
-<p>最后，在车站里，Dan对Ben说，我其实并没有那么顽固，死守着那块没有希望的荒地，只是因为我的小儿子两岁时得了肺结核，离不开干燥的天气。Ben问，你为什么要对我说这些呢？Dan回答说我也不知道，可能是只想让你知道我没那么顽固吧。这时候他心里想的是什么呢？也许是什么都没想，也许是因为自己让Ben走上绞刑架而心有愧疚吧。Ben接着说，既然大家都那么开诚布公，那么我也告诉你，我曾经在犹马镇待过两次，两次都逃掉了。其实是想让Dan放心，即使到了犹马镇我也死不了,你无需自责。然后两人相视一笑。</p>
-
-<p>此时此刻，无需多言。</p>
+<p>注意，上面的文档中，关于 rtmp 模块的调整，是有问题的，一方面如果那些使用了 ngx_modules 全局变量的 c 文件不相应修改的话，运行时会有段错误；另一方面，示例里对 config 文件的调整，只能保证对于 Nginx-1.9.11 及其以后的版本能同时支持编译为动态模块和静态模块，却对 Nginx-1.9.11 之前的版本的支持有问题。</p>
     </div>
     
   </div>
@@ -583,9 +551,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -606,9 +572,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -629,9 +593,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -652,9 +614,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -675,9 +635,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -698,9 +656,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -721,9 +677,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -744,9 +698,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -767,9 +719,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -790,9 +740,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -813,9 +761,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -836,9 +782,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -859,9 +803,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -882,9 +824,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -905,9 +845,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -928,9 +866,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -951,9 +887,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -974,9 +908,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -997,9 +929,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -1020,9 +950,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -1043,9 +971,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -1066,9 +992,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -1089,9 +1013,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -1112,9 +1034,7 @@
           
 
             
-            
 
-          
           
 
         
@@ -1135,104 +1055,72 @@
           
 
             
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
             
               
             
 
-          
-          
-
-        
-        
-
-        
-        
-          <li class="">
-            <a href="/page/25/">
-              25
-            </a>
-          </li>
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-            
-              
-            
-
-          
-          
-
-        
-        
-
-        
-        
-          <li class="">
-            <a href="/page/26/">
-              26
-            </a>
-          </li>
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-            
-              
-            
-
-          
-          
-
-        
-        
-
-        
-        
-          <li class="">
-            <a href="/page/27/">
-              27
-            </a>
-          </li>
-        
-
-      
-
-        
-
-        
-        
-
-          
-          
-          
-
-            
-            
-              
-            
-
-          
           
 
         
@@ -1259,11 +1147,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1290,11 +1176,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1321,11 +1205,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1352,11 +1234,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1383,11 +1263,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1414,11 +1292,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1445,11 +1321,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1476,11 +1350,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1507,11 +1379,9 @@
           
 
             
-            
               
             
 
-          
           
 
         
@@ -1528,6 +1398,3096 @@
 
       
 
+        
+
+        
+        
+
+          
+          
+          
+
+            
+              
+            
+
+          
+
+        
+        
+
+        
+        
+          <li class="">
+            <a href="/page/38/">
+              38
+            </a>
+          </li>
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+              
+            
+
+          
+
+        
+        
+
+        
+        
+          <li class="">
+            <a href="/page/39/">
+              39
+            </a>
+          </li>
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+              
+            
+
+          
+
+        
+        
+
+        
+        
+          <li class="">
+            <a href="/page/40/">
+              40
+            </a>
+          </li>
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
+        
+
+        
+        
+
+          
+          
+          
+
+            
+
+          
+
+        
+        
+
+        
+        
+
+      
+
       
       
       <li><a href="/page/35/">»</a></li>
@@ -1535,7 +4495,7 @@
 
       
       
-      <li><a href="/page/37/">»»</a></li>
+      <li><a href="/page/183/">»»</a></li>
       
 
       </ul>
