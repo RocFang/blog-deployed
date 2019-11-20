@@ -322,12 +322,9 @@
 <p>很多次沮丧的发现，自己给身边的人倾心推荐的电影，他们看完都表示没有什么感觉。有一个经验是，如果电影看到一半，对方萌萌的抬起头，弱弱的问道，这个电影到底是讲什么的啊？这个时候最聪明的做法是赶紧换别的活动，不要抱有任何也许后面的剧情会让他/她大为震撼的幻想。</p>
 
 <p>刚开始的时候是心情是很不愉快的，明明这个电影我已经看了三遍了，恨不得次次都有泪点，为啥在您这就一无是处呢？后来，我逐渐领悟到，问题在我，而不在别人。</p>
-
-<p>只要不是太糟糕的电影，无论什么类型，基本上我都能集中注意力去看的。因为电影于我，是一种精神体验，当你的精神投入到一定程度，有时会觉得自己把别人的人生也经历了一遍。人的一生只有一次，但通过电影，让人生在某种程度上得到了延伸。</p>
-
-<p>所以，看电影的确是一种非常私人的东西。能陪朋友一起看的，只能是那些“爆米花电影”。</p>
-
-<p>所以，下次有跟别人一起看电影的欲望时，及时打住。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/07/12/movie-cannot-be-shared.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
@@ -358,8 +355,9 @@
       <p>最近家里来了两个客人：两只金鱼，一只白色的，一只红色的，我给他们分别取了个名字，小红与小白。于是每天早上出门前，给他们喂点食料，晚上回来后趴在鱼缸前跟他们说两声Hello成了我的一大乐趣。</p>
 
 <p>几天之后，我发现，当我凑近鱼缸跟他们say Hello的时候，他们会慢慢的游到水面，露头吐出两个泡泡然后迅速沉入水底，仿佛一脸娇羞。一脸娇羞，说明我是一个喜欢歪歪的人，放佛，有说明我并没有歪歪的那么放肆。</p>
-
-<p>想起小时候貌似看过一个少数民族的传说，一个小伙子家里有条鱼，每天当小伙子出门干活后，那条鱼就跳出鱼缸，变成一个美丽的姑娘，把家里的活都干好。不知道是不是古人和我一样看到了鱼儿冒泡时&rdquo;一脸娇羞&rdquo;的样子，才歪歪出这么个故事的。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/05/29/two-fishes.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
@@ -398,82 +396,9 @@
 <li>带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf<br /></li>
 <li>带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf<br /></li>
 </ol>
-
-<p>具体一点，包含如下场景：</p>
-
-<h3 id="1-一个文件没有被-config或-config-noreplace-指令配置">1. 一个文件没有被%config或%config(noreplace)指令配置</h3>
-
-<p>此时，不管该文件在安装完成后，有没有在本地被修改过，当升级该rpm包时，该文件会被这个新的rpm包的里的同名文件替换,（旧文件被删除）。</p>
-
-<h3 id="2-一个文件被-config指令配置">2. 一个文件被%config指令配置</h3>
-
-<p>此时包含如下情况：</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换掉掉旧的文件，旧的文件会被保存为xx.rpmsave,如/etc/redis/redis.conf.rpmsave</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换掉旧的文件。（旧文件被删除）</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件不会覆盖旧的文件，旧文件保持不变。</p>
-
-<h3 id="3-一个文件被-config-noreplace-指令配置">3. 一个文件被%config(noreplace)指令配置</h3>
-
-<p>此时包含如下情况：</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，旧文件保持不变，新rpm包里的该文件并重命名为xx.rpmnew,例如/etc/redis/redis.conf.rpmnew</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
-
-<ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。<br /></li>
-</ul>
-
-<p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件不会覆盖旧的文件，旧文件保持不变。</p>
-
-<h3 id="4-总结">4.总结</h3>
-
-<ol>
-<li>如果一个文件在%files段没有被%config或%config(noreplace)指令配置;则执行rpm -Uvh时，该文件会无条件被新文件替换。<br /></li>
-<li>无论一个文件有没有被%config或%config(noreplace)指令配置，只要改文件在本地没有被编辑过，则执行rpm -Uvh时，该文件会被新文件替换。<br /></li>
-<li>一个被%config或%config(noreplace)指令配置的文件，如果被编辑过，那么在rpm更新时，如果新的rpm包中该文件没有修改，则该文件不会被新rpm包中的文件替换，之前做的编辑依然有效。<br /></li>
-<li>一个被%config指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件会被重命名为xx.rpmsave, 新文件会替代原文件。<br /></li>
-<li>一个被%config(noreplace)指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件不会被新的rpm包中的文件替换，之前做的编辑依然有效；但新rpm包中的同名文件会被重命名为xx.rpmnew.<br />
-<br /></li>
-</ol>
-
-<p>参考：<br />
-<a href="http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html">http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html</a></p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/04/30/noreplace-in-rpm-spec-file.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
@@ -504,22 +429,9 @@
       <p>对于<a href="http://pureage.info/2014/04/26/pitfall-of-nginx.html">Nginx踩坑记（一）</a>，在openresty的google group上提了个问题：<a href="https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ">ngx.exec是如何处理上层定义的变量的</a></p>
 
 <p>春哥的回复<strong>摘录</strong>如下：</p>
-
-<blockquote>
-<p>你这里使用了 rewrite 配置指令来发起内部跳转。其实 rewrite 指令发起的内部跳转非常特殊：它不会从<br />
-server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执行，所以你上例中写在server {}<br />
-块中的“set $hello hello”并不会在跳转后重新运行一遍，因为 server-rewrite 阶段在跳转后被直接跳过。</p>
-
-<p>注意，rewrite 配置指令的特殊行为也可以通过下面这一行 ngx_lua 配置来复现：</p>
-
-<pre><code> rewrite_by_lua 'ngx.req.set_uri(&quot;/test2&quot;, true)'; 
-</code></pre>
-
-<p>而ngx.exec() 调用（以及其他接口，比如 echo_exec 配置指令）发起的内部跳转的标准行为是从  server-rewrite<br />
-阶段重新开始执行，所以你的“set $hello hello”会被重新执行一遍，从而改写掉 $hello  变量原先的取值（即&rdquo;bye&rdquo;）。</p>
-
-<p>我或许应该在教程里强调一下这个重要细节 :)</p>
-</blockquote>
+    </div>
+    <div class="read-more">
+      <a href="/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
@@ -567,107 +479,9 @@ location /test2 {
 </code></pre>
 
 <p>虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。</p>
-
-<p>测试如下所示：<br />
-<img src="/img/nginx-1.png" alt="nginx-1.png" /></p>
-
-<h2 id="2-如果变量定义在server处">2. 如果变量定义在server处</h2>
-
-<p>例如，如果有如下的配置：</p>
-
-<pre><code>set $hello hello;  
-location /test1 {  
-        echo $hello;  
-}  
-  
-location /test2 {  
-        echo $hello;  
-}  
-</code></pre>
-
-<p>那么很容易想到，无论是访问/test1还是/test2，都会输出在上层定义的变量$hello的值，测试如下：<br />
-<img src="/img/nginx-2.png" alt="nginx-2.png" /></p>
-
-<p>再进一步，假设配置如下：</p>
-
-<pre><code>set $hello hello;  
-location /test1 {  
-        set $hello bye;  
-        rewrite /test1 /test2 last;  
-}  
-  
-location /test2 {  
-        echo $hello;  
-}  
-</code></pre>
-
-<p>则同样很容易想到，如果直接访问/test1，则会先把在server段定义的$hello变量由“hello&rdquo;改写为&rdquo;bye&rdquo;，再进行内部跳转到/test2后，则会输出新的修改过后的变量$hello；而如果直接访问/test2，则会输出在server段定义的变量。测试如下：<br />
-<img src="/img/nginx-3.png" alt="nginx-3.png" /></p>
-
-<h2 id="3-坑来了">3. 坑来了</h2>
-
-<p>到现在为止，一切都很正常，上述的知识点也是Nginx配置中的基础知识。但当和ngx_lua模块结合起来时，就时常会碰到比较诡异的事情。<br />
-假设配置如下：</p>
-
-<pre><code>set $hello hello;  
-  
-location /test1 {  
-        content_by_lua '  
-                ngx.var.hello = &quot;bye&quot;;  
-                ngx.exec(&quot;/test2&quot;);  
-        ';  
-}  
-  
-location /test2 {  
-        echo &quot;in test2&quot;;  
-        echo $hello;  
-}  
-</code></pre>
-
-<p>我们来猜猜分别访问/test1和/test2，会输出什么。首先,server段已经定义了变量$hello为字符串&rdquo;hello&rdquo;，直接访问/test1时，会将其修改为&rdquo;bye&rdquo;，然后执行ngx.exec跳转到/test2，输出变量$hello。但经过测试，分别访问/test1和/test2的时候，结果如下所示：<br />
-<img src="/img/nginx-4.png" alt="nginx-4.png" /><br />
-是不是很奇怪？直接访问/test2输出hello是正常的，可是访问/test1居然也是输出hello，在/test1中对hello变量的更改似乎没起作用。</p>
-
-<p>到底/test1的content_by_lua段中，对变量$test的修改起作用没，我们可以测试一下，添加一行调试代码如下：</p>
-
-<pre><code>set $hello hello;  
-  
-location /test1 {  
-        content_by_lua '  
-                ngx.var.hello = &quot;bye&quot;;  
-                ngx.log(ngx.ERR, ngx.var.hello);  
-                ngx.exec(&quot;/test2&quot;);  
-        ';  
-}  
-  
-location /test2 {  
-        echo &quot;in test2&quot;;  
-        echo $hello;  
-}  
-</code></pre>
-
-<p>再次访问/test1，我们会发现，在log中记录下来了此时的$hello变量为&rdquo;bye&rdquo;。可是为什么执行内部跳转到/test2后，输出的结果还是&rdquo;hello&rdquo;呢？</p>
-
-<p>我们再次改造一下配置：</p>
-
-<pre><code>location /test1 {  
-        set $hello hello;  
-        content_by_lua '  
-                ngx.var.hello = &quot;bye&quot;;  
-                ngx.log(ngx.ERR, ngx.var.hello);  
-                ngx.exec(&quot;/test2&quot;);  
-        ';  
-}  
-  
-location /test2 {  
-        echo &quot;in test2&quot;;  
-        echo $hello;  
-}  
-</code></pre>
-
-<p>和上面的区别在于，这次将变量的定义从server段迁到了location /test1中，在/test1中的content_by_lua段对其进行修改，再执行内部跳转到/test2。测试结果如下：<br />
-<img src="/img/nginx-5.png" alt="nginx-5.png" /><br />
-这次的结果显然是符合我们的预期的。直接访问/test1，由于在content_by_lua中将$hello变量更改为&rdquo;bye&rdquo;了，所以当内部跳转到/test2时，输出$hello变量就会输出“bye&rdquo;；如果直接访问/test2，则由于此时并没有对$hello变量赋值，所以$hello变量为空。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/04/26/pitfall-of-nginx.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
