@@ -64,34 +64,34 @@
     </item>
     
     <item>
-      <title>Rust已经让我爱不释手了</title>
+      <title>Rust 已经让我爱不释手了</title>
       <link>https://pureage.info/post/refine-my-first-rust-project/</link>
       <pubDate>Wed, 21 Aug 2019 21:26:11 +0800</pubDate>
       
       <guid>https://pureage.info/post/refine-my-first-rust-project/</guid>
-      <description>&lt;p&gt;在昨天写了自己的第一个rust程序后，今天抽了一点时间把代码结构优化了一下，另外引入了clap这个第三方crate来做参数解析。&lt;/p&gt;</description>
+      <description>&lt;p&gt;在昨天写了自己的第一个 Rust 程序后，今天抽了一点时间把代码结构优化了一下，另外引入了 clap 这个第三方 crate 来做参数解析。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>用Rust写了一个博客的客户端发布工具</title>
+      <title>用 Rust 写了一个博客的客户端发布工具</title>
       <link>https://pureage.info/post/test-for-blog-writer-by-rust/</link>
       <pubDate>Tue, 20 Aug 2019 23:25:18 +0800</pubDate>
       
       <guid>https://pureage.info/post/test-for-blog-writer-by-rust/</guid>
-      <description>&lt;p&gt;这个事情本身没有什么好说的，算是刚刷完Rust Book之后自己额外写的一个hello world级的程序，只是这个程序对我自己还有点实际用处而已，用来简化了我写博客的一些流程。&lt;/p&gt;
+      <description>&lt;p&gt;这个事情本身没有什么好说的，算是刚刷完 Rust Book 之后自己额外写的一个 hello world 级的程序，只是这个程序对我自己还有点实际用处而已，用来简化了我写博客的一些流程。&lt;/p&gt;
 
-&lt;p&gt;本来这种事情我是最擅长用shell来解决，强迫自己用Rust来写实在很别扭，但是这恐怕是不可避免的阵痛了，希望自己能尽快渡过这个不适期。&lt;/p&gt;</description>
+&lt;p&gt;本来这种事情我是最擅长用 shell 来解决，强迫自己用 Rust 来写实在很别扭，但是这恐怕是不可避免的阵痛了，希望自己能尽快渡过这个不适期。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>在阅读《Rust编程之道》时的一次抬杠经历</title>
+      <title>在阅读《Rust 编程之道》时的一次抬杠经历</title>
       <link>https://pureage.info/post/a-misunderstanding-of-tao-of-rust/</link>
       <pubDate>Fri, 16 Aug 2019 23:59:34 +0800</pubDate>
       
       <guid>https://pureage.info/post/a-misunderstanding-of-tao-of-rust/</guid>
-      <description>&lt;p&gt;最近学习Rust,在看完了官网上的Rust Book之后，我买了一本张汉东老师著的《Rust编程之道》，来两本书对照着再看一遍。&lt;/p&gt;
+      <description>&lt;p&gt;最近学习Rust,在看完了官网上的 Rust Book 之后，我买了一本张汉东老师著的《Rust 编程之道》，来两本书对照着再看一遍。&lt;/p&gt;
 
-&lt;p&gt;今天要说的，就是发生在阅读《Rust编程之道》时发生的一个我认为很有意思的小事。&lt;/p&gt;</description>
+&lt;p&gt;今天要说的，就是发生在阅读《Rust 编程之道》时发生的一个我认为很有意思的小事。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -104,7 +104,7 @@
 &lt;p&gt;笔记系统，不就是个云笔记吗？说的这么高大上。&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;从2013年起，我就开始将自己的各种笔记和收集到的零散知识放在有道云笔记上。到现在为止，客观的说，有道云笔记的表现是很让我满意的。网友反映它会丢笔记等种种严重的毛病，我基本都没遇到过，有印象的几次问题表现在同步出了冲突，但并没有导致笔记丢失，而是同一份笔记生成了几份。&lt;/p&gt;</description>
+&lt;p&gt;从 2013 年起，我就开始将自己的各种笔记和收集到的零散知识放在有道云笔记上。到现在为止，客观的说，有道云笔记的表现是很让我满意的。网友反映它会丢笔记等种种严重的毛病，我基本都没遇到过，有印象的几次问题表现在同步出了冲突，但并没有导致笔记丢失，而是同一份笔记生成了几份。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -132,31 +132,31 @@
     </item>
     
     <item>
-      <title>将域名转到Namesilo</title>
+      <title>将域名转到 Namesilo</title>
       <link>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</link>
       <pubDate>Mon, 25 Mar 2019 10:45:26 +0800</pubDate>
       
       <guid>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</guid>
-      <description>&lt;p&gt;本网站所使用的域名pureage.info自2011年注册开始，一直托管在godaddy上。当年国外的域名注册商家中，只有godaddy支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。&lt;/p&gt;</description>
+      <description>&lt;p&gt;本网站所使用的域名 pureage.info 自 2011 年注册开始，一直托管在godaddy 上。当年国外的域名注册商家中，只有 godaddy 支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Golang中令人不那么愉悦的import</title>
+      <title>Golang 中令人不那么愉悦的 import</title>
       <link>https://pureage.info/post/annoying-golang-import/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
       <guid>https://pureage.info/post/annoying-golang-import/</guid>
-      <description>&lt;p&gt;众所周知，在github上参与开源项目的一般流程如下：&lt;/p&gt;
+      <description>&lt;p&gt;众所周知，在 github 上参与开源项目的一般流程如下：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;将开源项目fork到自己的名下。&lt;/li&gt;
-&lt;li&gt;在本地开发环境中clone自己在上一步中fork的项目。&lt;/li&gt;
-&lt;li&gt;本地完成开发测试和代码提交，再push到自己名下的仓库中。&lt;/li&gt;
-&lt;li&gt;从自己名下的这个项目中，对原始项目发起一个pull request。&lt;/li&gt;
-&lt;li&gt;发起的pull request被上游merge后，自己的代码就进入开源项目中了。&lt;/li&gt;
+&lt;li&gt;将开源项目 fork 到自己的名下。&lt;/li&gt;
+&lt;li&gt;在本地开发环境中 clone 自己在上一步中 fork 的项目。&lt;/li&gt;
+&lt;li&gt;本地完成开发测试和代码提交，再 push 到自己名下的仓库中。&lt;/li&gt;
+&lt;li&gt;从自己名下的这个项目中，对原始项目发起一个 pull request。&lt;/li&gt;
+&lt;li&gt;发起的 pull request 被上游 merge 后，自己的代码就进入开源项目中了。&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。&lt;/p&gt;</description>
+&lt;p&gt;虽然具体 workflow 的细节上可能有些差异，但总体流程大概就是这样。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -169,11 +169,11 @@
 
 &lt;p&gt;以后我才知道，原来有一项叫徒手攀岩的极限运动，我在那些恶梦中所处的场景，是这项运动的爱好者们的日常。不同的是，这不是梦。一个闪失，他们就会粉身碎骨，成为不断增长的死亡列表里的一个新的名字。&lt;/p&gt;
 
-&lt;p&gt;纪录片《徒手攀岩》，就讲述了Alex Honnold在无保护措施下成功攀登酋长岩的经过。&lt;/p&gt;</description>
+&lt;p&gt;纪录片《徒手攀岩》，就讲述了 Alex Honnold 在无保护措施下成功攀登酋长岩的经过。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>洛奇6中的一段台词</title>
+      <title>洛奇 6 中的一段台词</title>
       <link>https://pureage.info/post/a-line-in-rocky6/</link>
       <pubDate>Wed, 09 Jan 2019 18:27:11 +0800</pubDate>
       
@@ -199,7 +199,7 @@
     </item>
     
     <item>
-      <title>如何在考研数学中得到148分</title>
+      <title>如何在考研数学中得到 148 分</title>
       <link>https://pureage.info/post/how-i-got-148-marks-for-math-in-national-entrance-examination-for-postgraduate/</link>
       <pubDate>Wed, 02 Jan 2019 14:24:49 +0800</pubDate>
       

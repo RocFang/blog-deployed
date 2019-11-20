@@ -12,22 +12,22 @@
     
     
     <item>
-      <title>Golang中令人不那么愉悦的import</title>
+      <title>Golang 中令人不那么愉悦的 import</title>
       <link>https://pureage.info/post/annoying-golang-import/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
       <guid>https://pureage.info/post/annoying-golang-import/</guid>
-      <description>&lt;p&gt;众所周知，在github上参与开源项目的一般流程如下：&lt;/p&gt;
+      <description>&lt;p&gt;众所周知，在 github 上参与开源项目的一般流程如下：&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;将开源项目fork到自己的名下。&lt;/li&gt;
-&lt;li&gt;在本地开发环境中clone自己在上一步中fork的项目。&lt;/li&gt;
-&lt;li&gt;本地完成开发测试和代码提交，再push到自己名下的仓库中。&lt;/li&gt;
-&lt;li&gt;从自己名下的这个项目中，对原始项目发起一个pull request。&lt;/li&gt;
-&lt;li&gt;发起的pull request被上游merge后，自己的代码就进入开源项目中了。&lt;/li&gt;
+&lt;li&gt;将开源项目 fork 到自己的名下。&lt;/li&gt;
+&lt;li&gt;在本地开发环境中 clone 自己在上一步中 fork 的项目。&lt;/li&gt;
+&lt;li&gt;本地完成开发测试和代码提交，再 push 到自己名下的仓库中。&lt;/li&gt;
+&lt;li&gt;从自己名下的这个项目中，对原始项目发起一个 pull request。&lt;/li&gt;
+&lt;li&gt;发起的 pull request 被上游 merge 后，自己的代码就进入开源项目中了。&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。&lt;/p&gt;</description>
+&lt;p&gt;虽然具体 workflow 的细节上可能有些差异，但总体流程大概就是这样。&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -300,7 +300,7 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/transfer-domain-from-godaddy-to-namesilo/">将域名转到Namesilo</a>
+      <a class="post-link" href="/post/transfer-domain-from-godaddy-to-namesilo/">将域名转到 Namesilo</a>
     </h1>
     
     <div class="post-meta">
@@ -317,9 +317,9 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>本网站所使用的域名pureage.info自2011年注册开始，一直托管在godaddy上。当年国外的域名注册商家中，只有godaddy支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。</p>
+      <p>本网站所使用的域名 pureage.info 自 2011 年注册开始，一直托管在godaddy 上。当年国外的域名注册商家中，只有 godaddy 支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。</p>
 
-<p>直到最近，域名又要续费了，而这个info的域名现在居然到了150元人民币一年，干脆趁这个机会转出到namesilo了。整个过程用了不到五分钟，namesilo一年的费用是80多块，还借机体验了一下域名转出的流程，真是何乐而不为呢。</p>
+<p>直到最近，域名又要续费了，而这个 info 的域名现在居然到了 150 元人民币一年，干脆趁这个机会转出到 namesilo 了。整个过程用了不到五分钟，namesilo 一年的费用是80多块，还借机体验了一下域名转出的流程，真是何乐而不为呢。</p>
     </div>
     
   </div>
@@ -330,7 +330,7 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/annoying-golang-import/">Golang中令人不那么愉悦的import</a>
+      <a class="post-link" href="/post/annoying-golang-import/">Golang 中令人不那么愉悦的 import</a>
     </h1>
     
     <div class="post-meta">
@@ -347,40 +347,40 @@
   <div class="post-content">
     
     <div class="post-summary">
-      <p>众所周知，在github上参与开源项目的一般流程如下：</p>
+      <p>众所周知，在 github 上参与开源项目的一般流程如下：</p>
 
 <ol>
-<li>将开源项目fork到自己的名下。</li>
-<li>在本地开发环境中clone自己在上一步中fork的项目。</li>
-<li>本地完成开发测试和代码提交，再push到自己名下的仓库中。</li>
-<li>从自己名下的这个项目中，对原始项目发起一个pull request。</li>
-<li>发起的pull request被上游merge后，自己的代码就进入开源项目中了。</li>
+<li>将开源项目 fork 到自己的名下。</li>
+<li>在本地开发环境中 clone 自己在上一步中 fork 的项目。</li>
+<li>本地完成开发测试和代码提交，再 push 到自己名下的仓库中。</li>
+<li>从自己名下的这个项目中，对原始项目发起一个 pull request。</li>
+<li>发起的 pull request 被上游 merge 后，自己的代码就进入开源项目中了。</li>
 </ol>
 
-<p>虽然具体workflow的细节上可能有些差异，但总体流程大概就是这样。</p>
+<p>虽然具体 workflow 的细节上可能有些差异，但总体流程大概就是这样。</p>
 
-<p>但是在参与Golang的开源项目中，由于gopath的限制，这个流程就会有问题。举个例子，有一个项目为github.com/userA/project，fork之后，有一个新的仓库，路径为github.com/userB/project。而这个project中大概率会有内部package引用，比如在main.go中，import了github.com/userA/project/moduleA，这样在go get自己的仓库时，仍然会引用到原始的仓库路径。将会导致诸如构建失败等一些问题。</p>
+<p>但是在参与 Golang 的开源项目中，由于 gopath 的限制，这个流程就会有问题。举个例子，有一个项目为 github.com/userA/project，fork 之后，有一个新的仓库，路径为 github.com/userB/project。而这个 project 中大概率会有内部 package 引用，比如在 main.go中，import 了 github.com/userA/project/moduleA，这样在 go get 自己的仓库时，仍然会引用到原始的仓库路径。将会导致诸如构建失败等一些问题。</p>
 
-<p>为什么基于c/c++的开源项目就没有这个问题呢，因为c/c++的构建更原始更简单。include只有两种形式，要么是在标准路径中或项目子目录中去查找，要么在非标准路径下，但能通过编译器的选项来告诉编译器去哪里找，而代码本身则是非常干净的，不会有硬编码的特定路径在源码里面。而Golang的import，是一个完整的url，这样可以让go get之类的工具自动化的进行一些操作。</p>
+<p>为什么基于 c/c++ 的开源项目就没有这个问题呢，因为 c/c++ 的构建更原始更简单。include 只有两种形式，要么是在标准路径中或项目子目录中去查找，要么在非标准路径下，但能通过编译器的选项来告诉编译器去哪里找，而代码本身则是非常干净的，不会有硬编码的特定路径在源码里面。而 Golang 的 import，是一个完整的 url，这样可以让 go get 之类的工具自动化的进行一些操作。</p>
 
-<p>上面可以解释Golang项目在引用外部包的时候使用完整url的做法，但是在引用项目内部包时，仍然使用完整url的做法就多少让人觉得有点不能理解。如果import能支持相对路径，就不会有前面提到的问题了。Golang的开发者们当然对这个问题有自己的考虑，参考这个issue：<a href="https://github.com/golang/go/issues/3515">https://github.com/golang/go/issues/3515</a> 。</p>
+<p>上面可以解释 Golang 项目在引用外部包的时候使用完整 url 的做法，但是在引用项目内部包时，仍然使用完整 url 的做法就多少让人觉得有点不能理解。如果 import 能支持相对路径，就不会有前面提到的问题了。Golang 的开发者们当然对这个问题有自己的考虑，参考这个 issue：<a href="https://github.com/golang/go/issues/3515">https://github.com/golang/go/issues/3515</a> 。</p>
 
-<p>不能简单的说Golang的这种构建方式不对，因为它的出现必然是有自己的优点和解决了一些问题的，所以从实用的角度出发，我们只能将其称之为“特点”，并去适应它。</p>
+<p>不能简单的说 Golang 的这种构建方式不对，因为它的出现必然是有自己的优点和解决了一些问题的，所以从实用的角度出发，我们只能将其称之为“特点”，并去适应它。</p>
 
 <p>解决办法有几个，但都看上去有些丑陋。比如：</p>
 
-<p>在本地开发的时候，使用的路径仍然是原始项目的路径，将自己名下的仓库作为一个remote upstream，push的时候将修改push到自己名下的仓库中，然后再向原始仓库提交pull request。</p>
+<p>在本地开发的时候，使用的路径仍然是原始项目的路径，将自己名下的仓库作为一个 remote upstream，push 的时候将修改 push 到自己名下的仓库中，然后再向原始仓库提交 pull request。</p>
 
 <p>对于一般的开源项目，这种“临时”的方法就够用了。但在下面的几个场景种，这种方法显然会很令人不适：</p>
 
 <ol>
-<li>原始项目已经不维护了，你想自己长期维护一个fork。</li>
-<li>原始项目仍然在积极维护，但是你仍然想自己长期维护一个fork。</li>
+<li>原始项目已经不维护了，你想自己长期维护一个 fork。</li>
+<li>原始项目仍然在积极维护，但是你仍然想自己长期维护一个 fork。</li>
 </ol>
 
-<p>在上述情况下，其实我们是把原始项目和自己的fork当作两个相对独立的项目，我们希望在构建的时候能直接go build就行了，不希望有其他额外的操作。如果有第三个人，他想fork我们这个fork并进行并列开发，按上面的方法将会非常麻烦。</p>
+<p>在上述情况下，其实我们是把原始项目和自己的 fork 当作两个相对独立的项目，我们希望在构建的时候能直接 go build 就行了，不希望有其他额外的操作。如果有第三个人，他想 fork 我们这个 fork 并进行并列开发，按上面的方法将会非常麻烦。</p>
 
-<p>对于这种情况，我选择将项目内所有源码中的import路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。</p>
+<p>对于这种情况，我选择将项目内所有源码中的 import 路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。</p>
     </div>
     
   </div>
@@ -412,9 +412,9 @@
 
 <p>以后我才知道，原来有一项叫徒手攀岩的极限运动，我在那些恶梦中所处的场景，是这项运动的爱好者们的日常。不同的是，这不是梦。一个闪失，他们就会粉身碎骨，成为不断增长的死亡列表里的一个新的名字。</p>
 
-<p>纪录片《徒手攀岩》，就讲述了Alex Honnold在无保护措施下成功攀登酋长岩的经过。</p>
+<p>纪录片《徒手攀岩》，就讲述了 Alex Honnold 在无保护措施下成功攀登酋长岩的经过。</p>
 
-<p>当我们在看一部极限运动的纪录片时，我们看的是什么？对于我自己，是在试图了解这个人，他的动机，他的情感。我觉得当一个人醉心于一种一不留神就会让自己丧命的运动中时，他一定是接近甚至超越一个哲学家的存在。Alex Honnold确实也是这样，对生死、亲情、友情、爱情都有着自己深刻的理解。</p>
+<p>当我们在看一部极限运动的纪录片时，我们看的是什么？对于我自己，是在试图了解这个人，他的动机，他的情感。我觉得当一个人醉心于一种一不留神就会让自己丧命的运动中时，他一定是接近甚至超越一个哲学家的存在。Alex Honnold 确实也是这样，对生死、亲情、友情、爱情都有着自己深刻的理解。</p>
 
 <p>英国探险家乔治·马洛里在被问及为何想要攀登珠穆朗玛峰时回答，“因为它就在那儿“，成为人们至今仍经常引用的名言。这句话可以用来回答许多极限运动领域中类似的问题。但是现在，对于极限运动的评论往往变成了”这就是为什么外国人这么少“之类的调侃。</p>
 
@@ -429,7 +429,7 @@
   <header class="post-header">
     <h1 class="post-title">
       
-      <a class="post-link" href="/post/a-line-in-rocky6/">洛奇6中的一段台词</a>
+      <a class="post-link" href="/post/a-line-in-rocky6/">洛奇 6 中的一段台词</a>
     </h1>
     
     <div class="post-meta">
