@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>掀桌子的 MinIO - 纯真年代</title>
+  <title>咬文嚼字：关于随机存取 - 纯真年代</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,9 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="strider" />
-  <meta name="description" content="MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：
- 一个不支持扩容的存储也能叫存储？
- 这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。
+  <meta name="description" content="今天我来咬文嚼字一番。如果说在我学习计算机相关知识的过程中，有哪些词语最让人感到迷惑，随机存取（Random Access）一定身在其中。
 " />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
@@ -38,7 +36,7 @@
 <meta name="generator" content="Hugo 0.59.1" />
 
 
-<link rel="canonical" href="https://pureage.info/post/scalability-of-minio/" />
+<link rel="canonical" href="https://pureage.info/post/about-random-access/" />
 
 
 
@@ -62,44 +60,26 @@
 
 
 
-<meta property="og:title" content="掀桌子的 MinIO" />
-<meta property="og:description" content="MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：
-
-
-一个不支持扩容的存储也能叫存储？
-
-
-这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。" />
+<meta property="og:title" content="咬文嚼字：关于随机存取" />
+<meta property="og:description" content="今天我来咬文嚼字一番。如果说在我学习计算机相关知识的过程中，有哪些词语最让人感到迷惑，随机存取（Random Access）一定身在其中。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://pureage.info/post/scalability-of-minio/" />
-<meta property="article:published_time" content="2019-11-15T16:46:29+08:00" />
-<meta property="article:modified_time" content="2019-11-15T16:46:29+08:00" />
-<meta itemprop="name" content="掀桌子的 MinIO">
-<meta itemprop="description" content="MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：
+<meta property="og:url" content="https://pureage.info/post/about-random-access/" />
+<meta property="article:published_time" content="2019-12-02T18:29:36+08:00" />
+<meta property="article:modified_time" content="2019-12-02T18:29:36+08:00" />
+<meta itemprop="name" content="咬文嚼字：关于随机存取">
+<meta itemprop="description" content="今天我来咬文嚼字一番。如果说在我学习计算机相关知识的过程中，有哪些词语最让人感到迷惑，随机存取（Random Access）一定身在其中。">
 
 
-一个不支持扩容的存储也能叫存储？
-
-
-这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。">
-
-
-<meta itemprop="datePublished" content="2019-11-15T16:46:29&#43;08:00" />
-<meta itemprop="dateModified" content="2019-11-15T16:46:29&#43;08:00" />
-<meta itemprop="wordCount" content="1808">
+<meta itemprop="datePublished" content="2019-12-02T18:29:36&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-02T18:29:36&#43;08:00" />
+<meta itemprop="wordCount" content="842">
 
 
 
-<meta itemprop="keywords" content="存储," />
+<meta itemprop="keywords" content="计算机," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="掀桌子的 MinIO"/>
-<meta name="twitter:description" content="MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：
-
-
-一个不支持扩容的存储也能叫存储？
-
-
-这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。"/>
+<meta name="twitter:title" content="咬文嚼字：关于随机存取"/>
+<meta name="twitter:description" content="今天我来咬文嚼字一番。如果说在我学习计算机相关知识的过程中，有哪些词语最让人感到迷惑，随机存取（Random Access）一定身在其中。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -319,11 +299,11 @@
           <article class="post bg-white">
     
     <header class="post-header">
-      <h1 class="post-title">掀桌子的 MinIO</h1>
+      <h1 class="post-title">咬文嚼字：关于随机存取</h1>
       
       <div class="post-meta">
-        <time datetime="2019-11-15" class="post-time">
-          2019-11-15
+        <time datetime="2019-12-02" class="post-time">
+          2019-12-02
         </time>
         
         
@@ -341,63 +321,31 @@
 
     
     <div class="post-content">
-      <p>MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：</p>
+      <p>今天我来咬文嚼字一番。如果说在我学习计算机相关知识的过程中，有哪些词语最让人感到迷惑，随机存取（Random Access）一定身在其中。</p>
+
+<p>我大学时的本专业是电子信息，有一门专业基础课叫《随机过程》。整本书花了很大力气来讲”随机“这个概念，当然，在数学的概率论课里面也早有涉及。我们引用维基百科的描述：</p>
 
 <blockquote>
-<p>一个不支持扩容的存储也能叫存储？</p>
+<p><strong>随机性</strong>（英语：Randomness）这个词是用来表达目的、动机、规则或一些非科学用法的可预测性的缺失。
+一个随机的过程是一个不定因子不断产生的重复过程，但它可能遵循某个概率分布。
+术语<strong>随机</strong>经常用于统计学中，表示一些定义清晰的、彻底的统计学属性，例如缺失偏差或者相关。</p>
 </blockquote>
 
-<p>这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。</p>
+<p>总而言之，<strong>随机</strong>是一个跟统计、概率相关的概念。无论是在数学、还是在物理相关领域，<strong>随机</strong>都有着举足轻重的地位，是一个专业的词汇。</p>
 
-<p>但是一年以后，我的看法有一个 180 度的大改变，并对 MinIO 团队产生了非常高的敬意。这个敬意来自于，他们敢于打破桎梏，敢于“掀桌子”。</p>
+<p>而在计算机领域，有一个词叫 RAM (Random Access)，中文书本里全部翻译为<strong>随机存取</strong>或者<strong>随机访问</strong>。记得当时在看到这个翻译的时候，我是很迷惑的，虽然对这个词表达的意思已经形成了条件反射般的肌肉记忆，但我一直没有深究为什么它叫 Random Access，也没有深究为什么它的中文翻译是<strong>随机存取</strong>。比如，数据结构里一提到数组，我们就会说它的随机访问的时间复杂度是O(1)的，我大脑里早已把这个情景下的随机访问自动替换成了按下标、地址访问。但，这个跟术语<strong>随机</strong>可有半点关系？</p>
 
-<p>前面说到，一个普遍的认识是分布式存储必须要能扩容。但是，扩容做起来像说起来这么容易吗？我相信绝大多数在一定量级以上做过扩容操作的人都会认同这是一个痛苦的事情。</p>
+<p>直到有一天无意中看到了<a href="https://en.wikipedia.org/wiki/Random_access">维基百科上对 RAM 的描述</a>，我才豁然开朗，不怪我当时理解能力差，而是这个词本身就是不准确的，然后我们的中文翻译版本更是错上加错。</p>
 
-<p>痛苦是正常的，因为这个事情的复杂性是逃不掉的，在存储容量到达一定量级之后，无论你选择的存储是中心结构的，还是非中心结构的，是基于数据库，还是使用各种改进型的一致性哈希，都会涉及到大量的数据迁移。而在迁移的过程中，当然旧文件的读，新文件的写不能停。理论上大多数分布式存储都能做到热迁移，实际执行起来需要注意的事情太多，服务多少都会受到影响。</p>
+<p>参看维基百科上的描述：</p>
 
-<p>面对一个棘手的场景，该怎么继续走下去？比较明显的分成了两派意见，一派是大多数人的做法，坚持把迁移过程做到稳定可靠，小心驶得万年船。另一派就是 MinIO 团队的做法，“我不玩了”，干脆不支持这种传统意义上的横向扩容，数据不用迁移。</p>
+<blockquote>
+<p>In computer science, random access (more precisely and more generally called direct access) is the ability to access an arbitrary element of a sequence in equal time or any datum from a population of addressable elements roughly as easily and efficiently as any other, no matter how many elements may be in the set. It is typically contrasted to sequential access.</p>
+</blockquote>
 
-<p>看到这里，你可能会觉得，这是一种弱者的玩法。但事实并非如此，MinIO 团队就是原 GlusterFS 的主要开发者。在存储这个领域摸爬滚打这么多年，选择这样一个设计，这中间必然融入了他们深入的思考和血泪的教训。</p>
+<p>首先，如果是意译的话，RAM 应该翻译为<strong>直接存取</strong>；其次，如果非要按字面意思，其实这里的 random，应该理解成 arbitrary，任意的。甚至翻译成<strong>随意存取</strong>都比<strong>随机存取</strong>要更符合原意。</p>
 
-<p>MinIO 的典型使用场景是在私有云存储，一个集群部署好之后，基本上就不用再费劲去维护它。底层使用纠删码保证数据的安全，坏盘只要不超过一半数量（默认情况，可调），数据就是可用的。由于没有内部的数据迁移，架构和功能变得极简单，稳定性也因而增强了很多。</p>
-
-<p>但是横向扩展仍然让人如鲠在喉，是不是他们就真的完全放弃扩容这一场景呢？</p>
-
-<p>其实并非如此，MinIO 同样具有横向扩展能力，只是它走了另一条路，
-他们巧妙的将一个已经被公认为分布式存储自身的复杂问题，变成了一个部署问题。简单的说，就是如果要扩容，就再增加新的独立的集群，业务方自行决定使用具体哪一个集群。</p>
-
-<p>具体实施起来，我随便说几个方案。</p>
-
-<p>第一种方案，把集群信息编码到 url 中， 从 url 中定位到具体的集群。其实 MinIO 官方推荐的联邦模式也是这一种方案，只不过它具体针对的是 bucket 名做处理。</p>
-
-<p>第二种方案，调用方在 header 里指定集群，负载均衡服务做转发。</p>
-
-<p>这两种方案针对的场景比较有限，那就是私有云下，资源由业务方自己控制，集群信息也因而可以自己指定。</p>
-
-<p>那么，如果是在公有云的场景下，是不是就完全不能做呢？还是有一些方法的。</p>
-
-<p>第三种方案，部署双集群，每次写入都做双写，其中一个是备份集群，平时只写不读。当需要扩容的时候，启动新的大容量的集群，原只写不读的备份集群变成只读不写，写入则落到新的集群。读的时候，新集群里如果没有，再从备份集群中读，并慢慢将旧数据迁到新集群中去。</p>
-
-<p>第四种方案，使用一个中心的 kv，将每个资源与集群的关系对应起来。这种方案看起来这个中心的 kv 会变成瓶颈或者单点，可以使用一些高性能的分布式 kv 来做，比如 tikv。退一步说，即使 kv 完全挂掉甚至数据完全丢失，我们仍然可以通过对集群做轮询来重建映射关系，当然要付出在重建映射期间轮训带来的性能损失。</p>
-
-<p>第五种方案，使用一致性哈希或者各种改进型的一致性哈希方案，计算 url 对应的集群。扩容的时候，写入操作查询新哈希，读取操作先查新哈希，再查旧哈希。同时，集群中各设备慢慢将自己硬盘上需要迁移的数据迁到新的哈希关系决定的目标设备中去。</p>
-
-<p>这最后两种方案，大家可能会禁不住暗笑。这不就是完全借用了传统的分布式存储中资源到节点映射关系的两种典型方案吗？</p>
-
-<p>当然，这些方案都是我随意冒出来的想法，实际落地肯定需要根据自己的业务做大量严格的测试。你肯定也有自己的想法。</p>
-
-<p>写到这里，我们对 MinIO 的横向扩展做一个总结。如果你是用来做私有云存储，那 MinIO 非常适合你。横向扩展简单，且完全不会有数据的迁移。如果你是用来做公有的云存储，那 MinIO 不能直接使用，你需要在外围自行设计一个扩容的方案。</p>
-
-<p>为什么我现在会对 MinIO 团队有很高的敬意呢？</p>
-
-<p>因为 GlusterFS 项目证明了他们有能力做出复杂的系统，而 MinIO 项目又证明他们不仅有能力做出复杂的系统，还有能力从泥潭中<strong>跳脱</strong>出来，放弃一些东西，做出一个简单的系统，开创一片新的天地。这种思维，值得我们去学习。</p>
-
-<p>附一些 issue 作为参考：</p>
-
-<ul>
-<li><a href="https://github.com/minio/minio/issues/7986">https://github.com/minio/minio/issues/7986</a></li>
-<li><a href="https://github.com/minio/minio/issues/4364">https://github.com/minio/minio/issues/4364</a></li>
-</ul>
+<p>然而，这么多年，我从来没有看到一本书里有提到<strong>随机存取</strong>里的<strong>随机</strong>是什么意思，真是一件很奇怪的事情。</p>
     </div>
 
     
@@ -410,7 +358,7 @@
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-      2019-11-15
+      2019-12-02
       
     </span>
   </p>
@@ -427,29 +375,16 @@
 
     <footer class="post-footer">
       <div class="post-tags">
-          <a href="https://pureage.info/tags/%E5%AD%98%E5%82%A8/">存储</a>
+          <a href="https://pureage.info/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
           
         </div>
 
       
       <nav class="post-nav">
         
-          <a class="prev" href="/post/about-random-access/">
-            
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
-  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="18" height="18">
-  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
-</svg>
-
-            </i>
-            <span class="prev-text nav-default">咬文嚼字：关于随机存取</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
         
-          <a class="next" href="/post/why-this-blog-not-update-so-long/">
-            <span class="next-text nav-default">为什么这两个月没更新博客</span>
+          <a class="next" href="/post/scalability-of-minio/">
+            <span class="next-text nav-default">掀桌子的 MinIO</span>
             <span class="prev-text nav-mobile">下一篇</span>
             
             <i class="iconfont">

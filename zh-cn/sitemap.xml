@@ -3,14 +3,35 @@
   
   <url>
     <loc>https://pureage.info/post/</loc>
-    <lastmod>2019-11-15T16:46:29+08:00</lastmod>
+    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/</loc>
-    <lastmod>2019-11-15T16:46:29+08:00</lastmod>
+    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/about-random-access/</loc>
+    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/</loc>
+    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/</loc>
+    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -24,13 +45,6 @@
   
   <url>
     <loc>https://pureage.info/post/scalability-of-minio/</loc>
-    <lastmod>2019-11-15T16:46:29+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/</loc>
     <lastmod>2019-11-15T16:46:29+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
