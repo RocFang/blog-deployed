@@ -48,7 +48,7 @@
 
 &lt;p&gt;在正常的场景下，这并不会有什么问题。因为一般我们认为，直播服务器的边缘是一个天然的具有合并回源功能的代理，源站的连接压力不会很大。现实中，某条流过期了但播放器不知情的情况也很常见。但如果是大量特意构造的这种请求，就有问题了。因为每一条不存在的流，都会对应一个向 origin server 的连接。&lt;/p&gt;
 
-&lt;p&gt;为了方便说明，我把网络简化，假设有一台 origin server，下面接了 4 台 edge server。攻击方使用不会主动超时断开连接的 rtmp 播放器，同时向 edge server 拉取大量&lt;strong&gt;不存在且不同名&lt;/strong&gt;的流，假设是 1000 路流，4 台 edge server 都有这 1000 路流的播放连接，那么会有 4000 个 edge ingester 的连接从 edge server 去往 origin，这就存在了第一个放大的行为。edge server 从上游拉不到数据，就会无限制的断开和重连，这是第二个放大行为。4000 个连接在短时间内不断的连接和断开，origin server 的监听端口上 recv-q 迅速塞满，导致服务不可用。&lt;/p&gt;
+&lt;p&gt;为了方便说明，我把网络简化，假设有一台 origin server，下面接了 4 台 edge server。攻击方使用不会主动超时断开连接的 rtmp 播放器，同时向 edge server 拉取大量&lt;strong&gt;不存在且不同名&lt;/strong&gt;的流，假设是 1000 路流，4 台 edge server 都有这 1000 路流的播放连接，那么会有 4000 个 edge ingester 的连接从 edge server 去往 origin，这就存在了第一个放大的行为。edge server 从上游拉不到数据，就会无限制的断开和重连，这是第二个放大行为。4000 个客户端持续且迅速的建立和断开连接，origin server 的监听端口上 recv-q 迅速塞满，导致服务不可用。&lt;/p&gt;
 
 &lt;p&gt;这个场景是不是跟经典的 syn flood 攻击很像，只不过 syn flood 针对的是&lt;strong&gt;半连接队列&lt;/strong&gt;，而这里的攻击是针对的&lt;strong&gt;全连接队列&lt;/strong&gt;。&lt;/p&gt;
 
