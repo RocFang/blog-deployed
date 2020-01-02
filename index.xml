@@ -6,10 +6,59 @@
     <description>Recent content on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 02 Dec 2019 18:29:36 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jan 2020 11:02:01 +0800</lastBuildDate>
     
         <atom:link href="https://pureage.info/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>记一次针对 srs 源站的类 syn flood 攻击</title>
+      <link>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</link>
+      <pubDate>Thu, 02 Jan 2020 11:02:01 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</guid>
+      
+        <description>&lt;p&gt;近日翻看以前随手做的一些工作笔记时，发现了一年多以前处理过的这个 case，觉得可以发出来给有需要的朋友参考一下，于是做了个简短的整理。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://zh.wikipedia.org/wiki/SYN_flood&#34;&gt;syn flood&lt;/a&gt; 是一种经典的、广为人知的网络攻击。简言之，攻击者不停的建立连接，但是收到 server 响应的 syn+ack 后故意不继续回复 ack，导致 server 端的半连接队列满，其他正常请求无法进入。因此，这是一个针对&lt;strong&gt;半连接队列&lt;/strong&gt;的攻击。&lt;/p&gt;
+
+&lt;p&gt;再来说说 srs。&lt;/p&gt;
+
+&lt;p&gt;srs 是一个流媒体服务器，支持很多功能和协议，但其最重要最根本的，是一个 rtmp 服务器，工作方式为某个发布者发布一条流，多个订阅者可以播放这条流。&lt;/p&gt;
+
+&lt;p&gt;srs 的角色分为两种，edge 和 origin，即边缘和源站。当播放器连接到 edge 时，edge 会从 origin 拿取指定的流并发布，这样播放器就可以播放指定的流了。&lt;/p&gt;
+
+&lt;p&gt;这里面有一些细节，对流媒体行业来说是常识，但其他背景的同学可能需要大概的了解一下。对于一个具体的流，edge server 上播放器和回源的连接数是 N:1，即无论有多少个播放器，对该指定的流，edge server 只会向它的 origin server 建立一条连接。在 srs 的实现里，一个叫 edge ingester 的协程负责该动作。如果所有的播放器都断开连接了，edge ingester 才会退出工作。&lt;/p&gt;
+
+&lt;p&gt;再来说这个 case。&lt;/p&gt;
+
+&lt;p&gt;我们的节点探测程序有一天突然报告某一台 origin server 端口不通了，无法提供服务。在设备上做简单的验证后，发现确实如此。srs 错误日志里除了大量针对不存在的流的播放请求外，没有什么异常。&lt;/p&gt;
+
+&lt;p&gt;使用 ss 查看 srs 的端口，发现其 recv-q 已满，即全连接队列满，于是我们知道为什么服务会不可用了。但还需要进一步排查为什么 recv-q 会满。&lt;/p&gt;
+
+&lt;p&gt;我们知道，对一个监听端口来说，其 recv-q 代表了它当前的全连接队列使用了多少，send-q 代表它当前全连接队列的大小，该大小取决于创建监听套接字时传入的 backlog 参数和系统的 somaxconn，具体来说是 min(backlog, somaxconn)。&lt;/p&gt;
+
+&lt;p&gt;全连接队列满，说明有大量的有效请求持续的进来，而应用程序 accept 不过来，正常情况下，这种情况是绝不会发生的。这个时候我们再回过头看 srs 日志里那些大量的不存在的流的播放请求，就拨云见日了。&lt;/p&gt;
+
+&lt;p&gt;srs 对播放器有一个行为是，如果播放器请求的指定流当前并不存在，srs 并不会有一个超时机制去断开播放器的连接。&lt;/p&gt;
+
+&lt;p&gt;对 edge server 来说，不主动断开播放器的连接，也就是说，对一个具体的流，只要有一个播放器没有主动断开连接，srs 的 edge ingester 协程就认为自己应该继续工作，它会孜孜不倦的尝试从 origin server 上拿去数据，但如果没有数据，edge ingester 就会超时主动断开与上游的连接，并重新向上游建立连接再次尝试获取数据。超时时间为 3 秒，这个过程是一个死循环，打破死循环的唯一条件是，当前已经没有播放器的连接了，但如前所述，如果播放器自身没有超时断开的机制，那 edge ingester 会永远任劳任怨的工作下去。&lt;/p&gt;
+
+&lt;p&gt;在正常的场景下，这并不会有什么问题。因为一般我们认为，直播服务器的边缘是一个天然的具有合并回源功能的代理，源站的连接压力不会很大。现实中，某条流过期了但播放器不知情的情况也很常见。但如果是大量特意构造的这种请求，就有问题了。因为每一条不存在的流，都会对应一个向 origin server 的连接。&lt;/p&gt;
+
+&lt;p&gt;为了方便说明，我把网络简化，假设有一台 origin server，下面接了 4 台 edge server。攻击方使用不会主动超时断开连接的 rtmp 播放器，同时向 edge server 拉取大量&lt;strong&gt;不存在且不同名&lt;/strong&gt;的流，假设是 1000 路流，4 台 edge server 都有这 1000 路流的播放连接，那么会有 4000 个 edge ingester 的连接从 edge server 去往 origin，这就存在了第一个放大的行为。edge server 从上游拉不到数据，就会无限制的断开和重连，这是第二个放大行为。4000 个连接在短时间内不断的连接和断开，origin server 的监听端口上 recv-q 迅速塞满，导致服务不可用。&lt;/p&gt;
+
+&lt;p&gt;这个场景是不是跟经典的 syn flood 攻击很像，只不过 syn flood 针对的是&lt;strong&gt;半连接队列&lt;/strong&gt;，而这里的攻击是针对的&lt;strong&gt;全连接队列&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;至此问题的根本原因是找到了，解决办法是通过一定的机制让 srs 断开这种类型的连接。在我们这个 case 中，刚好这个服务的客户已经不再服务了，我们将其从配置中去掉即可。更通用的情况下，我们给所有的播放请求都加上一定的鉴权手段即可。&lt;/p&gt;
+
+&lt;p&gt;这里又有另一个有意思的事情。对传统 cdn 厂商来说，如果客户不主动要求加鉴权，cdn 是不会主动干这件事的，毕竟跑出来的带宽直接跟自己的利益挂钩。但在本文描述的情况下，cdn 从自己的利益出发，却应该主动添加鉴权。&lt;/p&gt;
+
+&lt;p&gt;作为跟 srs 的对比，nginx-rtmp 就不会有这个问题，因为它默认的 idle_streams 配置，在流不存在时，会主动断开与播放器的连接。&lt;/p&gt;</description>
+      
+    </item>
     
     <item>
       <title>咬文嚼字：关于随机存取</title>
@@ -703,35 +752,6 @@ I&amp;rsquo;m always gonna love you no matter what. No matter what happens. You&
 &lt;p&gt;但是也并不能完全排除这个可能，尤其是一些非知识性的心情随笔，可能思绪飘过，不抓住就飘远了，事后往往找不到当时的感觉。比如，2012年夏天我刚从成都到深圳工作时，住处的网络还没安装好，有几篇文章是我特意跑到网吧去写的，就是为了赶紧给当时的状态留下个痕迹。&lt;/p&gt;
 
 &lt;p&gt;本次测试表明，Hugo+Caddy配合起来非常棒，完全能胜任在手机端写作和发布的工作。&lt;/p&gt;</description>
-      
-    </item>
-    
-    <item>
-      <title>静态博客的黄金搭档:Caddy和Hugo</title>
-      <link>https://pureage.info/post/caddy-and-hugo/</link>
-      <pubDate>Wed, 21 Nov 2018 01:09:59 +0800</pubDate>
-      
-      <guid>https://pureage.info/post/caddy-and-hugo/</guid>
-      
-        <description>&lt;p&gt;几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
-
-&lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;
-
-&lt;p&gt;在去年下半年发现了Hugo后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。&lt;/p&gt;
-
-&lt;p&gt;至于Web Server，我一直是Openresty的死忠，对它是在是太熟悉了，所以理所当然这个博客也是用Openresty来提供服务。对Openresty/Nginx的深入了解，让我有一种踏实感和掌控感，哪怕对于一个静态站点来说，开启https和http2几乎是仅有的配置了。&lt;/p&gt;
-
-&lt;p&gt;直到我遇到了Caddy。&lt;/p&gt;
-
-&lt;p&gt;在了解和测试了caddy后，同样我立刻将Web Server由Openresty换成了Caddy。两三行配置就支持https和http2,支持证书的自动更新，再加上说得过去的性能，让人无法拒绝。&lt;/p&gt;
-
-&lt;p&gt;至此，这个博客的技术方案就是Hugo+Caddy。&lt;/p&gt;
-
-&lt;p&gt;将它们分开来说，Hugo是当前最优秀的静态网站生成器，Caddy是配置最简单的Web Server，而又都天生具有Golang程序容易部署的优点，凑在一起就就是个人博客系统的黄金搭档。&lt;/p&gt;
-
-&lt;p&gt;另外，Caddy还有与hugo适配的插件http.hugo，使用这个插件后，可以有跟动态网站相同的文章发布体验。&lt;/p&gt;
-
-&lt;p&gt;还有比这更完美的事情吗？&lt;/p&gt;</description>
       
     </item>
     

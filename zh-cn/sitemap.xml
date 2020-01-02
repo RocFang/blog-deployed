@@ -3,27 +3,41 @@
   
   <url>
     <loc>https://pureage.info/post/</loc>
-    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
+    <lastmod>2020-01-02T11:02:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/tags/srs/</loc>
+    <lastmod>2020-01-02T11:02:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/</loc>
-    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/post/about-random-access/</loc>
-    <lastmod>2019-12-02T18:29:36+08:00</lastmod>
+    <lastmod>2020-01-02T11:02:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/</loc>
+    <lastmod>2020-01-02T11:02:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</loc>
+    <lastmod>2020-01-02T11:02:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/about-random-access/</loc>
     <lastmod>2019-12-02T18:29:36+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

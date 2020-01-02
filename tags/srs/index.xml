@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>srs on 纯真年代</title>
+    <link>https://pureage.info/tags/srs/</link>
+    <description>Recent content in srs on 纯真年代</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 02 Jan 2020 11:02:01 +0800</lastBuildDate>
+    
+	<atom:link href="https://pureage.info/tags/srs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>记一次针对 srs 源站的类 syn flood 攻击</title>
+      <link>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</link>
+      <pubDate>Thu, 02 Jan 2020 11:02:01 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</guid>
+      <description>&lt;p&gt;近日翻看以前随手做的一些工作笔记时，发现了一年多以前处理过的这个 case，觉得可以发出来给有需要的朋友参考一下，于是做了个简短的整理。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

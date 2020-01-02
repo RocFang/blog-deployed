@@ -6,10 +6,19 @@
     <description>Recent content in Posts on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 02 Dec 2019 18:29:36 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 02 Jan 2020 11:02:01 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>记一次针对 srs 源站的类 syn flood 攻击</title>
+      <link>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</link>
+      <pubDate>Thu, 02 Jan 2020 11:02:01 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</guid>
+      <description>&lt;p&gt;近日翻看以前随手做的一些工作笔记时，发现了一年多以前处理过的这个 case，觉得可以发出来给有需要的朋友参考一下，于是做了个简短的整理。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>咬文嚼字：关于随机存取</title>
@@ -245,19 +254,6 @@
 &lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;
 
 &lt;p&gt;在去年下半年发现了Hugo后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>golang modules对git版本的依赖</title>
-      <link>https://pureage.info/post/bad-feeling-about-go-cmd/</link>
-      <pubDate>Fri, 16 Nov 2018 23:00:44 +0800</pubDate>
-      
-      <guid>https://pureage.info/post/bad-feeling-about-go-cmd/</guid>
-      <description>&lt;p&gt;这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。&lt;/p&gt;
-
-&lt;p&gt;go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。&lt;/p&gt;
-
-&lt;p&gt;但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。&lt;/p&gt;</description>
     </item>
     
   </channel>
