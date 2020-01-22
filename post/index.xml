@@ -103,10 +103,10 @@
     
     <item>
       <title>在阅读《Rust 编程之道》时的一次抬杠经历</title>
-      <link>https://pureage.info/post/a-misunderstanding-of-tao-of-rust/</link>
+      <link>https://pureage.info/post/2019/20190816%E5%9C%A8%E9%98%85%E8%AF%BBrust%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%81%93%E6%97%B6%E7%9A%84%E4%B8%80%E6%AC%A1%E6%8A%AC%E6%9D%A0%E7%BB%8F%E5%8E%86/</link>
       <pubDate>Fri, 16 Aug 2019 23:59:34 +0800</pubDate>
       
-      <guid>https://pureage.info/post/a-misunderstanding-of-tao-of-rust/</guid>
+      <guid>https://pureage.info/post/2019/20190816%E5%9C%A8%E9%98%85%E8%AF%BBrust%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%81%93%E6%97%B6%E7%9A%84%E4%B8%80%E6%AC%A1%E6%8A%AC%E6%9D%A0%E7%BB%8F%E5%8E%86/</guid>
       <description>&lt;p&gt;最近学习Rust,在看完了官网上的 Rust Book 之后，我买了一本张汉东老师著的《Rust 编程之道》，来两本书对照着再看一遍。&lt;/p&gt;
 
 &lt;p&gt;今天要说的，就是发生在阅读《Rust 编程之道》时发生的一个我认为很有意思的小事。&lt;/p&gt;</description>
@@ -192,10 +192,10 @@
     
     <item>
       <title>洛奇 6 中的一段台词</title>
-      <link>https://pureage.info/post/a-line-in-rocky6/</link>
+      <link>https://pureage.info/post/2019/20190109%E6%B4%9B%E5%A5%876%E4%B8%AD%E7%9A%84%E4%B8%80%E6%AE%B5%E5%8F%B0%E8%AF%8D/</link>
       <pubDate>Wed, 09 Jan 2019 18:27:11 +0800</pubDate>
       
-      <guid>https://pureage.info/post/a-line-in-rocky6/</guid>
+      <guid>https://pureage.info/post/2019/20190109%E6%B4%9B%E5%A5%876%E4%B8%AD%E7%9A%84%E4%B8%80%E6%AE%B5%E5%8F%B0%E8%AF%8D/</guid>
       <description>&lt;p&gt;你绝对不会相信，但你以前才这么大，我会把你举高跟你妈说，“他将是世界上最棒的小孩，这孩子绝对超乎想象的优秀”。你长大以后真的很棒，每天看着你就是一种特权了。&lt;/p&gt;
 
 &lt;p&gt;后来你成年就独立了，踏入社会，表现得很好。但不知道什么时候，你变了，不再是原本的你。你让人用手指着你的脸，骂你没用。遇到困难就开始怪罪别人，好像活在阴影下似的。&lt;/p&gt;
@@ -387,16 +387,8 @@
       <pubDate>Sat, 11 Jun 2016 09:30:00 +0000</pubDate>
       
       <guid>https://pureage.info/2016/06/11/a-rainy-afternoon.html</guid>
-      <description>&lt;p&gt;细雨中&lt;br /&gt;
-一辆自行车迎面而来&lt;br /&gt;
-车篮里&lt;br /&gt;
-一个小女孩伸开双手在飞翔&lt;br /&gt;
-卷发贴在额头&lt;br /&gt;
-脸蛋红成一个苹果&lt;/p&gt;
-
-&lt;p&gt;多年以后&lt;br /&gt;
-她也许还记得&lt;br /&gt;
-这个阳光明媚的下午&lt;/p&gt;</description>
+      <description>细雨中 一辆自行车迎面而来 车篮里 一个小女孩伸开双手在飞翔 卷发贴在额头 脸蛋红成一个苹果
+多年以后 她也许还记得 这个阳光明媚的下午</description>
     </item>
     
     <item>
