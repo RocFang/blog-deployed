@@ -13,28 +13,28 @@
     
     <item>
       <title>记一次针对 srs 源站的类 syn flood 攻击</title>
-      <link>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</link>
+      <link>https://pureage.info/post/%E8%AE%B0%E4%B8%80%E6%AC%A1%E9%92%88%E5%AF%B9-srs-%E6%BA%90%E7%AB%99%E7%9A%84%E7%B1%BB-syn-flood-%E6%94%BB%E5%87%BB/</link>
       <pubDate>Thu, 02 Jan 2020 11:02:01 +0800</pubDate>
       
-      <guid>https://pureage.info/post/an-attack-similar-to-syn-flood-in-srs/</guid>
+      <guid>https://pureage.info/post/%E8%AE%B0%E4%B8%80%E6%AC%A1%E9%92%88%E5%AF%B9-srs-%E6%BA%90%E7%AB%99%E7%9A%84%E7%B1%BB-syn-flood-%E6%94%BB%E5%87%BB/</guid>
       <description>&lt;p&gt;近日翻看以前随手做的一些工作笔记时，发现了一年多以前处理过的这个 case，觉得可以发出来给有需要的朋友参考一下，于是做了个简短的整理。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>咬文嚼字：关于随机存取</title>
-      <link>https://pureage.info/post/about-random-access/</link>
+      <link>https://pureage.info/post/%E5%92%AC%E6%96%87%E5%9A%BC%E5%AD%97%E5%85%B3%E4%BA%8E%E9%9A%8F%E6%9C%BA%E5%AD%98%E5%8F%96/</link>
       <pubDate>Mon, 02 Dec 2019 18:29:36 +0800</pubDate>
       
-      <guid>https://pureage.info/post/about-random-access/</guid>
+      <guid>https://pureage.info/post/%E5%92%AC%E6%96%87%E5%9A%BC%E5%AD%97%E5%85%B3%E4%BA%8E%E9%9A%8F%E6%9C%BA%E5%AD%98%E5%8F%96/</guid>
       <description>&lt;p&gt;今天我来咬文嚼字一番。如果说在我学习计算机相关知识的过程中，有哪些词语最让人感到迷惑，随机存取（Random Access）一定身在其中。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>掀桌子的 MinIO</title>
-      <link>https://pureage.info/post/scalability-of-minio/</link>
+      <link>https://pureage.info/post/%E6%8E%80%E6%A1%8C%E5%AD%90%E7%9A%84-minio/</link>
       <pubDate>Fri, 15 Nov 2019 16:46:29 +0800</pubDate>
       
-      <guid>https://pureage.info/post/scalability-of-minio/</guid>
+      <guid>https://pureage.info/post/%E6%8E%80%E6%A1%8C%E5%AD%90%E7%9A%84-minio/</guid>
       <description>&lt;p&gt;MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -46,19 +46,19 @@
     
     <item>
       <title>为什么这两个月没更新博客</title>
-      <link>https://pureage.info/post/why-this-blog-not-update-so-long/</link>
+      <link>https://pureage.info/post/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%9C%88%E6%B2%A1%E6%9B%B4%E6%96%B0%E5%8D%9A%E5%AE%A2/</link>
       <pubDate>Sun, 03 Nov 2019 00:01:46 +0800</pubDate>
       
-      <guid>https://pureage.info/post/why-this-blog-not-update-so-long/</guid>
+      <guid>https://pureage.info/post/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%9C%88%E6%B2%A1%E6%9B%B4%E6%96%B0%E5%8D%9A%E5%AE%A2/</guid>
       <description>&lt;p&gt;最近这两个月，我没有在本博客上更新一篇文章。这也不是什么罕见的事情，因为各种借口不愿意写文章在过去也发生过很多次。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>再见，知乎</title>
-      <link>https://pureage.info/post/leave-zhihu/</link>
+      <link>https://pureage.info/post/%E5%86%8D%E8%A7%81%E7%9F%A5%E4%B9%8E/</link>
       <pubDate>Fri, 30 Aug 2019 17:36:06 +0800</pubDate>
       
-      <guid>https://pureage.info/post/leave-zhihu/</guid>
+      <guid>https://pureage.info/post/%E5%86%8D%E8%A7%81%E7%9F%A5%E4%B9%8E/</guid>
       <description>&lt;p&gt;印象中大概从2012年就开始玩知乎，这些年在上面花了不少时间，也生产了一些质量不高的内容，但其实很早就开始有离开知乎的想法了，今天做出了实际的行动。&lt;/p&gt;
 
 &lt;p&gt;我不是一个产品经理，对互联网产品也没有深入的研究。如果一定要问我为什么做出这个决定，我想最主要是有两个原因。&lt;/p&gt;</description>
@@ -66,10 +66,10 @@
     
     <item>
       <title>Rust 中 struct 与其 method 定义中的范型标识符</title>
-      <link>https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/</link>
+      <link>https://pureage.info/post/rust-%E4%B8%AD-struct-%E4%B8%8E%E5%85%B6-method-%E5%AE%9A%E4%B9%89%E4%B8%AD%E7%9A%84%E8%8C%83%E5%9E%8B%E6%A0%87%E8%AF%86%E7%AC%A6/</link>
       <pubDate>Sat, 24 Aug 2019 11:10:10 +0800</pubDate>
       
-      <guid>https://pureage.info/post/generic-type-identifier-in-struct-and-method-definition/</guid>
+      <guid>https://pureage.info/post/rust-%E4%B8%AD-struct-%E4%B8%8E%E5%85%B6-method-%E5%AE%9A%E4%B9%89%E4%B8%AD%E7%9A%84%E8%8C%83%E5%9E%8B%E6%A0%87%E8%AF%86%E7%AC%A6/</guid>
       <description>&lt;p&gt;Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&amp;lt;范型标识符&amp;gt;，例如：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-rust&#34;&gt;struct Int&amp;lt;T&amp;gt; 
@@ -83,19 +83,19 @@
     
     <item>
       <title>Rust 已经让我爱不释手了</title>
-      <link>https://pureage.info/post/refine-my-first-rust-project/</link>
+      <link>https://pureage.info/post/rust-%E5%B7%B2%E7%BB%8F%E8%AE%A9%E6%88%91%E7%88%B1%E4%B8%8D%E9%87%8A%E6%89%8B%E4%BA%86/</link>
       <pubDate>Wed, 21 Aug 2019 21:26:11 +0800</pubDate>
       
-      <guid>https://pureage.info/post/refine-my-first-rust-project/</guid>
+      <guid>https://pureage.info/post/rust-%E5%B7%B2%E7%BB%8F%E8%AE%A9%E6%88%91%E7%88%B1%E4%B8%8D%E9%87%8A%E6%89%8B%E4%BA%86/</guid>
       <description>&lt;p&gt;在昨天写了自己的第一个 Rust 程序后，今天抽了一点时间把代码结构优化了一下，另外引入了 clap 这个第三方 crate 来做参数解析。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>用 Rust 写了一个博客的客户端发布工具</title>
-      <link>https://pureage.info/post/test-for-blog-writer-by-rust/</link>
+      <link>https://pureage.info/post/%E7%94%A8-rust-%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E5%B8%83%E5%B7%A5%E5%85%B7/</link>
       <pubDate>Tue, 20 Aug 2019 23:25:18 +0800</pubDate>
       
-      <guid>https://pureage.info/post/test-for-blog-writer-by-rust/</guid>
+      <guid>https://pureage.info/post/%E7%94%A8-rust-%E5%86%99%E4%BA%86%E4%B8%80%E4%B8%AA%E5%8D%9A%E5%AE%A2%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E5%B8%83%E5%B7%A5%E5%85%B7/</guid>
       <description>&lt;p&gt;这个事情本身没有什么好说的，算是刚刷完 Rust Book 之后自己额外写的一个 hello world 级的程序，只是这个程序对我自己还有点实际用处而已，用来简化了我写博客的一些流程。&lt;/p&gt;
 
 &lt;p&gt;本来这种事情我是最擅长用 shell 来解决，强迫自己用 Rust 来写实在很别扭，但是这恐怕是不可避免的阵痛了，希望自己能尽快渡过这个不适期。&lt;/p&gt;</description>
@@ -103,10 +103,10 @@
     
     <item>
       <title>在阅读《Rust 编程之道》时的一次抬杠经历</title>
-      <link>https://pureage.info/post/2019/20190816%E5%9C%A8%E9%98%85%E8%AF%BBrust%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%81%93%E6%97%B6%E7%9A%84%E4%B8%80%E6%AC%A1%E6%8A%AC%E6%9D%A0%E7%BB%8F%E5%8E%86/</link>
+      <link>https://pureage.info/post/a-misunderstanding-of-tao-of-rust/</link>
       <pubDate>Fri, 16 Aug 2019 23:59:34 +0800</pubDate>
       
-      <guid>https://pureage.info/post/2019/20190816%E5%9C%A8%E9%98%85%E8%AF%BBrust%E7%BC%96%E7%A8%8B%E4%B9%8B%E9%81%93%E6%97%B6%E7%9A%84%E4%B8%80%E6%AC%A1%E6%8A%AC%E6%9D%A0%E7%BB%8F%E5%8E%86/</guid>
+      <guid>https://pureage.info/post/a-misunderstanding-of-tao-of-rust/</guid>
       <description>&lt;p&gt;最近学习Rust,在看完了官网上的 Rust Book 之后，我买了一本张汉东老师著的《Rust 编程之道》，来两本书对照着再看一遍。&lt;/p&gt;
 
 &lt;p&gt;今天要说的，就是发生在阅读《Rust 编程之道》时发生的一个我认为很有意思的小事。&lt;/p&gt;</description>
@@ -114,10 +114,10 @@
     
     <item>
       <title>重新打造我的笔记系统</title>
-      <link>https://pureage.info/post/rebuild-my-notes/</link>
+      <link>https://pureage.info/post/%E9%87%8D%E6%96%B0%E6%89%93%E9%80%A0%E6%88%91%E7%9A%84%E7%AC%94%E8%AE%B0%E7%B3%BB%E7%BB%9F/</link>
       <pubDate>Wed, 29 May 2019 13:25:01 +0800</pubDate>
       
-      <guid>https://pureage.info/post/rebuild-my-notes/</guid>
+      <guid>https://pureage.info/post/%E9%87%8D%E6%96%B0%E6%89%93%E9%80%A0%E6%88%91%E7%9A%84%E7%AC%94%E8%AE%B0%E7%B3%BB%E7%BB%9F/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;笔记系统，不就是个云笔记吗？说的这么高大上。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -127,10 +127,10 @@
     
     <item>
       <title>《非暴力沟通》读书笔记</title>
-      <link>https://pureage.info/post/nonviolent-communication/</link>
+      <link>https://pureage.info/post/%E9%9D%9E%E6%9A%B4%E5%8A%9B%E6%B2%9F%E9%80%9A%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 09 May 2019 10:43:17 +0800</pubDate>
       
-      <guid>https://pureage.info/post/nonviolent-communication/</guid>
+      <guid>https://pureage.info/post/%E9%9D%9E%E6%9A%B4%E5%8A%9B%E6%B2%9F%E9%80%9A%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</guid>
       <description>&lt;p&gt;这几天空闲的时候读完了马歇尔·卢森堡的《非暴力沟通》，觉得它确实是一本好书，在现实生活中指导意义很强。&lt;/p&gt;
 
 &lt;p&gt;如果没有看过这本书，仅看内容简介大概会把它归为“心灵鸡汤”一类的书。但实际上这是一本可以用来指导具体实践的教程，作者不厌其烦甚至有些啰嗦的举了大量的例子来说明非暴力沟通的具体实践。&lt;/p&gt;</description>
@@ -138,10 +138,10 @@
     
     <item>
       <title>混迹技术聊天群容易产生的几个错觉</title>
-      <link>https://pureage.info/post/illusions-produced-in-im-groups-of-software-technology/</link>
+      <link>https://pureage.info/post/%E6%B7%B7%E8%BF%B9%E6%8A%80%E6%9C%AF%E8%81%8A%E5%A4%A9%E7%BE%A4%E5%AE%B9%E6%98%93%E4%BA%A7%E7%94%9F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%94%99%E8%A7%89/</link>
       <pubDate>Sun, 07 Apr 2019 17:51:22 +0800</pubDate>
       
-      <guid>https://pureage.info/post/illusions-produced-in-im-groups-of-software-technology/</guid>
+      <guid>https://pureage.info/post/%E6%B7%B7%E8%BF%B9%E6%8A%80%E6%9C%AF%E8%81%8A%E5%A4%A9%E7%BE%A4%E5%AE%B9%E6%98%93%E4%BA%A7%E7%94%9F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%94%99%E8%A7%89/</guid>
       <description>&lt;p&gt;现如今，各行各业都有无数的聊天群，软件技术相关当然也不例外。一个程序员不混几个技术群，每天在里面聊聊技术吹吹水，都似乎有点非主流了。&lt;/p&gt;
 
 &lt;p&gt;我这里说的是那种技术氛围相对浓厚一点的聊天群，大家主要的聊天内容还是会跟某些具体技术相关。纯水群不在本文讨论范围之列。&lt;/p&gt;
@@ -151,19 +151,19 @@
     
     <item>
       <title>将域名转到 Namesilo</title>
-      <link>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</link>
+      <link>https://pureage.info/post/%E5%B0%86%E5%9F%9F%E5%90%8D%E8%BD%AC%E5%88%B0-namesilo/</link>
       <pubDate>Mon, 25 Mar 2019 10:45:26 +0800</pubDate>
       
-      <guid>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</guid>
+      <guid>https://pureage.info/post/%E5%B0%86%E5%9F%9F%E5%90%8D%E8%BD%AC%E5%88%B0-namesilo/</guid>
       <description>&lt;p&gt;本网站所使用的域名 pureage.info 自 2011 年注册开始，一直托管在godaddy 上。当年国外的域名注册商家中，只有 godaddy 支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Golang 中令人不那么愉悦的 import</title>
-      <link>https://pureage.info/post/annoying-golang-import/</link>
+      <link>https://pureage.info/post/golang-%E4%B8%AD%E4%BB%A4%E4%BA%BA%E4%B8%8D%E9%82%A3%E4%B9%88%E6%84%89%E6%82%A6%E7%9A%84-import/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
-      <guid>https://pureage.info/post/annoying-golang-import/</guid>
+      <guid>https://pureage.info/post/golang-%E4%B8%AD%E4%BB%A4%E4%BA%BA%E4%B8%8D%E9%82%A3%E4%B9%88%E6%84%89%E6%82%A6%E7%9A%84-import/</guid>
       <description>&lt;p&gt;众所周知，在 github 上参与开源项目的一般流程如下：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -179,10 +179,10 @@
     
     <item>
       <title>徒手攀岩</title>
-      <link>https://pureage.info/post/free-solo/</link>
+      <link>https://pureage.info/post/%E5%BE%92%E6%89%8B%E6%94%80%E5%B2%A9/</link>
       <pubDate>Tue, 12 Mar 2019 14:09:22 +0800</pubDate>
       
-      <guid>https://pureage.info/post/free-solo/</guid>
+      <guid>https://pureage.info/post/%E5%BE%92%E6%89%8B%E6%94%80%E5%B2%A9/</guid>
       <description>&lt;p&gt;从小到大做过不少不少恶梦，一个反复出现的场景是我被困在一面绝壁之上，进退维谷。最后通常有两个结局，一是始终在高压的状态下度过这个梦境，有可能会被吓醒；另一个是突然意识到自己正在做梦，然后抛开一切恐惧，纵身一跃，飞翔于天地间。&lt;/p&gt;
 
 &lt;p&gt;以后我才知道，原来有一项叫徒手攀岩的极限运动，我在那些恶梦中所处的场景，是这项运动的爱好者们的日常。不同的是，这不是梦。一个闪失，他们就会粉身碎骨，成为不断增长的死亡列表里的一个新的名字。&lt;/p&gt;
@@ -192,10 +192,10 @@
     
     <item>
       <title>洛奇 6 中的一段台词</title>
-      <link>https://pureage.info/post/2019/20190109%E6%B4%9B%E5%A5%876%E4%B8%AD%E7%9A%84%E4%B8%80%E6%AE%B5%E5%8F%B0%E8%AF%8D/</link>
+      <link>https://pureage.info/post/%E6%B4%9B%E5%A5%87-6-%E4%B8%AD%E7%9A%84%E4%B8%80%E6%AE%B5%E5%8F%B0%E8%AF%8D/</link>
       <pubDate>Wed, 09 Jan 2019 18:27:11 +0800</pubDate>
       
-      <guid>https://pureage.info/post/2019/20190109%E6%B4%9B%E5%A5%876%E4%B8%AD%E7%9A%84%E4%B8%80%E6%AE%B5%E5%8F%B0%E8%AF%8D/</guid>
+      <guid>https://pureage.info/post/%E6%B4%9B%E5%A5%87-6-%E4%B8%AD%E7%9A%84%E4%B8%80%E6%AE%B5%E5%8F%B0%E8%AF%8D/</guid>
       <description>&lt;p&gt;你绝对不会相信，但你以前才这么大，我会把你举高跟你妈说，“他将是世界上最棒的小孩，这孩子绝对超乎想象的优秀”。你长大以后真的很棒，每天看着你就是一种特权了。&lt;/p&gt;
 
 &lt;p&gt;后来你成年就独立了，踏入社会，表现得很好。但不知道什么时候，你变了，不再是原本的你。你让人用手指着你的脸，骂你没用。遇到困难就开始怪罪别人，好像活在阴影下似的。&lt;/p&gt;
@@ -205,10 +205,10 @@
     
     <item>
       <title>奎迪：英雄再起</title>
-      <link>https://pureage.info/post/creed2/</link>
+      <link>https://pureage.info/post/%E5%A5%8E%E8%BF%AA%E8%8B%B1%E9%9B%84%E5%86%8D%E8%B5%B7/</link>
       <pubDate>Fri, 04 Jan 2019 15:02:29 +0800</pubDate>
       
-      <guid>https://pureage.info/post/creed2/</guid>
+      <guid>https://pureage.info/post/%E5%A5%8E%E8%BF%AA%E8%8B%B1%E9%9B%84%E5%86%8D%E8%B5%B7/</guid>
       <description>&lt;p&gt;作为洛奇系列电影的旁支，《奎迪》系列的第二部最近在国内院线上映了。作为一个拳击题材电影的影迷和现实生活中的拳迷，虽然不久前我已经在网上找到视频资源先睹为快了，在上映后仍去电影院重温了一下。&lt;/p&gt;
 
 &lt;p&gt;总的来说，我对这部电影很满意。与上一部相比，加入了更多拳击之外的感情戏，导致中间会有一些沉闷，应该会引起一些争议。但拳击电影从来都不是从头到尾在擂台上拳拳到肉，如果缺了感情的铺垫，情绪没有累积上来，最后的决战就无法成为高潮。&lt;/p&gt;
@@ -218,10 +218,10 @@
     
     <item>
       <title>如何在考研数学中得到 148 分</title>
-      <link>https://pureage.info/post/how-i-got-148-marks-for-math-in-national-entrance-examination-for-postgraduate/</link>
+      <link>https://pureage.info/post/%E5%A6%82%E4%BD%95%E5%9C%A8%E8%80%83%E7%A0%94%E6%95%B0%E5%AD%A6%E4%B8%AD%E5%BE%97%E5%88%B0-148-%E5%88%86/</link>
       <pubDate>Wed, 02 Jan 2019 14:24:49 +0800</pubDate>
       
-      <guid>https://pureage.info/post/how-i-got-148-marks-for-math-in-national-entrance-examination-for-postgraduate/</guid>
+      <guid>https://pureage.info/post/%E5%A6%82%E4%BD%95%E5%9C%A8%E8%80%83%E7%A0%94%E6%95%B0%E5%AD%A6%E4%B8%AD%E5%BE%97%E5%88%B0-148-%E5%88%86/</guid>
       <description>&lt;p&gt;本来不想取这个标题，因为它第一眼看上去有一种炫耀的情绪在里面。甚至连这篇文章都犹豫了很久要不要写，犹豫的原因无外乎读者可能会有下面几种看法：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -236,19 +236,19 @@
     
     <item>
       <title>用手机发布静态博客</title>
-      <link>https://pureage.info/post/write-a-blog-with-a-cellphone/</link>
+      <link>https://pureage.info/post/%E7%94%A8%E6%89%8B%E6%9C%BA%E5%8F%91%E5%B8%83%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/</link>
       <pubDate>Fri, 23 Nov 2018 22:15:21 +0800</pubDate>
       
-      <guid>https://pureage.info/post/write-a-blog-with-a-cellphone/</guid>
+      <guid>https://pureage.info/post/%E7%94%A8%E6%89%8B%E6%9C%BA%E5%8F%91%E5%B8%83%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/</guid>
       <description>&lt;p&gt;这篇文章没有什么实际内容，请谨慎点开，不要浪费自己的时间。我就是想测试一下在手机上写一篇博客的感觉如何，能否达到以前使用动态博客程序时的体验。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>静态博客的黄金搭档:Caddy和Hugo</title>
-      <link>https://pureage.info/post/caddy-and-hugo/</link>
+      <link>https://pureage.info/post/%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%BB%84%E9%87%91%E6%90%AD%E6%A1%A3caddy%E5%92%8Chugo/</link>
       <pubDate>Wed, 21 Nov 2018 01:09:59 +0800</pubDate>
       
-      <guid>https://pureage.info/post/caddy-and-hugo/</guid>
+      <guid>https://pureage.info/post/%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%BB%84%E9%87%91%E6%90%AD%E6%A1%A3caddy%E5%92%8Chugo/</guid>
       <description>&lt;p&gt;几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
 
 &lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;
@@ -258,10 +258,10 @@
     
     <item>
       <title>golang modules对git版本的依赖</title>
-      <link>https://pureage.info/post/bad-feeling-about-go-cmd/</link>
+      <link>https://pureage.info/post/golang-modules%E5%AF%B9git%E7%89%88%E6%9C%AC%E7%9A%84%E4%BE%9D%E8%B5%96/</link>
       <pubDate>Fri, 16 Nov 2018 23:00:44 +0800</pubDate>
       
-      <guid>https://pureage.info/post/bad-feeling-about-go-cmd/</guid>
+      <guid>https://pureage.info/post/golang-modules%E5%AF%B9git%E7%89%88%E6%9C%AC%E7%9A%84%E4%BE%9D%E8%B5%96/</guid>
       <description>&lt;p&gt;这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。&lt;/p&gt;
 
 &lt;p&gt;go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。&lt;/p&gt;
@@ -271,19 +271,19 @@
     
     <item>
       <title>openstack swift中的composite ring</title>
-      <link>https://pureage.info/post/composite-ring-of-swift/</link>
+      <link>https://pureage.info/post/openstack-swift%E4%B8%AD%E7%9A%84composite-ring/</link>
       <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
       
-      <guid>https://pureage.info/post/composite-ring-of-swift/</guid>
+      <guid>https://pureage.info/post/openstack-swift%E4%B8%AD%E7%9A%84composite-ring/</guid>
       <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>王小波和狄德罗</title>
-      <link>https://pureage.info/post/wangxiaobo-and-diderot/</link>
+      <link>https://pureage.info/post/%E7%8E%8B%E5%B0%8F%E6%B3%A2%E5%92%8C%E7%8B%84%E5%BE%B7%E7%BD%97/</link>
       <pubDate>Sat, 20 Oct 2018 00:13:41 +0800</pubDate>
       
-      <guid>https://pureage.info/post/wangxiaobo-and-diderot/</guid>
+      <guid>https://pureage.info/post/%E7%8E%8B%E5%B0%8F%E6%B3%A2%E5%92%8C%E7%8B%84%E5%BE%B7%E7%BD%97/</guid>
       <description>&lt;p&gt;在《似水流年》里，王二曾经很想把肚子划破，掏出肠子挂到敌人脖子上去。&lt;/p&gt;
 
 &lt;blockquote&gt;
@@ -295,10 +295,10 @@
     
     <item>
       <title>取名记</title>
-      <link>https://pureage.info/post/the-name-given-to-my-baby/</link>
+      <link>https://pureage.info/post/%E5%8F%96%E5%90%8D%E8%AE%B0/</link>
       <pubDate>Tue, 04 Sep 2018 18:15:20 +0800</pubDate>
       
-      <guid>https://pureage.info/post/the-name-given-to-my-baby/</guid>
+      <guid>https://pureage.info/post/%E5%8F%96%E5%90%8D%E8%AE%B0/</guid>
       <description>&lt;p&gt;2017年底，我的生活有了一个很大的变化，妻子怀孕了。怀孕这个事情本身是在我们计划之中，所以只有喜没有惊，算是顺利如意。&lt;/p&gt;
 
 &lt;p&gt;我和妻子两人对生育小孩这个事情一直比较重视，为小朋友的到来提前做了很多准备。比如提前整整一年一起在一家拳馆练习拳击，事后证明，这个决定是非常正确的。另外一件比较重要的事情就是给小朋友取名字了。&lt;/p&gt;
@@ -308,10 +308,10 @@
     
     <item>
       <title>《如何阅读一本书》读书笔记</title>
-      <link>https://pureage.info/post/howto-read-a-book/</link>
+      <link>https://pureage.info/post/%E5%A6%82%E4%BD%95%E9%98%85%E8%AF%BB%E4%B8%80%E6%9C%AC%E4%B9%A6%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Tue, 14 Nov 2017 13:45:01 +0000</pubDate>
       
-      <guid>https://pureage.info/post/howto-read-a-book/</guid>
+      <guid>https://pureage.info/post/%E5%A6%82%E4%BD%95%E9%98%85%E8%AF%BB%E4%B8%80%E6%9C%AC%E4%B9%A6%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</guid>
       <description>&lt;p&gt;在几位前辈的推荐下，读完了由莫提默·J.艾德勒和查尔斯·范多伦合著的《如何阅读一本书》，受益良多。&lt;/p&gt;
 
 &lt;p&gt;如书名明示的那样，这是一本指导读者如何读书的书。时至今日，阅读的目标可以分为两种，一种是为获得资讯而阅读，另一种是为增进理解而阅读。这本书就是为希望从阅读中增进理解的读者而准备的。&lt;/p&gt;
@@ -321,10 +321,10 @@
     
     <item>
       <title>过时的技术</title>
-      <link>https://pureage.info/post/obsolescent-technology/</link>
+      <link>https://pureage.info/post/%E8%BF%87%E6%97%B6%E7%9A%84%E6%8A%80%E6%9C%AF/</link>
       <pubDate>Tue, 10 Oct 2017 15:01:38 +0000</pubDate>
       
-      <guid>https://pureage.info/post/obsolescent-technology/</guid>
+      <guid>https://pureage.info/post/%E8%BF%87%E6%97%B6%E7%9A%84%E6%8A%80%E6%9C%AF/</guid>
       <description>&lt;p&gt;互联网技术的世界很奇怪。&lt;/p&gt;
 
 &lt;p&gt;大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。&lt;/p&gt;
