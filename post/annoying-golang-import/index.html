@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>Golang 中令人不那么愉悦的 import - 纯真年代</title>
+<title>Go 中令人不那么愉悦的 import - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,13 +22,13 @@
 <main>
   <article>
     <div class="title">
-  <h1>Golang 中令人不那么愉悦的 import</h1>
+  <h1>Go 中令人不那么愉悦的 import</h1>
   </div>
 <div class="meta">
   <div>2019-03-18</div>
   <div>
     <span><a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98">#程序员</a></span>
-    <span><a href="/tags/golang">#golang</a></span>
+    <span><a href="/tags/go">#Go</a></span>
     </div>
   </div>
 <div class="content">
@@ -44,13 +44,13 @@
 
 <p>虽然具体 workflow 的细节上可能有些差异，但总体流程大概就是这样。</p>
 
-<p>但是在参与 Golang 的开源项目中，由于 gopath 的限制，这个流程就会有问题。举个例子，有一个项目为 github.com/userA/project，fork 之后，有一个新的仓库，路径为 github.com/userB/project。而这个 project 中大概率会有内部 package 引用，比如在 main.go中，import 了 github.com/userA/project/moduleA，这样在 go get 自己的仓库时，仍然会引用到原始的仓库路径。将会导致诸如构建失败等一些问题。</p>
+<p>但是在参与 Go 语言的开源项目中，由于 gopath 的限制，这个流程就会有问题。举个例子，有一个项目为 github.com/userA/project，fork 之后，有一个新的仓库，路径为 github.com/userB/project。而这个 project 中大概率会有内部 package 引用，比如在 main.go中，import 了 github.com/userA/project/moduleA，这样在 go get 自己的仓库时，仍然会引用到原始的仓库路径。将会导致诸如构建失败等一些问题。</p>
 
-<p>为什么基于 c/c++ 的开源项目就没有这个问题呢，因为 c/c++ 的构建更原始更简单。include 只有两种形式，要么是在标准路径中或项目子目录中去查找，要么在非标准路径下，但能通过编译器的选项来告诉编译器去哪里找，而代码本身则是非常干净的，不会有硬编码的特定路径在源码里面。而 Golang 的 import，是一个完整的 url，这样可以让 go get 之类的工具自动化的进行一些操作。</p>
+<p>为什么基于 c/c++ 的开源项目就没有这个问题呢，因为 c/c++ 的构建更原始更简单。include 只有两种形式，要么是在标准路径中或项目子目录中去查找，要么在非标准路径下，但能通过编译器的选项来告诉编译器去哪里找，而代码本身则是非常干净的，不会有硬编码的特定路径在源码里面。而 Go 的 import，是一个完整的 url，这样可以让 go get 之类的工具自动化的进行一些操作。</p>
 
-<p>上面可以解释 Golang 项目在引用外部包的时候使用完整 url 的做法，但是在引用项目内部包时，仍然使用完整 url 的做法就多少让人觉得有点不能理解。如果 import 能支持相对路径，就不会有前面提到的问题了。Golang 的开发者们当然对这个问题有自己的考虑，参考这个 issue：<a href="https://github.com/golang/go/issues/3515">https://github.com/golang/go/issues/3515</a> 。</p>
+<p>上面可以解释 Go 项目在引用外部包的时候使用完整 url 的做法，但是在引用项目内部包时，仍然使用完整 url 的做法就多少让人觉得有点不能理解。如果 import 能支持相对路径，就不会有前面提到的问题了。Go 的开发者们当然对这个问题有自己的考虑，参考这个 issue：<a href="https://github.com/golang/go/issues/3515">https://github.com/golang/go/issues/3515</a> 。</p>
 
-<p>不能简单的说 Golang 的这种构建方式不对，因为它的出现必然是有自己的优点和解决了一些问题的，所以从实用的角度出发，我们只能将其称之为“特点”，并去适应它。</p>
+<p>不能简单的说 Go 的这种构建方式不对，因为它的出现必然是有自己的优点和解决了一些问题的，所以从实用的角度出发，我们只能将其称之为“特点”，并去适应它。</p>
 
 <p>解决办法有几个，但都看上去有些丑陋。比如：</p>
 
@@ -63,7 +63,7 @@
 <li>原始项目仍然在积极维护，但是你仍然想自己长期维护一个 fork。</li>
 </ol>
 
-<p>在上述情况下，其实我们是把原始项目和自己的 fork 当作两个相对独立的项目，我们希望在构建的时候能直接 go build 就行了，不希望有其他额外的操作。如果有第三个人，他想 fork 我们这个 fork 并进行并列开发，按上面的方法将会非常麻烦。</p>
+<p>在上述情况下，其实我们是把原始项目和自己的 fork 当作两个相对独立的项目，我们希望在构建的时候能直接 go build 就行了，不希望有其他额外的操作。如果有第三个人，他想 fork 我们这个 fork 并进行开发，按上面的方法将会非常麻烦。</p>
 
 <p>对于这种情况，我选择将项目内所有源码中的 import 路径，修改为我自己名下的路径。虽然这种做法很丑陋，也是不得已而为之了。</p></div>
 

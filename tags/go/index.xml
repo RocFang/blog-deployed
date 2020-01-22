@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>golang on 纯真年代</title>
-    <link>https://pureage.info/tags/golang/</link>
-    <description>Recent content in golang on 纯真年代</description>
+    <title>Go on 纯真年代</title>
+    <link>https://pureage.info/tags/go/</link>
+    <description>Recent content in Go on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>2011-2020 strider. [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)</copyright>
     <lastBuildDate>Mon, 18 Mar 2019 14:49:45 +0800</lastBuildDate>
     
-	<atom:link href="https://pureage.info/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://pureage.info/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Golang 中令人不那么愉悦的 import</title>
+      <title>Go 中令人不那么愉悦的 import</title>
       <link>https://pureage.info/post/annoying-golang-import/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
