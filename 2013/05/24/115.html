@@ -32,10 +32,8 @@
     </div>
   </div>
 <div class="content">
-  <h1 id="1-here-document">1.here document</h1>
-
+  <h1 id="1here-document">1.here document</h1>
 <p>here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：</p>
-
 <pre><code>ftp -n $HOST &lt;&lt;EOF
 quote USER $USER  
 quote PASS $PASS  
@@ -43,34 +41,20 @@ binary
 put $FileName  
 quit  
 EOF  
-</code></pre>
-
-<h1 id="2-踩到的坑">2.踩到的坑</h1>
-
+</code></pre><h1 id="2踩到的坑">2.踩到的坑</h1>
 <p>在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。</p>
-
 <p>（1）shell脚本获取C程序输出</p>
-
 <p>我需要从C程序中获取的是一个固定格式的字符串，通过在C程序中将该字符串printf出来，在shell中采用a=$(program)的形式即可获取这个字符串输出。</p>
-
 <p>（2）获取这个字符串后，用here document方式，操作redis</p>
-
 <pre><code>redis-cli -h $host_ip -p $host_port&lt;&lt;EOF  
 set A $a  
 quit  
 EOF  
-</code></pre>
-
-<p>这个C程序和这个shell脚本运行一段时间都没出问题，直到有一天，我发现了这个C程序的bug，动手修改，在调试过程中加了一些打印语句，例如printf(&ldquo;XXXX&rdquo;);修改后，与脚本联合调试。发现对redis操作不成功。操作redis的here document代码块，整体返回值$?都是等于0的，无法判断其正确与否。单独调试了下C程序，也没发现问题。那么问题在哪里呢？</p>
-
+</code></pre><p>这个C程序和这个shell脚本运行一段时间都没出问题，直到有一天，我发现了这个C程序的bug，动手修改，在调试过程中加了一些打印语句，例如printf(&ldquo;XXXX&rdquo;);修改后，与脚本联合调试。发现对redis操作不成功。操作redis的here document代码块，整体返回值$?都是等于0的，无法判断其正确与否。单独调试了下C程序，也没发现问题。那么问题在哪里呢？</p>
 <p>其实上面两步都有问题：</p>
-
 <p>（1）在shell脚本中调用a=$(program)后，其实a的值就是program程序运行时所有的输出。如果能保证该程序只输出一个正确的字符串，当然不会发现任何问题。可是在改代码的过程中，，加了其他的printf语句，例如printf(&ldquo;XXXX&rdquo;),那么赋值后，a的值就变成了“XXXX YYYY”，（假设YYYY是正常需要的字符串）。原因就是在调用a=$(program）后，shell会把所有program程序执行过程中的输出都合并成一个字符串传递给a。这种情况不光发生在添加调试用的printf语句时，假设程序在某个条件判断分支出错，进入erro处理，如果要执行Printf，那么这个错误信息也会作为字符串传递给a.</p>
-
 <p>(2)  在用here document操作redis时，如果上一步执行正确，例如a为“hello&rdquo;,那么在here document中，执行set A &ldquo;hello&rdquo;,当然是不会有问题的。</p>
-
 <p>可是，如果第（1）步出现问题，不管是由于加入了多余printf语句，还是输出了错误信息，都会把合并后的字符串传递给a,在展开到set A $a中。假设a为”hello  haha&rdquo;,那么就会对redis执行 set A hello haha,很明显，格式不符合redis set命令的要求，会设置失败。如果是在redis的交互界面中，会显示出这一错误，但在here document中，并不会显示任何错误，而且在here document块执行完后，用$?来查看返回值，都会是0.因为shell认为这个代码块是正确执行的。</p>
-
 <p>发现这个问题是由于改了代码后，突然发现对redis的设置不成功了。进而一步步分析，才体会到这两个操作都后患无穷啊！</p></div>
 
   </article>

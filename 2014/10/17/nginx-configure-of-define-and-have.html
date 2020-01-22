@@ -32,14 +32,10 @@
   </div>
 <div class="content">
   <p>提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
-
 <p>我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。</p>
-
 <p>Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.</p>
-
 <p>它们的内容极其简单，分别如下：
 1.auto/have:</p>
-
 <pre><code># Copyright (C) Igor Sysoev
 # Copyright (C) Nginx, Inc.  
   
@@ -51,10 +47,7 @@ cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 #endif  
   
 END  
-</code></pre>
-
-<p>2.auto/define</p>
-
+</code></pre><p>2.auto/define</p>
 <pre><code># Copyright (C) Igor Sysoev  
 # Copyright (C) Nginx, Inc.  
   
@@ -66,38 +59,23 @@ cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 #endif  
   
 END  
-</code></pre>
-
-<p>可见，两个脚本只有一处不同，是将have变量定义成value变量还是将其定义为1，所以后面仅仅以have脚本为例进行说明。</p>
-
+</code></pre><p>可见，两个脚本只有一处不同，是将have变量定义成value变量还是将其定义为1，所以后面仅仅以have脚本为例进行说明。</p>
 <p>have脚本的用法：</p>
-
 <pre><code>have=XXXX  . auto/have  
-</code></pre>
-
-<p>就会在$NGX_AUTO_CONFIG_H所代表的文件里（默认为objs/ngx_auto_config.h)追加如下内容：</p>
-
+</code></pre><p>就会在$NGX_AUTO_CONFIG_H所代表的文件里（默认为objs/ngx_auto_config.h)追加如下内容：</p>
 <pre><code>#ifndef XXXX  
 #define XXXX 1  
 #endif  
-</code></pre>
-
-<p>这样，就可以用XXXX宏是否定义来控制编译的过程。</p>
-
-<p>下面以ngx_memalign这个Nginx内部接口为例来进行详细的说明。<br />
+</code></pre><p>这样，就可以用XXXX宏是否定义来控制编译的过程。</p>
+<p>下面以ngx_memalign这个Nginx内部接口为例来进行详细的说明。<br>
 ngx_memalign是Nginx里最基本的接口之一，经常会被调用。从接口的名字就可以看出，这个接口是用来处理内存分配和对齐的。其定义在ngx_alloc.h中：</p>
-
 <pre><code>#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
 void *ngx_memalign(size_t alignment, size_t size, ngx_log_t *log); 
 #else 
 #define ngx_memalign(alignment, size, log) ngx_alloc(size, log) 
 #endif  
-</code></pre>
-
-<p>上面代码的意图是，如果定义了NGX_HAVE_POSIX_MEMALIGN宏或者NGX_HAVE_MEMALIGN宏，则声明函数ngx_memalign，否则，简单的对ngx_alloc进行一下封装（ngx_alloc是对malloc的简单封装）。</p>
-
+</code></pre><p>上面代码的意图是，如果定义了NGX_HAVE_POSIX_MEMALIGN宏或者NGX_HAVE_MEMALIGN宏，则声明函数ngx_memalign，否则，简单的对ngx_alloc进行一下封装（ngx_alloc是对malloc的简单封装）。</p>
 <p>我们在来看函数ngx_memalign在ngx_alloc.c中的定义：</p>
-
 <pre><code>#if (NGX_HAVE_POSIX_MEMALIGN)  
   
 void *  
@@ -140,29 +118,20 @@ ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)
 }  
   
 #endif  
-</code></pre>
-
-<p>上面代码的意图为，如果定义了NGX_HAVE_POSIX_MEMALIGN，那么ngx_memalign就是对posix_memalign的简单封装，否则，如果定义了NGX_HAVE_MEMALIGN，则ngx_memalign是对memalign的简单封装。</p>
-
+</code></pre><p>上面代码的意图为，如果定义了NGX_HAVE_POSIX_MEMALIGN，那么ngx_memalign就是对posix_memalign的简单封装，否则，如果定义了NGX_HAVE_MEMALIGN，则ngx_memalign是对memalign的简单封装。</p>
 <p>那么NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN又是什么时候被定义呢？</p>
-
-<p>过程如下：<br />
+<p>过程如下：<br>
 在auto/unix脚本，列出需要检查的接口，这里就是memalign和posix_memalign了，交给auto/feature脚本来逐一处理，auto/feature脚本会对针对每一个带检查的接口，生成一个最基本的临时c源文件，该源文件会调用该接口。feature脚本然后对该源文件进行编译并判断最终生成的目标文件的可执行性。用这种动态检测的方法来判断该接口在当前系统中是否支持。</p>
-
 <p>如果feature脚本验证出posix_memalign和memalign接口在当前系统中都可用后，则会逐一调用have脚本：</p>
-
 <pre><code>have=$ngx_have_feature . auto/have  
-</code></pre>
-
-<p>这里，变量ngx_have_feature即是NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN。</p>
-
+</code></pre><p>这里，变量ngx_have_feature即是NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN。</p>
 <p>最终，have在configure、auto/unix、auto/feature、auto/have各个脚本的通力合作下，在objs/ngx_auto_config.h中就有了对NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN的定义，进而影响到ngx_memalign接口的实现。</p>
-
-<p>让我们从需求出发，将接口ngx_memalign的需求描述一遍：<br />
-1. 如果系统支持posix_memalign，则ngx_memalign是对posix_memalign的简单封装。<br />
-2. 如果系统不支持posix_memalign，但支持memalign，则ngx_memalign是对memalign的简单封装。<br />
-3. 如果系统竟然对posix_memalign和memalign都不支持，则ngx_memalign是对malloc的简单封装。</p>
-
+<p>让我们从需求出发，将接口ngx_memalign的需求描述一遍：</p>
+<ol>
+<li>如果系统支持posix_memalign，则ngx_memalign是对posix_memalign的简单封装。</li>
+<li>如果系统不支持posix_memalign，但支持memalign，则ngx_memalign是对memalign的简单封装。</li>
+<li>如果系统竟然对posix_memalign和memalign都不支持，则ngx_memalign是对malloc的简单封装。</li>
+</ol>
 <p>实现需求很简单，但如何实现的优雅，则是另一回事。Nginx向我们展示了，一个在C上尽力把服务器性能做到极致的项目，是如何在脚本上也尽最大努力做得漂亮。</p></div>
 
   </article>

@@ -18,11 +18,9 @@
       
       <guid>https://pureage.info/post/scalability-of-minio/</guid>
       <description>&lt;p&gt;MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：&lt;/p&gt;
-
 &lt;blockquote&gt;
 &lt;p&gt;一个不支持扩容的存储也能叫存储？&lt;/p&gt;
 &lt;/blockquote&gt;
-
 &lt;p&gt;这个戾气比较重的评价产生的背景是，MinIO 不支持传统分布式存储的一个标配功能：横向扩容。&lt;/p&gt;</description>
     </item>
     

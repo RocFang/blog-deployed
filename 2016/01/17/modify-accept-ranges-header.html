@@ -32,27 +32,23 @@
   </div>
 <div class="content">
   <p>今天有位朋友在使用 OpenResty 时发现一个奇怪的事情。</p>
-
 <p>他打算用 ngx.header 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 *_by_lua 脚本中写入ngx.header[&ldquo;Accept-Ranges&rdquo;] = &ldquo;xxx&rdquo;。在 OpenResty 中，这是一种经常被使用到的方法。</p>
-
 <p>他发现的问题是，当他这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值，即 &ldquo;bytes&rdquo;.</p>
-
 <p>开源软件的好处就是，所谓“奇怪”的事情只要愿意探究，都能找到答案。下面就简单的解释一下为什么使用 ngx.header 修改 Accept-Ranges 响应头的时候，会导致两个并列的 Accept-Ranges 头。</p>
-
 <p>首先，Nginx 在内部是通过一个单链表来管理一个请求的响应头。</p>
-
 <p>其次，Nginx 自身的 Accept-Ranges 响应头的设置是由 ngx_http_range_header_filter_module 模块来完成的。我们知道，Nginx 对于 HTTP 请求的处理是分阶段的，header_filter 和 body_filter 的位置在处理链的位置中很靠后。</p>
-
 <p>明确上面这两点之后，再通过阅读一下 nginx-lua 的相关代码，就可以解释这个问题了:</p>
-
 <ul>
-<li><p>ngx.header 的处理方式是，在添加响应头之前，会查找响应头的链表中是否已经有了该响应，如果没有，则添加，如果有，则覆盖。这种行为正是我们已知的。</p></li>
-
-<li><p>由于 ngx_http_range_header_filter_module 的位置在 nginx-lua 之后，所以在我们使用 ngx.header 添加/修改了 Accept-Ranges 头部之后，ngx_http_range_header_filter_module 依然要添加 Accept-Ranges 头。</p></li>
-
-<li><p>ngx_http_range_header_filter_module 在添加 Accept-Ranges 头时的行为是不检查当前响应头链表里是否已经有了 Accept-Ranges 头部，不管三七二十一，直接在响应头的链表里添加一个 Accept-Ranges 响应头。</p></li>
+<li>
+<p>ngx.header 的处理方式是，在添加响应头之前，会查找响应头的链表中是否已经有了该响应，如果没有，则添加，如果有，则覆盖。这种行为正是我们已知的。</p>
+</li>
+<li>
+<p>由于 ngx_http_range_header_filter_module 的位置在 nginx-lua 之后，所以在我们使用 ngx.header 添加/修改了 Accept-Ranges 头部之后，ngx_http_range_header_filter_module 依然要添加 Accept-Ranges 头。</p>
+</li>
+<li>
+<p>ngx_http_range_header_filter_module 在添加 Accept-Ranges 头时的行为是不检查当前响应头链表里是否已经有了 Accept-Ranges 头部，不管三七二十一，直接在响应头的链表里添加一个 Accept-Ranges 响应头。</p>
+</li>
 </ul>
-
 <p>所以，ngx.header 和 ngx_http_range_header_filter_module 各自往响应头里添加了一个 Accept-Ranges 头，导致响应头中出现了两个并列的 Accept-Ranges。</p></div>
 
   </article>

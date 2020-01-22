@@ -31,16 +31,11 @@
     </div>
   </div>
 <div class="content">
-  <h2 id="1-调用getifaddrs">1.调用getifaddrs</h2>
-
+  <h2 id="1调用getifaddrs">1.调用getifaddrs</h2>
 <blockquote>
 <p>The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3.  Support of address families other than IPv4 is available only on kernels that support netlink.</p>
 </blockquote>
-
-e>
-
-<h2 id="2-调用ioctl">2.调用ioctl</h2>
-
+e><h2 id="2调用ioctl">2.调用ioctl</h2>
 <pre><code>int getlocaladdrs(char ip_addrs[][IP_ADDRESS_SIZE], \  
 	const int max_count, int *count)  
 {  
@@ -104,14 +99,9 @@ e>
 	close(s);  
 	return *count &gt; 0 ? 0 : ENOENT;  
 }  
-</code></pre>
-
-<h2 id="3-判断一个ip是否是本地ip的几种方法">3.判断一个ip是否是本地ip的几种方法：</h2>
-
+</code></pre><h2 id="3判断一个ip是否是本地ip的几种方法">3.判断一个ip是否是本地ip的几种方法：</h2>
 <p>（1）用该ip和指定一个端口号，执行bind操作，成功则说明是本地IP，否则不是。</p>
-
 <p>（2）上一种方法的问题在于，如果指定的端口被占用了，那么及时是本地Ip，bind也会出错。可以做如下修改：bind时指定0端口，让系统给分配一个可用的端口。</p>
-
 <p>（3）先用上面提到的获取本地Ip的两种方法把本地ip列表获取到，然后看目标ip是否在其中即可。</p></div>
 
   </article>

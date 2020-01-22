@@ -32,18 +32,12 @@
   </div>
 <div class="content">
   <p>对于 <a href="http://pureage.info/2014/04/26/pitfall-of-nginx.html">Nginx踩坑记（一）</a>，在 openresty 的 google group 上提了个问题：<a href="https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ">ngx.exec是如何处理上层定义的变量的</a> 。</p>
-
 <p>春哥的回复<strong>摘录</strong>如下：</p>
-
 <blockquote>
 <p>你这里使用了 rewrite 配置指令来发起内部跳转。其实 rewrite 指令发起的内部跳转非常特殊：它不会从  server-rewrite 阶段重新开始运行，而是从 find-config 阶段开始执行，所以你上例中写在server {}  块中的<code>set $hello hello</code>并不会在跳转后重新运行一遍，因为 server-rewrite 阶段在跳转后被直接跳过。</p>
-
 <p>注意，rewrite 配置指令的特殊行为也可以通过下面这一行 ngx_lua 配置来复现：</p>
-
-<p><code>rewrite_by_lua 'ngx.req.set_uri(&quot;/test2&quot;, true)';</code></p>
-
+<p><code>rewrite_by_lua 'ngx.req.set_uri(&quot;/test2&quot;, true)'; </code></p>
 <p>而 ngx.exec() 调用（以及其他接口，比如 echo_exec 配置指令）发起的内部跳转的标准行为是从  server-rewrite  阶段重新开始执行，所以你的 <code>set $hello hello</code> 会被重新执行一遍，从而改写掉 <code>$hello</code>  变量原先的取值（即 “bye“）。</p>
-
 <p>我或许应该在教程里强调一下这个重要细节 :)</p>
 </blockquote></div>
 

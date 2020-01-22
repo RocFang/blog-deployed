@@ -33,9 +33,7 @@
   </div>
 <div class="content">
   <p>FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：</p>
-
 <p><strong>1. tcprecvdata_ex</strong></p>
-
 <pre><code>int tcprecvdata_ex(int sock, void *data, const int size, \  
 		const int timeout, int *count)  
 {  
@@ -120,10 +118,7 @@
   
 	return ret_code;  
 }  
-</code></pre>
-
-<p><strong>2.tcprecvdata_nb_ex</strong></p>
-
+</code></pre><p><strong>2.tcprecvdata_nb_ex</strong></p>
 <pre><code>int tcprecvdata_nb_ex(int sock, void *data, const int size, \  
 		const int timeout, int *count)  
 {  
@@ -215,14 +210,9 @@
   
 	return ret_code;  
 }  
-</code></pre>
-
-<p>乍一眼看上去，这两个不是一样吗？仔细看下就会发现区别所在：nonblock版本在循环里把recv操作放在了select/poll之前，而block版本在循环里把recv操作放在了select/poll之后。其他地方几乎都是一模一样的。</p>
-
+</code></pre><p>乍一眼看上去，这两个不是一样吗？仔细看下就会发现区别所在：nonblock版本在循环里把recv操作放在了select/poll之前，而block版本在循环里把recv操作放在了select/poll之后。其他地方几乎都是一模一样的。</p>
 <p>其实，这两个函数处理的socket在调用他们之前，都已经被设置为nonblock了，这是一个前提条件。也就是说，我们这两个函数是对一个nonblock的socket在细分为block和nonblock，有点拗口，既然这个socket都已经是nonblock的了，为什么这里还会有block和nonblock的区别呢?</p>
-
 <p>他们的区别在于，tcprecvdata_nb_ex会调用select/poll从而阻塞的唯一场合就是在一个recv返回EAGAIN错误或 EWOULDBLOCK时，而tcprecvdata_nb在每一次recv调用钱都会调用可能引起阻塞的select/poll。</p>
-
 <p>在这两个函数中学到了一个技巧，该技巧与这两个函数的区别无关。就是如何在一个nonblock的socket连接中获取希望获取的字节数。由于socket是nonblock的，调用recv马上返回，如果出错且错误是EAGAIN或EWOULDBLOCK，那么我们希望能再重试一下。但如果只是用一个while循环来主动一遍一遍的重试的话，超时该如何处理呢？其实这才是这两个函数中用到select/poll的真正意义所在。即，在一个非阻塞的套接字连接里，达到阻塞接收指定大小的数据的效果，但同时又有超时机制来保证并不会真正的阻塞。</p></div>
 
   </article>

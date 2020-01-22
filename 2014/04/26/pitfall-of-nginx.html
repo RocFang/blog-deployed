@@ -32,13 +32,9 @@
   </div>
 <div class="content">
   <h2 id="1-预备知识">1. 预备知识</h2>
-
 <p>Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。</p>
-
 <p>配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。</p>
-
 <p>例如，如果有如下的配置：</p>
-
 <pre><code>location /test1 {  
         set $hello hello;  
         rewrite /test1 /test2 last;
@@ -48,17 +44,11 @@
 location /test2 {  
         echo $hello;  
 }  
-</code></pre>
-
-<p>虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。</p>
-
-<p>测试如下所示：<br />
-<img src="/img/nginx-1.png" alt="nginx-1.png" /></p>
-
+</code></pre><p>虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。</p>
+<p>测试如下所示：<br>
+<img src="/img/nginx-1.png" alt="nginx-1.png"></p>
 <h2 id="2-如果变量定义在server处">2. 如果变量定义在server处</h2>
-
 <p>例如，如果有如下的配置：</p>
-
 <pre><code>set $hello hello;  
 location /test1 {  
         echo $hello;  
@@ -67,13 +57,9 @@ location /test1 {
 location /test2 {  
         echo $hello;  
 }  
-</code></pre>
-
-<p>那么很容易想到，无论是访问/test1还是/test2，都会输出在上层定义的变量$hello的值，测试如下：<br />
-<img src="/img/nginx-2.png" alt="nginx-2.png" /></p>
-
+</code></pre><p>那么很容易想到，无论是访问/test1还是/test2，都会输出在上层定义的变量$hello的值，测试如下：<br>
+<img src="/img/nginx-2.png" alt="nginx-2.png"></p>
 <p>再进一步，假设配置如下：</p>
-
 <pre><code>set $hello hello;  
 location /test1 {  
         set $hello bye;  
@@ -83,16 +69,11 @@ location /test1 {
 location /test2 {  
         echo $hello;  
 }  
-</code></pre>
-
-<p>则同样很容易想到，如果直接访问/test1，则会先把在server段定义的$hello变量由“hello&rdquo;改写为&rdquo;bye&rdquo;，再进行内部跳转到/test2后，则会输出新的修改过后的变量$hello；而如果直接访问/test2，则会输出在server段定义的变量。测试如下：<br />
-<img src="/img/nginx-3.png" alt="nginx-3.png" /></p>
-
+</code></pre><p>则同样很容易想到，如果直接访问/test1，则会先把在server段定义的$hello变量由“hello&quot;改写为&quot;bye&rdquo;，再进行内部跳转到/test2后，则会输出新的修改过后的变量$hello；而如果直接访问/test2，则会输出在server段定义的变量。测试如下：<br>
+<img src="/img/nginx-3.png" alt="nginx-3.png"></p>
 <h2 id="3-坑来了">3. 坑来了</h2>
-
-<p>到现在为止，一切都很正常，上述的知识点也是Nginx配置中的基础知识。但当和ngx_lua模块结合起来时，就时常会碰到比较诡异的事情。<br />
+<p>到现在为止，一切都很正常，上述的知识点也是Nginx配置中的基础知识。但当和ngx_lua模块结合起来时，就时常会碰到比较诡异的事情。<br>
 假设配置如下：</p>
-
 <pre><code>set $hello hello;  
   
 location /test1 {  
@@ -106,14 +87,10 @@ location /test2 {
         echo &quot;in test2&quot;;  
         echo $hello;  
 }  
-</code></pre>
-
-<p>我们来猜猜分别访问/test1和/test2，会输出什么。首先,server段已经定义了变量$hello为字符串&rdquo;hello&rdquo;，直接访问/test1时，会将其修改为&rdquo;bye&rdquo;，然后执行ngx.exec跳转到/test2，输出变量$hello。但经过测试，分别访问/test1和/test2的时候，结果如下所示：<br />
-<img src="/img/nginx-4.png" alt="nginx-4.png" /><br />
+</code></pre><p>我们来猜猜分别访问/test1和/test2，会输出什么。首先,server段已经定义了变量$hello为字符串&quot;hello&rdquo;，直接访问/test1时，会将其修改为&quot;bye&rdquo;，然后执行ngx.exec跳转到/test2，输出变量$hello。但经过测试，分别访问/test1和/test2的时候，结果如下所示：<br>
+<img src="/img/nginx-4.png" alt="nginx-4.png"><br>
 是不是很奇怪？直接访问/test2输出hello是正常的，可是访问/test1居然也是输出hello，在/test1中对hello变量的更改似乎没起作用。</p>
-
 <p>到底/test1的content_by_lua段中，对变量$test的修改起作用没，我们可以测试一下，添加一行调试代码如下：</p>
-
 <pre><code>set $hello hello;  
   
 location /test1 {  
@@ -128,12 +105,8 @@ location /test2 {
         echo &quot;in test2&quot;;  
         echo $hello;  
 }  
-</code></pre>
-
-<p>再次访问/test1，我们会发现，在log中记录下来了此时的$hello变量为&rdquo;bye&rdquo;。可是为什么执行内部跳转到/test2后，输出的结果还是&rdquo;hello&rdquo;呢？</p>
-
+</code></pre><p>再次访问/test1，我们会发现，在log中记录下来了此时的$hello变量为&quot;bye&rdquo;。可是为什么执行内部跳转到/test2后，输出的结果还是&quot;hello&quot;呢？</p>
 <p>我们再次改造一下配置：</p>
-
 <pre><code>location /test1 {  
         set $hello hello;  
         content_by_lua '  
@@ -147,11 +120,9 @@ location /test2 {
         echo &quot;in test2&quot;;  
         echo $hello;  
 }  
-</code></pre>
-
-<p>和上面的区别在于，这次将变量的定义从server段迁到了location /test1中，在/test1中的content_by_lua段对其进行修改，再执行内部跳转到/test2。测试结果如下：<br />
-<img src="/img/nginx-5.png" alt="nginx-5.png" /><br />
-这次的结果显然是符合我们的预期的。直接访问/test1，由于在content_by_lua中将$hello变量更改为&rdquo;bye&rdquo;了，所以当内部跳转到/test2时，输出$hello变量就会输出“bye&rdquo;；如果直接访问/test2，则由于此时并没有对$hello变量赋值，所以$hello变量为空。</p></div>
+</code></pre><p>和上面的区别在于，这次将变量的定义从server段迁到了location /test1中，在/test1中的content_by_lua段对其进行修改，再执行内部跳转到/test2。测试结果如下：<br>
+<img src="/img/nginx-5.png" alt="nginx-5.png"><br>
+这次的结果显然是符合我们的预期的。直接访问/test1，由于在content_by_lua中将$hello变量更改为&quot;bye&quot;了，所以当内部跳转到/test2时，输出$hello变量就会输出“bye&rdquo;；如果直接访问/test2，则由于此时并没有对$hello变量赋值，所以$hello变量为空。</p></div>
 
   </article>
 </main>

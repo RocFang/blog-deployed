@@ -36,9 +36,7 @@
       
       <guid>https://pureage.info/post/caddy-and-hugo/</guid>
       <description>&lt;p&gt;几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
-
 &lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;
-
 &lt;p&gt;在去年下半年发现了Hugo后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。&lt;/p&gt;</description>
     </item>
     
@@ -49,9 +47,7 @@
       
       <guid>https://pureage.info/2015/12/16/still-using-typecho.html</guid>
       <description>&lt;p&gt;最近手心手背总时不时发痒，又开始想折腾博客玩了。&lt;/p&gt;
-
 &lt;p&gt;这个小小的个人博客，从 2011 年开始，几乎把主流的 Blog 系统折腾了个遍，从最初的 Wordpress,到 Typecho, Emlog, Textpattern 等等。其中，Typecho 被来回折腾了几次，因为 Typecho 自身也经历了两个大的阶段：从几年没有维护，到开始重构并默认支持 Markdown 编辑器。&lt;/p&gt;
-
 &lt;p&gt;每个阶段维护博客的心态也不一样。刚开始的时候，总到处想和人交换链接，把界面搞得好看点，各种插件都试一试。这个阶段确实还真认识了一些一起写博客的同学，大家经常互访互评，搞得还挺热闹。但是必须要知道的是，即使在 2011 年之前，个人博客也早已经开始没落了，这是大势所趋，曾经的那些博客，到现在也已经绝大多数打不开，还挺让人唏嘘的。&lt;/p&gt;</description>
     </item>
     
@@ -62,9 +58,7 @@
       
       <guid>https://pureage.info/2013/12/23/161.html</guid>
       <description>&lt;p&gt;typecho终于迎来大的更新了，从2012年5月8号官网放出一篇名为&lt;a href=&#34;http://typecho.org/archives/65/&#34;&gt;《Its about time》&lt;/a&gt;的日志后，让各路淫民翘首以待，谁都没想到一翘就翘了一年多。&lt;/p&gt;
-
 &lt;p&gt;从两年前买了域名+空间后，试过了各种博客程序，wordpress,typecho,emlog,textpattern等等，但最喜欢的还是emlog和typecho，后来一直用的是emlog。说实在话，对emlog很满意的，emlog的社区也做的不错，但这次typecho的更新太吸引人了，还是转了过来。更换程序是很彻底的，我丝毫没有考虑如何在url上做文章，对这个网站和搜索引擎而言，意味着N多死链，但幸好对我自己而言，不意味任何东西。&lt;/p&gt;
-
 &lt;p&gt;这个博客一直放在一个虚拟空间里，除了用ftp上传网站代码外，几乎没有任何权限。虽然早已有一个vps，但仍然没有把它迁过来，让它安静的躺在这里吧。&lt;/p&gt;</description>
     </item>
     
@@ -75,13 +69,10 @@
       
       <guid>https://pureage.info/2013/10/01/128.html</guid>
       <description>&lt;p&gt;不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
-
 &lt;ol&gt;
-&lt;li&gt;登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱）&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;用ftp备份content目录
-&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱）&lt;/li&gt;
+&lt;li&gt;用ftp备份content目录&lt;/li&gt;
 &lt;/ol&gt;
-
 &lt;p&gt;如果你想简化操作，并且和我一样苦逼的用着虚拟主机，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。&lt;/p&gt;</description>
     </item>
     
@@ -91,10 +82,8 @@
       <pubDate>Wed, 29 Feb 2012 12:26:00 +0000</pubDate>
       
       <guid>https://pureage.info/2012/02/29/52.html</guid>
-      <description>&lt;p&gt;1.先到豆瓣九点的这个页面&lt;a href=&#34;http://9.douban.com/reader/&#34;&gt;http://9.douban.com/reader/&lt;/a&gt; 点击右侧“添加订阅”，输入你的博客地址，然后豆瓣就会开始抓取你的博客，稍微等会儿，就添加进去了。&lt;/p&gt;
-
+      <description>&lt;p&gt;1.先到豆瓣九点的这个页面http://9.douban.com/reader/ 点击右侧“添加订阅”，输入你的博客地址，然后豆瓣就会开始抓取你的博客，稍微等会儿，就添加进去了。&lt;/p&gt;
 &lt;p&gt;2.点下方的“管理订阅列表”，进入页面后，点你博客的名字，进入你的博客九点页面，再点击图片右侧的“认领这个博客”，豆瓣会给出一串字符（如doubanclaim9434b54d244e5b6f）要求你写进你的博客日志里，写好之后回到这个页面，点击“重抓”，过个10分钟左右等豆瓣验证好了，你就拥有这个博客了，然后那行写在日志里的字符也可以删了。&lt;/p&gt;
-
 &lt;p&gt;3.等在九点拥有博客之后，在你的豆瓣个人页面的头像下面就会显示你的博客地址和名称，你的主页上会显示你最新的博客日志并且会自动更新，自动显示你的广播里，你的友邻也都会看见。&lt;/p&gt;</description>
     </item>
     

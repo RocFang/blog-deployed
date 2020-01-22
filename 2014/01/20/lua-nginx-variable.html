@@ -33,38 +33,26 @@
   </div>
 <div class="content">
   <p>在nginx中，有两种方式添加自定义的变量：</p>
-
 <ul>
 <li>在配置文件中用set指定添加</li>
-<li>在自己编写的C模块中，调用<code>ngx_http_add_variable</code>接口来添加变量<br />
-<br /></li>
+<li>在自己编写的C模块中，调用<code>ngx_http_add_variable</code>接口来添加变量</li>
 </ul>
-
 <p>第一种方法较简单，第二种方法有一处需要说明一下。</p>
-
 <p>当调用<code>ngx_http_add_variable</code>接口时，如果传入的flag参数中<code>NGX_HTTP_VAR_NOHASH</code>位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。</p>
-
 <p>在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。</p>
-
 <p>例如，某个C模块中用带有<code>NGX_HTTP_VAR_NOHASH</code>位的flag参数调用了<code>ngx_http_add_variable</code>，创建了变量A，则如果在lua代码中通过<code>ngx.var.A</code>只能得到一个nil值。</p>
-
 <p>而如果在配置文件中，先调用set命令:<code>set $B $A;</code>,那么在lua代码中，通过代码<code>local A2 = ngx.var.B</code>则可以间接访问到该变量。</p>
-
-<p>翻了一下邮件列表，发现该问题agentzh早有解答：<br />
-&gt;逆雪寒:<br />
-&gt;通过 <code>ngx.var.fastcgi_script_name</code> 是nil 。 但 <code>set $fsn $fastcgi_script_name</code> 然后 <code>ngx.var.fsn</code> 就能正常获取了。bug ? 还是我理解问题.</p>
-
+<p>翻了一下邮件列表，发现该问题agentzh早有解答：</p>
+<blockquote>
+<p>逆雪寒:<br>
+通过 <code>ngx.var.fastcgi_script_name</code> 是nil 。 但 <code>set $fsn $fastcgi_script_name</code> 然后 <code>ngx.var.fsn</code> 就能正常获取了。bug ? 还是我理解问题.</p>
+</blockquote>
 <blockquote>
 <p>agenzh:</p>
-
 <p>这是 Nginx 标准的 <code>ngx_fastcgi</code> 模块的一个限制。<code>$fastcgi_script_name</code> 这个内建变量是这个 <code>ngx_fastcgi</code> 模块定义的，而且在定义时设置了 <code>NGX_HTTP_VAR_NOHASH</code> 这个标志位，从而阻止了 Perl、Lua等各种脚本语言在请求时按变量名动态获取这个变量的值。</p>
-
 <p>之所以你使用 set 指令进行过渡就可以工作是因为 set 指令定位 <code>$fastcgi_script_name</code> 这个变量是在配置加载时，而不是请求时。</p>
-
 <p>你可以自己修改 Nginx 源码树中的 <code>src/http/modules/ngx_http_fastcgi_module.c</code> 这个文件，从<code>ngx_http_fastcgi_vars</code> 这个全局数组的初始化定义中把 <code>NGX_HTTP_VAR_NOHASH</code> 这个标志去除。</p>
-
 <p>从 ngx_lua 模块的角度，是没办法绕过 Nginx 核心中的这个限制的。关于类似这样的问题，可以参见下面这个讨论：</p>
-
 <p><a href="http://forum.nginx.org/read.php?29,239402,239402,quote=1">http://forum.nginx.org/read.php?29,239402,239402,quote=1</a></p>
 </blockquote></div>
 

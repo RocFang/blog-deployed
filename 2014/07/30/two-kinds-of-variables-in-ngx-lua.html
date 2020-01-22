@@ -32,27 +32,20 @@
   </div>
 <div class="content">
   <p>ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数，例如</p>
-
 <pre><code>http://pureage.info?strider=1  
-</code></pre>
-
-<p>为了获取输入参数strider，以下两种方法都可以：</p>
-
+</code></pre><p>为了获取输入参数strider，以下两种方法都可以：</p>
 <ol>
-<li><p>local strider = ngx.var.arg_strider</p></li>
-
-<li><p>local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]</p></li>
+<li>
+<p>local strider = ngx.var.arg_strider</p>
+</li>
+<li>
+<p>local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]</p>
+</li>
 </ol>
-
 <p>差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&ldquo;xx&rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：</p>
-
 <pre><code>http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
-</code></pre>
-
-<p>时，ngx.var.arg_strider的值为&rdquo;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。</p>
-
+</code></pre><p>时，ngx.var.arg_strider的值为&quot;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。</p>
 <p>ngx.var.arg_的实现是直接使用nginx原生的变量支持，nginx相关代码为：</p>
-
 <pre><code>ngx_http_variable_value_t *  
 ngx_http_get_variable(ngx_http_request_t *r, ngx_str_t *name, ngx_uint_t key)  
 {  

@@ -33,33 +33,21 @@
   </div>
 <div class="content">
   <h1 id="需求">需求：</h1>
-
 <p>假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：</p>
-
 <pre><code>group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
 ......(略）......  
-</code></pre>
-
-<p>如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？</p>
-
+</code></pre><p>如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？</p>
 <h1 id="方法">方法：</h1>
-
 <pre><code>cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
-</code></pre>
-
-<p>其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&hellip;groupn的顺序排列。</p>
-
+</code></pre><p>其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&hellip;groupn的顺序排列。</p>
 <p>通过这一行命令，就能得到类似于：</p>
-
 <pre><code>999 group1  
 998 group2  
 998 group3  
 997 group4  
 .......  
-</code></pre>
-
-<p>的统计结果了。</p></div>
+</code></pre><p>的统计结果了。</p></div>
 
   </article>
 </main>

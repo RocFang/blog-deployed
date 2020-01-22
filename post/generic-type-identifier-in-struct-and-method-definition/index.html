@@ -32,54 +32,94 @@
   </div>
 <div class="content">
   <p>Rust 中，在 struct 定义中使用范型的方法，是在 struct 名称后跟&lt;范型标识符&gt;，例如：</p>
-
-<pre><code class="language-rust">struct Int&lt;T&gt; 
-</code></pre>
-
-<p>而在 struct 的方法的定义中使用范型，则是形如：</p>
-
-<pre><code class="language-rust">impl&lt;T&gt; Int&lt;T&gt; 
-</code></pre>
-
-<p>注意这里有两个范型标识符<code>&lt;T&gt;</code>。</p>
-
+<div class="highlight"><div style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#00a8c8">struct</span> <span style="color:#75af00">Int</span><span style="color:#f92672">&lt;</span><span style="color:#111">T</span><span style="color:#f92672">&gt;</span> 
+</code></pre></td></tr></table>
+</div>
+</div><p>而在 struct 的方法的定义中使用范型，则是形如：</p>
+<div class="highlight"><div style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#00a8c8">impl</span><span style="color:#f92672">&lt;</span><span style="color:#111">T</span><span style="color:#f92672">&gt;</span> <span style="color:#111">Int</span><span style="color:#f92672">&lt;</span><span style="color:#111">T</span><span style="color:#f92672">&gt;</span> 
+</code></pre></td></tr></table>
+</div>
+</div><p>注意这里有两个范型标识符<code>&lt;T&gt;</code>。</p>
 <p>impl 后面的<code>&lt;T&gt;</code>并不是可有可无的，如果其后有<code>&lt;T&gt;</code>，则后面 struct 名字后面的<code>&lt;T&gt;</code>才会被编译器认为是范型，否则编译器它是一个具体类型。</p>
-
 <p>Rust 使用这种方式可以来实现对一个范型的不同具体类型定义不同的方法的功能。</p>
-
 <p>如下面的代码所示，x 方法为所有 Int 实例所共有，但 x32 方法和 x64 方法则分别仅为具体类型为 i32 和 i64 的 Int 实例所有：</p>
-
-<pre><code class="language-rust">struct Int&lt;T&gt; {
-    x: T,
-}
-impl&lt;T&gt; Int&lt;T&gt; {
-    fn x(&amp;self) -&gt; &amp;T {
-        &amp;self.x
-    }
-}
-impl Int&lt;i32&gt; {
-    fn x32(&amp;self) -&gt; &amp;i32 {
-        &amp;self.x
-    }
-}
-impl Int&lt;i64&gt; {
-    fn x64(&amp;self) -&gt; &amp;i64 {
-        &amp;self.x
-    }
-}
-fn main() {
-    let p = Int { x: 5};
-    println!(&quot;p.x = {}&quot;, p.x());
-    println!(&quot;p.x32 = {}&quot;, p.x32());
-    //下面的注释掉的是错误语句
-    //println!(&quot;p.x64={}&quot;, p.x64());
-    let p2 = Int {x: 5i64};
-    println!(&quot;p2.x = {}&quot;, p2.x());
-    //下面的注释掉的是错误语句
-    //println!(&quot;p2.x32 = {}&quot;, p2.x32());
-    println!(&quot;p2.x64 = {}&quot;, p2.x64());
-}
-</code></pre></div>
+<div class="highlight"><div style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#00a8c8">struct</span> <span style="color:#75af00">Int</span><span style="color:#f92672">&lt;</span><span style="color:#111">T</span><span style="color:#f92672">&gt;</span> <span style="color:#111">{</span>
+    <span style="color:#111">x</span>: <span style="color:#75af00">T</span><span style="color:#111">,</span>
+<span style="color:#111">}</span>
+<span style="color:#00a8c8">impl</span><span style="color:#f92672">&lt;</span><span style="color:#111">T</span><span style="color:#f92672">&gt;</span> <span style="color:#111">Int</span><span style="color:#f92672">&lt;</span><span style="color:#111">T</span><span style="color:#f92672">&gt;</span> <span style="color:#111">{</span>
+    <span style="color:#00a8c8">fn</span> <span style="color:#75af00">x</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#111">self</span><span style="color:#111">)</span> -&gt; <span style="color:#00a8c8">&amp;</span><span style="color:#75af00">T</span> <span style="color:#111">{</span>
+        <span style="color:#f92672">&amp;</span><span style="color:#111">self</span><span style="color:#111">.</span><span style="color:#111">x</span>
+    <span style="color:#111">}</span>
+<span style="color:#111">}</span>
+<span style="color:#00a8c8">impl</span> <span style="color:#111">Int</span><span style="color:#f92672">&lt;</span><span style="color:#00a8c8">i32</span><span style="color:#f92672">&gt;</span> <span style="color:#111">{</span>
+    <span style="color:#00a8c8">fn</span> <span style="color:#75af00">x32</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#111">self</span><span style="color:#111">)</span> -&gt; <span style="color:#00a8c8">&amp;</span><span style="color:#00a8c8">i32</span> <span style="color:#111">{</span>
+        <span style="color:#f92672">&amp;</span><span style="color:#111">self</span><span style="color:#111">.</span><span style="color:#111">x</span>
+    <span style="color:#111">}</span>
+<span style="color:#111">}</span>
+<span style="color:#00a8c8">impl</span> <span style="color:#111">Int</span><span style="color:#f92672">&lt;</span><span style="color:#00a8c8">i64</span><span style="color:#f92672">&gt;</span> <span style="color:#111">{</span>
+    <span style="color:#00a8c8">fn</span> <span style="color:#75af00">x64</span><span style="color:#111">(</span><span style="color:#f92672">&amp;</span><span style="color:#111">self</span><span style="color:#111">)</span> -&gt; <span style="color:#00a8c8">&amp;</span><span style="color:#00a8c8">i64</span> <span style="color:#111">{</span>
+        <span style="color:#f92672">&amp;</span><span style="color:#111">self</span><span style="color:#111">.</span><span style="color:#111">x</span>
+    <span style="color:#111">}</span>
+<span style="color:#111">}</span>
+<span style="color:#00a8c8">fn</span> <span style="color:#75af00">main</span><span style="color:#111">(</span><span style="color:#111">)</span> <span style="color:#111">{</span>
+    <span style="color:#00a8c8">let</span> <span style="color:#111">p</span> <span style="color:#f92672">=</span> <span style="color:#111">Int</span> <span style="color:#111">{</span> <span style="color:#111">x</span>: <span style="color:#ae81ff">5</span><span style="color:#111">}</span><span style="color:#111">;</span>
+    <span style="color:#111">println</span><span style="color:#f92672">!</span><span style="color:#111">(</span><span style="color:#d88200">&#34;p.x = {}&#34;</span><span style="color:#111">,</span> <span style="color:#111">p</span><span style="color:#111">.</span><span style="color:#111">x</span><span style="color:#111">(</span><span style="color:#111">)</span><span style="color:#111">)</span><span style="color:#111">;</span>
+    <span style="color:#111">println</span><span style="color:#f92672">!</span><span style="color:#111">(</span><span style="color:#d88200">&#34;p.x32 = {}&#34;</span><span style="color:#111">,</span> <span style="color:#111">p</span><span style="color:#111">.</span><span style="color:#111">x32</span><span style="color:#111">(</span><span style="color:#111">)</span><span style="color:#111">)</span><span style="color:#111">;</span>
+    <span style="color:#75715e">//下面的注释掉的是错误语句
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//println!(&#34;p.x64={}&#34;, p.x64());
+</span><span style="color:#75715e"></span>    <span style="color:#00a8c8">let</span> <span style="color:#111">p2</span> <span style="color:#f92672">=</span> <span style="color:#111">Int</span> <span style="color:#111">{</span><span style="color:#111">x</span>: <span style="color:#ae81ff">5</span><span style="color:#00a8c8">i64</span><span style="color:#111">}</span><span style="color:#111">;</span>
+    <span style="color:#111">println</span><span style="color:#f92672">!</span><span style="color:#111">(</span><span style="color:#d88200">&#34;p2.x = {}&#34;</span><span style="color:#111">,</span> <span style="color:#111">p2</span><span style="color:#111">.</span><span style="color:#111">x</span><span style="color:#111">(</span><span style="color:#111">)</span><span style="color:#111">)</span><span style="color:#111">;</span>
+    <span style="color:#75715e">//下面的注释掉的是错误语句
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">//println!(&#34;p2.x32 = {}&#34;, p2.x32());
+</span><span style="color:#75715e"></span>    <span style="color:#111">println</span><span style="color:#f92672">!</span><span style="color:#111">(</span><span style="color:#d88200">&#34;p2.x64 = {}&#34;</span><span style="color:#111">,</span> <span style="color:#111">p2</span><span style="color:#111">.</span><span style="color:#111">x64</span><span style="color:#111">(</span><span style="color:#111">)</span><span style="color:#111">)</span><span style="color:#111">;</span>
+<span style="color:#111">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></div>
 
   </article>
 </main>

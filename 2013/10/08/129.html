@@ -33,7 +33,6 @@
   </div>
 <div class="content">
   <p>假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：</p>
-
 <pre><code>tmp_src_filename=fdfs_check_bits.c  
 cat &lt;&lt;EOF &gt; $tmp_src_filename  
 #include &lt;stdio.h&gt;  
@@ -49,9 +48,7 @@ EOF
   
 gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
 output=$(./a.out)  
-</code></pre>
-
-<p>上面的代码摘自FastDFS的make.sh。</p></div>
+</code></pre><p>上面的代码摘自FastDFS的make.sh。</p></div>
 
   </article>
 </main>

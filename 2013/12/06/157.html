@@ -32,17 +32,13 @@
   </div>
 <div class="content">
   <p>在一些开源项目的socket相关代码中，会同时看到AF_IENT和PF_INET，这两者有什么区别呢？</p>
-
 <p>其实这两个东西就是当年设计上的误差而已。AF=Adress Family;PF=Protocal Family，原来的设计是设想一个AF会支持多个PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux源代码为证：</p>
-
 <pre><code>/* Protocol families, same as address families. */  
 #define PF_UNSPEC	AF_UNSPEC  
 #define PF_UNIX	 AF_UNIX  
 #define PF_LOCAL	AF_LOCAL  
 #define PF_INET	 AF_INET  
-</code></pre>
-
-<p>参考：<br />
+</code></pre><p>参考：<br>
 <a href="http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming">http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming</a></p></div>
 
   </article>

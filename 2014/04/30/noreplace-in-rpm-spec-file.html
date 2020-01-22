@@ -32,91 +32,61 @@
   </div>
 <div class="content">
   <p>打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？</p>
-
 <p>答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。</p>
-
 <p>对于spec文件中在%files段的某一个文件，我们要讨论三种情况：</p>
-
 <ol>
-<li>没有带%config指令。例如：%{_sbindir}/redis-server<br /></li>
-<li>带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf<br /></li>
-<li>带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf<br /></li>
+<li>没有带%config指令。例如：%{_sbindir}/redis-server</li>
+<li>带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf</li>
+<li>带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf</li>
 </ol>
-
 <p>具体一点，包含如下场景：</p>
-
-<h3 id="1-一个文件没有被-config或-config-noreplace-指令配置">1. 一个文件没有被%config或%config(noreplace)指令配置</h3>
-
+<h3 id="1-一个文件没有被config或confignoreplace指令配置">1. 一个文件没有被%config或%config(noreplace)指令配置</h3>
 <p>此时，不管该文件在安装完成后，有没有在本地被修改过，当升级该rpm包时，该文件会被这个新的rpm包的里的同名文件替换,（旧文件被删除）。</p>
-
-<h3 id="2-一个文件被-config指令配置">2. 一个文件被%config指令配置</h3>
-
+<h3 id="2-一个文件被config指令配置">2. 一个文件被%config指令配置</h3>
 <p>此时包含如下情况：</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换掉掉旧的文件，旧的文件会被保存为xx.rpmsave,如/etc/redis/redis.conf.rpmsave</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换掉旧的文件。（旧文件被删除）</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件不会覆盖旧的文件，旧文件保持不变。</p>
-
-<h3 id="3-一个文件被-config-noreplace-指令配置">3. 一个文件被%config(noreplace)指令配置</h3>
-
+<h3 id="3-一个文件被confignoreplace指令配置">3. 一个文件被%config(noreplace)指令配置</h3>
 <p>此时包含如下情况：</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地没有被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm有变化，且在本地被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，旧文件保持不变，新rpm包里的该文件并重命名为xx.rpmnew,例如/etc/redis/redis.conf.rpmnew</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地没有被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件会替换旧的文件。（旧文件被删除）</p>
-
 <ul>
-<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。<br /></li>
+<li>该文件在新的rpm包里相对之前的rpm没有变化，且在本地被修改过。</li>
 </ul>
-
 <p>此时执行rpm -Uvh xxxx时，新rpm包里的该文件不会覆盖旧的文件，旧文件保持不变。</p>
-
-<h3 id="4-总结">4.总结</h3>
-
+<h3 id="4总结">4.总结</h3>
 <ol>
-<li>如果一个文件在%files段没有被%config或%config(noreplace)指令配置;则执行rpm -Uvh时，该文件会无条件被新文件替换。<br /></li>
-<li>无论一个文件有没有被%config或%config(noreplace)指令配置，只要改文件在本地没有被编辑过，则执行rpm -Uvh时，该文件会被新文件替换。<br /></li>
-<li>一个被%config或%config(noreplace)指令配置的文件，如果被编辑过，那么在rpm更新时，如果新的rpm包中该文件没有修改，则该文件不会被新rpm包中的文件替换，之前做的编辑依然有效。<br /></li>
-<li>一个被%config指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件会被重命名为xx.rpmsave, 新文件会替代原文件。<br /></li>
-<li>一个被%config(noreplace)指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件不会被新的rpm包中的文件替换，之前做的编辑依然有效；但新rpm包中的同名文件会被重命名为xx.rpmnew.<br />
-<br /></li>
+<li>如果一个文件在%files段没有被%config或%config(noreplace)指令配置;则执行rpm -Uvh时，该文件会无条件被新文件替换。</li>
+<li>无论一个文件有没有被%config或%config(noreplace)指令配置，只要改文件在本地没有被编辑过，则执行rpm -Uvh时，该文件会被新文件替换。</li>
+<li>一个被%config或%config(noreplace)指令配置的文件，如果被编辑过，那么在rpm更新时，如果新的rpm包中该文件没有修改，则该文件不会被新rpm包中的文件替换，之前做的编辑依然有效。</li>
+<li>一个被%config指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件会被重命名为xx.rpmsave, 新文件会替代原文件。</li>
+<li>一个被%config(noreplace)指令配置的文件，如果被编辑过，且新的rpm包中该文件有修改，则该文件不会被新的rpm包中的文件替换，之前做的编辑依然有效；但新rpm包中的同名文件会被重命名为xx.rpmnew.</li>
 </ol>
-
-<p>参考：<br />
+<p>参考：<br>
 <a href="http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html">http://www-uxsup.csx.cam.ac.uk/~jw35/docs/rpm_config.html</a></p></div>
 
   </article>

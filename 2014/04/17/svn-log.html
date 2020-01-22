@@ -32,20 +32,14 @@
   </div>
 <div class="content">
   <p>关于svn log，我之前的工作方式一般都是这样：</p>
-
 <ol>
-<li>执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。<br /></li>
-<li>执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。<br /></li>
+<li>执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。</li>
+<li>执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。</li>
 </ol>
-
 <p>最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。</p>
-
 <p>在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。</p>
-
 <p>而直接使用svn log命令时，默认只显示当前工作目录的log。</p>
-
 <p>假设当前工作目录已经是最新了，在此基础上，对一个文件A提交了commit，此时在当前目录下执行svn log -l 1 无法看到这次提交的log，如果想要看到，必须先执行svn update, 即使当前的工作目录下内容已经是最新的了；而执行svn log A -l 1则可以。</p>
-
 <p>原因在于svn对于文件及其父目录是分开管理版本号的。更新了一个文件，该文件的版本号是更新了，但该文件坐在的目录的版本号并没有更新。</p></div>
 
   </article>

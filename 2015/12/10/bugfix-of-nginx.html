@@ -32,56 +32,84 @@
   </div>
 <div class="content">
   <p>有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。</p>
-
 <p>例如，Nginx 刚在 12 月 8 号发布了 nginx-1.9.8，马上就又发布 nginx-1.9.9，这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。</p>
-
 <p>首先，看看changelog：</p>
-
 <blockquote>
 <p>Changes with nginx 1.9.9 09 Dec 2015</p>
-
 <p>*) Bugfix: proxying to unix domain sockets did not work when using
-       variables; the bug had appeared in 1.9.8.</p>
+variables; the bug had appeared in 1.9.8.</p>
 </blockquote>
-
 <p>再来看看是如何修复的，变更前的代码片段:</p>
-
-<pre><code class="language-C">static void
-ngx_http_upstream_init_request(ngx_http_request_t *r)
-{  
-    ....(略）....  
-    if (u-&gt;resolved-&gt;port == 0) {  
-        ngx_log_error(NGX_LOG_ERR, r-&gt;connection-&gt;log, 0,  
-                      &quot;no port in upstream \&quot;%V\&quot;&quot;, host);  
-        ngx_http_upstream_finalize_request(r, u,  
-                                       NGX_HTTP_INTERNAL_SERVER_ERROR);  
-        return;  
-    }  
-    ....(略)....  
-}  
-</code></pre>
-
-<p>变更后的代码片段：</p>
-
-<pre><code class="language-C">static void
-ngx_http_upstream_init_request(ngx_http_request_t *r)  
-{  
-    ....(略)....  
-            if (u-&gt;resolved-&gt;port == 0  
-                &amp;&amp; u-&gt;resolved-&gt;sockaddr-&gt;sa_family != AF_UNIX)  
-            {  
-                ngx_log_error(NGX_LOG_ERR, r-&gt;connection-&gt;log, 0,  
-                              &quot;no port in upstream \&quot;%V\&quot;&quot;, host);  
-                ngx_http_upstream_finalize_request(r, u,  
-                                               NGX_HTTP_INTERNAL_SERVER_ERROR);  
-                return;  
-            }  
-    ....(略)....  
-}  
-</code></pre>
-
-<p>作为旁观者和事后诸葛亮，可以很明显看出之前的问题所在：在 upstream 中，Unix 本地域套接字不能用了。</p>
-
+<div class="highlight"><div style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#00a8c8">static</span> <span style="color:#00a8c8">void</span>
+<span style="color:#75af00">ngx_http_upstream_init_request</span><span style="color:#111">(</span><span style="color:#111">ngx_http_request_t</span> <span style="color:#f92672">*</span><span style="color:#111">r</span><span style="color:#111">)</span>
+<span style="color:#111">{</span>  
+    <span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span>
+    <span style="color:#00a8c8">if</span> <span style="color:#111">(</span><span style="color:#111">u</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">resolved</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">port</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#111">)</span> <span style="color:#111">{</span>  
+        <span style="color:#111">ngx_log_error</span><span style="color:#111">(</span><span style="color:#111">NGX_LOG_ERR</span><span style="color:#111">,</span> <span style="color:#111">r</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">connection</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">log</span><span style="color:#111">,</span> <span style="color:#ae81ff">0</span><span style="color:#111">,</span>  
+                      <span style="color:#d88200"></span><span style="color:#d88200">&#34;</span><span style="color:#d88200">no port in upstream </span><span style="color:#8045ff">\&#34;</span><span style="color:#d88200">%V</span><span style="color:#8045ff">\&#34;</span><span style="color:#d88200">&#34;</span><span style="color:#111">,</span> <span style="color:#111">host</span><span style="color:#111">)</span><span style="color:#111">;</span>  
+        <span style="color:#111">ngx_http_upstream_finalize_request</span><span style="color:#111">(</span><span style="color:#111">r</span><span style="color:#111">,</span> <span style="color:#111">u</span><span style="color:#111">,</span>  
+                                       <span style="color:#111">NGX_HTTP_INTERNAL_SERVER_ERROR</span><span style="color:#111">)</span><span style="color:#111">;</span>  
+        <span style="color:#00a8c8">return</span><span style="color:#111">;</span>  
+    <span style="color:#111">}</span>  
+    <span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span>
+<span style="color:#111">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>变更后的代码片段：</p>
+<div class="highlight"><div style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C" data-lang="C"><span style="color:#00a8c8">static</span> <span style="color:#00a8c8">void</span>
+<span style="color:#75af00">ngx_http_upstream_init_request</span><span style="color:#111">(</span><span style="color:#111">ngx_http_request_t</span> <span style="color:#f92672">*</span><span style="color:#111">r</span><span style="color:#111">)</span>  
+<span style="color:#111">{</span>  
+    <span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span>
+            <span style="color:#00a8c8">if</span> <span style="color:#111">(</span><span style="color:#111">u</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">resolved</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">port</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>  
+                <span style="color:#f92672">&amp;</span><span style="color:#f92672">&amp;</span> <span style="color:#111">u</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">resolved</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">sockaddr</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">sa_family</span> <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#111">AF_UNIX</span><span style="color:#111">)</span>  
+            <span style="color:#111">{</span>  
+                <span style="color:#111">ngx_log_error</span><span style="color:#111">(</span><span style="color:#111">NGX_LOG_ERR</span><span style="color:#111">,</span> <span style="color:#111">r</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">connection</span><span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span><span style="color:#111">log</span><span style="color:#111">,</span> <span style="color:#ae81ff">0</span><span style="color:#111">,</span>  
+                              <span style="color:#d88200"></span><span style="color:#d88200">&#34;</span><span style="color:#d88200">no port in upstream </span><span style="color:#8045ff">\&#34;</span><span style="color:#d88200">%V</span><span style="color:#8045ff">\&#34;</span><span style="color:#d88200">&#34;</span><span style="color:#111">,</span> <span style="color:#111">host</span><span style="color:#111">)</span><span style="color:#111">;</span>  
+                <span style="color:#111">ngx_http_upstream_finalize_request</span><span style="color:#111">(</span><span style="color:#111">r</span><span style="color:#111">,</span> <span style="color:#111">u</span><span style="color:#111">,</span>  
+                                               <span style="color:#111">NGX_HTTP_INTERNAL_SERVER_ERROR</span><span style="color:#111">)</span><span style="color:#111">;</span>  
+                <span style="color:#00a8c8">return</span><span style="color:#111">;</span>  
+            <span style="color:#111">}</span>  
+    <span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span><span style="color:#111">.</span>
+<span style="color:#111">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>作为旁观者和事后诸葛亮，可以很明显看出之前的问题所在：在 upstream 中，Unix 本地域套接字不能用了。</p>
 <p>这次版本更新，除了修正这个 Bug  外，没有做其他任何事情，所以，如果你已经尝鲜在用 1.9.8  了，赶紧直接升级到 1.9.9 吧。</p></div>
 
   </article>
