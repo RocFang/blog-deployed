@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>程序员中的标杆人物-章亦春 - 纯真年代</title>
+<title>程序员中的标杆人物：章亦春 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>程序员中的标杆人物-章亦春</h1>
+  <h1>程序员中的标杆人物：章亦春</h1>
   </div>
 <div class="meta">
   <div>2014-04-11</div>
@@ -33,7 +33,7 @@
 <div class="content">
   <p>这标题，怎么读着这么别扭。</p>
 
-<p>接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如Linus就不用多说了，身边的同学和同事中，技术牛人性格也一般比较桀骜。桀骜的表现之一就是不会浪费时间去回答一些基本的问题，最著名的就是那篇流传已久的论坛发帖指南了吧。</p>
+<p>接触开源软件这几年，不知不觉形成了一种印象，大牛一般都是有性格有棱角的，传说中的神人如 Linus 就不用多说了，身边的同学和同事中，技术牛人性格也一般比较桀骜。桀骜的表现之一就是不会浪费时间去回答一些基本的问题，最著名的就是那篇流传已久的论坛发帖指南了吧。</p>
 
 <p>自己虽然算不上牛人，但在某些方面也会有同事来求助，碰到一些比较低端的问题，其实心里会有烦躁的。烦躁的程度与当时的心情、手里有多少活正在干等因素相关。</p>
 
@@ -41,54 +41,54 @@
 
 <p>章哥是同行对章亦春的尊称，我也无缘与章哥真正面对面接触，但文如其人，阅读他的博客，他写的文档，以及在论坛中对人的回复，就可以肯定他有着一般技术人难以企及的修养。</p>
 
-<p>在openresty的google group中，随手摘取一条，贴在下面，时时自省。</p>
+<p>在 openresty 的 google group 中，随手摘取一条，贴在下面，时时自省。</p>
 
 <p><a href="https://groups.google.com/forum/#!searchin/openresty/dict/openresty/0dtgxIgCOPM/LXf2RXvaDh4J">https://groups.google.com/forum/#!searchin/openresty/dict/openresty/0dtgxIgCOPM/LXf2RXvaDh4J</a></p>
 
 <blockquote>
-<p>A:<br />
+<p>A:
 我这边有一个案例需要用到遍历字典操作，请问这个功能如何实现？修改源码？</p>
 
-<p><strong>agentzh</strong>:<br />
+<p><strong>agentzh</strong>:
 Brian Akins 已经提供了一个补丁，可以看这里的相关讨论：</p>
 
 <p><a href="https://github.com/chaoslawful/lua-nginx-module/pull/170">https://github.com/chaoslawful/lua-nginx-module/pull/170</a></p>
 
 <p>这两天我会尝试将一个经过修订的版本合并到 ngx_lua 的主干。</p>
 
-<p>另：同时抄送给 openresty 中文邮件列表：<a href="https://groups.google.com/group/openresty">https://groups.google.com/group/openresty</a><br />
+<p>另：同时抄送给 openresty 中文邮件列表：<a href="https://groups.google.com/group/openresty">https://groups.google.com/group/openresty</a>
 （国内访问可能需要翻墙）也欢迎你加入该列表并在那里和我们讨论这样的问题 :) 多谢！</p>
 
 <p>Best regards,</p>
 
 <p>B:<br />
-我之前也写过所有keys的一个补丁，章老师看看？呵呵。&gt;<a href="https://gist.github.com/74439ea9fac084e43932">https://gist.github.com/74439ea9fac084e43932</a><br />
+我之前也写过所有 keys 的一个补丁，章老师看看？呵呵。&gt;<a href="https://gist.github.com/74439ea9fac084e43932">https://gist.github.com/74439ea9fac084e43932</a>
 blog: <a href="http://chenxiaoyu.org">http://chenxiaoyu.org</a></p>
 
-<p>A:<br />
-Hi,B.验证了你的实现，可以通过。不过我有一个问题在于，做keys操作的时候，锁会不会阻塞整个worker?如果时间长了，其他的写入会不会受到影响。<br />
-毕竟对整个TREE，其他线程都阻塞了。<br />
-我想实现一个类似切换DUMP的功能，dump那一刻，切换入口到新的tree上，新tree是老的tree的复制，从入口开始遍历全部NODE即可。</p>
+<p>A:
+Hi,B. 验证了你的实现，可以通过。不过我有一个问题在于，做 keys 操作的时候，锁会不会阻塞整个 worker?如果时间长了，其他的写入会不会受到影响。
+毕竟对整个 TREE，其他线程都阻塞了。
+我想实现一个类似切换 DUMP 的功能，dump 那一刻，切换入口到新的 tree 上，新 tree 是老的 tree 的复制，从入口开始遍历全部 NODE 即可。</p>
 
-<p><strong>agentzh</strong>:<br />
-Hello!<br />
-2012/10/19 铁轮:<br />
+<p><strong>agentzh</strong>:
+Hello!
+2012/10/19 铁轮:
 共享内存字典是作为缓存来设计的，类似 memcached，而不是被设计成像 redis 那样的支持持久化的存储。</p>
 
-<p>所以一开始其实我也并不想添加 get_keys 这样的方法，因为对于元素非常多的字典，必然会锁比较长的时间。现在添加 get_keys<br />
+<p>所以一开始其实我也并不想添加 get_keys 这样的方法，因为对于元素非常多的字典，必然会锁比较长的时间。现在添加 get_keys
 方法属于“make hard things possible”，但绝不应滥用 :)</p>
 
-<p>*我想实现一个类似切换DUMP的功能，dump那一刻，切换入口到新的tree上，新tree是老的tree的复制，从入口开始遍历全部NODE即可*。</p>
+<p>我想实现一个类似切换 DUMP 的功能，dump 那一刻，切换入口到新的 tree 上，新 tree是老的tree 的复制，从入口开始遍历全部 NODE 即可。</p>
 
-<p>你说的这种做法的最大问题是，从老 tree 复制出新 tree 在 ngx_lua 共享内存字典现有的结构中代价会高于 get_keys()遍历本身。数据结构中的指针都需要重新设置，不能直接按块复制共享内存中的所有数据，同时整个复制的全过程还是需要锁定。</p>
+<p>你说的这种做法的最大问题是，从老 tree 复制出新 tree 在 ngx_lua 共享内存字典现有的结构中代价会高于 get_keys() 遍历本身。数据结构中的指针都需要重新设置，不能直接按块复制共享内存中的所有数据，同时整个复制的全过程还是需要锁定。</p>
 
-<p>值得一提的是，Redis 的 RDB 持久化方法 [1] 借用了 fork()系统调用来保证一致性，同时避免了对线上访问的直接干扰。另外，fork 可以利用到系统的 copy-on-write机制，所以也很省内存。Redis 服务器是单线程单进程的服务，所以 fork 很合适。但对于多 worker使用共享内存的场景，这种做法就不再适用了。</p>
+<p>值得一提的是，Redis 的 RDB 持久化方法 [1] 借用了 fork() 系统调用来保证一致性，同时避免了对线上访问的直接干扰。另外，fork 可以利用到系统的 copy-on-write 机制，所以也很省内存。Redis  服务器是单线程单进程的服务，所以 fork 很合适。但对于多 worker 使用共享内存的场景，这种做法就不再适用了。</p>
 
-<p>Redis 的 AOF 持久化方法通过追加记录所有写操作的日志文件来在重构整个存储，倒是可以用于 ngx_lua的共享内存字典中，但在写入频繁的时候，其引入的额外开销还是不容忽视的。</p>
+<p>Redis 的 AOF 持久化方法通过追加记录所有写操作的日志文件来在重构整个存储，倒是可以用于  ngx_lua 的共享内存字典中，但在写入频繁的时候，其引入的额外开销还是不容忽视的。</p>
 
-<p>正如前面所提到的，ngx_lua 目前的共享内存字典实现是针对缓存场景设计的，所以我也不会把它实现得过于复杂。或许未来我们可以在ngx_lua 模块之外，通过专门的 Nginx C 模块实现可以供 Lua 使用的其他的更加 redis 的共享存储 :)</p>
+<p>正如前面所提到的，ngx_lua 目前的共享内存字典实现是针对缓存场景设计的，所以我也不会把它实现得过于复杂。或许未来我们可以在 ngx_lua 模块之外，通过专门的 Nginx C 模块实现可以供 Lua 使用的其他的更加 redis 的共享存储 :)</p>
 
-<p>Best regards,<br />
+<p>Best regards,
 -agentzh</p>
 
 <p>[1] <a href="http://redis.io/topics/persistence">http://redis.io/topics/persistence</a></p>
