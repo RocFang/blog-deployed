@@ -46,8 +46,8 @@
 
 <p>再来看看是如何修复的，变更前的代码片段:</p>
 
-<pre><code class="language-c">static void  
-ngx_http_upstream_init_request(ngx_http_request_t *r)  
+<pre><code class="language-C">static void
+ngx_http_upstream_init_request(ngx_http_request_t *r)
 {  
     ....(略）....  
     if (u-&gt;resolved-&gt;port == 0) {  
@@ -63,7 +63,7 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
 
 <p>变更后的代码片段：</p>
 
-<pre><code class="language-c">static void  
+<pre><code class="language-C">static void
 ngx_http_upstream_init_request(ngx_http_request_t *r)  
 {  
     ....(略)....  
