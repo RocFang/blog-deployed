@@ -1271,7 +1271,7 @@
       <pubDate>Wed, 30 Apr 2014 02:42:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/04/30/answer-of-nginx-pitfall-1-by-agentzh.html</guid>
-      <description>&lt;p&gt;对于&lt;a href=&#34;http://pureage.info/2014/04/26/pitfall-of-nginx.html&#34;&gt;Nginx踩坑记（一）&lt;/a&gt;，在openresty的google group上提了个问题：&lt;a href=&#34;https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ&#34;&gt;ngx.exec是如何处理上层定义的变量的&lt;/a&gt;&lt;/p&gt;
+      <description>&lt;p&gt;对于 &lt;a href=&#34;http://pureage.info/2014/04/26/pitfall-of-nginx.html&#34;&gt;Nginx踩坑记（一）&lt;/a&gt;，在 openresty 的 google group 上提了个问题：&lt;a href=&#34;https://groups.google.com/forum/#!msg/OpenResty/BHFTTmN366Q/8XMn9UzXuCgJ&#34;&gt;ngx.exec是如何处理上层定义的变量的&lt;/a&gt; 。&lt;/p&gt;
 
 &lt;p&gt;春哥的回复&lt;strong&gt;摘录&lt;/strong&gt;如下：&lt;/p&gt;</description>
     </item>
