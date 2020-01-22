@@ -5,7 +5,7 @@
     <link>https://pureage.info/tags/</link>
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
+    <copyright>2011-2020 strider. [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)</copyright>
     <lastBuildDate>Thu, 02 Jan 2020 11:02:01 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
@@ -188,6 +188,69 @@
       <pubDate>Mon, 31 Mar 2014 10:27:00 +0000</pubDate>
       
       <guid>https://pureage.info/tags/%E8%A7%82%E5%AF%9F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>情感</title>
+      <link>https://pureage.info/tags/%E6%83%85%E6%84%9F/</link>
+      <pubDate>Sun, 19 Jan 2014 14:21:00 +0000</pubDate>
+      
+      <guid>https://pureage.info/tags/%E6%83%85%E6%84%9F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fastdfs</title>
+      <link>https://pureage.info/tags/fastdfs/</link>
+      <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
+      
+      <guid>https://pureage.info/tags/fastdfs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>口琴</title>
+      <link>https://pureage.info/tags/%E5%8F%A3%E7%90%B4/</link>
+      <pubDate>Sun, 01 Dec 2013 09:32:00 +0000</pubDate>
+      
+      <guid>https://pureage.info/tags/%E5%8F%A3%E7%90%B4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>https://pureage.info/tags/python/</link>
+      <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
+      
+      <guid>https://pureage.info/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>负能量</title>
+      <link>https://pureage.info/tags/%E8%B4%9F%E8%83%BD%E9%87%8F/</link>
+      <pubDate>Mon, 06 May 2013 08:06:00 +0000</pubDate>
+      
+      <guid>https://pureage.info/tags/%E8%B4%9F%E8%83%BD%E9%87%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>历史</title>
+      <link>https://pureage.info/tags/%E5%8E%86%E5%8F%B2/</link>
+      <pubDate>Tue, 21 Aug 2012 12:30:00 +0000</pubDate>
+      
+      <guid>https://pureage.info/tags/%E5%8E%86%E5%8F%B2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>音乐</title>
+      <link>https://pureage.info/tags/%E9%9F%B3%E4%B9%90/</link>
+      <pubDate>Tue, 21 Aug 2012 12:30:00 +0000</pubDate>
+      
+      <guid>https://pureage.info/tags/%E9%9F%B3%E4%B9%90/</guid>
       <description></description>
     </item>
     
