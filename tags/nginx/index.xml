@@ -129,21 +129,21 @@
     </item>
     
     <item>
-      <title>Nginx紧急发布1.9.9修复bug</title>
+      <title>Nginx 紧急发布 1.9.9 修复 bug</title>
       <link>https://pureage.info/2015/12/10/bugfix-of-nginx.html</link>
       <pubDate>Thu, 10 Dec 2015 03:27:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/12/10/bugfix-of-nginx.html</guid>
       <description>&lt;p&gt;有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。&lt;/p&gt;
 
-&lt;p&gt;例如，Nginx 刚在12月8号发布了nginx-1.9.8, 马上就在nginx-1.9.9,这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。&lt;/p&gt;
+&lt;p&gt;例如，Nginx 刚在 12 月 8 号发布了 nginx-1.9.8，马上就又发布 nginx-1.9.9，这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。&lt;/p&gt;
 
-&lt;p&gt;首先，看看changelog:&lt;/p&gt;
+&lt;p&gt;首先，看看changelog：&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;Changes with nginx 1.9.9                                         09 Dec 2015&lt;/p&gt;
+&lt;p&gt;Changes with nginx 1.9.9 09 Dec 2015&lt;/p&gt;
 
-&lt;p&gt;*) Bugfix: proxying to unix domain sockets did not work when using&lt;br /&gt;
+&lt;p&gt;*) Bugfix: proxying to unix domain sockets did not work when using
        variables; the bug had appeared in 1.9.8.&lt;/p&gt;
 &lt;/blockquote&gt;
 

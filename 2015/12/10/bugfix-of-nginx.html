@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>Nginx紧急发布1.9.9修复bug - 纯真年代</title>
+<title>Nginx 紧急发布 1.9.9 修复 bug - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>Nginx紧急发布1.9.9修复bug</h1>
+  <h1>Nginx 紧急发布 1.9.9 修复 bug</h1>
   </div>
 <div class="meta">
   <div>2015-12-10</div>
@@ -33,20 +33,20 @@
 <div class="content">
   <p>有时候，仔细追踪一个项目的各次提交也是蛮有趣的，特别是各种 Bugfix，会发现，原来牛人也会有各种低级错误。</p>
 
-<p>例如，Nginx 刚在12月8号发布了nginx-1.9.8, 马上就在nginx-1.9.9,这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。</p>
+<p>例如，Nginx 刚在 12 月 8 号发布了 nginx-1.9.8，马上就又发布 nginx-1.9.9，这种密集的发布，一看就是 Bug 修复了。我们看看到底修复了什么 Bug。</p>
 
-<p>首先，看看changelog:</p>
+<p>首先，看看changelog：</p>
 
 <blockquote>
-<p>Changes with nginx 1.9.9                                         09 Dec 2015</p>
+<p>Changes with nginx 1.9.9 09 Dec 2015</p>
 
-<p>*) Bugfix: proxying to unix domain sockets did not work when using<br />
+<p>*) Bugfix: proxying to unix domain sockets did not work when using
        variables; the bug had appeared in 1.9.8.</p>
 </blockquote>
 
 <p>再来看看是如何修复的，变更前的代码片段:</p>
 
-<pre><code>static void  
+<pre><code class="language-c">static void  
 ngx_http_upstream_init_request(ngx_http_request_t *r)  
 {  
     ....(略）....  
@@ -63,7 +63,7 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
 
 <p>变更后的代码片段：</p>
 
-<pre><code>static void  
+<pre><code class="language-c">static void  
 ngx_http_upstream_init_request(ngx_http_request_t *r)  
 {  
     ....(略)....  
@@ -82,7 +82,7 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
 
 <p>作为旁观者和事后诸葛亮，可以很明显看出之前的问题所在：在 upstream 中，Unix 本地域套接字不能用了。</p>
 
-<p>这次版本更新，除了修正这个 Bug 外，没有做其他任何事情，所以，如果你已经尝鲜在用 1.9.8 了，赶紧直接升级到1.9.9 吧。</p></div>
+<p>这次版本更新，除了修正这个 Bug  外，没有做其他任何事情，所以，如果你已经尝鲜在用 1.9.8  了，赶紧直接升级到 1.9.9 吧。</p></div>
 
   </article>
 </main>
