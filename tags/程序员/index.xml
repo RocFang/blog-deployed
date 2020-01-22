@@ -13,10 +13,10 @@
     
     <item>
       <title>混迹技术聊天群容易产生的几个错觉</title>
-      <link>https://pureage.info/post/%E6%B7%B7%E8%BF%B9%E6%8A%80%E6%9C%AF%E8%81%8A%E5%A4%A9%E7%BE%A4%E5%AE%B9%E6%98%93%E4%BA%A7%E7%94%9F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%94%99%E8%A7%89/</link>
+      <link>https://pureage.info/post/illusions-produced-in-im-groups-of-software-technology/</link>
       <pubDate>Sun, 07 Apr 2019 17:51:22 +0800</pubDate>
       
-      <guid>https://pureage.info/post/%E6%B7%B7%E8%BF%B9%E6%8A%80%E6%9C%AF%E8%81%8A%E5%A4%A9%E7%BE%A4%E5%AE%B9%E6%98%93%E4%BA%A7%E7%94%9F%E7%9A%84%E5%87%A0%E4%B8%AA%E9%94%99%E8%A7%89/</guid>
+      <guid>https://pureage.info/post/illusions-produced-in-im-groups-of-software-technology/</guid>
       <description>&lt;p&gt;现如今，各行各业都有无数的聊天群，软件技术相关当然也不例外。一个程序员不混几个技术群，每天在里面聊聊技术吹吹水，都似乎有点非主流了。&lt;/p&gt;
 
 &lt;p&gt;我这里说的是那种技术氛围相对浓厚一点的聊天群，大家主要的聊天内容还是会跟某些具体技术相关。纯水群不在本文讨论范围之列。&lt;/p&gt;
@@ -26,10 +26,10 @@
     
     <item>
       <title>Golang 中令人不那么愉悦的 import</title>
-      <link>https://pureage.info/post/golang-%E4%B8%AD%E4%BB%A4%E4%BA%BA%E4%B8%8D%E9%82%A3%E4%B9%88%E6%84%89%E6%82%A6%E7%9A%84-import/</link>
+      <link>https://pureage.info/post/annoying-golang-import/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
-      <guid>https://pureage.info/post/golang-%E4%B8%AD%E4%BB%A4%E4%BA%BA%E4%B8%8D%E9%82%A3%E4%B9%88%E6%84%89%E6%82%A6%E7%9A%84-import/</guid>
+      <guid>https://pureage.info/post/annoying-golang-import/</guid>
       <description>&lt;p&gt;众所周知，在 github 上参与开源项目的一般流程如下：&lt;/p&gt;
 
 &lt;ol&gt;
@@ -45,19 +45,19 @@
     
     <item>
       <title>用手机发布静态博客</title>
-      <link>https://pureage.info/post/%E7%94%A8%E6%89%8B%E6%9C%BA%E5%8F%91%E5%B8%83%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/</link>
+      <link>https://pureage.info/post/write-a-blog-with-a-cellphone/</link>
       <pubDate>Fri, 23 Nov 2018 22:15:21 +0800</pubDate>
       
-      <guid>https://pureage.info/post/%E7%94%A8%E6%89%8B%E6%9C%BA%E5%8F%91%E5%B8%83%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/</guid>
+      <guid>https://pureage.info/post/write-a-blog-with-a-cellphone/</guid>
       <description>&lt;p&gt;这篇文章没有什么实际内容，请谨慎点开，不要浪费自己的时间。我就是想测试一下在手机上写一篇博客的感觉如何，能否达到以前使用动态博客程序时的体验。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>golang modules对git版本的依赖</title>
-      <link>https://pureage.info/post/golang-modules%E5%AF%B9git%E7%89%88%E6%9C%AC%E7%9A%84%E4%BE%9D%E8%B5%96/</link>
+      <link>https://pureage.info/post/bad-feeling-about-go-cmd/</link>
       <pubDate>Fri, 16 Nov 2018 23:00:44 +0800</pubDate>
       
-      <guid>https://pureage.info/post/golang-modules%E5%AF%B9git%E7%89%88%E6%9C%AC%E7%9A%84%E4%BE%9D%E8%B5%96/</guid>
+      <guid>https://pureage.info/post/bad-feeling-about-go-cmd/</guid>
       <description>&lt;p&gt;这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。&lt;/p&gt;
 
 &lt;p&gt;go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。&lt;/p&gt;
@@ -67,19 +67,19 @@
     
     <item>
       <title>openstack swift中的composite ring</title>
-      <link>https://pureage.info/post/openstack-swift%E4%B8%AD%E7%9A%84composite-ring/</link>
+      <link>https://pureage.info/post/composite-ring-of-swift/</link>
       <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
       
-      <guid>https://pureage.info/post/openstack-swift%E4%B8%AD%E7%9A%84composite-ring/</guid>
+      <guid>https://pureage.info/post/composite-ring-of-swift/</guid>
       <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>过时的技术</title>
-      <link>https://pureage.info/post/%E8%BF%87%E6%97%B6%E7%9A%84%E6%8A%80%E6%9C%AF/</link>
+      <link>https://pureage.info/post/obsolescent-technology/</link>
       <pubDate>Tue, 10 Oct 2017 15:01:38 +0000</pubDate>
       
-      <guid>https://pureage.info/post/%E8%BF%87%E6%97%B6%E7%9A%84%E6%8A%80%E6%9C%AF/</guid>
+      <guid>https://pureage.info/post/obsolescent-technology/</guid>
       <description>&lt;p&gt;互联网技术的世界很奇怪。&lt;/p&gt;
 
 &lt;p&gt;大部分时候我们都会听到各种关于技术更新换代太快的说法，仿佛昨天大家都还在用这个流行的物件（技术、框架、架构等）呢，今天就一窝蜂的追赶上另一个更新更时髦的了。&lt;/p&gt;

@@ -13,28 +13,28 @@
     
     <item>
       <title>为什么这两个月没更新博客</title>
-      <link>https://pureage.info/post/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%9C%88%E6%B2%A1%E6%9B%B4%E6%96%B0%E5%8D%9A%E5%AE%A2/</link>
+      <link>https://pureage.info/post/why-this-blog-not-update-so-long/</link>
       <pubDate>Sun, 03 Nov 2019 00:01:46 +0800</pubDate>
       
-      <guid>https://pureage.info/post/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%9C%88%E6%B2%A1%E6%9B%B4%E6%96%B0%E5%8D%9A%E5%AE%A2/</guid>
+      <guid>https://pureage.info/post/why-this-blog-not-update-so-long/</guid>
       <description>&lt;p&gt;最近这两个月，我没有在本博客上更新一篇文章。这也不是什么罕见的事情，因为各种借口不愿意写文章在过去也发生过很多次。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>将域名转到 Namesilo</title>
-      <link>https://pureage.info/post/%E5%B0%86%E5%9F%9F%E5%90%8D%E8%BD%AC%E5%88%B0-namesilo/</link>
+      <link>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</link>
       <pubDate>Mon, 25 Mar 2019 10:45:26 +0800</pubDate>
       
-      <guid>https://pureage.info/post/%E5%B0%86%E5%9F%9F%E5%90%8D%E8%BD%AC%E5%88%B0-namesilo/</guid>
+      <guid>https://pureage.info/post/transfer-domain-from-godaddy-to-namesilo/</guid>
       <description>&lt;p&gt;本网站所使用的域名 pureage.info 自 2011 年注册开始，一直托管在godaddy 上。当年国外的域名注册商家中，只有 godaddy 支持支付宝。我是一个怕麻烦的人，所以虽然这么多年续费费用越来越高，我也一直没有想过将域名转出到其它商家托管。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>静态博客的黄金搭档:Caddy和Hugo</title>
-      <link>https://pureage.info/post/%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%BB%84%E9%87%91%E6%90%AD%E6%A1%A3caddy%E5%92%8Chugo/</link>
+      <link>https://pureage.info/post/caddy-and-hugo/</link>
       <pubDate>Wed, 21 Nov 2018 01:09:59 +0800</pubDate>
       
-      <guid>https://pureage.info/post/%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%BB%84%E9%87%91%E6%90%AD%E6%A1%A3caddy%E5%92%8Chugo/</guid>
+      <guid>https://pureage.info/post/caddy-and-hugo/</guid>
       <description>&lt;p&gt;几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
 
 &lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;

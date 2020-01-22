@@ -13,10 +13,10 @@
     
     <item>
       <title>掀桌子的 MinIO</title>
-      <link>https://pureage.info/post/%E6%8E%80%E6%A1%8C%E5%AD%90%E7%9A%84-minio/</link>
+      <link>https://pureage.info/post/scalability-of-minio/</link>
       <pubDate>Fri, 15 Nov 2019 16:46:29 +0800</pubDate>
       
-      <guid>https://pureage.info/post/%E6%8E%80%E6%A1%8C%E5%AD%90%E7%9A%84-minio/</guid>
+      <guid>https://pureage.info/post/scalability-of-minio/</guid>
       <description>&lt;p&gt;MinIO 是一款用 Go 语言编写的兼容 S3 的对象存储。一年多以前我曾经花了短暂的时间对其做了一个浅尝辄止的了解。当时我对朋友们说了下面的话：&lt;/p&gt;
 
 &lt;blockquote&gt;

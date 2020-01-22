@@ -13,10 +13,10 @@
     
     <item>
       <title>Golang 中令人不那么愉悦的 import</title>
-      <link>https://pureage.info/post/golang-%E4%B8%AD%E4%BB%A4%E4%BA%BA%E4%B8%8D%E9%82%A3%E4%B9%88%E6%84%89%E6%82%A6%E7%9A%84-import/</link>
+      <link>https://pureage.info/post/annoying-golang-import/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
       
-      <guid>https://pureage.info/post/golang-%E4%B8%AD%E4%BB%A4%E4%BA%BA%E4%B8%8D%E9%82%A3%E4%B9%88%E6%84%89%E6%82%A6%E7%9A%84-import/</guid>
+      <guid>https://pureage.info/post/annoying-golang-import/</guid>
       <description>&lt;p&gt;众所周知，在 github 上参与开源项目的一般流程如下：&lt;/p&gt;
 
 &lt;ol&gt;
