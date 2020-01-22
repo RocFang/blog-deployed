@@ -257,16 +257,16 @@
     </item>
     
     <item>
-      <title>golang modules对git版本的依赖</title>
+      <title>Go modules 对 git 版本的依赖</title>
       <link>https://pureage.info/post/bad-feeling-about-go-cmd/</link>
       <pubDate>Fri, 16 Nov 2018 23:00:44 +0800</pubDate>
       
       <guid>https://pureage.info/post/bad-feeling-about-go-cmd/</guid>
-      <description>&lt;p&gt;这些年来，由于golang缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如glide、govendor、godep等。而golang 自1.11起，内置了modules方案，总算是来了个一锤定音。&lt;/p&gt;
+      <description>&lt;p&gt;这些年来，由于 Go 缺少依赖管理，社区涌现了五花八门的依赖管理方案，比如 glide、govendor、godep 等。而 Go 自 1.11 起，内置了 modules 方案，总算是来了个一锤定音。&lt;/p&gt;
 
-&lt;p&gt;go modules方案的设计是非常好的，网上介绍go modules机制的文章很多，我这里也不再赘述。工作中写的一些golang项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有google的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。&lt;/p&gt;
+&lt;p&gt;Go modules 方案的设计是非常好的，网上介绍 Go modules 机制的文章很多，我这里也不再赘述。工作中写的一些 Go 项目，我都已经用上了该方案来做依赖管理。之所以这么快的拥抱新方案，是认为有 google 的背景，即使是新鲜出炉的功能，稳定性应该是有保证的，即使有坑，趟趟也就过去了。&lt;/p&gt;
 
-&lt;p&gt;但是在这个过程中，发现的一些问题让我对google软件工程质量的信心大打折扣。&lt;/p&gt;</description>
+&lt;p&gt;但是在这个过程中，发现的一些问题让我对 Go 软件工程质量的信心大打折扣。&lt;/p&gt;</description>
     </item>
     
     <item>
