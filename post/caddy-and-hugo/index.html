@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>静态博客的黄金搭档:Caddy和Hugo - 纯真年代</title>
+<title>静态博客的黄金搭档：Caddy 和 Hugo - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>静态博客的黄金搭档:Caddy和Hugo</h1>
+  <h1>静态博客的黄金搭档：Caddy 和 Hugo</h1>
   </div>
 <div class="meta">
   <div>2018-11-21</div>
@@ -31,15 +31,15 @@
     </div>
   </div>
 <div class="content">
-  <p>几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇<a href="http://pureage.info/2015/12/16/still-using-typecho.html">继续留在Typecho</a>。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。</p>
-<p>直到我遇到了Hugo。</p>
-<p>在去年下半年发现了Hugo后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。</p>
-<p>至于Web Server，我一直是Openresty的死忠，对它是在是太熟悉了，所以理所当然这个博客也是用Openresty来提供服务。对Openresty/Nginx的深入了解，让我有一种踏实感和掌控感，哪怕对于一个静态站点来说，开启https和http2几乎是仅有的配置了。</p>
-<p>直到我遇到了Caddy。</p>
-<p>在了解和测试了caddy后，同样我立刻将Web Server由Openresty换成了Caddy。两三行配置就支持https和http2,支持证书的自动更新，再加上说得过去的性能，让人无法拒绝。</p>
-<p>至此，这个博客的技术方案就是Hugo+Caddy。</p>
-<p>将它们分开来说，Hugo是当前最优秀的静态网站生成器，Caddy是配置最简单的Web Server，而又都天生具有Golang程序容易部署的优点，凑在一起就就是个人博客系统的黄金搭档。</p>
-<p>另外，Caddy还有与hugo适配的插件http.hugo，使用这个插件后，可以有跟动态网站相同的文章发布体验。</p>
+  <p>几年前，在以 Hexo、jekyll 为代表的各种静态博客生成系统百花齐放的时候，我写过一篇<a href="http://pureage.info/2015/12/16/still-using-typecho.html">继续留在Typecho</a>。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。</p>
+<p>直到我遇到了 Hugo。</p>
+<p>在去年下半年发现了 Hugo 后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。</p>
+<p>至于 Web Server，我一直是 OpenResty 的死忠，对它是在是太熟悉了，所以理所当然这个博客也是用 OpenResty 来提供服务。对 OpenResty/Nginx 的深入了解，让我有一种踏实感和掌控感，虽然对于一个静态站点来说，开启 https 和 http2 几乎是仅有的配置了。</p>
+<p>直到我遇到了 Caddy。</p>
+<p>在了解和测试了 Caddy 后，同样我立刻将 Web Server 由 OpenResty 换成了 Caddy。两三行配置就支持 https 和 http2，支持证书的自动更新，再加上说得过去的性能，让人无法拒绝。</p>
+<p>至此，这个博客的技术方案就是 Hugo+Caddy。</p>
+<p>将它们分开来说，Hugo 是当前最优秀的静态网站生成器，Caddy 是配置最简单的 Web Server，而又都天生具有 Go 程序容易部署的优点，凑在一起就就是个人博客系统的黄金搭档。</p>
+<p>另外，Caddy 还有与 Hugo 适配的插件 http.hugo，使用这个插件后，可以有跟动态网站相同的文章发布体验。</p>
 <p>还有比这更完美的事情吗？</p></div>
 
   </article>

@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>Nginx对Connection头的处理过程 - 纯真年代</title>
+<title>Nginx 对 Connection 头的处理过程 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>Nginx对Connection头的处理过程</h1>
+  <h1>Nginx 对 Connection 头的处理过程</h1>
   </div>
 <div class="meta">
   <div>2015-12-08</div>
@@ -36,7 +36,7 @@
 <blockquote>
 <p>HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.</p>
 </blockquote>
-<p>综合<a href="https://tools.ietf.org/html/rfc2616#page-117">RFC2626 14.10</a>、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：</p>
+<p>综合 <a href="https://tools.ietf.org/html/rfc2616#page-117">RFC2626 14.10</a>、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：</p>
 <ol>
 <li>控制不再转发给代理的首部字段</li>
 <li>管理持久连接</li>
@@ -44,27 +44,29 @@
 <p>其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。</p>
 <p>第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。</p>
 <h3 id="2nginx-是如何做的">2.Nginx 是如何做的</h3>
-<p>注:以下代码均来自 Nginx-1.8.0</p>
+<p>注：以下代码均来自 Nginx-1.8.0</p>
 <p>对于请求中的 Connection 头， Nginx 在 http 解析时调用 ngx_http_process_connection 方法：</p>
-<pre><code>static ngx_int_t  
-ngx_http_process_connection(ngx_http_request_t *r, ngx_table_elt_t *h,  
-    ngx_uint_t offset)  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">static</span> <span style="color:#000">ngx_int_t</span>  
+<span style="color:#000">ngx_http_process_connection</span>(<span style="color:#000">ngx_http_request_t</span> *<span style="color:#000">r</span>, <span style="color:#000">ngx_table_elt_t</span> *<span style="color:#000">h</span>,  
+    <span style="color:#000">ngx_uint_t</span> <span style="color:#000">offset</span>)  
 {  
-    if (ngx_strcasestrn(h-&gt;value.data, &quot;close&quot;, 5 - 1)) {  
-        r-&gt;headers_in.connection_type = NGX_HTTP_CONNECTION_CLOSE;  
+    <span style="color:#00f">if</span> (<span style="color:#000">ngx_strcasestrn</span>(<span style="color:#000">h</span>-&gt;<span style="color:#000">value</span>.<span style="color:#000">data</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">close</span><span style="color:#5a2">&#34;</span>, <span style="color:#3af">5</span> - <span style="color:#3af">1</span>)) {  
+        <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">connection_type</span> = <span style="color:#000">NGX_HTTP_CONNECTION_CLOSE</span>;  
   
-    } else if (ngx_strcasestrn(h-&gt;value.data, &quot;keep-alive&quot;, 10 - 1)) {  
-        r-&gt;headers_in.connection_type = NGX_HTTP_CONNECTION_KEEP_ALIVE;  
+    } <span style="color:#00f">else</span> <span style="color:#00f">if</span> (<span style="color:#000">ngx_strcasestrn</span>(<span style="color:#000">h</span>-&gt;<span style="color:#000">value</span>.<span style="color:#000">data</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">keep-alive</span><span style="color:#5a2">&#34;</span>, <span style="color:#3af">10</span> - <span style="color:#3af">1</span>)) {  
+        <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">connection_type</span> = <span style="color:#000">NGX_HTTP_CONNECTION_KEEP_ALIVE</span>;  
     }  
   
-    return NGX_OK;  
+    <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
 }  
-</code></pre><p>可见，该方法主要功能只涉及到上面所述的 Connection 作用的第2个作用，而没有第1个。这应该算的上是实现对标准的支持不完整吧。</p>
-<p>不管怎么样，我们继续分析一下 Nginx 在管理持久连接上具体是怎么做的，上面的代码逻辑很简单：<br>
-（1）如果 Connection 头是 close（不区分大小写），则 r-&gt;headers_in.connection_type 被置为 NGX_HTTP_CONNECTION_CLOSE</p>
-<p>（2）如果 Connection 头是 keep-alive（不区分大小写），则 r-&gt;headers_in.connection_type 被设置为 NGX_HTTP_CONNECTION_KEEP_ALIVE</p>
-<p>（3）如果不是以上两种情况，则什么都不做，此时 r-&gt;headers_in.connection_type 默认为0.</p>
-<p>可以看到，ngx_http_process_connection 的作用仅仅是设置了一个标记r-&gt;headers_in.connection_type，我们继续看这个标记是如何被使用的。</p>
+</code></pre></div><p>可见，该方法主要功能只涉及到上面所述的 Connection 作用的第 2 个作用，而没有第 1 个。这应该算的上是实现对标准的支持不完整吧。</p>
+<p>不管怎么样，我们继续分析一下 Nginx 在管理持久连接上具体是怎么做的，上面的代码逻辑很简单：</p>
+<ol>
+<li>如果 Connection 头是 close（不区分大小写），则 <code>r-&gt;headers_in.connection_type</code> 被置为 <code>NGX_HTTP_CONNECTION_CLOSE</code></li>
+<li>如果 Connection 头是 keep-alive（不区分大小写），则 <code>r-&gt;headers_in.connection_type</code> 被设置为 <code>NGX_HTTP_CONNECTION_KEEP_ALIVE</code></li>
+<li>如果不是以上两种情况，则什么都不做，此时 <code>r-&gt;headers_in.connection_type</code> 默认为0。</li>
+</ol>
+<p>可以看到，<code>ngx_http_process_connection</code> 的作用仅仅是设置了一个标记 <code>r-&gt;headers_in.connection_type</code>，我们继续看这个标记是如何被使用的。</p>
 <p>要想完整的讲述这个过程，不可避免需要涉及一些 Nginx 配置解析、解析 HTTP 协议相关的流程，但这些都不是本文的重点，下面均一笔带过。</p>
 <p>Nginx 的各历史版本中，对于 http 协议解析的过程，细节稍微有些变化。在 Nginx-1.8.0 中，过程如下：</p>
 <p>（0）我们知道，Nginx 是一个主进程加多子进程的架构，配置解析发生在 fork 子进程之前，在这个过程中很多操作都是对于全局变量 cycle 的操作。在 fork 之后，每个子进程均会继承一份这个全局变量 cycle(这里不考虑COW)。</p>

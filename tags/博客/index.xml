@@ -30,14 +30,14 @@
     </item>
     
     <item>
-      <title>静态博客的黄金搭档:Caddy和Hugo</title>
+      <title>静态博客的黄金搭档：Caddy 和 Hugo</title>
       <link>https://pureage.info/post/caddy-and-hugo/</link>
       <pubDate>Wed, 21 Nov 2018 01:09:59 +0800</pubDate>
       
       <guid>https://pureage.info/post/caddy-and-hugo/</guid>
-      <description>&lt;p&gt;几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
-&lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;
-&lt;p&gt;在去年下半年发现了Hugo后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。&lt;/p&gt;</description>
+      <description>&lt;p&gt;几年前，在以 Hexo、jekyll 为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
+&lt;p&gt;直到我遇到了 Hugo。&lt;/p&gt;
+&lt;p&gt;在去年下半年发现了 Hugo 后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。&lt;/p&gt;</description>
     </item>
     
     <item>

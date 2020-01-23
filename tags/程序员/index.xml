@@ -60,12 +60,12 @@
     </item>
     
     <item>
-      <title>openstack swift中的composite ring</title>
+      <title>openstack swift 中的 composite ring</title>
       <link>https://pureage.info/post/composite-ring-of-swift/</link>
       <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
       
       <guid>https://pureage.info/post/composite-ring-of-swift/</guid>
-      <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
+      <description>&lt;p&gt;OpenStack/Swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
     </item>
     
     <item>

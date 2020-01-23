@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>openstack swift中的composite ring - 纯真年代</title>
+<title>openstack swift 中的 composite ring - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>openstack swift中的composite ring</h1>
+  <h1>openstack swift 中的 composite ring</h1>
   </div>
 <div class="meta">
   <div>2018-10-23</div>
@@ -31,11 +31,11 @@
     </div>
   </div>
 <div class="content">
-  <p>openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：<a href="https://docs.openstack.org/swift/latest/overview_global_cluster.html">Global Clusters</a>。</p>
+  <p>OpenStack/Swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：<a href="https://docs.openstack.org/swift/latest/overview_global_cluster.html">Global Clusters</a>。</p>
 <p>这个功能乍看很实用，但是实际上很鸡肋，因为 swift 内部 ring 构建算法并不能保证各副本会均匀的分布在各 region 中。例如，如果你想通过两个 region 实现真正的跨机房备份的话是不行的，因为一个对象的所有副本可能都会在某一个机房的设备上，而另一个机房里一份副本都没有。如果连基本的均衡都做不到，之前的 global clusters 其实并无多大实际意义。</p>
 <p>在最新的 swift 2.19.0 版本里，通过一个叫做组合环（compsite ring）的概念，这个情况才得以改善。它的实现方式如下。</p>
 <p>一个组合环是由两个或多个普通环组合而成，组合后的环，其副本冗余数量是这些普通环的冗余数量之和。各个普通环是在不同的 region 使用不同的设备独立构建的。</p>
-<p>例如，假设想实现一个在A，B两地机房的三份冗余的存储，而且A机房作为主机房希望每个对象都在其上冗余两份，B机房作为次机房则只冗余一份。那么就在分别构建针对 A 和 B 的两个哈希环 RingA 和 RingB, RingA 在创建时指定其冗余份数为2，RingB 在创建时指定其冗余份数为1。在各自添加完设备并生成 ring 文件后，使用 swift 2.19.0 里新增的一个工具 swift-ring-composer，来将 RingA 和 RingB 组合成一个新的环，然后将这个新的环作为最终的环分发到各设备中去使用。</p>
+<p>例如，假设想实现一个在 A，B 两地机房的三份冗余的存储，而且 A 机房作为主机房希望每个对象都在其上冗余两份，B 机房作为次机房则只冗余一份。那么就在分别构建针对 A 和 B 的两个哈希环  RingA 和 RingB，RingA 在创建时指定其冗余份数为2，RingB 在创建时指定其冗余份数为 1。在各自添加完设备并生成 ring 文件后，使用 swift 2.19.0 里新增的一个工具 swift-ring-composer，来将 RingA 和 RingB 组合成一个新的环，然后将这个新的环作为最终的环分发到各设备中去使用。</p>
 <p>文档里称 swift-ring-composer 是个实验性质的工具，未来可能会修改或被删除，大家酌情使用。</p></div>
 
   </article>

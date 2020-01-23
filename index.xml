@@ -230,14 +230,14 @@
     </item>
     
     <item>
-      <title>静态博客的黄金搭档:Caddy和Hugo</title>
+      <title>静态博客的黄金搭档：Caddy 和 Hugo</title>
       <link>https://pureage.info/post/caddy-and-hugo/</link>
       <pubDate>Wed, 21 Nov 2018 01:09:59 +0800</pubDate>
       
       <guid>https://pureage.info/post/caddy-and-hugo/</guid>
-      <description>&lt;p&gt;几年前，在以Hexo、jekyll为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
-&lt;p&gt;直到我遇到了Hugo。&lt;/p&gt;
-&lt;p&gt;在去年下半年发现了Hugo后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。&lt;/p&gt;</description>
+      <description>&lt;p&gt;几年前，在以 Hexo、jekyll 为代表的各种静态博客生成系统百花齐放的时候，我写过一篇&lt;a href=&#34;http://pureage.info/2015/12/16/still-using-typecho.html&#34;&gt;继续留在Typecho&lt;/a&gt;。并不是因为我非常守旧，而是经过实际使用测试之后，我认为不管这些静态生成器宣传的多么天花乱坠，它们实际上就是很难用，体现在安装、发布的各个方面。而它们的那些优点并不能让我忽略这些缺点。&lt;/p&gt;
+&lt;p&gt;直到我遇到了 Hugo。&lt;/p&gt;
+&lt;p&gt;在去年下半年发现了 Hugo 后，我毫不犹豫的写了个脚本将之前所有的文章全部迁移了过来。仅凭它的无依赖和执行速度，就甩开它的那些前辈们好几个身位。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -252,12 +252,12 @@
     </item>
     
     <item>
-      <title>openstack swift中的composite ring</title>
+      <title>openstack swift 中的 composite ring</title>
       <link>https://pureage.info/post/composite-ring-of-swift/</link>
       <pubDate>Tue, 23 Oct 2018 15:39:41 +0800</pubDate>
       
       <guid>https://pureage.info/post/composite-ring-of-swift/</guid>
-      <description>&lt;p&gt;openstack swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
+      <description>&lt;p&gt;OpenStack/Swift 在很早之前就有了 global clusters 的概念，给每一块磁盘赋予一个 region 的属性，在跨地域分布的集群里进行对象读写操作时，前端 proxy server  可以选择地缘近的后端存储服务来通信，进而达到低延迟和高吞吐的目的。具体配置见：&lt;a href=&#34;https://docs.openstack.org/swift/latest/overview_global_cluster.html&#34;&gt;Global Clusters&lt;/a&gt;。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -664,7 +664,7 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>Nginx对Connection头的处理过程</title>
+      <title>Nginx 对 Connection 头的处理过程</title>
       <link>https://pureage.info/2015/12/08/connection-header-in-nginx.html</link>
       <pubDate>Tue, 08 Dec 2015 07:04:00 +0000</pubDate>
       
@@ -674,7 +674,7 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;综合&lt;a href=&#34;https://tools.ietf.org/html/rfc2616#page-117&#34;&gt;RFC2626 14.10&lt;/a&gt;、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：&lt;/p&gt;
+&lt;p&gt;综合 &lt;a href=&#34;https://tools.ietf.org/html/rfc2616#page-117&#34;&gt;RFC2626 14.10&lt;/a&gt;、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;控制不再转发给代理的首部字段&lt;/li&gt;
 &lt;li&gt;管理持久连接&lt;/li&gt;
@@ -1254,10 +1254,10 @@ location /test2 {
       <pubDate>Sun, 19 Jan 2014 14:21:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/01/19/callyourfriends.html</guid>
-      <description>&lt;p&gt;其实工作了挺没劲的，以前的朋友们、同学们都散落在各自的城市，为了生活而奔波着。从一开始偶尔会在QQ群里热闹一下，到现在是几乎有老死不相往来的趋势了。&lt;/p&gt;
+      <description>&lt;p&gt;其实工作了挺没劲的，以前的朋友们、同学们都散落在各自的城市，为了生活而奔波着。从一开始偶尔会在 QQ 群里热闹一下，到现在是几乎有老死不相往来的趋势了。&lt;/p&gt;
 &lt;p&gt;其实，说为了生活而奔波显得很诡异。大部分还是一休息就呆坐在电脑前，打游戏，看电影，死宅。互相不联系还是因为生活中没有交集。虽然谁都知道，真正需要倾诉的时候，还是得找这些个当年的铁哥们。&lt;/p&gt;
 &lt;p&gt;今天跟两个朋友各自聊了很久。其中一个是我主动联系的，另一个是他打过来的。&lt;/p&gt;
-&lt;p&gt;我主动联系的那个朋友叫XX伟，人称大伟，大学室友，形影不离的几个人之一。大学时我一个南方人，千里迢迢跑到哈尔滨读书，室友大部分都是东北人，最南的也是河北。可跟这几个家伙丝毫没有隔阂，每天在一起打游戏，上自习，看电视，骂娘，骂政府，当然，少不了一起看毛片。&lt;/p&gt;
+&lt;p&gt;我主动联系的那个朋友叫 XX 伟，人称大伟，大学室友，形影不离的几个人之一。大学时我一个南方人，千里迢迢跑到哈尔滨读书，室友大部分都是东北人，最南的也是河北。可跟这几个家伙丝毫没有隔阂，每天在一起打游戏，上自习，看电视，骂娘，骂政府，当然，少不了一起看毛片。&lt;/p&gt;
 &lt;p&gt;大伟的年龄是我们中最大的，因为当初高考失利，复读了两次。这家伙比我们其他人都显得成熟，无论是相貌上，还是行为举止上，很有老大哥的风范。可诡异的是，他却是个扎扎实实的死宅男。每天在床上一躺就能是一整天，看各种电子书。本科毕业后，我去读研，他直接到一个县城工作了。&lt;/p&gt;</description>
     </item>
     

@@ -122,7 +122,7 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>Nginx对Connection头的处理过程</title>
+      <title>Nginx 对 Connection 头的处理过程</title>
       <link>https://pureage.info/2015/12/08/connection-header-in-nginx.html</link>
       <pubDate>Tue, 08 Dec 2015 07:04:00 +0000</pubDate>
       
@@ -132,7 +132,7 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;综合&lt;a href=&#34;https://tools.ietf.org/html/rfc2616#page-117&#34;&gt;RFC2626 14.10&lt;/a&gt;、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：&lt;/p&gt;
+&lt;p&gt;综合 &lt;a href=&#34;https://tools.ietf.org/html/rfc2616#page-117&#34;&gt;RFC2626 14.10&lt;/a&gt;、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;控制不再转发给代理的首部字段&lt;/li&gt;
 &lt;li&gt;管理持久连接&lt;/li&gt;
