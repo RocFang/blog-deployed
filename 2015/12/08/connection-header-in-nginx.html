@@ -126,7 +126,7 @@
 <ul>
 <li>如果 Connection 头部里为“close”，则 <code>r-&gt;keepalive</code> 为 0。</li>
 <li>如果 Connection 头部里为“keep-alive”，则 r-&gt;keepalive为 1。</li>
-<li>如果不是以上两种情况，则按照 HTTP 协议走默认情况：如果是 HTTP 1.0 以上，则 <code>r-&gt;keepalive</code> 默认为 1，如果是 HTTP 1.0及以下，则 <code>r-&gt;keepalive</code> 默认为 0.这一点是与 HTTP 协议相符合的。</li>
+<li>如果不是以上两种情况，则按照 HTTP 协议走默认情况：如果是 HTTP 1.0 以上，则 <code>r-&gt;keepalive</code> 默认为 1，如果是 HTTP 1.0及以下，则 <code>r-&gt;keepalive</code> 默认为 0。这一点是与 HTTP 协议相符合的。</li>
 </ul>
 <p>到目前为止，我们所讲的都算是 <code>r-&gt;keepalive</code> 是怎么产生的，还没有涉及到它是如何被使用的。</p>
 <p><code>r-&gt;keepalive</code> 的使用主要是在函数 <code>ngx_http_finalize_connection</code> 中，而<code>ngx_http_finalize_connection</code> 在 Nginx 中，仅被 <code>ngx_http_finalize_request</code> 调用。顾名思义，<code>ngx_http_finalize_request</code> 讲的是怎么结束一个 HTTP 请求的。</p>
