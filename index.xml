@@ -498,10 +498,10 @@ headers when using HTTP/2.&lt;/p&gt;
       <guid>https://pureage.info/2016/01/12/flow-chart.html</guid>
       <description>&lt;p&gt;经常会看到一些技术博客在讲解代码的时候，能配上一幅幅精美的程序流程图、结构图，一直都很佩服这样的作者。其实他们大多数也并没有使用什么特别的工具，基本上可以分为如下几类:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Microsoft Viso, Word, PPT, Windows 自带的画图板等常用办公软件&lt;/li&gt;
+&lt;li&gt;Microsoft Viso、Word、PPT、Windows 自带的画图板等常用办公软件&lt;/li&gt;
 &lt;li&gt;一些其他相对较小众的绘图软件，例如 Pencil&lt;/li&gt;
 &lt;li&gt;脑图工具，例如 Xmind&lt;/li&gt;
-&lt;li&gt;Graphviz, 使用一种叫 dot 的语言来描述结构并生成图片&lt;/li&gt;
+&lt;li&gt;Graphviz，使用一种叫 dot 的语言来描述结构并生成图片&lt;/li&gt;
 &lt;li&gt;利用最基本的字符(连字符，箭头等)来绘制，这种做法第一眼就会给人一种返璞归真的感觉，但实际上我个人并不习惯&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;上面这几类绘制结构图、流程图的方法或工具，我基本上都使用过，但绘图水平实在太差，效率也很低。在读代码的时候，大部分是靠笔、纸这种最原始的工具来完成分析，甚至还专门买了一个白板放在家里。这样往往几幅图画下来后，自己是弄得很明白了，却没法分享到文章里去。&lt;/p&gt;</description>
@@ -539,7 +539,7 @@ headers when using HTTP/2.&lt;/p&gt;
     </item>
     
     <item>
-      <title>2016第一天</title>
+      <title>2016 第一天</title>
       <link>https://pureage.info/2016/01/01/first-day-of-2016.html</link>
       <pubDate>Fri, 01 Jan 2016 14:25:00 +0000</pubDate>
       
