@@ -213,15 +213,18 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>用proxy_intercept_errors和recursive_error_pages代理多次302</title>
+      <title>用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302</title>
       <link>https://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</link>
       <pubDate>Mon, 25 Aug 2014 15:59:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html</guid>
-      <description>&lt;p&gt;302是HTTP协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的302多为误用（与303，307混用），在HTTP/1.1中，它的语义为“Found”.&lt;/p&gt;
-&lt;p&gt;302有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址A，然后浏览器地址栏会自动跳到B，进而打开一个网页，这种情况就很可能是302。&lt;/p&gt;
-&lt;p&gt;比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现302的影子。但由于这些url并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。&lt;/p&gt;
-&lt;p&gt;上一段提到了优酷。其实现在多数在线视频网站都会用到302，原因很简单，视频网站流量一般较大，都会用到CDN,区别只在于是用自建CDN还是商业CDN。而由于302的重定向语义（再重复一遍，302的语义广泛的被误用，在使用302的时候，我们很可能应该使用303或307，但后面都不再纠结这一点），可以与CDN中的调度很好的结合起来。&lt;/p&gt;</description>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;注意：此文写作时间比较久远，请谨慎参考，自行阅读代码、文档以及测试。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;302 是 HTTP 协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的 302 多为误用（与 303，307 混用），在 HTTP/1.1 中，它的语义为“Found”。&lt;/p&gt;
+&lt;p&gt;302 有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址 A，然后浏览器地址栏会自动跳到 B，进而打开一个网页，这种情况就很可能是 302。&lt;/p&gt;
+&lt;p&gt;比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现 302 的影子。但由于这些 url 并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。&lt;/p&gt;
+&lt;p&gt;上一段提到了优酷。其实现在多数在线视频网站都会用到 302，原因很简单，视频网站流量一般较大，都会用到 CDN，区别只在于是用自建 CDN 还是商业 CDN。而由于 302 的重定向语义（再重复一遍，302 的语义广泛的被误用，在使用 302 的时候，我们很可能应该使用 303 或 307，但后面都不再纠结这一点），可以与 CDN 中的调度很好的结合起来。&lt;/p&gt;</description>
     </item>
     
     <item>
