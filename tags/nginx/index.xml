@@ -282,22 +282,22 @@ location /test2 {
     </item>
     
     <item>
-      <title>关于nginx中的host变量</title>
+      <title>关于 nginx 中的 host 变量</title>
       <link>https://pureage.info/2014/02/22/host-variable-in-nginx.html</link>
       <pubDate>Fri, 21 Feb 2014 19:51:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/02/22/host-variable-in-nginx.html</guid>
-      <description>&lt;p&gt;关于变量host，在Nginx的官网wiki中是如下说明的：&lt;/p&gt;
+      <description>&lt;p&gt;关于变量 host，在 Nginx 的官网 wiki 中是如下说明的：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;直白的翻译一下:host变量的值按照如下优先级获得：&lt;/p&gt;
+&lt;p&gt;直白的翻译一下：host 变量的值按照如下优先级获得：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;请求行中的host.&lt;/li&gt;
-&lt;li&gt;请求头中的Host头部.&lt;/li&gt;
-&lt;li&gt;与一条请求匹配的server name.&lt;/li&gt;
+&lt;li&gt;请求行中的 host&lt;/li&gt;
+&lt;li&gt;请求头中的 Host 头部&lt;/li&gt;
+&lt;li&gt;与一条请求匹配的 server name&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有host信息，则以请求行中的host作为host变量的值（host与host变量不是一个东西，很拗口）；如果请求行中没有host信息，则以请求头中的Host头的值作为host变量的值；如果前面两者都没有，那么host变量就是与该请求匹配所匹配的serve名。&lt;/p&gt;</description>
+&lt;p&gt;很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有 host 信息，则以请求行中的 host 作为 host 变量的值（host 与 host 变量不是一个东西，很拗口）；如果请求行中没有 host 信息，则以请求头中的 Host 头的值作为 host 变量的值；如果前面两者都没有，那么 host 变量就是与该请求匹配所匹配的 serve 名。&lt;/p&gt;</description>
     </item>
     
     <item>
