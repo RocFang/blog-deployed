@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>从HTTP Range请求谈标准是如何被破坏的 - 纯真年代</title>
+<title>从 HTTP Range 请求谈标准是如何被破坏的 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>从HTTP Range请求谈标准是如何被破坏的</h1>
+  <h1>从 HTTP Range 请求谈标准是如何被破坏的</h1>
   </div>
 <div class="meta">
   <div>2014-02-25</div>
@@ -31,14 +31,14 @@
     </div>
   </div>
 <div class="content">
-  <p>如今cdn已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个Nginx代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的cdn市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的cdn厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。</p>
+  <p>如今 cdn 已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个 Nginx 代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的 cdn 市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的 cdn 厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。</p>
 <p>但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。</p>
 <h3 id="背景">背景</h3>
-<p>A是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家cdn厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些4XX的错误请求。所以，cdn厂商的运维及管理人员，会很重视这些指标。</p>
-<p>最近，运维发现服务器上有很多416请求。416是Range错误的响应码，除去一些正常的416外，运维还发现有一类416请求的Range头是:</p>
+<p>A 是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家 cdn 厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些 4XX 的错误请求。所以，cdn 厂商的运维及管理人员，会很重视这些指标。</p>
+<p>最近，运维发现服务器上有很多 416 请求。416 是 Range 错误的响应码，除去一些正常的 416 外，运维还发现有一类 416 请求的 Range 头是:</p>
 <pre><code>Range: byptes=XXXX-0
-</code></pre><p>XXXX是个非0的数。很明显，这是一个错误的Range请求，之所以会出现这样的Range，是因为对方的播放器bug导致。但A公司要求，把XXX-0按照xxx-来处理。</p>
-<p>我们知道，在HTTP协议中规定的是，一个Range头可以有如下形式（假设文件大小为1000个字节）：</p>
+</code></pre><p>XXXX 是个非 0 的数。很明显，这是一个错误的 Range 请求，之所以会出现这样的 Range，是因为对方的播放器 bug 导致。但 A 公司要求，把 <code>XXX-0</code> 按照 <code>xxx-</code> 来处理。</p>
+<p>我们知道，在 HTTP 协议中规定的是，一个 Range 头可以有如下形式（假设文件大小为1000个字节）：</p>
 <blockquote>
 <p>bytes=0-499(前500个字节）<br>
 bytes=500-999（第二个500个字节）<br>
@@ -46,146 +46,146 @@ bytes=-500（最后500个字节）<br>
 bytes=9500-（与上同，最后500个字节）<br>
 bytes=0-0,-1（第一个字节和最后一个字节）</p>
 </blockquote>
-<p>那么到底有没有bytes=500-0这样的range呢？我们从标准和实现两方面来考虑。</p>
+<p>那么到底有没有 <code>bytes=500-0</code> 这样的 range 呢？我们从标准和实现两方面来考虑。</p>
 <h3 id="标准">标准</h3>
-<p>参考RFC2616 14.35.1节</p>
+<p>参考 RFC2616 14.35.1节：</p>
 <blockquote>
 <p>If the last-byte-pos value is present, it MUST be greater than or equal to the first-byte-pos in that byte-range-spec, or the byte-range-spec is syntactically invalid. The recipient of a byte-range-set that includes one or more syntactically invalid byte-range-spec values MUST ignore the header field that includes that byte-range-set.</p>
 </blockquote>
-<p>所以，理论上，bytes=500-0这样的range段，是错误的。</p>
+<p>所以，理论上，<code>bytes=500-0</code> 这样的 range 段，是错误的。</p>
 <h3 id="实现">实现</h3>
-<p>以Nginx为例，我们来看看代码中是如何处理的。</p>
-<pre><code>static ngx_int_t  
-ngx_http_range_parse(ngx_http_request_t *r, ngx_http_range_filter_ctx_t *ctx,  
-    ngx_uint_t ranges)  
+<p>以 Nginx 为例，我们来看看代码中是如何处理的。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">static</span> <span style="color:#000">ngx_int_t</span>  
+<span style="color:#000">ngx_http_range_parse</span>(<span style="color:#000">ngx_http_request_t</span> *<span style="color:#000">r</span>, <span style="color:#000">ngx_http_range_filter_ctx_t</span> *<span style="color:#000">ctx</span>,  
+    <span style="color:#000">ngx_uint_t</span> <span style="color:#000">ranges</span>)  
 {  
-    u_char            *p;  
-    off_t              start, end, size, content_length;  
-    ngx_uint_t         suffix;  
-    ngx_http_range_t  *range;  
+    <span style="color:#000">u_char</span>            *<span style="color:#000">p</span>;  
+    <span style="color:#000">off_t</span>              <span style="color:#000">start</span>, <span style="color:#000">end</span>, <span style="color:#000">size</span>, <span style="color:#000">content_length</span>;  
+    <span style="color:#000">ngx_uint_t</span>         <span style="color:#000">suffix</span>;  
+    <span style="color:#000">ngx_http_range_t</span>  *<span style="color:#000">range</span>;  
   
-    p = r-&gt;headers_in.range-&gt;value.data + 6;  
-    size = 0;  
-    content_length = r-&gt;headers_out.content_length_n;  
+    <span style="color:#000">p</span> = <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">range</span>-&gt;<span style="color:#000">value</span>.<span style="color:#000">data</span> + <span style="color:#3af">6</span>;  
+    <span style="color:#000">size</span> = <span style="color:#3af">0</span>;  
+    <span style="color:#000">content_length</span> = <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_out</span>.<span style="color:#000">content_length_n</span>;  
   
-    for ( ;; ) {  
-        start = 0;  
-        end = 0;  
-        suffix = 0;  
+    <span style="color:#00f">for</span> ( ;; ) {  
+        <span style="color:#000">start</span> = <span style="color:#3af">0</span>;  
+        <span style="color:#000">end</span> = <span style="color:#3af">0</span>;  
+        <span style="color:#000">suffix</span> = <span style="color:#3af">0</span>;  
   
-        while (*p == ' ') { p++; }  
+        <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
   
-        if (*p != '-') {  
-            if (*p &lt; '0' || *p &gt; '9') {  
-                return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+        <span style="color:#00f">if</span> (*<span style="color:#000">p</span> != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">-</span><span style="color:#5a2">&#39;</span>) {  
+            <span style="color:#00f">if</span> (*<span style="color:#000">p</span> &lt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> || *<span style="color:#000">p</span> &gt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
+                <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
             }  
   
-            while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
-                start = start * 10 + *p++ - '0';  
+            <span style="color:#00f">while</span> (*<span style="color:#000">p</span> &gt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> &amp;&amp; *<span style="color:#000">p</span> &lt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
+                <span style="color:#000">start</span> = <span style="color:#000">start</span> * <span style="color:#3af">10</span> + *<span style="color:#000">p</span>++ - <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span>;  
             }  
   
-            while (*p == ' ') { p++; }  
+            <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
   
-            if (*p++ != '-') {  
-                return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+            <span style="color:#00f">if</span> (*<span style="color:#000">p</span>++ != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">-</span><span style="color:#5a2">&#39;</span>) {  
+                <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
             }  
   
-            while (*p == ' ') { p++; }  
+            <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
   
-            if (*p == ',' || *p == '\0') {  
-                end = content_length;  
-                goto found;  
+            <span style="color:#00f">if</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">,</span><span style="color:#5a2">&#39;</span> || *<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">\0</span><span style="color:#5a2">&#39;</span>) {  
+                <span style="color:#000">end</span> = <span style="color:#000">content_length</span>;  
+                <span style="color:#00f">goto</span> <span style="color:#000">found</span>;  
             }  
   
-        } else {  
-            suffix = 1;  
-            p++;  
+        } <span style="color:#00f">else</span> {  
+            <span style="color:#000">suffix</span> = <span style="color:#3af">1</span>;  
+            <span style="color:#000">p</span>++;  
         }  
   
-        if (*p &lt; '0' || *p &gt; '9') {  
-            return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+        <span style="color:#00f">if</span> (*<span style="color:#000">p</span> &lt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> || *<span style="color:#000">p</span> &gt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
         }  
   
-        while (*p &gt;= '0' &amp;&amp; *p &lt;= '9') {  
-            end = end * 10 + *p++ - '0';  
+        <span style="color:#00f">while</span> (*<span style="color:#000">p</span> &gt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> &amp;&amp; *<span style="color:#000">p</span> &lt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
+            <span style="color:#000">end</span> = <span style="color:#000">end</span> * <span style="color:#3af">10</span> + *<span style="color:#000">p</span>++ - <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span>;  
         }  
   
-        while (*p == ' ') { p++; }  
+        <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
   
-        if (*p != ',' &amp;&amp; *p != '\0') {  
-            return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+        <span style="color:#00f">if</span> (*<span style="color:#000">p</span> != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">,</span><span style="color:#5a2">&#39;</span> &amp;&amp; *<span style="color:#000">p</span> != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">\0</span><span style="color:#5a2">&#39;</span>) {  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
         }  
   
-        if (suffix) {  
-            start = content_length - end;  
-            end = content_length - 1;  
+        <span style="color:#00f">if</span> (<span style="color:#000">suffix</span>) {  
+            <span style="color:#000">start</span> = <span style="color:#000">content_length</span> - <span style="color:#000">end</span>;  
+            <span style="color:#000">end</span> = <span style="color:#000">content_length</span> - <span style="color:#3af">1</span>;  
         }  
   
-        if (end &gt;= content_length) {  
-            end = content_length;  
+        <span style="color:#00f">if</span> (<span style="color:#000">end</span> &gt;= <span style="color:#000">content_length</span>) {  
+            <span style="color:#000">end</span> = <span style="color:#000">content_length</span>;  
   
-        } else {  
-            end++;  
+        } <span style="color:#00f">else</span> {  
+            <span style="color:#000">end</span>++;  
         }  
   
-    found:  
+    <span style="color:#000">found</span>:  
   
-        if (start &lt; end) {  
-            range = ngx_array_push(&amp;ctx-&gt;ranges);  
-            if (range == NULL) {  
-                return NGX_ERROR;  
+        <span style="color:#00f">if</span> (<span style="color:#000">start</span> &lt; <span style="color:#000">end</span>) {  
+            <span style="color:#000">range</span> = <span style="color:#000">ngx_array_push</span>(&amp;<span style="color:#000">ctx</span>-&gt;<span style="color:#000">ranges</span>);  
+            <span style="color:#00f">if</span> (<span style="color:#000">range</span> == <span style="color:#000">NULL</span>) {  
+                <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
             }  
   
-            range-&gt;start = start;  
-            range-&gt;end = end;  
+            <span style="color:#000">range</span>-&gt;<span style="color:#000">start</span> = <span style="color:#000">start</span>;  
+            <span style="color:#000">range</span>-&gt;<span style="color:#000">end</span> = <span style="color:#000">end</span>;  
   
-            size += end - start;  
+            <span style="color:#000">size</span> += <span style="color:#000">end</span> - <span style="color:#000">start</span>;  
   
-            if (ranges-- == 0) {  
-                return NGX_DECLINED;  
+            <span style="color:#00f">if</span> (<span style="color:#000">ranges</span>-- == <span style="color:#3af">0</span>) {  
+                <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
             }  
         }  
   
-        if (*p++ != ',') {  
-            break;  
+        <span style="color:#00f">if</span> (*<span style="color:#000">p</span>++ != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">,</span><span style="color:#5a2">&#39;</span>) {  
+            <span style="color:#00f">break</span>;  
         }  
     }  
   
-    if (ctx-&gt;ranges.nelts == 0) {  
-        return NGX_HTTP_RANGE_NOT_SATISFIABLE;  
+    <span style="color:#00f">if</span> (<span style="color:#000">ctx</span>-&gt;<span style="color:#000">ranges</span>.<span style="color:#000">nelts</span> == <span style="color:#3af">0</span>) {  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
     }  
   
-    if (size &gt; content_length) {  
-        return NGX_DECLINED;  
+    <span style="color:#00f">if</span> (<span style="color:#000">size</span> &gt; <span style="color:#000">content_length</span>) {  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
     }  
   
-    return NGX_OK;  
+    <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
 }  
-</code></pre><p>其中，</p>
-<pre><code> found:  
+</code></pre></div><p>其中，</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"> <span style="color:#000">found</span>:  
   
-        if (start &lt; end) {  
-            range = ngx_array_push(&amp;ctx-&gt;ranges);  
-            if (range == NULL) {  
-                return NGX_ERROR;  
+        <span style="color:#00f">if</span> (<span style="color:#000">start</span> &lt; <span style="color:#000">end</span>) {  
+            <span style="color:#000">range</span> = <span style="color:#000">ngx_array_push</span>(&amp;<span style="color:#000">ctx</span>-&gt;<span style="color:#000">ranges</span>);  
+            <span style="color:#00f">if</span> (<span style="color:#000">range</span> == <span style="color:#000">NULL</span>) {  
+                <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
             }  
   
-            range-&gt;start = start;  
-            range-&gt;end = end;  
+            <span style="color:#000">range</span>-&gt;<span style="color:#000">start</span> = <span style="color:#000">start</span>;  
+            <span style="color:#000">range</span>-&gt;<span style="color:#000">end</span> = <span style="color:#000">end</span>;  
   
-            size += end - start; 
+            <span style="color:#000">size</span> += <span style="color:#000">end</span> - <span style="color:#000">start</span>; 
   
-            if (ranges-- == 0) {  
-                return NGX_DECLINED;  
+            <span style="color:#00f">if</span> (<span style="color:#000">ranges</span>-- == <span style="color:#3af">0</span>) {  
+                <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
             }  
         }  
-</code></pre><p>表明，只有start&lt;end的，才会后续进行range处理。这里的start，是指bytes=a-b中的a，end指的是b+1。</p>
-<p>所以，在HTTP服务器的典型实现上，Range: bytes=500-0也是错误的请求。</p>
+</code></pre></div><p>表明，只有 start&lt;end 的，才会后续进行 range 处理。这里的 start，是指 bytes=a-b 中的 a，end 指的是 b+1。</p>
+<p>所以，在 HTTP 服务器的典型实现上，<code>Range: bytes=500-0</code> 也是错误的请求。</p>
 <h3 id="现实世界">现实世界</h3>
-<p>好了，从理论和典型实现上讨论了Range头之后，我们回到第三次元，现实世界。</p>
-<p>可以猜想，出现这个问题的原因是A公司的播放器开发人员代码的一处bug导致。但由于它们是甲方，所以我们应该予以配合。结果是我们在服务器端将<code>Range: bytes=500-0</code>这类的请求与<code>Range: bytes=500-</code>等同处理。</p>
-<p>解决起来很简单，非常简单。但是，好好的标准就这么被破坏了。可以想象，A是Top级的互联网大佬，某家cdn帮他们解决这种Range错误了，它肯定会对其他cdn商家说，这个很简单，那谁都是这么处理的。然后，中国所有的cdn商家都这么处理了。再然后，没人记的这东西是否遵循标准了，即使有人拿标准说起，也会被老人们这么教育：&ldquo;标准只是理想情况，现实中的实现，是复杂多变的&hellip;&rdquo;</p>
-<p>更没人会记得，罪魁祸首是某个倒霉的播放器程序猿。</p></div>
+<p>好了，从理论和典型实现上讨论了 Range 头之后，我们回到第三次元，现实世界。</p>
+<p>可以猜想，出现这个问题的原因是 A 公司的播放器开发人员代码的一处 bug 导致。但由于它们是甲方，所以我们应该予以配合。结果是我们在服务器端将 <code>Range: bytes=500-0</code> 这类的请求与 <code>Range: bytes=500-</code> 等同处理。</p>
+<p>解决起来很简单，非常简单。但是，好好的标准就这么被破坏了。可以想象，A 是 Top 级的互联网大佬，某家 cdn 帮他们解决这种 Range 错误了，它肯定会对其他 cdn 商家说，这个很简单，那谁都是这么处理的。然后，中国所有的 cdn 商家都这么处理了。再然后，没人记的这东西是否遵循标准了，即使有人拿标准说起，也会被老人们这么教育：“标准只是理想情况，现实中的实现，是复杂多变的&hellip;”</p>
+<p>更没人会记得，罪魁祸首是某个不合格的播放器开发程序员。</p></div>
 
   </article>
 </main>
