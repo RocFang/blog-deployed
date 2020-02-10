@@ -535,7 +535,7 @@ headers when using HTTP/2.&lt;/p&gt;
       
       <guid>https://pureage.info/2016/01/02/ianmurdock-and-agentzh.html</guid>
       <description>&lt;p&gt;这几天，开源软件界有两件大事，一件是 Debian 创始人 Ian Murdock 自杀身亡，另一件是在锤子手机 T2 的发布会上，罗永浩宣布将门票收入捐给 OpenResty，可以说是一悲一喜。&lt;/p&gt;
-&lt;p&gt;2013年，Markdown 标记语言的设计者之一 Aaron Swartz 自杀，我以及无数的程序员们的博客书写时用的就是 Markdown; Debian 以及 Debian 的变种 Ubuntu，也是很多人使用过或正在使用的 Linux 发行版。他们的自杀前后的心理状态，我们肯定不可能去感同身受，我们可能会感叹一句，原来在黑客氛围浓厚的美国，这些著名的黑客在现实中却也遭遇着能敢于去自杀的痛苦。不管怎么样，他们在这个世界上留下了他们的足迹供后人怀念。祝 Ian Murdock 走好。&lt;/p&gt;</description>
+&lt;p&gt;2013 年，Markdown 标记语言的设计者之一 Aaron Swartz 自杀，我以及无数的程序员们的博客书写时用的就是 Markdown；Debian 以及 Debian 的变种 Ubuntu，也是很多人使用过或正在使用的 Linux 发行版。他们的自杀前后的心理状态，我们肯定不可能去感同身受，我们可能会感叹一句，原来在黑客氛围浓厚的美国，这些著名的黑客在现实中却也遭遇着宁愿去自杀的痛苦。不管怎么样，他们在这个世界上留下了他们的足迹供后人怀念。祝 Ian Murdock 走好。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -797,18 +797,18 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
       <pubDate>Sat, 28 Mar 2015 12:39:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/03/28/ipc-of-nginx.html</guid>
-      <description>&lt;p&gt;我们知道,Linux提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中Nginx主要使用了其中的三种方式:&lt;/p&gt;
+      <description>&lt;p&gt;我们知道，Linux 提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中 Nginx 主要使用了其中的三种方式：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;套接字（匿名套接字对）&lt;/li&gt;
 &lt;li&gt;共享内存&lt;/li&gt;
 &lt;li&gt;信号&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在Nginx中的使用。&lt;/p&gt;
-&lt;h2 id=&#34;1-nginx中的channel通信机制&#34;&gt;1. Nginx中的channel通信机制&lt;/h2&gt;
-&lt;h3 id=&#34;11概述&#34;&gt;1.1概述&lt;/h3&gt;
-&lt;p&gt;首先简单的说一下Nginx中channel通信的机制。&lt;/p&gt;
-&lt;p&gt;Nginx中的channel通信，本质上是多个进程之间,利用匿名套接字(socketpair)对来进行通信。&lt;/p&gt;
-&lt;p&gt;我们知道,socketpair可以创建出一对套接字,在这两个套接字的任何一个上面进行写操作,在另一个套接字上就可以相应的进行读操作,而且这个管道是全双工的。&lt;/p&gt;</description>
+&lt;p&gt;本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在 Nginx 中的使用。&lt;/p&gt;
+&lt;h2 id=&#34;1-nginx-中的-channel-通信机制&#34;&gt;1. Nginx 中的 channel 通信机制&lt;/h2&gt;
+&lt;h3 id=&#34;11-概述&#34;&gt;1.1 概述&lt;/h3&gt;
+&lt;p&gt;首先简单的说一下 Nginx 中 channel 通信的机制。&lt;/p&gt;
+&lt;p&gt;Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接字(socketpair)对来进行通信。&lt;/p&gt;
+&lt;p&gt;我们知道，socketpair 可以创建出一对套接字，在这两个套接字的任何一个上面进行写操作，在另一个套接字上就可以相应的进行读操作，而且这个管道是全双工的。&lt;/p&gt;</description>
     </item>
     
     <item>
