@@ -34,30 +34,30 @@
   <p>俗话说，一个谎言，要用一百个谎言去圆。</p>
 <p>在代码的世界里，同样如此。当然，这里只是借用“谎言”这个概念，并不带有任何贬义色彩。“谎言”用来指代那些由于设计或理解上的小疏漏，因为这些小疏漏，导致后续的代码里使用很多迂回的策略来达到目的。</p>
 <p>但是代码世界里的“谎言”，又与真实世界的“谎言”截然不同，因为我们有版本管理系统在背后默默的记录着一切。通过它，我们可以对“谎言”进行追根溯源，找到最初的疏漏。</p>
-<p>今天我们就来以<a href="https://github.com/arut/nginx-rtmp-module">Nginx-RTMP</a>这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。</p>
-<p>在ngx_rtmp.c中，存在一个全局变量ngx_rtmp_init_queue，通过阅读它的相关使用场景，我们可以知道这是一个队列性质的全局变量，与ngx_posted_accept_events、ngx_posted_events这两个变量类似。它们的用法是，将一类事件通过调用ngx_post_event注册到与其对应的队列中，当然这个注册是可以发生在不同的时间和场景下，然后在将来某个时刻，通过调用ngx_event_process_posted来耗尽这个任务队列，即遍历该任务队列中的每个事件，并执行事件的handler回调函数。</p>
-<p>我们继续来看ngx_rtmp_init_queue这个事件队列的具体情况。</p>
-<p>(1) ngx_rtmp_init_queue的初始化</p>
-<p>ngx_rtmp_init_queue的初始化发生在ngx_rtmp_module模块的init_process中，通过调用ngx_rtmp_init_queue来完成。</p>
-<p>(2) ngx_rtmp_init_queue的事件注册</p>
-<p>在Nginx-RTMP中，只有两个地方往ngx_rtmp_init_queue中注册了事件，他们分别是ngx_rtmp_exec_module模块和ngx_rtmp_relay_module模块的init_process钩子。注册的事件具有相同的属性：希望在进程启动的时候就执行的事件。例如在ngx_rtmp_relay_module模块中，正常的pull回源处理逻辑，是当有播放器接入进来之后才会被触发。而配置了属性为static的pull，当worker进程刚启动时就会去上上层拉取指定的流，而不会等播放器播放行为来触发。ngx_rtmp_exec_module模块中的使用也是如此。</p>
+<p>今天我们就来以 <a href="https://github.com/arut/nginx-rtmp-module">Nginx-RTMP</a> 这个项目为例，来“拆穿”它的一个设计精巧的“谎言”。</p>
+<p>在 ngx_rtmp.c 中，存在一个全局变量 <code>ngx_rtmp_init_queue</code>，通过阅读它的相关使用场景，我们可以知道这是一个队列性质的全局变量，与 <code>ngx_posted_accept_events</code>、<code>ngx_posted_events</code> 这两个变量类似。它们的用法是，将一类事件通过调用 <code>ngx_post_event</code> 注册到与其对应的队列中，当然这个注册是可以发生在不同的时间和场景下，然后在将来某个时刻，通过调用 <code>ngx_event_process_posted</code> 来耗尽这个任务队列，即遍历该任务队列中的每个事件，并执行事件的 handler 回调函数。</p>
+<p>我们继续来看 <code>ngx_rtmp_init_queue</code> 这个事件队列的具体情况。</p>
+<p>(1) <code>ngx_rtmp_init_queue</code> 的初始化</p>
+<p><code>ngx_rtmp_init_queue</code> 的初始化发生在 <code>ngx_rtmp_module</code> 模块的 <code>init_process</code> 中，通过调用 <code>ngx_rtmp_init_queue</code> 来完成。</p>
+<p>(2) <code>ngx_rtmp_init_queue</code> 的事件注册</p>
+<p>在 Nginx-RTMP 中，只有两个地方往 <code>ngx_rtmp_init_queue</code> 中注册了事件，他们分别是<code>ngx_rtmp_exec_module</code> 模块和 <code>ngx_rtmp_relay_module</code> 模块的 <code>init_process</code> 钩子。注册的事件具有相同的属性：希望在进程启动的时候就执行的事件。例如在 <code>ngx_rtmp_relay_module</code> 模块中，正常的 pull 回源处理逻辑，是当有播放器接入进来之后才会被触发。而配置了属性为 static 的 pull，当 worker 进程刚启动时就会去上上层拉取指定的流，而不会等播放器播放行为来触发。<code>ngx_rtmp_exec_module</code> 模块中的使用也是如此。</p>
 <p>(3) ngx_rtmp_init_queue的消耗</p>
-<p>上面第二点说明了在什么场景、什么时候，程序会往ngx_rtmp_init_queue这个全局队列中注册事件。我们接下来应该关心的是，这个事件队列中的事件，什么时候会得到执行。</p>
-<p>通过查阅代码，我们会发现在ngx_rtmp_stat_module模块的init_process钩子中，ngx_rtmp_init_queue队列中的事件会通过调用ngx_event_process_posted被耗尽。</p>
-<p>至此，从逻辑上来说，我们已经完全清楚了ngx_rtmp_init_queue这个全局变量存在的意义。</p>
+<p>上面第二点说明了在什么场景、什么时候，程序会往 <code>ngx_rtmp_init_queue</code> 这个全局队列中注册事件。我们接下来应该关心的是，这个事件队列中的事件，什么时候会得到执行。</p>
+<p>通过查阅代码，我们会发现在 <code>ngx_rtmp_stat_module</code> 模块的 <code>init_process</code> 钩子中，<code>ngx_rtmp_init_queue</code> 队列中的事件会通过调用 <code>ngx_event_process_posted</code> 被耗尽。</p>
+<p>至此，从逻辑上来说，我们已经完全清楚了 <code>ngx_rtmp_init_queue</code> 这个全局变量存在的意义。</p>
 <p>但是这还不够，我们深入思考一下，就会有如下的疑问：</p>
-<p>(1) 为什么在RTMP模块中注册的事件，要在一个HTTP模块(ngx_rtmp_stat_module其实是一个HTTP模块)中执行?ngx_rtmp_stat_module模块的作用是统计流的信息，从逻辑上来说，我们可以选择不编译这个模块，而由于上述ngx_rtmp_init_queue的使用逻辑，却不能这样做，因为这些静态功能(static_pull, static_exec)在依赖它。即使模块之间有时候不能完全避免耦合，但RTMP里的功能却要依赖一个HTTP模块，这说不过去。</p>
-<p>(2) 我们知道任务队列的作用主要是延迟事件的执行。但是这里如此使用的意义在哪里？通过前面的分析，我们知道无论是往ngx_rtmp_init_queue中注册事件，还是消耗ngx_rtmp_init_queue里的事件，都是发生在相关模块的init_process钩子中。而当一个worker进程启动后，马上就会通过一个简单的for循环来遍历执行所有模块的init_process钩子，这显然并没有起到任何延时的意义。</p>
-<p>既然不应该让RTMP模块去依赖一个HTTP模块，也不用考虑事件的延迟执行，我们为什么不去掉ngx_rtmp_init_queue，改为直接在各涉事RTMP模块的init_process钩子中直接去执行自己对应的事件呢？这样程序逻辑更清楚且不会有额外的损失。</p>
-<p>答案是因为定时器。</p>
-<p>这些在init_process中注册到ngx_rtmp_init_queue中的事件，都需要用到定时器来检查这些事件是否执行正常，进而决定是否再次执行相应的逻辑。</p>
-<p>而在RTMP模块的init_process钩子中是不能使用定时器的，严格的说，是使用定时器不会达到定时器的效果。</p>
-<p>所以作者才会创造这么一个ngx_rtmp_init_queue，让本应在相关RTMP模块的init_process钩子中自顾自执行的逻辑，放到统计模块这个HTTP模块的init_process中一股脑执行，因为在HTTP模块的init_process钩子中，可以使用定时器。</p>
+<p>(1) 为什么在 RTMP 模块中注册的事件，要在一个 HTTP 模块(ngx_rtmp_stat_module 其实是一个HTTP 模块)中执行？ngx_rtmp_stat_module 模块的作用是统计流的信息，从逻辑上来说，我们可以选择不编译这个模块，而由于上述 ngx_rtmp_init_queue 的使用逻辑，却不能这样做，因为这些静态功能(static_pull、static_exec)在依赖它。即使模块之间有时候不能完全避免耦合，但 RTMP 里的功能却要依赖一个 HTTP 模块，这说不过去。</p>
+<p>(2) 我们知道任务队列的作用主要是延迟事件的执行。但是这里如此使用的意义在哪里？通过前面的分析，我们知道无论是往 <code>ngx_rtmp_init_queue</code> 中注册事件，还是消耗 <code>ngx_rtmp_init_queue</code> 里的事件，都是发生在相关模块的 <code>init_process</code> 钩子中。而当一个 worker 进程启动后，马上就会通过一个简单的 for 循环来遍历执行所有模块的 <code>init_process</code> 钩子，这显然并没有起到任何延时的意义。</p>
+<p>既然不应该让 RTMP 模块去依赖一个 HTTP 模块，也不用考虑事件的延迟执行，我们为什么不去掉 <code>ngx_rtmp_init_queue</code>，改为直接在各涉事 RTMP 模块的 <code>init_process</code> 钩子中直接去执行自己对应的事件呢？这样程序逻辑更清楚且不会有额外的损失。</p>
+<p>答案是因为<strong>定时器</strong>。</p>
+<p>这些在 <code>init_process</code> 中注册到 <code>ngx_rtmp_init_queue</code> 中的事件，都需要用到定时器来检查这些事件是否执行正常，进而决定是否再次执行相应的逻辑。</p>
+<p>而在 RTMP 模块的 <code>init_process</code> 钩子中是不能使用定时器的，严格的说，是使用定时器不会达到定时器的效果。</p>
+<p>所以作者才会创造这么一个 <code>ngx_rtmp_init_queue</code>，让本应在相关 RTMP 模块的 <code>init_process</code> 钩子中自顾自执行的逻辑，放到统计模块这个 HTTP 模块的 <code>init_process</code> 中一股脑执行，因为在 HTTP 模块的 <code>init_process</code> 钩子中，可以使用定时器。</p>
 <p>为什么？</p>
-<p>因为定时器的初始化是在ngx_event_core_module模块的init_process钩子中进行的，ngx_event_core_module是一个NGX_EVENT_MODULE类型的模块。而由于Nginx-RTMP项目config文件的写法，会导致所有RTMP类型的模块在全局模块数组ngx_modules中的位置，处于ngx_event_core_module模块的前面。从当前最新的config版本，我们能清楚的看到这一事实：<br>
-<a href="https://github.com/arut/nginx-rtmp-module/blob/e08959247dc840bb42cdf3389b1f5edb5686825f/config">config</a>。所以，ngx_event_core_module的init_process会在各RTMP模块的init_process之后执行，那么在RTMP模块的init_process钩子中添加的定时器，会在ngx_event_core_module的init_process中被毫不留情的初始化掉。</p>
-<p>错误其实在一开始就铸成，从一开始作者就在config文件中将RTMP模块放在了ngx_event_core_module模块之前。我们可以查看config文件的<a href="https://github.com/arut/nginx-rtmp-module/commit/eb6a14fb6cc9ece398b8b2b5aae5d91b694c32d3">第二次提交</a>来确认这一点。</p>
-<p>弄清楚了整个来龙去脉之后，我们当然就知道该如何去掉ngx_rtmp_init_queue，这也是应该的，既然问题都不存在了，为了解决这个问题的奇技淫巧当然也不应该存在。</p>
+<p>因为定时器的初始化是在 <code>ngx_event_core_module</code> 模块的 <code>init_process</code> 钩子中进行的，<code>ngx_event_core_module</code> 是一个 <code>NGX_EVENT_MODULE</code> 类型的模块。而由于 Nginx-RTMP 项目 config 文件的写法，会导致所有 RTMP 类型的模块在全局模块数组 <code>ngx_modules</code> 中的位置，处于 <code>ngx_event_core_module</code> 模块的前面。从当前最新的 config 版本，我们能清楚的看到这一事实：<a href="https://github.com/arut/nginx-rtmp-module/blob/e08959247dc840bb42cdf3389b1f5edb5686825f/config">config</a>。所以，<code>ngx_event_core_module</code> 的 <code>init_process</code> 会在各 RTMP 模块的 <code>init_process</code> 之后执行，那么在 RTMP 模块的 <code>init_process</code> 钩子中添加的定时器，会在 <code>ngx_event_core_module</code> 的 <code>init_process</code> 中被毫不留情的初始化掉。</p>
+<p>错误其实在一开始就铸成，从一开始作者就在 config 文件中将 RTMP 模块放在了
+<code>ngx_event_core_module</code> 模块之前。我们可以查看 config 文件的<a href="https://github.com/arut/nginx-rtmp-module/commit/eb6a14fb6cc9ece398b8b2b5aae5d91b694c32d3">第二次提交</a>来确认这一点。</p>
+<p>弄清楚了整个来龙去脉之后，我们当然就知道该如何去掉 <code>ngx_rtmp_init_queue</code>，这也是应该的，既然问题都不存在了，为了解决这个问题的奇技淫巧当然也不应该存在。</p>
 <p>开源软件的魅力就在于此，你仿佛能穿越时空，通过代码与作者对话，感受他的聪明、狡黠与纠结。</p></div>
 
   </article>
