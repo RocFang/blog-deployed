@@ -972,20 +972,20 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>用git做本地备份</title>
+      <title>用 git 做本地备份</title>
       <link>https://pureage.info/2014/08/14/local-backup-using-git.html</link>
       <pubDate>Thu, 14 Aug 2014 01:48:16 +0000</pubDate>
       
       <guid>https://pureage.info/2014/08/14/local-backup-using-git.html</guid>
-      <description>&lt;p&gt;得益于强大的git以及github、bitbucket之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将git作为本地备份工具来使用。&lt;/p&gt;
-&lt;p&gt;假设A目录是你的工作目录，这里面的文件经常变动，所以你想使用git来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行git init，git add, git commit等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是git也无力回天了。&lt;/p&gt;
+      <description>&lt;p&gt;得益于强大的 git 以及 github、bitbucket 之类的外围产品，我们可以很方便的将自己本地的文件推到远端，除了可以完成它原本程序员之间协同工作的功能外，还可以单纯的将 git 作为本地备份工具来使用。&lt;/p&gt;
+&lt;p&gt;假设 A 目录是你的工作目录，这里面的文件经常变动，所以你想使用 git 来管理，但又不想推到远端，只想在本地保存。最简单的做法就是在工作目录下执行 git init、git add、git commit 等一系列操作。但这里有一个小问题，假如该目录是一个公用目录或其他原因，导致该目录有可能被直接删除掉，这样即使是 git 也无力回天了。&lt;/p&gt;
 &lt;p&gt;进一步想一下，这里有两种做法：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;在另外一个目录B下做一个该工作目录的克隆，每次工作目录提交后，在B下面执行git pull来同步。这样比较麻烦的一点是每次都要切换目录pull。&lt;/p&gt;
+&lt;p&gt;在另外一个目录 B 下做一个该工作目录的克隆，每次工作目录提交后，在 B 下面执行 git pull 来同步。这样比较麻烦的一点是每次都要切换目录 pull。&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;在另外一个目录下新建一个裸仓库。执行git init &amp;ndash;bare, 然后在A目录下将这个新建的裸仓库添加到上游upstream。这样每次在工作目录A下commit后，再执行一个push就可以了。&lt;/p&gt;
+&lt;p&gt;在另外一个目录下新建一个裸仓库。执行 git init &amp;ndash;bare，然后在 A 目录下将这个新建的裸仓库添加到上游 upstream。这样每次在工作目录 A 下 commit 后，再执行一个 push 就可以了。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;</description>
     </item>
