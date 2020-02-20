@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="strider (方鹏)">
+<meta name="description" content="一个伪文青兼程序员的自嗨
+    ">
+<meta name="keywords" content="博客, 技术, 文学, 电影">
+<meta name="referrer" content="always">
+<title>从一段代码到人们产生分歧的必然性 - 纯真年代</title>
+<link rel="stylesheet" type="text/css" href="/css/main.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+<header>
+  <div>
+    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  </div>
+  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
+</header>
+<main>
+  <article>
+    <div class="title">
+  <h1>从一段代码到人们产生分歧的必然性</h1>
+  </div>
+<div class="meta">
+  <div>2020-02-20</div>
+  <div>
+    <span><a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98">#程序员</a></span>
+    <span><a href="/tags/%E6%80%9D%E8%80%83">#思考</a></span>
+    </div>
+  </div>
+<div class="content">
+  <p>这个题目取的有点大，严格意义上并不是我能驾驭得了的。本文并不一定能经得起推敲，只是记录一下我这段时间从一些事情上得到的想法。</p>
+<p>众所周知，文艺作品，比如电影、小说，虽然它们给每个人的输入材料都是相同的，但每个人都会有自己不同的理解，所谓“一千个读者，就有一千个哈姆莱特”。</p>
+<p>在<strong>非虚拟类</strong>作品中，这种情况要好得多。比如，我们在看一本技术书籍时，重点就不再是得到<strong>每个人自己的理解</strong>，而是尽量去理解书中所表达的确定的东西，这也是<a href="https://pureage.info/post/howto-read-a-book/">《如何阅读一本书》</a>的主要内容。</p>
+<p>但即使对这类作品，我们也不能够完全消除人与人之间理解上的分歧。例如，我曾经写过一篇博客“<a href="https://pureage.info/post/a-misunderstanding-of-tao-of-rust/">在阅读《Rust 编程之道》时的一次抬杠经历</a>”，记录了我对一个简单的句子从疑惑到理解的过程。</p>
+<p>那么对于软件开发中的代码呢？</p>
+<p>曾经我理所当然的认为，代码是纯逻辑的表达，对于一份代码，读者只有理解和没有理解之分，理解了之后就不该有歧义。然而最近我发现，即使对于一小段逻辑非常简单的代码，不同的人也会有不同的理解。主要体现在，同一段代码的执行逻辑，在不同的人的大脑里所呈现出来的视觉效果可能会差别很大。</p>
+<p>举个简单的例子，反转单链表，这是一个几乎所有学过程序设计的人都面对过的一道题。我们先不说代码，仅从图形上来说，输入的原始链表通常是一个从左到右用箭头串联起来的链条。那么反转单链表这个操作的视觉效果，可以有两种。</p>
+<p>第一种，在图形上，保持原链表各节点顺序不变，我们逐个遍历原链表，并用一个额外的 pre 指针来记录当前节点的前一个节点，将当前节点的箭头改为指向前一个节点，依次进行。这个方法在视觉效果上，重点是<strong>反转指针</strong>。如果是在草稿纸上画图，我们会逐个将原链表中的箭头改变方向，由原来的从左到右改为从右到左。</p>
+<p>第二种，在图形上，我们脱离原链表，创建一个全新的链表。在遍历原链表时，每拿到一个节点，我们就把它挪到新链表的头部。在草稿纸上画图的话，我们会重新画一个链表，最后会得到一个全新的从左指到右的链表。</p>
+<p>纠其本质，这两种方式是一样的，都是用<strong>头部插入法</strong>实现了一个新的链表。但是在视觉呈现上，它们差别很大。甚至对于第一种方法，很多人压根都不会想到这也是创建了一个新的链表，只需要按题目要求改变指针箭头的方向而已。</p>
+<p>在拿到这个题目时，在脑海里或者在草稿纸上，究竟呈现的是第一种视觉效果，还是第二种视觉效果，不同的人会给出不同的答案。然而，他们依据各自的理解，写出来的代码逻辑会是一模一样的。例如，写成下面这个样子：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">struct</span> <span style="color:#000">ListNode</span>* <span style="color:#000">reverseList</span>(<span style="color:#00f">struct</span> <span style="color:#000">ListNode</span>* <span style="color:#000">head</span>) {
+    <span style="color:#00f">struct</span> <span style="color:#000">ListNode</span> *<span style="color:#000">t</span> = <span style="color:#000">NULL</span>;
+    <span style="color:#00f">struct</span> <span style="color:#000">ListNode</span> *<span style="color:#000">cur</span> = <span style="color:#000">head</span>;
+    <span style="color:#00f">struct</span> <span style="color:#000">ListNode</span> *<span style="color:#000">next</span> = <span style="color:#000">NULL</span>;
+    <span style="color:#00f">while</span> (<span style="color:#000">cur</span>) {
+        <span style="color:#000">next</span> = <span style="color:#000">cur</span>-&gt;<span style="color:#000">next</span>;
+        <span style="color:#000">cur</span>-&gt;<span style="color:#000">next</span> = <span style="color:#000">t</span>;
+        <span style="color:#000">t</span> = <span style="color:#000">cur</span>;
+        <span style="color:#000">cur</span> = <span style="color:#000">next</span>;
+    }
+    <span style="color:#00f">return</span> <span style="color:#000">t</span>;
+}
+
+</code></pre></div><p>这份代码里有一个临时指针 t，持第一种理解的人，通常会把 t 命名为 pre 或其他相似意义的词，持第二种理解的人，通常会把 t 命名为 new_head 或其他相似意义的词。但我们当然可以认为，这就是同一份代码。</p>
+<p>这只是一段相当简单的代码片段，不同的人读起来，在脑海里呈现出来的视觉动作，就可能完全不同，那么对于更复杂的代码应该就更是如此了。如果逻辑如此确定的代码都有这个问题，那么在生活中，人与人之间的各种分歧是不是从生理上就根本是不可避免的。</p>
+<p>再做一下引申，放到到人类社会，如果每个人对相同事物理解的分歧不可避免，那么理想的社会环境，就必然是一个支持不同想法的人都发声、讨论的社会。讨论可能会带来争论、争吵，但只要是在规范之下，利于提升我们对世界的认知，则都应该是被鼓励的。</p>
+<p>然而，现实生活离这个理想环境，差的太远。</p></div>
+
+  </article>
+</main>
+<footer>
+  <div>
+    <div>
+      2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a></div>
+  </div>
+</footer>
+</body>
+</html>

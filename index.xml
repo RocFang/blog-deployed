@@ -6,10 +6,19 @@
     <description>Recent content on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>2011-2020 strider. [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)</copyright>
-    <lastBuildDate>Thu, 02 Jan 2020 11:02:01 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 20 Feb 2020 18:10:05 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>从一段代码到人们产生分歧的必然性</title>
+      <link>https://pureage.info/post/some-thoughts-getting-from-a-simple-code/</link>
+      <pubDate>Thu, 20 Feb 2020 18:10:05 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/some-thoughts-getting-from-a-simple-code/</guid>
+      <description>&lt;p&gt;这个题目取的有点大，严格意义上并不是我能驾驭得了的。本文并不一定能经得起推敲，只是记录一下我这段时间从一些事情上得到的想法。&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>记一次针对 srs 源站的类 syn flood 攻击</title>

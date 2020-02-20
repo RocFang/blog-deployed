@@ -6,10 +6,28 @@
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>2011-2020 strider. [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)</copyright>
-    <lastBuildDate>Thu, 02 Jan 2020 11:02:01 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 20 Feb 2020 18:10:05 +0800</lastBuildDate>
     
 	<atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>思考</title>
+      <link>https://pureage.info/tags/%E6%80%9D%E8%80%83/</link>
+      <pubDate>Thu, 20 Feb 2020 18:10:05 +0800</pubDate>
+      
+      <guid>https://pureage.info/tags/%E6%80%9D%E8%80%83/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>程序员</title>
+      <link>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</link>
+      <pubDate>Thu, 20 Feb 2020 18:10:05 +0800</pubDate>
+      
+      <guid>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>srs</title>
@@ -75,15 +93,6 @@
     </item>
     
     <item>
-      <title>程序员</title>
-      <link>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</link>
-      <pubDate>Sun, 07 Apr 2019 17:51:22 +0800</pubDate>
-      
-      <guid>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Go</title>
       <link>https://pureage.info/tags/go/</link>
       <pubDate>Mon, 18 Mar 2019 14:49:45 +0800</pubDate>
@@ -98,15 +107,6 @@
       <pubDate>Tue, 12 Mar 2019 14:09:22 +0800</pubDate>
       
       <guid>https://pureage.info/tags/%E7%94%B5%E5%BD%B1/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>思考</title>
-      <link>https://pureage.info/tags/%E6%80%9D%E8%80%83/</link>
-      <pubDate>Wed, 02 Jan 2019 14:24:49 +0800</pubDate>
-      
-      <guid>https://pureage.info/tags/%E6%80%9D%E8%80%83/</guid>
       <description></description>
     </item>
     
