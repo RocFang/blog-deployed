@@ -456,14 +456,14 @@ headers when using HTTP/2.&lt;/p&gt;
     </item>
     
     <item>
-      <title>使用ngx.header修改Accept-Ranges的问题</title>
+      <title>使用 ngx.header 修改 Accept-Ranges 的问题</title>
       <link>https://pureage.info/2016/01/17/modify-accept-ranges-header.html</link>
       <pubDate>Sun, 17 Jan 2016 14:09:00 +0000</pubDate>
       
       <guid>https://pureage.info/2016/01/17/modify-accept-ranges-header.html</guid>
       <description>&lt;p&gt;今天有位朋友在使用 OpenResty 时发现一个奇怪的事情。&lt;/p&gt;
-&lt;p&gt;他打算用 ngx.header 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 *_by_lua 脚本中写入ngx.header[&amp;ldquo;Accept-Ranges&amp;rdquo;] = &amp;ldquo;xxx&amp;rdquo;。在 OpenResty 中，这是一种经常被使用到的方法。&lt;/p&gt;
-&lt;p&gt;他发现的问题是，当他这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值，即 &amp;ldquo;bytes&amp;rdquo;.&lt;/p&gt;</description>
+&lt;p&gt;他打算用 &lt;code&gt;ngx.header&lt;/code&gt; 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 &lt;code&gt;*_by_lua&lt;/code&gt;  脚本中写入 &lt;code&gt;ngx.header[&amp;quot;Accept-Ranges&amp;quot;] = &amp;quot;xxx&amp;quot;&lt;/code&gt;。在 OpenResty 中，这是一种经常被使用到的方法。&lt;/p&gt;
+&lt;p&gt;他发现的问题是，当这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -572,7 +572,7 @@ headers when using HTTP/2.&lt;/p&gt;
       <pubDate>Sun, 20 Dec 2015 15:35:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/12/20/meet-an-old-friend.html</guid>
-      <description>&lt;p&gt;大学室友涛从南京来深圳出差，今天特意抽空到我家来小聚了一下。从大学毕业，到现在已经有6年多没见了，大学四年同处一室的感情还是挺深的，尽管这么久没见面了，仍没有生疏感。朋友之间相处没有生疏感的表现就是，面对彼此都没有交流上的压力，我不用刻意找话题跟你聊天，你也不用刻意逢迎我的喜好，吃饭时我不用担心是否你酒没喝到，你也不用按照我的节奏来喝酒。有一茬没一茬的聊天，一杯半盏的喝酒，自由惬意。&lt;/p&gt;
+      <description>&lt;p&gt;大学室友涛从南京来深圳出差，今天特意抽空到广州我家来小聚了一下。从大学毕业，到现在已经有 6 年多没见了，大学四年同处一室的感情还是挺深的，尽管这么久没见面了，仍没有生疏感。朋友之间相处没有生疏感的表现就是，面对彼此都没有交流上的压力，我不用刻意找话题跟你聊天，你也不用刻意逢迎我的喜好，吃饭时我不用担心是否你酒没喝到，你也不用按照我的节奏来喝酒。有一茬没一茬的聊天，一杯半盏的喝酒，自由惬意。&lt;/p&gt;
 &lt;p&gt;说起来大学毕业都六年了。六年后再见面，我们都已经成家，他还有了一个刚满一岁的女儿。似水流年，流年似水，平日里丝毫不觉得，只有在带有旧日痕迹的事物放到面前时，感慨才会如此强烈。但不可避免的事实是，我们都是生活中的人了。不可能彻夜长谈，不可能一直回味过去。离别才是常态，小聚只是片段。所谓生活中的人，就是对生活本身习以为常，面对相聚别离，不会有太多悲喜。&lt;/p&gt;</description>
     </item>
     
@@ -1201,25 +1201,25 @@ location /test2 {
     </item>
     
     <item>
-      <title>lua-nginx使用自定义变量中需要说明的一点</title>
+      <title>lua-nginx 使用自定义变量时需要说明的一点</title>
       <link>https://pureage.info/2014/01/20/lua-nginx-variable.html</link>
       <pubDate>Mon, 20 Jan 2014 15:30:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/01/20/lua-nginx-variable.html</guid>
-      <description>&lt;p&gt;在nginx中，有两种方式添加自定义的变量：&lt;/p&gt;
+      <description>&lt;p&gt;在 Nginx 中，有两种方式添加自定义的变量：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;在配置文件中用set指定添加&lt;/li&gt;
-&lt;li&gt;在自己编写的C模块中，调用&lt;code&gt;ngx_http_add_variable&lt;/code&gt;接口来添加变量&lt;/li&gt;
+&lt;li&gt;在配置文件中用 set 指定添加&lt;/li&gt;
+&lt;li&gt;在自己编写的 C 模块中，调用 &lt;code&gt;ngx_http_add_variable&lt;/code&gt; 接口来添加变量&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;第一种方法较简单，第二种方法有一处需要说明一下。&lt;/p&gt;
-&lt;p&gt;当调用&lt;code&gt;ngx_http_add_variable&lt;/code&gt;接口时，如果传入的flag参数中&lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt;位被设置了，那么在lua代码中使用ngx.var.XXX是不能访问到该变量的，得到的值是nil。&lt;/p&gt;
+&lt;p&gt;当调用 &lt;code&gt;ngx_http_add_variable&lt;/code&gt; 接口时，如果传入的 flag 参数中  &lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt; 位被设置了，那么在 lua 代码中使用 ngx.var.XXX 是不能访问到该变量的，得到的值是 &lt;code&gt;nil&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;在这种情况下，如果现在配置文件中通过set指定一个中间变量，则在lua代码中可以访问到。&lt;/p&gt;
-&lt;p&gt;例如，某个C模块中用带有&lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt;位的flag参数调用了&lt;code&gt;ngx_http_add_variable&lt;/code&gt;，创建了变量A，则如果在lua代码中通过&lt;code&gt;ngx.var.A&lt;/code&gt;只能得到一个nil值。&lt;/p&gt;
-&lt;p&gt;而如果在配置文件中，先调用set命令:&lt;code&gt;set $B $A;&lt;/code&gt;,那么在lua代码中，通过代码&lt;code&gt;local A2 = ngx.var.B&lt;/code&gt;则可以间接访问到该变量。&lt;/p&gt;
-&lt;p&gt;翻了一下邮件列表，发现该问题agentzh早有解答：&lt;/p&gt;
+&lt;p&gt;例如，某个 C 模块中用带有 &lt;code&gt;NGX_HTTP_VAR_NOHASH&lt;/code&gt; 位的 flag 参数调用了  &lt;code&gt;ngx_http_add_variable&lt;/code&gt;，创建了变量 A，则如果在 lua 代码中通过 &lt;code&gt;ngx.var.A&lt;/code&gt; 只能得到一个 &lt;code&gt;nil&lt;/code&gt; 值。&lt;/p&gt;
+&lt;p&gt;而如果在配置文件中，先调用 set 命令：&lt;code&gt;set $B $A；&lt;/code&gt;，那么在 lua 代码中，通过代码 &lt;code&gt;local A2 = ngx.var.B&lt;/code&gt; 则可以间接访问到该变量。&lt;/p&gt;
+&lt;p&gt;翻了一下邮件列表，发现该问题 agentzh 早有解答：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;逆雪寒:&lt;br&gt;
-通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是nil 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug ? 还是我理解问题.&lt;/p&gt;
+&lt;p&gt;逆雪寒：&lt;/br&gt;
+通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是 &lt;code&gt;nil&lt;/code&gt; 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug  ? 还是我理解问题？&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
     
