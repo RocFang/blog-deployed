@@ -444,12 +444,12 @@
     </item>
     
     <item>
-      <title>关于Nginx-1.9.11的动态模块</title>
+      <title>关于 Nginx-1.9.11 的动态模块</title>
       <link>https://pureage.info/2016/02/14/nginx-dynamic-module.html</link>
       <pubDate>Sun, 14 Feb 2016 14:57:00 +0000</pubDate>
       
       <guid>https://pureage.info/2016/02/14/nginx-dynamic-module.html</guid>
-      <description>&lt;p&gt;我们知道，原生 Nginx 增加、修改一个第三方模块，需要重新编译源代码，所有的模块都是用静态链接的形式组织起来的。而 Tengine 有一个增强的功能，即动态模块加载 DSO(Dynamic Shared Objects), 可以实现运行时动态加载模块，而不用每次都要重新编译Tengine。&lt;/p&gt;
+      <description>&lt;p&gt;我们知道，原生 Nginx 增加、修改一个第三方模块，需要重新编译源代码，所有的模块都是用静态链接的形式组织起来的。而 Tengine 有一个增强的功能，即动态模块加载 DSO(Dynamic Shared Objects)，可以实现运行时动态加载模块，而不用每次都要重新编译Tengine。&lt;/p&gt;
 &lt;p&gt;在 2016 年农历春节期间，Nginx 官方发布了最新版本 Nginx-1.9.11，也增加了该功能。&lt;/p&gt;
 &lt;p&gt;Nginx-1.9.11 的Changelog 如下:&lt;/p&gt;
 &lt;blockquote&gt;
