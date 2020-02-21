@@ -36,37 +36,34 @@
 <p>Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    <code>auto</code> 目录下。本文重点涉及其中两个脚本：<code>auto/have</code> 和 <code>auto/define</code>。</p>
 <p>它们的内容极其简单，分别如下：</p>
 <ol>
-<li>
-<p>auto/have:</p>
+<li>auto/have:</li>
+</ol>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># Copyright (C) Igor Sysoev</span>
 <span style="color:#888;font-style:italic"># Copyright (C) Nginx, Inc.</span>  
-     
-     
+
+
 cat <span style="color:#5a2">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
-</span><span style="color:#5a2">     
+</span><span style="color:#5a2">   
 </span><span style="color:#5a2">#ifndef $have  
 </span><span style="color:#5a2">#define $have 1  
 </span><span style="color:#5a2">#endif  
-</span><span style="color:#5a2">     
+</span><span style="color:#5a2">
 </span><span style="color:#5a2">END</span>
-</code></pre></div></li>
+</code></pre></div><ol start="2">
+<li>auto/define</li>
 </ol>
-<pre><code>
-2. auto/define
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># Copyright (C) Igor Sysoev</span>  
+<span style="color:#888;font-style:italic"># Copyright (C) Nginx, Inc.</span>  
 
-   ```bash
-   # Copyright (C) Igor Sysoev  
-   # Copyright (C) Nginx, Inc.  
-     
-     
-   cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
-     
-   #ifndef $have  
-   #define $have $value  
-   #endif  
-     
-   END  
-</code></pre><p>可见，两个脚本只有一处不同，是将 <code>have</code> 变量定义成 <code>value</code> 变量还是将其定义为 1，所以后面仅仅以 <code>have</code> 脚本为例进行说明。</p>
+
+cat <span style="color:#5a2">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+</span><span style="color:#5a2">   
+</span><span style="color:#5a2">#ifndef $have  
+</span><span style="color:#5a2">#define $have $value  
+</span><span style="color:#5a2">#endif  
+</span><span style="color:#5a2">
+</span><span style="color:#5a2">END</span>  
+</code></pre></div><p>可见，两个脚本只有一处不同，是将 <code>have</code> 变量定义成 <code>value</code> 变量还是将其定义为 1，所以后面仅仅以 <code>have</code> 脚本为例进行说明。</p>
 <p><code>have</code> 脚本的用法：</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#000">have</span>=XXXX  . auto/have
 </code></pre></div><p>就会在 <code>$NGX_AUTO_CONFIG_H</code> 所代表的文件里（默认为 <code>objs/ngx_auto_config.h</code>)追加如下内容：</p>
@@ -84,46 +81,46 @@ cat <span style="color:#5a2">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 </span></code></pre></div><p>上面代码的意图是，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code> 宏或 <code>NGX_HAVE_MEMALIGN</code>     宏，则声明函数 <code>ngx_memalign</code>，否则，简单的对 <code>ngx_alloc</code> 进行一下封装（<code>ngx_alloc</code> 是对 <code>malloc</code> 的简单封装）。</p>
 <p>我们在来看函数 <code>ngx_memalign</code> 在 <code>ngx_alloc.c</code> 中的定义：</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">if (NGX_HAVE_POSIX_MEMALIGN)  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span>  
+</span><span style="color:#888;font-style:italic"></span>
 <span style="color:#00f">void</span> *  
 <span style="color:#000">ngx_memalign</span>(<span style="color:#000">size_t</span> <span style="color:#000">alignment</span>, <span style="color:#000">size_t</span> <span style="color:#000">size</span>, <span style="color:#000">ngx_log_t</span> *<span style="color:#000">log</span>)  
 {  
     <span style="color:#00f">void</span> *<span style="color:#000">p</span>;  
     <span style="color:#00f">int</span> <span style="color:#000">err</span>;  
-  
+
     <span style="color:#000">err</span> = <span style="color:#000">posix_memalign</span>(&amp;<span style="color:#000">p</span>, <span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
-  
+      
     <span style="color:#00f">if</span> (<span style="color:#000">err</span>) {  
         <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_EMERG</span>, <span style="color:#000">log</span>, <span style="color:#000">err</span>,  
                       <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">posix_memalign(%uz, %uz) failed</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
         <span style="color:#000">p</span> = <span style="color:#000">NULL</span>;  
     }  
-  
+      
     <span style="color:#000">ngx_log_debug3</span>(<span style="color:#000">NGX_LOG_DEBUG_ALLOC</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
                    <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">posix_memalign: %p:%uz @%uz</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">p</span>, <span style="color:#000">size</span>, <span style="color:#000">alignment</span>);  
-  
+      
     <span style="color:#00f">return</span> <span style="color:#000">p</span>;  
 }  
-  
+
 <span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">elif (NGX_HAVE_MEMALIGN)  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span>  
+</span><span style="color:#888;font-style:italic"></span>
 <span style="color:#00f">void</span> *  
 <span style="color:#000">ngx_memalign</span>(<span style="color:#000">size_t</span> <span style="color:#000">alignment</span>, <span style="color:#000">size_t</span> <span style="color:#000">size</span>, <span style="color:#000">ngx_log_t</span> *<span style="color:#000">log</span>)  
 {  
     <span style="color:#00f">void</span> *<span style="color:#000">p</span>;  
-  
+
     <span style="color:#000">p</span> = <span style="color:#000">memalign</span>(<span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
     <span style="color:#00f">if</span> (<span style="color:#000">p</span> == <span style="color:#000">NULL</span>) {  
         <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_EMERG</span>, <span style="color:#000">log</span>, <span style="color:#000">ngx_errno</span>,  
                       <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">memalign(%uz, %uz) failed</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
     }  
-  
+      
     <span style="color:#000">ngx_log_debug3</span>(<span style="color:#000">NGX_LOG_DEBUG_ALLOC</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
                    <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">memalign: %p:%uz @%uz</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">p</span>, <span style="color:#000">size</span>, <span style="color:#000">alignment</span>);  
-  
+      
     <span style="color:#00f">return</span> <span style="color:#000">p</span>;  
 }  
-  
+
 <span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
 </span></code></pre></div><p>上面代码的意图为，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code>，那么 <code>ngx_memalign</code> 就是对 <code>posix_memalign</code> 的简单封装，否则，如果定义了 <code>NGX_HAVE_MEMALIGN</code>，则                     <code>ngx_memalign</code> 是对 <code>memalign</code> 的简单封装。</p>
 <p>那么 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和 <code>NGX_HAVE_MEMALIGN</code> 又是什么时候被定义呢？</p>
