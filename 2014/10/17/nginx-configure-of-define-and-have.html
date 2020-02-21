@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>Nginx如何控制某个特性是否打开 - 纯真年代</title>
+<title>Nginx 如何控制某个特性是否打开 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>Nginx如何控制某个特性是否打开</h1>
+  <h1>Nginx 如何控制某个特性是否打开</h1>
   </div>
 <div class="meta">
   <div>2014-10-17</div>
@@ -31,108 +31,108 @@
     </div>
   </div>
 <div class="content">
-  <p>提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
-<p>我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。</p>
-<p>Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.</p>
+  <p>提到 Nginx，大家首先会想到它的高性能、异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是 Nginx 的核心，但作为一个优秀的开源项目，Nginx 可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
+<p>我们知道，在 Linux 下用源码安装方式编译安装一个软件时，标准情况下是有一个 configure 的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。</p>
+<p>Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    <code>auto</code> 目录下。本文重点涉及其中两个脚本：<code>auto/have</code> 和 <code>auto/define</code>。</p>
 <p>它们的内容极其简单，分别如下：
 1.auto/have:</p>
-<pre><code># Copyright (C) Igor Sysoev
-# Copyright (C) Nginx, Inc.  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># Copyright (C) Igor Sysoev</span>
+<span style="color:#888;font-style:italic"># Copyright (C) Nginx, Inc.</span>  
   
   
-cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+cat <span style="color:#5a2">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+</span><span style="color:#5a2">  
+</span><span style="color:#5a2">#ifndef $have  
+</span><span style="color:#5a2">#define $have 1  
+</span><span style="color:#5a2">#endif  
+</span><span style="color:#5a2">  
+</span><span style="color:#5a2">END</span>
+</code></pre></div><p>2.auto/define</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># Copyright (C) Igor Sysoev</span>  
+<span style="color:#888;font-style:italic"># Copyright (C) Nginx, Inc.</span>  
   
-#ifndef $have  
-#define $have 1  
-#endif  
   
-END  
-</code></pre><p>2.auto/define</p>
-<pre><code># Copyright (C) Igor Sysoev  
-# Copyright (C) Nginx, Inc.  
-  
-  
-cat &lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
-  
-#ifndef $have  
-#define $have $value  
-#endif  
-  
-END  
-</code></pre><p>可见，两个脚本只有一处不同，是将have变量定义成value变量还是将其定义为1，所以后面仅仅以have脚本为例进行说明。</p>
-<p>have脚本的用法：</p>
-<pre><code>have=XXXX  . auto/have  
-</code></pre><p>就会在$NGX_AUTO_CONFIG_H所代表的文件里（默认为objs/ngx_auto_config.h)追加如下内容：</p>
-<pre><code>#ifndef XXXX  
-#define XXXX 1  
-#endif  
-</code></pre><p>这样，就可以用XXXX宏是否定义来控制编译的过程。</p>
-<p>下面以ngx_memalign这个Nginx内部接口为例来进行详细的说明。<br>
-ngx_memalign是Nginx里最基本的接口之一，经常会被调用。从接口的名字就可以看出，这个接口是用来处理内存分配和对齐的。其定义在ngx_alloc.h中：</p>
-<pre><code>#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
-void *ngx_memalign(size_t alignment, size_t size, ngx_log_t *log); 
-#else 
-#define ngx_memalign(alignment, size, log) ngx_alloc(size, log) 
-#endif  
-</code></pre><p>上面代码的意图是，如果定义了NGX_HAVE_POSIX_MEMALIGN宏或者NGX_HAVE_MEMALIGN宏，则声明函数ngx_memalign，否则，简单的对ngx_alloc进行一下封装（ngx_alloc是对malloc的简单封装）。</p>
-<p>我们在来看函数ngx_memalign在ngx_alloc.c中的定义：</p>
-<pre><code>#if (NGX_HAVE_POSIX_MEMALIGN)  
-  
-void *  
-ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)  
+cat <span style="color:#5a2">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+</span><span style="color:#5a2">  
+</span><span style="color:#5a2">#ifndef $have  
+</span><span style="color:#5a2">#define $have $value  
+</span><span style="color:#5a2">#endif  
+</span><span style="color:#5a2">  
+</span><span style="color:#5a2">END</span>  
+</code></pre></div><p>可见，两个脚本只有一处不同，是将 <code>have</code> 变量定义成 <code>value</code> 变量还是将其定义为 1，所以后面仅仅以 <code>have</code> 脚本为例进行说明。</p>
+<p><code>have</code> 脚本的用法：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#000">have</span>=XXXX  . auto/have  
+</code></pre></div><p>就会在 <code>$NGX\_AUTO\_CONFIG_H</code> 所代表的文件里（默认为 <code>objs/ngx_auto_config.h</code>)追加如下内容：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#ifndef XXXX</span>  
+<span style="color:#888;font-style:italic">#define XXXX 1</span>  
+<span style="color:#888;font-style:italic">#endif</span>  
+</code></pre></div><p>这样，就可以用 XXXX 宏是否定义来控制编译的过程。</p>
+<p>下面以 <code>ngx_memalign</code> 这个 Nginx 内部接口为例来进行详细的说明。</p>
+<p><code>ngx_memalign</code> 是 Nginx 里最基本的接口之一，经常会被调用。从接口的名字就可以看出，这个接口是用来处理内存分配和对齐的。其定义在 <code>ngx_alloc.h</code> 中：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#00f">void</span> *<span style="color:#000">ngx_memalign</span>(<span style="color:#000">size_t</span> <span style="color:#000">alignment</span>, <span style="color:#000">size_t</span> <span style="color:#000">size</span>, <span style="color:#000">ngx_log_t</span> *<span style="color:#000">log</span>); 
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define ngx_memalign(alignment, size, log) ngx_alloc(size, log) </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span></code></pre></div><p>上面代码的意图是，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code> 宏或 <code>NGX_HAVE_MEMALIGN</code>     宏，则声明函数 <code>ngx_memalign</code>，否则，简单的对 <code>ngx_alloc</code> 进行一下封装（<code>ngx_alloc</code> 是对 <code>malloc</code> 的简单封装）。</p>
+<p>我们在来看函数 <code>ngx_memalign</code> 在 <code>ngx_alloc.c</code> 中的定义：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">if (NGX_HAVE_POSIX_MEMALIGN)  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#00f">void</span> *  
+<span style="color:#000">ngx_memalign</span>(<span style="color:#000">size_t</span> <span style="color:#000">alignment</span>, <span style="color:#000">size_t</span> <span style="color:#000">size</span>, <span style="color:#000">ngx_log_t</span> *<span style="color:#000">log</span>)  
 {  
-    void *p;  
-    int err;  
+    <span style="color:#00f">void</span> *<span style="color:#000">p</span>;  
+    <span style="color:#00f">int</span> <span style="color:#000">err</span>;  
   
-    err = posix_memalign(&amp;p, alignment, size);  
+    <span style="color:#000">err</span> = <span style="color:#000">posix_memalign</span>(&amp;<span style="color:#000">p</span>, <span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
   
-    if (err) {  
-        ngx_log_error(NGX_LOG_EMERG, log, err,  
-                      &quot;posix_memalign(%uz, %uz) failed&quot;, alignment, size);  
-        p = NULL;  
+    <span style="color:#00f">if</span> (<span style="color:#000">err</span>) {  
+        <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_EMERG</span>, <span style="color:#000">log</span>, <span style="color:#000">err</span>,  
+                      <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">posix_memalign(%uz, %uz) failed</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
+        <span style="color:#000">p</span> = <span style="color:#000">NULL</span>;  
     }  
   
-    ngx_log_debug3(NGX_LOG_DEBUG_ALLOC, log, 0,  
-                   &quot;posix_memalign: %p:%uz @%uz&quot;, p, size, alignment);  
+    <span style="color:#000">ngx_log_debug3</span>(<span style="color:#000">NGX_LOG_DEBUG_ALLOC</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
+                   <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">posix_memalign: %p:%uz @%uz</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">p</span>, <span style="color:#000">size</span>, <span style="color:#000">alignment</span>);  
   
-    return p;  
+    <span style="color:#00f">return</span> <span style="color:#000">p</span>;  
 }  
   
-#elif (NGX_HAVE_MEMALIGN)  
-  
-void *  
-ngx_memalign(size_t alignment, size_t size, ngx_log_t *log)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">elif (NGX_HAVE_MEMALIGN)  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#00f">void</span> *  
+<span style="color:#000">ngx_memalign</span>(<span style="color:#000">size_t</span> <span style="color:#000">alignment</span>, <span style="color:#000">size_t</span> <span style="color:#000">size</span>, <span style="color:#000">ngx_log_t</span> *<span style="color:#000">log</span>)  
 {  
-    void *p;  
+    <span style="color:#00f">void</span> *<span style="color:#000">p</span>;  
   
-    p = memalign(alignment, size);  
-    if (p == NULL) {  
-        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,  
-                      &quot;memalign(%uz, %uz) failed&quot;, alignment, size);  
+    <span style="color:#000">p</span> = <span style="color:#000">memalign</span>(<span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">p</span> == <span style="color:#000">NULL</span>) {  
+        <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_EMERG</span>, <span style="color:#000">log</span>, <span style="color:#000">ngx_errno</span>,  
+                      <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">memalign(%uz, %uz) failed</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">alignment</span>, <span style="color:#000">size</span>);  
     }  
   
-    ngx_log_debug3(NGX_LOG_DEBUG_ALLOC, log, 0,  
-                   &quot;memalign: %p:%uz @%uz&quot;, p, size, alignment);  
+    <span style="color:#000">ngx_log_debug3</span>(<span style="color:#000">NGX_LOG_DEBUG_ALLOC</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
+                   <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">memalign: %p:%uz @%uz</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">p</span>, <span style="color:#000">size</span>, <span style="color:#000">alignment</span>);  
   
-    return p;  
+    <span style="color:#00f">return</span> <span style="color:#000">p</span>;  
 }  
   
-#endif  
-</code></pre><p>上面代码的意图为，如果定义了NGX_HAVE_POSIX_MEMALIGN，那么ngx_memalign就是对posix_memalign的简单封装，否则，如果定义了NGX_HAVE_MEMALIGN，则ngx_memalign是对memalign的简单封装。</p>
-<p>那么NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN又是什么时候被定义呢？</p>
-<p>过程如下：<br>
-在auto/unix脚本，列出需要检查的接口，这里就是memalign和posix_memalign了，交给auto/feature脚本来逐一处理，auto/feature脚本会对针对每一个带检查的接口，生成一个最基本的临时c源文件，该源文件会调用该接口。feature脚本然后对该源文件进行编译并判断最终生成的目标文件的可执行性。用这种动态检测的方法来判断该接口在当前系统中是否支持。</p>
-<p>如果feature脚本验证出posix_memalign和memalign接口在当前系统中都可用后，则会逐一调用have脚本：</p>
-<pre><code>have=$ngx_have_feature . auto/have  
-</code></pre><p>这里，变量ngx_have_feature即是NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN。</p>
-<p>最终，have在configure、auto/unix、auto/feature、auto/have各个脚本的通力合作下，在objs/ngx_auto_config.h中就有了对NGX_HAVE_POSIX_MEMALIGN和NGX_HAVE_MEMALIGN的定义，进而影响到ngx_memalign接口的实现。</p>
-<p>让我们从需求出发，将接口ngx_memalign的需求描述一遍：</p>
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span></code></pre></div><p>上面代码的意图为，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code>，那么 <code>ngx_memalign</code> 就是对 <code>posix_memalign</code> 的简单封装，否则，如果定义了 <code>NGX_HAVE_MEMALIGN</code>，则                     <code>ngx_memalign</code> 是对 <code>memalign</code> 的简单封装。</p>
+<p>那么 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和 <code>NGX_HAVE_MEMALIGN</code> 又是什么时候被定义呢？</p>
+<p>过程如下：</p>
+<p>在 <code>auto/unix</code> 脚本，列出需要检查的接口，这里就是 <code>memalign</code> 和 <code>posix_memalign</code> 了，交给 <code>auto/feature</code> 脚本来逐一处理，<code>auto/feature</code> 脚本会对针对每一个带检查的接口，生成一个最基本的临时 c 源文件，该源文件会调用该接口。<code>feature</code> 脚本然后对该源文件进行编译并判断最终生成的目标文件的可执行性。用这种动态检测的方法来判断该接口在当前系统中是否支持。</p>
+<p>如果 <code>feature</code> 脚本验证出 <code>posix_memalign</code> 和 <code>memalign</code> 接口在当前系统中都可用后，则会逐一调用 <code>have</code> 脚本：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#000">have</span>=<span style="color:#000">$ngx_have_feature</span> . auto/have  
+</code></pre></div><p>这里，变量 <code>ngx_have_feature</code> 即是 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和  <code>NGX_HAVE_MEMALIGN</code>。</p>
+<p>最终在 configure、auto/unix、auto/feature、auto/have 各个脚本的通力合作下，在  <code>objs/ngx_auto_config.h</code> 中就有了对 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和  <code>NGX_HAVE_MEMALIGN</code> 的定义，进而影响到 <code>ngx_memalign</code> 接口的实现。</p>
+<p>让我们从需求出发，将接口 <code>ngx_memalign</code> 的需求描述一遍：</p>
 <ol>
-<li>如果系统支持posix_memalign，则ngx_memalign是对posix_memalign的简单封装。</li>
-<li>如果系统不支持posix_memalign，但支持memalign，则ngx_memalign是对memalign的简单封装。</li>
-<li>如果系统竟然对posix_memalign和memalign都不支持，则ngx_memalign是对malloc的简单封装。</li>
+<li>如果系统支持 <code>posix_memalign</code>，则 <code>ngx_memalign</code> 是对 <code>posix_memalign</code> 的简单封装。</li>
+<li>如果系统不支持 <code>posix_memalign</code>，但支持 <code>memalign</code>，则 <code>ngx_memalign</code> 是对  <code>memalign</code> 的简单封装。</li>
+<li>如果系统竟然对 <code>posix_memalign</code> 和 <code>memalign</code> 都不支持，则 <code>ngx_memalign</code> 是对   <code>malloc</code> 的简单封装。</li>
 </ol>
-<p>实现需求很简单，但如何实现的优雅，则是另一回事。Nginx向我们展示了，一个在C上尽力把服务器性能做到极致的项目，是如何在脚本上也尽最大努力做得漂亮。</p></div>
+<p>实现需求很简单，但如何实现的优雅，则是另一回事。Nginx 向我们展示了，一个在 C 上尽力把服务器性能做到极致的项目，是如何在脚本上也尽最大努力做得漂亮。</p></div>
 
   </article>
 </main>

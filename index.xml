@@ -941,14 +941,14 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>Nginx如何控制某个特性是否打开</title>
+      <title>Nginx 如何控制某个特性是否打开</title>
       <link>https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</link>
       <pubDate>Fri, 17 Oct 2014 09:31:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html</guid>
-      <description>&lt;p&gt;提到Nginx，大家首先会想到它的高性能，异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是Nginx的核心，但作为一个优秀的开源项目，Nginx可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？&lt;/p&gt;
-&lt;p&gt;我们知道，在Linux下用源码安装方式编译安装一个软件时，标准情况下是有一个configure的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。&lt;/p&gt;
-&lt;p&gt;Nginx的configure文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的auto目录下。本文重点涉及其中两个脚本：auto/have和auto/define.&lt;/p&gt;</description>
+      <description>&lt;p&gt;提到 Nginx，大家首先会想到它的高性能、异步框架、模块化、upstream、红黑树等耳熟能详的技术实现。这些确实也是 Nginx 的核心，但作为一个优秀的开源项目，Nginx 可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？&lt;/p&gt;
+&lt;p&gt;我们知道，在 Linux 下用源码安装方式编译安装一个软件时，标准情况下是有一个 configure 的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。&lt;/p&gt;
+&lt;p&gt;Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    &lt;code&gt;auto&lt;/code&gt; 目录下。本文重点涉及其中两个脚本：&lt;code&gt;auto/have&lt;/code&gt; 和 &lt;code&gt;auto/define&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
     
     <item>
