@@ -633,14 +633,14 @@ headers when using HTTP/2.&lt;/p&gt;
     </item>
     
     <item>
-      <title>尝鲜：Nginx-1.9.8推出的切片模块</title>
+      <title>尝鲜：Nginx-1.9.8 推出的切片模块</title>
       <link>https://pureage.info/2015/12/10/nginx-slice-module.html</link>
       <pubDate>Thu, 10 Dec 2015 06:12:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/12/10/nginx-slice-module.html</guid>
       <description>&lt;p&gt;熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;不支持多盘&lt;/li&gt;
+&lt;li&gt;性能不好（相对于 ATS 等专业的 cache 软件）&lt;/li&gt;
 &lt;li&gt;不支持裸设备&lt;/li&gt;
 &lt;li&gt;大文件不会切片&lt;/li&gt;
 &lt;li&gt;大文件的 Range 请求表现不尽如人意&lt;/li&gt;
@@ -787,17 +787,19 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>nginx proxy_cache与etag配合的问题</title>
+      <title>nginx proxy_cache 与 etag 配合的问题</title>
       <link>https://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</link>
       <pubDate>Thu, 25 Jun 2015 13:07:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/06/25/nginx-proxy-cache-and-etag.html</guid>
       <description>&lt;p&gt;&lt;strong&gt;首先谈谈遇到的问题:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;一个Nginx架在一个后端服务的前面，Nginx proxy_pass到它并开启proxy_cache,假设这个后端服务总是会吐Etag响应头。
-在应用中，我们发现当nginx 的proxy_cache成功将后端的页面cache住时,浏览器多次对该页面发起请求，会命中nginx的cache,但即使浏览器请求带了If-None-Match请求头，nginx却不会响应304，而是响应200.&lt;br&gt;
-这样带来的问题是，即使nginx的cache将请求阻挡在后端应用之外，但是:&lt;br&gt;
-（1）命中后每次响应200导致我们nginx所在的服务器和客户浏览器双方都有流量损耗&lt;br&gt;
-（2）更重要的是增长了我们的服务响应时间。因为，如果是304的话，nginx不需要向浏览器吐数据，只用告诉浏览器用本地的缓存就好了。&lt;/p&gt;</description>
+&lt;p&gt;一个 Nginx 架在一个后端服务的前面，Nginx proxy_pass 到它并开启 proxy_cache，假设这个后端服务总是会吐 Etag 响应头。&lt;/p&gt;
+&lt;p&gt;在应用中，我们发现当 Nginx 的 proxy_cache 成功将后端的页面 cache 住时，浏览器多次对该页面发起请求，会命中 Nginx 的 cache，但即使浏览器请求带了 If-None-Match 请求头，Nginx 却不会响应 304，而是响应200。&lt;/p&gt;
+&lt;p&gt;这样带来的问题是，即使 Nginx 的 cache 将请求阻挡在后端应用之外，但是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;命中后每次响应 200 导致 Nginx 所在的服务器和客户浏览器双方都有流量损耗&lt;/li&gt;
+&lt;li&gt;更重要的是增长了服务响应时间。因为，如果是304的话，nginx不需要向浏览器吐数据，只用告诉浏览器用本地的缓存就好了。&lt;/li&gt;
+&lt;/ol&gt;</description>
     </item>
     
     <item>
