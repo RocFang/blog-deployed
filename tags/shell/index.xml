@@ -12,18 +12,18 @@
     
     
     <item>
-      <title>RPM中的%config和%config(noreplace)</title>
+      <title>RPM 中的 %config 和 %config(noreplace)</title>
       <link>https://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</link>
       <pubDate>Wed, 30 Apr 2014 15:43:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/04/30/noreplace-in-rpm-spec-file.html</guid>
-      <description>&lt;p&gt;打开一个rpm spec文件，在 %files段有一个指令很常见：%config(noreplace)，这个指定到底是干什么用的呢？&lt;/p&gt;
+      <description>&lt;p&gt;打开一个 rpm spec 文件，在 &lt;code&gt;%files&lt;/code&gt; 段有一个指令很常见：&lt;code&gt;%config(noreplace)&lt;/code&gt;，这个指定到底是干什么用的呢？&lt;/p&gt;
 &lt;p&gt;答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。&lt;/p&gt;
-&lt;p&gt;对于spec文件中在%files段的某一个文件，我们要讨论三种情况：&lt;/p&gt;
+&lt;p&gt;对于 spec 文件中在 &lt;code&gt;%files&lt;/code&gt; 段的某一个文件，我们要讨论三种情况：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;没有带%config指令。例如：%{_sbindir}/redis-server&lt;/li&gt;
-&lt;li&gt;带了%congfig指令。例如：%config %{_sysconfdir}/redis/redis.conf&lt;/li&gt;
-&lt;li&gt;带了%config(noreplace)指令。例如：%config(noreplace) %{_sysconfdir}/redis/redis.conf&lt;/li&gt;
+&lt;li&gt;没有带 &lt;code&gt;%config&lt;/code&gt; 指令。例如：&lt;code&gt;%{_sbindir}/redis-server&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;带了 &lt;code&gt;%congfig&lt;/code&gt; 指令。例如：&lt;code&gt;%config %{_sysconfdir}/redis/redis.conf&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;带了 &lt;code&gt;%config(noreplace)&lt;/code&gt; 指令。例如：&lt;code&gt;%config(noreplace) %{_sysconfdir}/redis/redis.conf&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;</description>
     </item>
     
