@@ -215,18 +215,18 @@
     </item>
     
     <item>
-      <title>svn log不显示当前提交</title>
+      <title>svn log 不显示当前提交</title>
       <link>https://pureage.info/2014/04/17/svn-log.html</link>
       <pubDate>Thu, 17 Apr 2014 03:56:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/04/17/svn-log.html</guid>
       <description>&lt;p&gt;关于svn log，我之前的工作方式一般都是这样：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。&lt;/li&gt;
-&lt;li&gt;执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。&lt;/li&gt;
+&lt;li&gt;执行 commit 操作时，不限平台。一般提交代码，会在 Linux 工作环境下用 svn commit 命令，提交文档则是在 Windows 下用 TortoiseSVN 客户端提交。这主要是本着方便的原则，因为代码一般是在 Linux 下编辑和测试的，文档是在 Windows 下编辑的。&lt;/li&gt;
+&lt;li&gt;执行 log 操作时，在 Windows 下。使用 TortoiseSVN 查看版本日志以及各版本提交内容变化实在太方便了。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。&lt;/p&gt;
-&lt;p&gt;在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;</description>
+&lt;p&gt;最近由于办公环境网络的变化，在 Windows 下无法用 TortoiseSVN 连接到仓库了，只能在 Linux 下进行。这样就无法在 Windows 下看版本日志了，好在也就只是一个 svn log 命令，简单明了。但使用中还是有一个要注意的地方。&lt;/p&gt;
+&lt;p&gt;在使用 TortoiseSVN 客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;</description>
     </item>
     
     <item>

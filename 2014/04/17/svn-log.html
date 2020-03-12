@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>svn log不显示当前提交 - 纯真年代</title>
+<title>svn log 不显示当前提交 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>svn log不显示当前提交</h1>
+  <h1>svn log 不显示当前提交</h1>
   </div>
 <div class="meta">
   <div>2014-04-17</div>
@@ -33,14 +33,14 @@
 <div class="content">
   <p>关于svn log，我之前的工作方式一般都是这样：</p>
 <ol>
-<li>执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。</li>
-<li>执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。</li>
+<li>执行 commit 操作时，不限平台。一般提交代码，会在 Linux 工作环境下用 svn commit 命令，提交文档则是在 Windows 下用 TortoiseSVN 客户端提交。这主要是本着方便的原则，因为代码一般是在 Linux 下编辑和测试的，文档是在 Windows 下编辑的。</li>
+<li>执行 log 操作时，在 Windows 下。使用 TortoiseSVN 查看版本日志以及各版本提交内容变化实在太方便了。</li>
 </ol>
-<p>最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。</p>
-<p>在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。</p>
-<p>而直接使用svn log命令时，默认只显示当前工作目录的log。</p>
-<p>假设当前工作目录已经是最新了，在此基础上，对一个文件A提交了commit，此时在当前目录下执行svn log -l 1 无法看到这次提交的log，如果想要看到，必须先执行svn update, 即使当前的工作目录下内容已经是最新的了；而执行svn log A -l 1则可以。</p>
-<p>原因在于svn对于文件及其父目录是分开管理版本号的。更新了一个文件，该文件的版本号是更新了，但该文件坐在的目录的版本号并没有更新。</p></div>
+<p>最近由于办公环境网络的变化，在 Windows 下无法用 TortoiseSVN 连接到仓库了，只能在 Linux 下进行。这样就无法在 Windows 下看版本日志了，好在也就只是一个 svn log 命令，简单明了。但使用中还是有一个要注意的地方。</p>
+<p>在使用 TortoiseSVN 客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。</p>
+<p>而直接使用 svn log 命令时，默认只显示当前工作目录的 log。</p>
+<p>假设当前工作目录已经是最新了，在此基础上，对一个文件 A 提交了 commit，此时在当前目录下执行 svn log -l 1 无法看到这次提交的 log，如果想要看到，必须先执行 svn update，即使当前的工作目录下内容已经是最新的了；而执行svn log A -l 1则可以。</p>
+<p>原因在于 svn 对于文件及其父目录是分开管理版本号的。更新了一个文件，该文件的版本号是更新了，但该文件所在的目录的版本号并没有更新。</p></div>
 
   </article>
 </main>

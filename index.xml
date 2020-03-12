@@ -288,7 +288,7 @@
       <pubDate>Tue, 04 Sep 2018 18:15:20 +0800</pubDate>
       
       <guid>https://pureage.info/post/the-name-given-to-my-baby/</guid>
-      <description>&lt;p&gt;2017年底，我的生活有了一个很大的变化，妻子怀孕了。怀孕这个事情本身是在我们计划之中，所以只有喜没有惊，算是顺利如意。&lt;/p&gt;
+      <description>&lt;p&gt;2017 年底，我的生活有了一个很大的变化，妻子怀孕了。怀孕这个事情本身是在我们计划之中，所以只有喜没有惊，算是顺利如意。&lt;/p&gt;
 &lt;p&gt;我和妻子两人对生育小孩这个事情一直比较重视，为小朋友的到来提前做了很多准备。比如提前整整一年一起在一家拳馆练习拳击，事后证明，这个决定是非常正确的。另外一件比较重要的事情就是给小朋友取名字了。&lt;/p&gt;
 &lt;p&gt;其实在几年前，我就已经开始把取名这个事情放在心里了，源自于对身边很多亲戚朋友给小孩取名无意义化、趋同化的震惊。大数据统计显示，“轩”、“梓”、“子”、“涵”等字处于白热化的扎堆状态，我对此很难理解。&lt;/p&gt;</description>
     </item>
@@ -622,13 +622,13 @@ headers when using HTTP/2.&lt;/p&gt;
     </item>
     
     <item>
-      <title>继续留在Typecho</title>
+      <title>继续留在 Typecho</title>
       <link>https://pureage.info/2015/12/16/still-using-typecho.html</link>
       <pubDate>Wed, 16 Dec 2015 14:54:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/12/16/still-using-typecho.html</guid>
       <description>&lt;p&gt;最近手心手背总时不时发痒，又开始想折腾博客玩了。&lt;/p&gt;
-&lt;p&gt;这个小小的个人博客，从 2011 年开始，几乎把主流的 Blog 系统折腾了个遍，从最初的 Wordpress,到 Typecho, Emlog, Textpattern 等等。其中，Typecho 被来回折腾了几次，因为 Typecho 自身也经历了两个大的阶段：从几年没有维护，到开始重构并默认支持 Markdown 编辑器。&lt;/p&gt;
+&lt;p&gt;这个小小的个人博客，从 2011 年开始，几乎把主流的 Blog 系统折腾了个遍，从最初的 Wordpress，到 Typecho、Emlog、Textpattern 等等。其中，Typecho 被来回折腾了几次，因为 Typecho 自身也经历了两个大的阶段：从几年没有维护，到开始重构并默认支持 Markdown 编辑器。&lt;/p&gt;
 &lt;p&gt;每个阶段维护博客的心态也不一样。刚开始的时候，总到处想和人交换链接，把界面搞得好看点，各种插件都试一试。这个阶段确实还真认识了一些一起写博客的同学，大家经常互访互评，搞得还挺热闹。但是必须要知道的是，即使在 2011 年之前，个人博客也早已经开始没落了，这是大势所趋，曾经的那些博客，到现在也已经绝大多数打不开，还挺让人唏嘘的。&lt;/p&gt;</description>
     </item>
     
@@ -1061,8 +1061,8 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
       <pubDate>Thu, 29 May 2014 11:47:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/05/29/two-fishes.html</guid>
-      <description>&lt;p&gt;最近家里来了两个客人：两只金鱼，一只白色的，一只红色的，我给他们分别取了个名字，小红与小白。于是每天早上出门前，给他们喂点食料，晚上回来后趴在鱼缸前跟他们说两声Hello成了我的一大乐趣。&lt;/p&gt;
-&lt;p&gt;几天之后，我发现，当我凑近鱼缸跟他们say Hello的时候，他们会慢慢的游到水面，露头吐出两个泡泡然后迅速沉入水底，仿佛一脸娇羞。一脸娇羞，说明我是一个喜欢歪歪的人，放佛，有说明我并没有歪歪的那么放肆。&lt;/p&gt;</description>
+      <description>&lt;p&gt;最近家里来了两个客人：两只金鱼，一只白色的，一只红色的，我给他们分别取了个名字，小红与小白。于是每天早上出门前，给他们喂点食料，晚上回来后趴在鱼缸前跟他们说两声 Hello 成了我的一大乐趣。&lt;/p&gt;
+&lt;p&gt;几天之后，我发现，当我凑近鱼缸跟他们 say Hello 的时候，他们会慢慢的游到水面，露头吐出两个泡泡然后迅速沉入水底，仿佛一脸娇羞。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1114,18 +1114,18 @@ location /test2 {
     </item>
     
     <item>
-      <title>svn log不显示当前提交</title>
+      <title>svn log 不显示当前提交</title>
       <link>https://pureage.info/2014/04/17/svn-log.html</link>
       <pubDate>Thu, 17 Apr 2014 03:56:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/04/17/svn-log.html</guid>
       <description>&lt;p&gt;关于svn log，我之前的工作方式一般都是这样：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;执行commit操作时，不限平台。一般提交代码，会在Linux工作环境下用svn commit命令，提交文档则是在Windows下用TortoiseSVN客户端提交。这主要是本着方便的原则，因为代码一般是在Linux下编辑和测试的，文档是在Windows下编辑的。&lt;/li&gt;
-&lt;li&gt;执行log操作时，在Windows下。使用TortoiseSVN查看版本日志以及各版本提交内容变化实在太方便了。&lt;/li&gt;
+&lt;li&gt;执行 commit 操作时，不限平台。一般提交代码，会在 Linux 工作环境下用 svn commit 命令，提交文档则是在 Windows 下用 TortoiseSVN 客户端提交。这主要是本着方便的原则，因为代码一般是在 Linux 下编辑和测试的，文档是在 Windows 下编辑的。&lt;/li&gt;
+&lt;li&gt;执行 log 操作时，在 Windows 下。使用 TortoiseSVN 查看版本日志以及各版本提交内容变化实在太方便了。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;最近由于办公环境网络的变化，在Windows下无法用TortoiseSVN连接到仓库了，只能在Linux下进行。这样就无法在Windows下看版本日志了，好在也就只是一个svn log命令，简单明了。但使用中还是有一个要注意的地方。&lt;/p&gt;
-&lt;p&gt;在使用TortoiseSVN客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;</description>
+&lt;p&gt;最近由于办公环境网络的变化，在 Windows 下无法用 TortoiseSVN 连接到仓库了，只能在 Linux 下进行。这样就无法在 Windows 下看版本日志了，好在也就只是一个 svn log 命令，简单明了。但使用中还是有一个要注意的地方。&lt;/p&gt;
+&lt;p&gt;在使用 TortoiseSVN 客户端查看日志时，即使当前工作目录版本是某个历史版本，也能看到最新的版本记录情况。&lt;/p&gt;</description>
     </item>
     
     <item>
