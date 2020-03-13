@@ -583,12 +583,12 @@ headers when using HTTP/2.&lt;/p&gt;
     </item>
     
     <item>
-      <title>accept与epoll惊群</title>
+      <title>accept 与 epoll 惊群</title>
       <link>https://pureage.info/2015/12/22/thundering-herd.html</link>
       <pubDate>Tue, 22 Dec 2015 07:01:00 +0000</pubDate>
       
       <guid>https://pureage.info/2015/12/22/thundering-herd.html</guid>
-      <description>&lt;p&gt;今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。&lt;/p&gt;
+      <description>&lt;p&gt;今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。&lt;/p&gt;
 &lt;h2 id=&#34;1-什么叫惊群现象&#34;&gt;1. 什么叫惊群现象&lt;/h2&gt;
 &lt;p&gt;首先，我们看看&lt;a href=&#34;http://en.wikipedia.org/wiki/Thundering_herd_problem&#34;&gt;维基百科对惊群的定义&lt;/a&gt;:&lt;/p&gt;
 &lt;blockquote&gt;

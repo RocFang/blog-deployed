@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>accept与epoll惊群 - 纯真年代</title>
+<title>accept 与 epoll 惊群 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>accept与epoll惊群</h1>
+  <h1>accept 与 epoll 惊群</h1>
   </div>
 <div class="meta">
   <div>2015-12-22</div>
@@ -32,7 +32,7 @@
     </div>
   </div>
 <div class="content">
-  <p>今天打开 OneNote,发现里面躺着一篇很久以前写的笔记，现在将它贴出来。</p>
+  <p>今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。</p>
 <h2 id="1-什么叫惊群现象">1. 什么叫惊群现象</h2>
 <p>首先，我们看看<a href="http://en.wikipedia.org/wiki/Thundering_herd_problem">维基百科对惊群的定义</a>:</p>
 <blockquote>
@@ -42,226 +42,227 @@
 </blockquote>
 <p>简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。</p>
 <h2 id="2-accept-惊群">2. accept 惊群</h2>
-<p>考虑如下场景：<br>
-主进程创建socket, bind, listen之后，fork出多个子进程，每个子进程都开始循环处理（accept)这个socket。每个进程都阻塞在accpet上，当一个新的连接到来时，所有的进程都会被唤醒，但其中只有一个进程会accept成功，其余皆失败，重新休眠。这就是accept惊群。</p>
+<p>考虑如下场景：</p>
+<p>主进程创建 socket、bind、 listen 之后，fork 出多个子进程，每个子进程都开始循环处理（accept)这个 socket。每个进程都阻塞在 accpet 上，当一个新的连接到来时，所有的进程都会被唤醒，但其中只有一个进程会 accept 成功，其余皆失败，重新休眠。这就是 accept 惊群。</p>
 <p>那么这个问题真的存在吗？</p>
 <p>事实上，历史上，Linux 的 accpet 确实存在惊群问题，但现在的内核都解决该问题了。即，当多个进程/线程都阻塞在对同一个 socket 的 accept 调用上时，当有一个新的连接到来，内核只会唤醒一个进程，其他进程保持休眠，压根就不会被唤醒。</p>
 <p>测试代码如下：</p>
-<pre><code>#include &lt;sys/types.h&gt;  
-#include &lt;sys/socket.h&gt;  
-#include &lt;netinet/in.h&gt;  
-#include &lt;sys/wait.h&gt;  
-#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-#define PROCESS_NUM 10  
-int main()  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/types.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/socket.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;netinet/in.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/wait.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;stdio.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;string.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PROCESS_NUM 10  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#00f">int</span> <span style="color:#000">main</span>()  
 {  
-    int fd = socket(PF_INET, SOCK_STREAM, 0);  
-    int connfd;  
-    int pid;  
-    char sendbuff[1024];  
-    struct sockaddr_in serveraddr;  
-    serveraddr.sin_family = AF_INET;  
-    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);  
-    serveraddr.sin_port = htons(1234);  
-    bind(fd, (struct sockaddr*)&amp;serveraddr, sizeof(serveraddr));  
-    listen(fd, 1024);  
-    int i;  
-    for(i = 0; i &lt; PROCESS_NUM; i++)  
+    <span style="color:#00f">int</span> <span style="color:#000">fd</span> = <span style="color:#000">socket</span>(<span style="color:#000">PF_INET</span>, <span style="color:#000">SOCK_STREAM</span>, <span style="color:#3af">0</span>);  
+    <span style="color:#00f">int</span> <span style="color:#000">connfd</span>;  
+    <span style="color:#00f">int</span> <span style="color:#000">pid</span>;  
+    <span style="color:#00f">char</span> <span style="color:#000">sendbuff</span>[<span style="color:#3af">1024</span>];  
+    <span style="color:#00f">struct</span> <span style="color:#000">sockaddr_in</span> <span style="color:#000">serveraddr</span>;  
+    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_family</span> = <span style="color:#000">AF_INET</span>;  
+    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_addr</span>.<span style="color:#000">s_addr</span> = <span style="color:#000">htonl</span>(<span style="color:#000">INADDR_ANY</span>);  
+    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_port</span> = <span style="color:#000">htons</span>(<span style="color:#3af">1234</span>);  
+    <span style="color:#000">bind</span>(<span style="color:#000">fd</span>, (<span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span>*)&amp;<span style="color:#000">serveraddr</span>, <span style="color:#00f">sizeof</span>(<span style="color:#000">serveraddr</span>));  
+    <span style="color:#000">listen</span>(<span style="color:#000">fd</span>, <span style="color:#3af">1024</span>);  
+    <span style="color:#00f">int</span> <span style="color:#000">i</span>;  
+    <span style="color:#00f">for</span>(<span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">PROCESS_NUM</span>; <span style="color:#000">i</span>++)  
     {  
-        int pid = fork();  
-        if(pid == 0)  
+        <span style="color:#00f">int</span> <span style="color:#000">pid</span> = <span style="color:#000">fork</span>();  
+        <span style="color:#00f">if</span>(<span style="color:#000">pid</span> == <span style="color:#3af">0</span>)  
         {  
-            while(1)  
+            <span style="color:#00f">while</span>(<span style="color:#3af">1</span>)  
             {  
-                connfd = accept(fd, (struct sockaddr*)NULL, NULL);  
-                snprintf(sendbuff, sizeof(sendbuff), &quot;accept PID is %d\n&quot;, getpid());  
+                <span style="color:#000">connfd</span> = <span style="color:#000">accept</span>(<span style="color:#000">fd</span>, (<span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span>*)<span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>);  
+                <span style="color:#000">snprintf</span>(<span style="color:#000">sendbuff</span>, <span style="color:#00f">sizeof</span>(<span style="color:#000">sendbuff</span>), <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">accept PID is %d</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
                 
-                send(connfd, sendbuff, strlen(sendbuff) + 1, 0);  
-                printf(&quot;process %d accept success!\n&quot;, getpid());  
-                close(connfd);  
+                <span style="color:#000">send</span>(<span style="color:#000">connfd</span>, <span style="color:#000">sendbuff</span>, <span style="color:#000">strlen</span>(<span style="color:#000">sendbuff</span>) + <span style="color:#3af">1</span>, <span style="color:#3af">0</span>);  
+                <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d accept success!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
+                <span style="color:#000">close</span>(<span style="color:#000">connfd</span>);  
             }  
         }  
     }  
-    int status;  
-    wait(&amp;status);  
-    return 0;  
+    <span style="color:#00f">int</span> <span style="color:#000">status</span>;  
+    <span style="color:#000">wait</span>(&amp;<span style="color:#000">status</span>);  
+    <span style="color:#00f">return</span> <span style="color:#3af">0</span>;  
 } 
-</code></pre><p>当我们对该服务器发起连接请求（用 telnet/curl 等模拟）时，会看到只有一个进程被唤醒。</p>
+</code></pre></div><p>当我们对该服务器发起连接请求（用 telnet/curl 等模拟）时，会看到只有一个进程被唤醒。</p>
 <p>关于 accept 惊群的一些帖子或文章：</p>
 <ul>
 <li><a href="http://bbs.chinaunix.net/thread-946261-1-1.html">惊群问题在 linux 上可能是莫须有的问题</a></li>
 <li><a href="http://stackoverflow.com/questions/2213779/does-the-thundering-herd-problem-exist-on-linux-anymore">Does the Thundering Herd Problem exist on Linux anymore?</a></li>
 <li><a href="http://www.citi.umich.edu/projects/linux-scalability/reports/accept.html">历史上解决 linux accept 惊群的补丁讨论</a></li>
 </ul>
-<h2 id="3-epoll惊群">3. epoll惊群</h2>
+<h2 id="3-epoll-惊群">3. epoll 惊群</h2>
 <p>如上所述，accept 已经不存在惊群问题，但 epoll 上还是存在惊群问题。即，如果多个进程/线程阻塞在监听同一个 listening socket fd 的 epoll_wait 上，当有一个新的连接到来时，所有的进程都会被唤醒。</p>
 <p>考虑如下场景：</p>
-<p>主进程创建 socket, bind， listen 后，将该 socket 加入到 epoll 中，然后 fork 出多个子进程，每个进程都阻塞在 epoll_wait 上，如果有事件到来，则判断该事件是否是该 socket 上的事件，如果是，说明有新的连接到来了，则进行 accept 操作。为了简化处理，忽略后续的读写以及对 accept 返回的新的套接字的处理，直接断开连接。</p>
+<p>主进程创建 socket、bind、 listen 后，将该 socket 加入到 epoll 中，然后 fork 出多个子进程，每个进程都阻塞在 epoll_wait 上，如果有事件到来，则判断该事件是否是该 socket 上的事件，如果是，说明有新的连接到来了，则进行 accept 操作。为了简化处理，忽略后续的读写以及对 accept 返回的新的套接字的处理，直接断开连接。</p>
 <p>那么，当新的连接到来时，是否每个阻塞在 epoll_wait 上的进程都会被唤醒呢？</p>
 <p>很多博客中提到，测试表明虽然 epoll_wait 不会像 accept 那样只唤醒一个进程/线程，但也不会把所有的进程/线程都唤醒。例如这篇文章：<a href="http://blog.163.com/pandalove@126/blog/static/9800324520122633515612">关于多进程 epoll 与 “惊群”问题</a>。</p>
 <p>为了验证这个问题，我自己写了一个测试程序：</p>
-<pre><code>#include &lt;sys/types.h&gt;  
-#include &lt;sys/socket.h&gt;  
-#include &lt;sys/epoll.h&gt;  
-#include &lt;netdb.h&gt;  
-#include &lt;string.h&gt;  
-#include &lt;stdio.h&gt;  
-#include &lt;unistd.h&gt;  
-#include &lt;fcntl.h&gt;  
-#include &lt;stdlib.h&gt;  
-#include &lt;errno.h&gt;  
-#include &lt;sys/wait.h&gt;  
-#define PROCESS_NUM 10  
-static int  
-create_and_bind (char *port)  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/types.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/socket.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/epoll.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;netdb.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;string.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;stdio.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;unistd.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;fcntl.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;stdlib.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;errno.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/wait.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PROCESS_NUM 10  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#00f">static</span> <span style="color:#00f">int</span>  
+<span style="color:#000">create_and_bind</span> (<span style="color:#00f">char</span> *<span style="color:#000">port</span>)  
 {  
-    int fd = socket(PF_INET, SOCK_STREAM, 0);  
-    struct sockaddr_in serveraddr;  
-    serveraddr.sin_family = AF_INET;  
-    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);  
-    serveraddr.sin_port = htons(atoi(port));  
-    bind(fd, (struct sockaddr*)&amp;serveraddr, sizeof(serveraddr));  
-    return fd;  
-}  
-	static int  
-make_socket_non_blocking (int sfd)  
+    <span style="color:#00f">int</span> <span style="color:#000">fd</span> = <span style="color:#000">socket</span>(<span style="color:#000">PF_INET</span>, <span style="color:#000">SOCK_STREAM</span>, <span style="color:#3af">0</span>);  
+    <span style="color:#00f">struct</span> <span style="color:#000">sockaddr_in</span> <span style="color:#000">serveraddr</span>;  
+    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_family</span> = <span style="color:#000">AF_INET</span>;  
+    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_addr</span>.<span style="color:#000">s_addr</span> = <span style="color:#000">htonl</span>(<span style="color:#000">INADDR_ANY</span>);  
+    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_port</span> = <span style="color:#000">htons</span>(<span style="color:#000">atoi</span>(<span style="color:#000">port</span>));  
+    <span style="color:#000">bind</span>(<span style="color:#000">fd</span>, (<span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span>*)&amp;<span style="color:#000">serveraddr</span>, <span style="color:#00f">sizeof</span>(<span style="color:#000">serveraddr</span>));  
+    <span style="color:#00f">return</span> <span style="color:#000">fd</span>;  
+}
+
+<span style="color:#00f">static</span> <span style="color:#00f">int</span>  
+<span style="color:#000">make_socket_non_blocking</span> (<span style="color:#00f">int</span> <span style="color:#000">sfd</span>)  
 {  
-    int flags, s;  
+    <span style="color:#00f">int</span> <span style="color:#000">flags</span>, <span style="color:#000">s</span>;  
  
-    flags = fcntl (sfd, F_GETFL, 0);  
-    if (flags == -1)  
+    <span style="color:#000">flags</span> = <span style="color:#000">fcntl</span> (<span style="color:#000">sfd</span>, <span style="color:#000">F_GETFL</span>, <span style="color:#3af">0</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">flags</span> == -<span style="color:#3af">1</span>)  
     {  
-        perror (&quot;fcntl&quot;);  
-        return -1;  
+        <span style="color:#000">perror</span> (<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">fcntl</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#00f">return</span> -<span style="color:#3af">1</span>;  
     }  
  
-    flags |= O_NONBLOCK;  
-    s = fcntl (sfd, F_SETFL, flags);  
-    if (s == -1)  
+    <span style="color:#000">flags</span> |= <span style="color:#000">O_NONBLOCK</span>;  
+    <span style="color:#000">s</span> = <span style="color:#000">fcntl</span> (<span style="color:#000">sfd</span>, <span style="color:#000">F_SETFL</span>, <span style="color:#000">flags</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
     {  
-        perror (&quot;fcntl&quot;);  
-        return -1;  
+        <span style="color:#000">perror</span> (<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">fcntl</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#00f">return</span> -<span style="color:#3af">1</span>;  
     }  
  
-    return 0;  
+    <span style="color:#00f">return</span> <span style="color:#3af">0</span>;  
 }  
   
-#define MAXEVENTS 64  
- 
-int  
-main (int argc, char *argv[])  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define MAXEVENTS 64  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span> 
+<span style="color:#00f">int</span>  
+<span style="color:#000">main</span> (<span style="color:#00f">int</span> <span style="color:#000">argc</span>, <span style="color:#00f">char</span> *<span style="color:#000">argv</span>[])  
 {  
-    int sfd, s;  
-    int efd;  
-    struct epoll_event event;  
-    struct epoll_event *events;  
+    <span style="color:#00f">int</span> <span style="color:#000">sfd</span>, <span style="color:#000">s</span>;  
+    <span style="color:#00f">int</span> <span style="color:#000">efd</span>;  
+    <span style="color:#00f">struct</span> <span style="color:#000">epoll_event</span> <span style="color:#000">event</span>;  
+    <span style="color:#00f">struct</span> <span style="color:#000">epoll_event</span> *<span style="color:#000">events</span>;  
  
-    sfd = create_and_bind(&quot;1234&quot;);  
-    if (sfd == -1)  
-        abort ();  
+    <span style="color:#000">sfd</span> = <span style="color:#000">create_and_bind</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">1234</span><span style="color:#5a2">&#34;</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">sfd</span> == -<span style="color:#3af">1</span>)  
+        <span style="color:#000">abort</span> ();  
  
-    s = make_socket_non_blocking (sfd);  
-    if (s == -1)  
-        abort ();  
+    <span style="color:#000">s</span> = <span style="color:#000">make_socket_non_blocking</span> (<span style="color:#000">sfd</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
+        <span style="color:#000">abort</span> ();  
  
-    s = listen(sfd, SOMAXCONN);  
-    if (s == -1)  
+    <span style="color:#000">s</span> = <span style="color:#000">listen</span>(<span style="color:#000">sfd</span>, <span style="color:#000">SOMAXCONN</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
     {  
-        perror (&quot;listen&quot;);  
-        abort ();  
+        <span style="color:#000">perror</span> (<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">listen</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#000">abort</span> ();  
     }  
  
-    efd = epoll_create(MAXEVENTS);  
-    if (efd == -1)  
+    <span style="color:#000">efd</span> = <span style="color:#000">epoll_create</span>(<span style="color:#000">MAXEVENTS</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">efd</span> == -<span style="color:#3af">1</span>)  
     {  
-        perror(&quot;epoll_create&quot;);  
-        abort();  
+        <span style="color:#000">perror</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">epoll_create</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#000">abort</span>();  
     }  
  
-    event.data.fd = sfd;  
-    //event.events = EPOLLIN | EPOLLET;  
-    event.events = EPOLLIN;  
-    s = epoll_ctl(efd, EPOLL_CTL_ADD, sfd, &amp;event);  
-    if (s == -1)  
+    <span style="color:#000">event</span>.<span style="color:#000">data</span>.<span style="color:#000">fd</span> = <span style="color:#000">sfd</span>;  
+    <span style="color:#888;font-style:italic">//event.events = EPOLLIN | EPOLLET;  
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">event</span>.<span style="color:#000">events</span> = <span style="color:#000">EPOLLIN</span>;  
+    <span style="color:#000">s</span> = <span style="color:#000">epoll_ctl</span>(<span style="color:#000">efd</span>, <span style="color:#000">EPOLL_CTL_ADD</span>, <span style="color:#000">sfd</span>, &amp;<span style="color:#000">event</span>);  
+    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
     {  
-        perror(&quot;epoll_ctl&quot;);  
-        abort();  
+        <span style="color:#000">perror</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">epoll_ctl</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#000">abort</span>();  
     }  
  
-    /* Buffer where events are returned */  
-    events = calloc(MAXEVENTS, sizeof event);  
-	        int k;  
-    for(k = 0; k &lt; PROCESS_NUM; k++)  
+    <span style="color:#888;font-style:italic">/* Buffer where events are returned */</span>  
+    <span style="color:#000">events</span> = <span style="color:#000">calloc</span>(<span style="color:#000">MAXEVENTS</span>, <span style="color:#00f">sizeof</span> <span style="color:#000">event</span>);  
+	        <span style="color:#00f">int</span> <span style="color:#000">k</span>;  
+    <span style="color:#00f">for</span>(<span style="color:#000">k</span> = <span style="color:#3af">0</span>; <span style="color:#000">k</span> &lt; <span style="color:#000">PROCESS_NUM</span>; <span style="color:#000">k</span>++)  
     {  
-        int pid = fork();  
-        if(pid == 0)  
+        <span style="color:#00f">int</span> <span style="color:#000">pid</span> = <span style="color:#000">fork</span>();  
+        <span style="color:#00f">if</span>(<span style="color:#000">pid</span> == <span style="color:#3af">0</span>)  
         {  
  
-            /* The event loop */  
-            while (1)  
+            <span style="color:#888;font-style:italic">/* The event loop */</span>  
+            <span style="color:#00f">while</span> (<span style="color:#3af">1</span>)  
             {  
-                int n, i;  
-                n = epoll_wait(efd, events, MAXEVENTS, -1);  
-                printf(&quot;process %d return from epoll_wait!\n&quot;, getpid());  
-	                                   /* sleep here is very important!*/  
-                //sleep(2);  
-	                                   for (i = 0; i &lt; n; i++)  
+                <span style="color:#00f">int</span> <span style="color:#000">n</span>, <span style="color:#000">i</span>;  
+                <span style="color:#000">n</span> = <span style="color:#000">epoll_wait</span>(<span style="color:#000">efd</span>, <span style="color:#000">events</span>, <span style="color:#000">MAXEVENTS</span>, -<span style="color:#3af">1</span>);  
+                <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d return from epoll_wait!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
+	                                   <span style="color:#888;font-style:italic">/* sleep here is very important!*/</span>  
+                <span style="color:#888;font-style:italic">//sleep(2);  
+</span><span style="color:#888;font-style:italic"></span>	                                   <span style="color:#00f">for</span> (<span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">n</span>; <span style="color:#000">i</span>++)  
                 {  
-                    if ((events[i].events &amp; EPOLLERR) || (events[i].events &amp; EPOLLHUP) || (!(events[i].events &amp;                                    EPOLLIN)))  
+                    <span style="color:#00f">if</span> ((<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">events</span> &amp; <span style="color:#000">EPOLLERR</span>) || (<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">events</span> &amp; <span style="color:#000">EPOLLHUP</span>) || (!(<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">events</span> &amp;                                    <span style="color:#000">EPOLLIN</span>)))  
                     {  
-                        /* An error has occured on this fd, or the socket is not  
-                        ready for reading (why were we notified then?) */  
-                        fprintf (stderr, &quot;epoll error\n&quot;);  
-                        close (events[i].data.fd);  
-                        continue;  
+                        <span style="color:#888;font-style:italic">/* An error has occured on this fd, or the socket is not  
+</span><span style="color:#888;font-style:italic">                        ready for reading (why were we notified then?) */</span>  
+                        <span style="color:#000">fprintf</span> (<span style="color:#000">stderr</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">epoll error</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>);  
+                        <span style="color:#000">close</span> (<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">data</span>.<span style="color:#000">fd</span>);  
+                        <span style="color:#00f">continue</span>;  
                     }  
-                    else if (sfd == events[i].data.fd)  
+                    <span style="color:#00f">else</span> <span style="color:#00f">if</span> (<span style="color:#000">sfd</span> == <span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">data</span>.<span style="color:#000">fd</span>)  
                     {  
-                        /* We have a notification on the listening socket, which  
-                        means one or more incoming connections. */  
-                        struct sockaddr in_addr;  
-                        socklen_t in_len;  
-                        int infd;  
-                        char hbuf[NI_MAXHOST], sbuf[NI_MAXSERV];  
+                        <span style="color:#888;font-style:italic">/* We have a notification on the listening socket, which  
+</span><span style="color:#888;font-style:italic">                        means one or more incoming connections. */</span>  
+                        <span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span> <span style="color:#000">in_addr</span>;  
+                        <span style="color:#000">socklen_t</span> <span style="color:#000">in_len</span>;  
+                        <span style="color:#00f">int</span> <span style="color:#000">infd</span>;  
+                        <span style="color:#00f">char</span> <span style="color:#000">hbuf</span>[<span style="color:#000">NI_MAXHOST</span>], <span style="color:#000">sbuf</span>[<span style="color:#000">NI_MAXSERV</span>];  
  
-                        in_len = sizeof in_addr;  
-                        infd = accept(sfd, &amp;in_addr, &amp;in_len);  
-                        if (infd == -1)  
+                        <span style="color:#000">in_len</span> = <span style="color:#00f">sizeof</span> <span style="color:#000">in_addr</span>;  
+                        <span style="color:#000">infd</span> = <span style="color:#000">accept</span>(<span style="color:#000">sfd</span>, &amp;<span style="color:#000">in_addr</span>, &amp;<span style="color:#000">in_len</span>);  
+                        <span style="color:#00f">if</span> (<span style="color:#000">infd</span> == -<span style="color:#3af">1</span>)  
                         {  
-                            printf(&quot;process %d accept failed!\n&quot;, getpid());  
-                            break;  
+                            <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d accept failed!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
+                            <span style="color:#00f">break</span>;  
                         }  
-                        printf(&quot;process %d accept successed!\n&quot;, getpid());  
+                        <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d accept successed!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
  
-                        /* Make the incoming socket non-blocking and add it to the  
-                        list of fds to monitor. */  
-                        close(infd); 
+                        <span style="color:#888;font-style:italic">/* Make the incoming socket non-blocking and add it to the  
+</span><span style="color:#888;font-style:italic">                        list of fds to monitor. */</span>  
+                        <span style="color:#000">close</span>(<span style="color:#000">infd</span>); 
                     }  
                 }  
             }  
         }  
     }  
-    int status;  
-    wait(&amp;status);  
-    free (events);  
-    close (sfd);  
-    return EXIT_SUCCESS;  
+    <span style="color:#00f">int</span> <span style="color:#000">status</span>;  
+    <span style="color:#000">wait</span>(&amp;<span style="color:#000">status</span>);  
+    <span style="color:#000">free</span> (<span style="color:#000">events</span>);  
+    <span style="color:#000">close</span> (<span style="color:#000">sfd</span>);  
+    <span style="color:#00f">return</span> <span style="color:#000">EXIT_SUCCESS</span>;  
 }  
-</code></pre><p>发现确实如上面那篇博客里所说，当我模拟发起一个请求时，只有一个或少数几个进程被唤醒了。</p>
+</code></pre></div><p>发现确实如上面那篇博客里所说，当我模拟发起一个请求时，只有一个或少数几个进程被唤醒了。</p>
 <p>也就是说，到目前为止，还没有得到一个确定的答案。但后来，在下面这篇博客中看到这样一个评论：http://blog.csdn.net/spch2008/article/details/18301357</p>
 <blockquote>
-<p>这个总结，需要进一步阐述，你的实验，看上去是只有4个进程唤醒了，而事实上，其余进程没有被唤醒的原因是你的某个进程已经处理完这个 accept，内核队列上已经没有这个事件，无需唤醒其他进程。你可以在 epoll 获知这个 accept 事件的时候，不要立即去处理，而是 sleep 下，这样所有的进程都会被唤起</p>
+<p>这个总结，需要进一步阐述，你的实验，看上去是只有 4 个进程唤醒了，而事实上，其余进程没有被唤醒的原因是你的某个进程已经处理完这个 accept，内核队列上已经没有这个事件，无需唤醒其他进程。你可以在 epoll 获知这个 accept 事件的时候，不要立即去处理，而是 sleep 下，这样所有的进程都会被唤起。</p>
 </blockquote>
 <p>看到这个评论后，我顿时如醍醐灌顶，重新修改了上面的测试程序，即在 epoll_wait 返回后，加了个 sleep 语句，这时再测试，果然发现所有的进程都被唤醒了。</p>
-<p>所以，epoll_wait上的惊群确实是存在的。</p>
+<p>所以，epoll_wait 上的惊群确实是存在的。</p>
 <h2 id="4-为什么内核不处理-epoll-惊群">4. 为什么内核不处理 epoll 惊群</h2>
 <p>看到这里，我们可能有疑惑了，为什么内核对 accept 的惊群做了处理，而现在仍然存在 epoll 的惊群现象呢？</p>
-<p>我想，应该是这样的：<br>
-accept 确实应该只能被一个进程调用成功，内核很清楚这一点。但 epoll 不一样，他监听的文件描述符，除了可能后续被 accept 调用外，还有可能是其他网络 IO 事件的，而其他 IO 事件是否只能由一个进程处理，是不一定的，内核不能保证这一点，这是一个由用户决定的事情，例如可能一个文件会由多个进程来读写。所以，对 epoll 的惊群，内核则不予处理。</p>
+<p>我想，应该是这样的：</p>
+<p>accept 确实应该只能被一个进程调用成功，内核很清楚这一点。但 epoll 不一样，他监听的文件描述符，除了可能后续被 accept 调用外，还有可能是其他网络 IO 事件的，而其他 IO 事件是否只能由一个进程处理，是不一定的，内核不能保证这一点，这是一个由用户决定的事情，例如可能一个文件会由多个进程来读写。所以，对 epoll 的惊群，内核则不予处理。</p>
 <h2 id="5-nginx-是如何处理惊群问题的">5. Nginx 是如何处理惊群问题的</h2>
 <p>在思考这个问题之前，我们应该以前对前面所讲几点有所了解，即先弄清楚问题的背景，并能自己复现出来，而不仅仅只是看书或博客，然后再来看看 Nginx 的解决之道。这个顺序不应该颠倒。</p>
-<p>首先，我们先大概梳理一下 Nginx 的网络架构，几个关键步骤为:</p>
+<p>首先，我们先大概梳理一下 Nginx 的网络架构，几个关键步骤为：</p>
 <ol>
 <li>Nginx 主进程解析配置文件，根据 listen 指令，将监听套接字初始化到全局变量 ngx_cycle 的 listening 数组之中。此时，监听套接字的创建、绑定工作早已完成。</li>
 <li>Nginx 主进程 fork 出多个子进程。</li>
@@ -273,14 +274,14 @@ accept 确实应该只能被一个进程调用成功，内核很清楚这一点�
 </ol>
 <p>至此，关于 Nginx 如何处理 fork 后的监听套接字，我们已经差不多理清楚了，当然还有一些细节略过了，比如在每个 Nginx 在获取 accept_mutex 锁前，还会根据当前负载来判断是否参与 accept_mutex 锁的争夺。</p>
 <p>把这个过程理清了之后，Nginx 解决惊群问题的方法也就出来了，就是利用 accept_mutex 这把锁。</p>
-<p>如果配置文件中没有开启 accept_mutex，则所有的监听套接字不管三七二十一，都加入到每子个进程的 epoll中，这样当一个新的连接来到时，所有的 worker 子进程都会惊醒。</p>
+<p>如果配置文件中没有开启 accept_mutex，则所有的监听套接字不管三七二十一，都加入到每子个进程的 epoll 中，这样当一个新的连接来到时，所有的 worker 子进程都会惊醒。</p>
 <p>如果配置文件中开启了 accept_mutex，则只有一个子进程会将监听套接字添加到 epoll 中，这样当一个新的连接来到时，当然就只有一个 worker 子进程会被唤醒了。</p>
 <h2 id="6-小结">6. 小结</h2>
 <p>现在我们对惊群及 Nginx 的处理总结如下：</p>
 <ul>
 <li>accept 不会有惊群，epoll_wait 才会。</li>
-<li>Nginx 的 accept_mutex,并不是解决 accept 惊群问题，而是解决 epoll_wait 惊群问题。</li>
-<li>说Nginx 解决了 epoll_wait 惊群问题，也是不对的，它只是控制是否将监听套接字加入到epoll 中。监听套接字只在一个子进程的 epoll 中，当新的连接来到时，其他子进程当然不会惊醒了。</li>
+<li>Nginx 的 accept_mutex，并不是解决 accept 惊群问题，而是解决 epoll_wait 惊群问题。</li>
+<li>说Nginx 解决了 epoll_wait 惊群问题，也是不对的，它只是控制是否将监听套接字加入到 epoll  中。监听套接字只在一个子进程的 epoll 中，当新的连接来到时，其他子进程当然不会惊醒了。</li>
 </ul>
 <h2 id="7-其他参考文章">7. 其他参考文章</h2>
 <p><a href="http://blog.csdn.net/russell_tao/article/details/7204260">“惊群”，看看 nginx 是怎么解决它的</a></p></div>
