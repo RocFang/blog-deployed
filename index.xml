@@ -1023,25 +1023,19 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>ngx.var.arg与ngx.req.get_uri_args的区别</title>
+      <title>ngx.var.arg 与 ngx.req.get_uri_args 的区别</title>
       <link>https://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</link>
       <pubDate>Wed, 30 Jul 2014 10:30:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</guid>
-      <description>&lt;p&gt;ngx.var.arg_xx与ngx.req.get_uri_args[&amp;ldquo;xx&amp;rdquo;]两者都是为了获取请求uri中的参数，例如&lt;/p&gt;
+      <description>&lt;p&gt;&lt;code&gt;ngx.var.arg_xx&lt;/code&gt; 与 &lt;code&gt;ngx.req.get_uri_args[&amp;quot;xx&amp;quot;]&lt;/code&gt; 两者都是为了获取请求 uri 中的参数，例如对于 url：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;为了获取输入参数strider，以下两种方法都可以：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;local strider = ngx.var.arg_strider&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;local strider = ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&amp;ldquo;xx&amp;rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;为了获取输入参数 strider，以下两种方法都可以：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;color:#00f&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;strider&lt;/span&gt; = &lt;span style=&#34;color:#000&#34;&gt;ngx.var&lt;/span&gt;.&lt;span style=&#34;color:#000&#34;&gt;arg_strider&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;color:#00f&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;strider&lt;/span&gt; = &lt;span style=&#34;color:#000&#34;&gt;ngx.req&lt;/span&gt;.&lt;span style=&#34;color:#000&#34;&gt;get_uri_args&lt;/span&gt;[&lt;span style=&#34;color:#5a2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;strider&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;&amp;#34;&lt;/span&gt;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;差别在于，当请求 uri 中有多个同名参数时，&lt;code&gt;ngx.var.arg_xx&lt;/code&gt; 的做法是取第一个出现的值，&lt;code&gt;ngx.req_get_uri_args[&amp;quot;xx&amp;quot;]&lt;/code&gt; 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;时，ngx.var.arg_strider的值为&amp;quot;1&amp;rdquo;,而ngx.req.get_uri_args[&amp;ldquo;strider&amp;rdquo;]的值为table [&amp;ldquo;1&amp;rdquo;, &amp;ldquo;2&amp;rdquo;, &amp;ldquo;3&amp;rdquo;, &amp;ldquo;4&amp;rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时，&lt;code&gt;ngx.var.arg_strider&lt;/code&gt; 的值为“1”，而 &lt;code&gt;ngx.req.get_uri_args[&amp;quot;strider&amp;quot;]&lt;/code&gt; 的值为 &lt;code&gt;table [&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;, &amp;quot;3&amp;quot;, &amp;quot;4&amp;quot;]&lt;/code&gt;。因此，&lt;code&gt;ngx.req.get_uri_args&lt;/code&gt; 属于&lt;code&gt;ngx.var.arg_&lt;/code&gt; 的增强。&lt;/p&gt;</description>
     </item>
     
     <item>

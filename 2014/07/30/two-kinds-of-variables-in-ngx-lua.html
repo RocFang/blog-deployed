@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>ngx.var.arg与ngx.req.get_uri_args的区别 - 纯真年代</title>
+<title>ngx.var.arg 与 ngx.req.get_uri_args 的区别 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>ngx.var.arg与ngx.req.get_uri_args的区别</h1>
+  <h1>ngx.var.arg 与 ngx.req.get_uri_args 的区别</h1>
   </div>
 <div class="meta">
   <div>2014-07-30</div>
@@ -31,107 +31,101 @@
     </div>
   </div>
 <div class="content">
-  <p>ngx.var.arg_xx与ngx.req.get_uri_args[&ldquo;xx&rdquo;]两者都是为了获取请求uri中的参数，例如</p>
+  <p><code>ngx.var.arg_xx</code> 与 <code>ngx.req.get_uri_args[&quot;xx&quot;]</code> 两者都是为了获取请求 uri 中的参数，例如对于 url：</p>
 <pre><code>http://pureage.info?strider=1  
-</code></pre><p>为了获取输入参数strider，以下两种方法都可以：</p>
-<ol>
-<li>
-<p>local strider = ngx.var.arg_strider</p>
-</li>
-<li>
-<p>local strider = ngx.req.get_uri_args[&ldquo;strider&rdquo;]</p>
-</li>
-</ol>
-<p>差别在于，当请求uri中有多个同名参数时,ngx.var.arg_xx的做法是取第一个出现的值,ngx.req_get_uri_args[&ldquo;xx&rdquo;]的做法是返回一个table，该table里存放了该参数的所有值，例如,当请求uri为：</p>
+</code></pre><p>为了获取输入参数 strider，以下两种方法都可以：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#00f">local</span> <span style="color:#000">strider</span> = <span style="color:#000">ngx.var</span>.<span style="color:#000">arg_strider</span>
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#00f">local</span> <span style="color:#000">strider</span> = <span style="color:#000">ngx.req</span>.<span style="color:#000">get_uri_args</span>[<span style="color:#5a2">&#34;</span><span style="color:#5a2">strider</span><span style="color:#5a2">&#34;</span>]
+</code></pre></div><p>差别在于，当请求 uri 中有多个同名参数时，<code>ngx.var.arg_xx</code> 的做法是取第一个出现的值，<code>ngx.req_get_uri_args[&quot;xx&quot;]</code> 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：</p>
 <pre><code>http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
-</code></pre><p>时，ngx.var.arg_strider的值为&quot;1&rdquo;,而ngx.req.get_uri_args[&ldquo;strider&rdquo;]的值为table [&ldquo;1&rdquo;, &ldquo;2&rdquo;, &ldquo;3&rdquo;, &ldquo;4&rdquo;]。因此，ngx.req.get_uri_args属于ngx.var.arg_的增强。</p>
-<p>ngx.var.arg_的实现是直接使用nginx原生的变量支持，nginx相关代码为：</p>
-<pre><code>ngx_http_variable_value_t *  
-ngx_http_get_variable(ngx_http_request_t *r, ngx_str_t *name, ngx_uint_t key)  
+</code></pre><p>此时，<code>ngx.var.arg_strider</code> 的值为“1”，而 <code>ngx.req.get_uri_args[&quot;strider&quot;]</code> 的值为 <code>table [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]</code>。因此，<code>ngx.req.get_uri_args</code> 属于<code>ngx.var.arg_</code> 的增强。</p>
+<p><code>ngx.var.arg_</code> 的实现是直接使用 Nginx 原生的变量支持，Nginx 相关代码为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#000">ngx_http_variable_value_t</span> *  
+<span style="color:#000">ngx_http_get_variable</span>(<span style="color:#000">ngx_http_request_t</span> *<span style="color:#000">r</span>, <span style="color:#000">ngx_str_t</span> *<span style="color:#000">name</span>, <span style="color:#000">ngx_uint_t</span> <span style="color:#000">key</span>)  
 {  
-....(略）....  
-if (ngx_strncmp(name-&gt;data, &quot;arg_&quot;, 4) == 0) {  
+....(<span style="color:#f00">略</span><span style="color:#f00">）</span>....  
+<span style="color:#00f">if</span> (<span style="color:#000">ngx_strncmp</span>(<span style="color:#000">name</span>-&gt;<span style="color:#000">data</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">arg_</span><span style="color:#5a2">&#34;</span>, <span style="color:#3af">4</span>) == <span style="color:#3af">0</span>) {  
   
-        if (ngx_http_variable_argument(r, vv, (uintptr_t) name) == NGX_OK) {  
-            return vv;  
+        <span style="color:#00f">if</span> (<span style="color:#000">ngx_http_variable_argument</span>(<span style="color:#000">r</span>, <span style="color:#000">vv</span>, (<span style="color:#000">uintptr_t</span>) <span style="color:#000">name</span>) == <span style="color:#000">NGX_OK</span>) {  
+            <span style="color:#00f">return</span> <span style="color:#000">vv</span>;  
         }  
   
-        return NULL;  
+        <span style="color:#00f">return</span> <span style="color:#000">NULL</span>;  
     }  
   
-    vv-&gt;not_found = 1;  
+    <span style="color:#000">vv</span>-&gt;<span style="color:#000">not_found</span> = <span style="color:#3af">1</span>;  
   
-    return vv;  
+    <span style="color:#00f">return</span> <span style="color:#000">vv</span>;  
 }  
   
-static ngx_int_t  
-ngx_http_variable_argument(ngx_http_request_t *r, ngx_http_variable_value_t *v,  
-    uintptr_t data)  
+<span style="color:#00f">static</span> <span style="color:#000">ngx_int_t</span>  
+<span style="color:#000">ngx_http_variable_argument</span>(<span style="color:#000">ngx_http_request_t</span> *<span style="color:#000">r</span>, <span style="color:#000">ngx_http_variable_value_t</span> *<span style="color:#000">v</span>,  
+    <span style="color:#000">uintptr_t</span> <span style="color:#000">data</span>)  
 {  
-    ngx_str_t *name = (ngx_str_t *) data;  
+    <span style="color:#000">ngx_str_t</span> *<span style="color:#000">name</span> = (<span style="color:#000">ngx_str_t</span> *) <span style="color:#000">data</span>;  
   
-    u_char *arg;  
-    size_t len;  
-    ngx_str_t value;  
+    <span style="color:#000">u_char</span> *<span style="color:#000">arg</span>;  
+    <span style="color:#000">size_t</span> <span style="color:#000">len</span>;  
+    <span style="color:#000">ngx_str_t</span> <span style="color:#000">value</span>;  
   
-    len = name-&gt;len - (sizeof(&quot;arg_&quot;) - 1);  
-    arg = name-&gt;data + sizeof(&quot;arg_&quot;) - 1;  
+    <span style="color:#000">len</span> = <span style="color:#000">name</span>-&gt;<span style="color:#000">len</span> - (<span style="color:#00f">sizeof</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">arg_</span><span style="color:#5a2">&#34;</span>) - <span style="color:#3af">1</span>);  
+    <span style="color:#000">arg</span> = <span style="color:#000">name</span>-&gt;<span style="color:#000">data</span> + <span style="color:#00f">sizeof</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">arg_</span><span style="color:#5a2">&#34;</span>) - <span style="color:#3af">1</span>;  
   
-    if (ngx_http_arg(r, arg, len, &amp;value) != NGX_OK) {  
-        v-&gt;not_found = 1;  
-        return NGX_OK;  
+    <span style="color:#00f">if</span> (<span style="color:#000">ngx_http_arg</span>(<span style="color:#000">r</span>, <span style="color:#000">arg</span>, <span style="color:#000">len</span>, &amp;<span style="color:#000">value</span>) != <span style="color:#000">NGX_OK</span>) {  
+        <span style="color:#000">v</span>-&gt;<span style="color:#000">not_found</span> = <span style="color:#3af">1</span>;  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
     }  
   
-    v-&gt;data = value.data;  
-    v-&gt;len = value.len;  
-    v-&gt;valid = 1;  
-    v-&gt;no_cacheable = 0;  
-    v-&gt;not_found = 0;  
+    <span style="color:#000">v</span>-&gt;<span style="color:#000">data</span> = <span style="color:#000">value</span>.<span style="color:#000">data</span>;  
+    <span style="color:#000">v</span>-&gt;<span style="color:#000">len</span> = <span style="color:#000">value</span>.<span style="color:#000">len</span>;  
+    <span style="color:#000">v</span>-&gt;<span style="color:#000">valid</span> = <span style="color:#3af">1</span>;  
+    <span style="color:#000">v</span>-&gt;<span style="color:#000">no_cacheable</span> = <span style="color:#3af">0</span>;  
+    <span style="color:#000">v</span>-&gt;<span style="color:#000">not_found</span> = <span style="color:#3af">0</span>;  
   
-    return NGX_OK;  
+    <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
 }  
   
-ngx_int_t  
-ngx_http_arg(ngx_http_request_t *r, u_char *name, size_t len, ngx_str_t *value)  
+<span style="color:#000">ngx_int_t</span>  
+<span style="color:#000">ngx_http_arg</span>(<span style="color:#000">ngx_http_request_t</span> *<span style="color:#000">r</span>, <span style="color:#000">u_char</span> *<span style="color:#000">name</span>, <span style="color:#000">size_t</span> <span style="color:#000">len</span>, <span style="color:#000">ngx_str_t</span> *<span style="color:#000">value</span>)  
 {  
-    u_char *p, *last;  
+    <span style="color:#000">u_char</span> *<span style="color:#000">p</span>, *<span style="color:#000">last</span>;  
   
-    if (r-&gt;args.len == 0) {  
-        return NGX_DECLINED;  
+    <span style="color:#00f">if</span> (<span style="color:#000">r</span>-&gt;<span style="color:#000">args</span>.<span style="color:#000">len</span> == <span style="color:#3af">0</span>) {  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
     }  
   
-    p = r-&gt;args.data;  
-    last = p + r-&gt;args.len;  
+    <span style="color:#000">p</span> = <span style="color:#000">r</span>-&gt;<span style="color:#000">args</span>.<span style="color:#000">data</span>;  
+    <span style="color:#000">last</span> = <span style="color:#000">p</span> + <span style="color:#000">r</span>-&gt;<span style="color:#000">args</span>.<span style="color:#000">len</span>;  
   
-    for ( /* void */ ; p &lt; last; p++) {  
+    <span style="color:#00f">for</span> ( <span style="color:#888;font-style:italic">/* void */</span> ; <span style="color:#000">p</span> &lt; <span style="color:#000">last</span>; <span style="color:#000">p</span>++) {  
   
-        /* we need '=' after name, so drop one char from last */  
+        <span style="color:#888;font-style:italic">/* we need &#39;=&#39; after name, so drop one char from last */</span>  
   
-        p = ngx_strlcasestrn(p, last - 1, name, len - 1);  
+        <span style="color:#000">p</span> = <span style="color:#000">ngx_strlcasestrn</span>(<span style="color:#000">p</span>, <span style="color:#000">last</span> - <span style="color:#3af">1</span>, <span style="color:#000">name</span>, <span style="color:#000">len</span> - <span style="color:#3af">1</span>);  
   
-        if (p == NULL) {  
-            return NGX_DECLINED;  
+        <span style="color:#00f">if</span> (<span style="color:#000">p</span> == <span style="color:#000">NULL</span>) {  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
         }  
   
-        if ((p == r-&gt;args.data || *(p - 1) == '&amp;') &amp;&amp; *(p + len) == '=') {  
+        <span style="color:#00f">if</span> ((<span style="color:#000">p</span> == <span style="color:#000">r</span>-&gt;<span style="color:#000">args</span>.<span style="color:#000">data</span> || *(<span style="color:#000">p</span> - <span style="color:#3af">1</span>) == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">&amp;</span><span style="color:#5a2">&#39;</span>) &amp;&amp; *(<span style="color:#000">p</span> + <span style="color:#000">len</span>) == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">=</span><span style="color:#5a2">&#39;</span>) {  
   
-            value-&gt;data = p + len + 1;  
+            <span style="color:#000">value</span>-&gt;<span style="color:#000">data</span> = <span style="color:#000">p</span> + <span style="color:#000">len</span> + <span style="color:#3af">1</span>;  
   
-            p = ngx_strlchr(p, last, '&amp;');  
+            <span style="color:#000">p</span> = <span style="color:#000">ngx_strlchr</span>(<span style="color:#000">p</span>, <span style="color:#000">last</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">&amp;</span><span style="color:#5a2">&#39;</span>);  
   
-            if (p == NULL) {  
-                p = r-&gt;args.data + r-&gt;args.len;  
+            <span style="color:#00f">if</span> (<span style="color:#000">p</span> == <span style="color:#000">NULL</span>) {  
+                <span style="color:#000">p</span> = <span style="color:#000">r</span>-&gt;<span style="color:#000">args</span>.<span style="color:#000">data</span> + <span style="color:#000">r</span>-&gt;<span style="color:#000">args</span>.<span style="color:#000">len</span>;  
             }  
   
-            value-&gt;len = p - value-&gt;data;  
+            <span style="color:#000">value</span>-&gt;<span style="color:#000">len</span> = <span style="color:#000">p</span> - <span style="color:#000">value</span>-&gt;<span style="color:#000">data</span>;  
   
-            return NGX_OK;  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
         }  
     }  
   
-    return NGX_DECLINED;  
+    <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
 }  
-</code></pre></div>
+</code></pre></div></div>
 
   </article>
 </main>
