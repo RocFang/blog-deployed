@@ -798,9 +798,9 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
       <description>&lt;p&gt;首先，必须声明，“进程间传递文件描述符”这个说法是错误的。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。&lt;br&gt;
-《深入理解Linux内核架构》&lt;/p&gt;
+《深入理解 Linux 内核架构》&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。&lt;/p&gt;</description>
+&lt;p&gt;这里说的“进程间传递文件描述符”是指，A 进程打开文件 fileA，获得文件描述符为 fdA，现在 A 进程要通过某种方法，根据 fdA，使得另一个进程 B，获得一个新的文件描述符 fdB，这个 fdB 在进程 B 中的作用，跟 fdA 在进程 A 中的作用一样。即在 fdB 上的操作，即是对 fileA 的操作。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1059,14 +1059,14 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
     </item>
     
     <item>
-      <title>Nginx踩坑记（一）</title>
+      <title>Nginx 踩坑记（一）</title>
       <link>https://pureage.info/2014/04/26/pitfall-of-nginx.html</link>
       <pubDate>Sat, 26 Apr 2014 13:18:00 +0000</pubDate>
       
       <guid>https://pureage.info/2014/04/26/pitfall-of-nginx.html</guid>
       <description>&lt;h2 id=&#34;1-预备知识&#34;&gt;1. 预备知识&lt;/h2&gt;
-&lt;p&gt;Nginx有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过set指令来定义。&lt;/p&gt;
-&lt;p&gt;配置过Nginx的童鞋可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的 location 配置块，它使用的还是同一套 Nginx 变量的副本。&lt;/p&gt;
+&lt;p&gt;Nginx 有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过 set 指令来定义。&lt;/p&gt;
+&lt;p&gt;配置过 Nginx 的同学可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的  location 配置块，它使用的还是同一套 Nginx 变量的副本。&lt;/p&gt;
 &lt;p&gt;例如，如果有如下的配置：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;location /test1 {  
         set $hello hello;  
@@ -1077,7 +1077,7 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
 location /test2 {  
         echo $hello;  
 }  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;虽然变量是定义在location /test1中，但Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在/test2中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问/test2,得到的变量$hello是一个空值，而访问/test1,则会内部跳转到/test2,将/test1中赋值的hello打印出来。&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;虽然变量是定义在 location /test1 中，但 Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在 /test2 中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问 /test2，得到的变量 &lt;code&gt;$hello&lt;/code&gt; 是一个空值，而访问 /test1，则会内部跳转到 /test2，将 /test1 中赋值的 hello 打印出来。&lt;/p&gt;</description>
     </item>
     
     <item>

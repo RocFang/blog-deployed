@@ -35,99 +35,98 @@
   <p>首先，必须声明，“进程间传递文件描述符”这个说法是错误的。</p>
 <blockquote>
 <p>在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。<br>
-《深入理解Linux内核架构》</p>
+《深入理解 Linux 内核架构》</p>
 </blockquote>
-<p>这里说的“进程间传递文件描述符”是指，A进程打开文件fileA,获得文件描述符为fdA,现在A进程要通过某种方法，根据fdA,使得另一个进程B,获得一个新的文件描述符fdB,这个fdB在进程B中的作用，跟fdA在进程A中的作用一样。即在fdB上的操作,即是对fileA的操作。</p>
+<p>这里说的“进程间传递文件描述符”是指，A 进程打开文件 fileA，获得文件描述符为 fdA，现在 A 进程要通过某种方法，根据 fdA，使得另一个进程 B，获得一个新的文件描述符 fdB，这个 fdB 在进程 B 中的作用，跟 fdA 在进程 A 中的作用一样。即在 fdB 上的操作，即是对 fileA 的操作。</p>
 <p>这看似不可能的操作，是怎么进行的呢？</p>
 <p><strong>答案是使用匿名Unix域套接字，即socketpair()和sendmsg/recvmsg来实现。</strong></p>
-<h2 id="关于socketpair">关于socketpair</h2>
+<h2 id="关于-socketpair">关于 socketpair</h2>
 <blockquote>
 <p>UNIX domain sockets provide both stream and datagram interfaces. The UNIX<br>
 domain datagram service is reliable, however. Messages are neither lost nor delivered<br>
 out of order. UNIX domain sockets are like a cross between sockets and pipes. You can
 use the network-oriented socket interfaces with them, or you can use the socketpair<br>
-function to create a pair of unnamed, connected, UNIX domain sockets.</p>
-</blockquote>
-<blockquote>
-<p>APUE 3rd edition,17.2</p>
+function to create a pair of unnamed, connected, UNIX domain sockets.<br>
+APUE 3rd edition,17.2</p>
 </blockquote>
 <p>socketpair的原型为：</p>
-<pre><code>#include &lt;sys/types.h&gt;  
-#include &lt;sys/socket.h&gt;  
-  
-int socketpair(int d, int type, int protocol, int sv[2]);  
-</code></pre><p>传入的参数sv为一个整型数组，有两个元素。当调用成功后，这个数组的两个元素即为2个文件描述符。</p>
-<p>一对连接起来的Unix匿名域套接字就建立起来了，它们就像一个全双工的管道，每一端都既可读也可写。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/types.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/socket.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#00f">int</span> <span style="color:#000">socketpair</span>(<span style="color:#00f">int</span> <span style="color:#000">d</span>, <span style="color:#00f">int</span> <span style="color:#000">type</span>, <span style="color:#00f">int</span> <span style="color:#000">protocol</span>, <span style="color:#00f">int</span> <span style="color:#000">sv</span>[<span style="color:#3af">2</span>]);  
+</code></pre></div><p>传入的参数 sv 为一个整型数组，有两个元素。当调用成功后，这个数组的两个元素即为 2 个文件描述符。</p>
+<p>一对连接起来的 Unix 匿名域套接字就建立起来了，它们就像一个全双工的管道，每一端都既可读也可写。</p>
 <p><img src="/img/ipc-1.jpg" alt="ipc-1.jpg"></p>
-<p>即，往sv[0]写入的数据，可以通过sv<a href="/img/ipc-1.jpg">1</a>读出来，往sv<a href="/img/ipc-1.jpg">1</a>写入的数据，也可以通过sv[0]读出来。</p>
-<h2 id="关于sendmsgrecvmsg">关于sendmsg/recvmsg</h2>
-<p>通过socket发送数据，主要有三组系统调用，分别是</p>
+<p>即，往 <code>sv[0]</code> 写入的数据，可以通过 <code>sv[1]</code> 读出来，往 <code>sv[1]</code> 写入的数据，也可以通过 <code>sv[0]</code> 读出来。</p>
+<h2 id="关于-sendmsgrecvmsg">关于 sendmsg/recvmsg</h2>
+<p>通过 socket 发送数据，主要有三组系统调用，分别是：</p>
 <ol>
-<li>send/recv(与write/read类似，面向连接的)</li>
-<li>sendto/recvfrom(sendto与send的差别在于，sendto可以面向无连接,recvfrom与recv的区别是,recvfrom可以获取sender方的地址)</li>
-<li>sendmsg/recvmsg. 通过sendmsg,可以用msghdr参数，来指定多个缓冲区来发送数据，与writev系统调用类似。</li>
+<li>send/recv（与 write/read 类似，面向连接的）</li>
+<li>sendto/recvfrom（sendto 与 send 的差别在于，sendto 可以面向无连接，recvfrom 与 recv 的区别是，recvfrom 可以获取 sender 方的地址）</li>
+<li>sendmsg/recvmsg。通过 sendmsg，可以用 msghdr 参数，来指定多个缓冲区来发送数据，与writev系统调用类似。</li>
 </ol>
-<p>sendmsg函数原型如下:</p>
-<pre><code>#include &lt;sys/socket.h&gt;  
-ssize_t sendmsg(int sockfd, const struct msghdr *msg, int flags);  
-</code></pre><p>其中，根据POSIX.1 msghdr的定义至少应该包含下面几个成员：</p>
-<pre><code>struct msghdr {  
-    void *msg_name; /* optional address */  
-    socklen_t msg_namelen; /* address size in bytes */  
-    struct iovec *msg_iov; /* array of I/O buffers */  
-    int msg_iovlen; /* number of elements in array */  
-    void *msg_control; /* ancillary data */  
-    socklen_t msg_controllen; /* number of ancillary bytes */  
-    int msg_flags; /* flags for received message */  
-};  
-</code></pre><p>在Linux的manual page中，msghdr的定义为:</p>
-<pre><code>struct msghdr {  
-    void         *msg_name;       /* optional address */  
-    socklen_t     msg_namelen;    /* size of address */  
-    struct iovec *msg_iov;        /* scatter/gather array */  
-    size_t        msg_iovlen;     /* # elements in msg_iov */  
-    void         *msg_control;    /* ancillary data, see below */  
-    socklen_t     msg_controllen; /* ancillary data buffer len */  
-    int           msg_flags;      /* flags on received message */  
-};  
-</code></pre><p>查看Linux内核源代码(3.18.1)，可知msghdr的准确定义为：</p>
-<pre><code>struct msghdr {  
-	void		*msg_name;	/* ptr to socket address structure */  
-	int		msg_namelen;	/* size of socket address structure */  
-	struct iovec	*msg_iov;	/* scatter/gather array */  
-	__kernel_size_t	msg_iovlen;	/* # elements in msg_iov */  
-	void		*msg_control;	/* ancillary data */  
-	__kernel_size_t	msg_controllen;	/* ancillary data buffer length */  
-	unsigned int	msg_flags;	/* flags on received message */  
+<p>sendmsg函数原型如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/socket.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#000">ssize_t</span> <span style="color:#000">sendmsg</span>(<span style="color:#00f">int</span> <span style="color:#000">sockfd</span>, <span style="color:#00f">const</span> <span style="color:#00f">struct</span> <span style="color:#000">msghdr</span> *<span style="color:#000">msg</span>, <span style="color:#00f">int</span> <span style="color:#000">flags</span>);  
+</code></pre></div><p>其中，根据 POSIX.1 msghdr 的定义至少应该包含下面几个成员：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">struct</span> <span style="color:#000">msghdr</span> {  
+    <span style="color:#00f">void</span> *<span style="color:#000">msg_name</span>; <span style="color:#888;font-style:italic">/* optional address */</span>  
+    <span style="color:#000">socklen_t</span> <span style="color:#000">msg_namelen</span>; <span style="color:#888;font-style:italic">/* address size in bytes */</span>  
+    <span style="color:#00f">struct</span> <span style="color:#000">iovec</span> *<span style="color:#000">msg_iov</span>; <span style="color:#888;font-style:italic">/* array of I/O buffers */</span>  
+    <span style="color:#00f">int</span> <span style="color:#000">msg_iovlen</span>; <span style="color:#888;font-style:italic">/* number of elements in array */</span>  
+    <span style="color:#00f">void</span> *<span style="color:#000">msg_control</span>; <span style="color:#888;font-style:italic">/* ancillary data */</span>  
+    <span style="color:#000">socklen_t</span> <span style="color:#000">msg_controllen</span>; <span style="color:#888;font-style:italic">/* number of ancillary bytes */</span>  
+    <span style="color:#00f">int</span> <span style="color:#000">msg_flags</span>; <span style="color:#888;font-style:italic">/* flags for received message */</span>  
+};
+
+</code></pre></div><p>在 Linux 的 manual page 中，msghdr 的定义为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">struct</span> <span style="color:#000">msghdr</span> {  
+    <span style="color:#00f">void</span>         *<span style="color:#000">msg_name</span>;       <span style="color:#888;font-style:italic">/* optional address */</span>  
+    <span style="color:#000">socklen_t</span>     <span style="color:#000">msg_namelen</span>;    <span style="color:#888;font-style:italic">/* size of address */</span>  
+    <span style="color:#00f">struct</span> <span style="color:#000">iovec</span> *<span style="color:#000">msg_iov</span>;        <span style="color:#888;font-style:italic">/* scatter/gather array */</span>  
+    <span style="color:#000">size_t</span>        <span style="color:#000">msg_iovlen</span>;     <span style="color:#888;font-style:italic">/* # elements in msg_iov */</span>  
+    <span style="color:#00f">void</span>         *<span style="color:#000">msg_control</span>;    <span style="color:#888;font-style:italic">/* ancillary data, see below */</span>  
+    <span style="color:#000">socklen_t</span>     <span style="color:#000">msg_controllen</span>; <span style="color:#888;font-style:italic">/* ancillary data buffer len */</span>  
+    <span style="color:#00f">int</span>           <span style="color:#000">msg_flags</span>;      <span style="color:#888;font-style:italic">/* flags on received message */</span>  
+};
+</code></pre></div><p>查看 Linux 内核源代码（3.18.1），可知 msghdr 的准确定义为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">struct</span> <span style="color:#000">msghdr</span> {  
+	<span style="color:#00f">void</span>		*<span style="color:#000">msg_name</span>;	<span style="color:#888;font-style:italic">/* ptr to socket address structure */</span>  
+	<span style="color:#00f">int</span>		<span style="color:#000">msg_namelen</span>;	<span style="color:#888;font-style:italic">/* size of socket address structure */</span>  
+	<span style="color:#00f">struct</span> <span style="color:#000">iovec</span>	*<span style="color:#000">msg_iov</span>;	<span style="color:#888;font-style:italic">/* scatter/gather array */</span>  
+	<span style="color:#000">__kernel_size_t</span>	<span style="color:#000">msg_iovlen</span>;	<span style="color:#888;font-style:italic">/* # elements in msg_iov */</span>  
+	<span style="color:#00f">void</span>		*<span style="color:#000">msg_control</span>;	<span style="color:#888;font-style:italic">/* ancillary data */</span>  
+	<span style="color:#000">__kernel_size_t</span>	<span style="color:#000">msg_controllen</span>;	<span style="color:#888;font-style:italic">/* ancillary data buffer length */</span>  
+	<span style="color:#00f">unsigned</span> <span style="color:#00f">int</span>	<span style="color:#000">msg_flags</span>;	<span style="color:#888;font-style:italic">/* flags on received message */</span>  
 };  
   
-</code></pre><p>可见，与Manual paga中的描述一致。</p>
-<p>其中，前两个成员msg_name和msg_namelen是用来在发送datagram时，指定目的地址的。如果是面向连接的，这两个成员变量可以不用。</p>
-<p>接下来的两个成员,msg_iov和msg_iovlen，则是用来指定发送缓冲区数组的。其中，msg_iovlen是iovec类型的元素的个数。每一个缓冲区的起始地址和大小由iovec类型自包含，iovec的定义为：</p>
-<pre><code>struct iovec {  
-    void *iov_base;   /* Starting address */  
-    size_t iov_len;   /* Number of bytes */  
+</code></pre></div><p>可见，与 Manual paga 中的描述一致。</p>
+<p>其中，前两个成员 msg_name 和 msg_namelen 是用来在发送 datagram 时，指定目的地址的。如果是面向连接的，这两个成员变量可以不用。</p>
+<p>接下来的两个成员，msg_iov 和 msg_iovlen，则是用来指定发送缓冲区数组的。其中，msg_iovlen 是 iovec 类型的元素的个数。每一个缓冲区的起始地址和大小由 iovec 类型自包含，iovec 的定义为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">struct</span> <span style="color:#000">iovec</span> {  
+    <span style="color:#00f">void</span> *<span style="color:#000">iov_base</span>;   <span style="color:#888;font-style:italic">/* Starting address */</span>  
+    <span style="color:#000">size_t</span> <span style="color:#000">iov_len</span>;   <span style="color:#888;font-style:italic">/* Number of bytes */</span>  
 };  
-</code></pre><p>成员msg_flags用来描述接受到的消息的性质,由调用recvmsg时传入的flags参数设置。recvmsg的函数原型为:</p>
-<pre><code>#include &lt;sys/socket.h&gt;  
-ssize_t recvmsg(int sockfd, struct msghdr *msg, int flags);  
-</code></pre><p>与sendmsg相对应，recvmsg用msghdr结构指定多个缓冲区来存放读取到的结果。flags参数用来修改recvmsg的默认行为。传入的flags参数在调用完recvmsg后，会被设置到msg所指向的msghdr类型的msg_flags变量中。flags可以为如下值:<br>
-<img src="/img/ipc-2.jpg" alt="ipc-2.jpg"></p>
-<p>回来继续讲sendmsg和msghdr结构。</p>
-<p>msghdr结构中剩下的两个成员,msg_control和msg_contorllen,是用来发送或接收控制信息的。其中,msg_control指向一个cmsghdr的结构体,msg_controllen成员是控制信息所占用的字节数。</p>
-<p>注意,msg_controllen与前面的msg_iovlen不同,msg_iovlen是指的由成员msg_iov所指向的iovec型的数组的元素个数,而msg_controllen,则是所有控制信息所占用的总的字节数。</p>
-<p>其实,msg_control也可能是个数组,但msg_controllen并不是该cmsghdr类型的数组的元素的个数。在Manual page中,关于msg_controllen有这么一段描述:</p>
+</code></pre></div><p>成员 msg_flags 用来描述接受到的消息的性质，由调用 recvmsg 时传入的 flags 参数设置。recvmsg 的函数原型为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/socket.h&gt;  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#000">ssize_t</span> <span style="color:#000">recvmsg</span>(<span style="color:#00f">int</span> <span style="color:#000">sockfd</span>, <span style="color:#00f">struct</span> <span style="color:#000">msghdr</span> *<span style="color:#000">msg</span>, <span style="color:#00f">int</span> <span style="color:#000">flags</span>);  
+</code></pre></div><p>与 sendmsg 相对应，recvmsg 用 msghdr 结构指定多个缓冲区来存放读取到的结果。flags 参数用来修改 recvmsg 的默认行为。传入的 flags 参数在调用完 recvmsg 后，会被设置到 msg 所指向的msghdr 类型的 msg_flags 变量中。flags可以为如下值：</p>
+<p><img src="/img/ipc-2.jpg" alt="ipc-2.jpg"></p>
+<p>回来继续讲 sendmsg 和 msghdr 结构。</p>
+<p>msghdr 结构中剩下的两个成员，msg_control 和 msg_contorllen，是用来发送或接收控制信息的。其中，msg_control 指向一个 cmsghdr 的结构体，msg_controllen 成员是控制信息所占用的字节数。</p>
+<p>注意，msg_controllen 与前面的 msg_iovlen 不同，msg_iovlen 是指的由成员 msg_iov 所指向的 iovec 型的数组的元素个数，而 msg_controllen，则是所有控制信息所占用的总的字节数。</p>
+<p>其实，msg_control 也可能是个数组，但 msg_controllen 并不是该 cmsghdr 类型的数组的元素的个数。在 Manual page 中，关于 msg_controllen 有这么一段描述：</p>
 <blockquote>
 <p>To create ancillary data, first initialize the msg_controllen member of the msghdr with the length of the control message buffer.  Use CMSG_FIRSTHDR() on the msghdr to get the first control  message  and CMSG_NEXTHDR  to  get  all  subsequent  ones.   In  each  control  message, initialize cmsg_len (with CMSG_LEN), the other cmsghdr header fields, and the  data  portion  using  CMSG_DATA.   Finally,  the msg_controllen  field of the msghdr should be set to the sum of the CMSG_SPACE() of the length of all control messages in the buffer.</p>
 </blockquote>
-<p>在Linux 的Manual page(man cmsg)中,cmsghdr的定义为:</p>
-<pre><code>struct cmsghdr {  
-    socklen_t   cmsg_len;   /* data byte count, including header */  
-    int         cmsg_level; /* originating protocol */  
-    int         cmsg_type;  /* protocol-specific type */  
-    /* followed by  unsigned char   cmsg_data[]; */  
+<p>在 Linux 的 Manual page（man cmsg）中，cmsghdr 的定义为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">struct</span> <span style="color:#000">cmsghdr</span> {  
+    <span style="color:#000">socklen_t</span>   <span style="color:#000">cmsg_len</span>;   <span style="color:#888;font-style:italic">/* data byte count, including header */</span>  
+    <span style="color:#00f">int</span>         <span style="color:#000">cmsg_level</span>; <span style="color:#888;font-style:italic">/* originating protocol */</span>  
+    <span style="color:#00f">int</span>         <span style="color:#000">cmsg_type</span>;  <span style="color:#888;font-style:italic">/* protocol-specific type */</span>  
+    <span style="color:#888;font-style:italic">/* followed by  unsigned char   cmsg_data[]; */</span>  
 };  
-</code></pre><p>注意,控制信息的数据部分,是直接存储在cmsg_type之后的。但中间可能有一些由于对齐产生的填充字节,由于这些填充数据的存在，对于这些控制数据的访问,必须使用Linux提供的一些专用宏来完成。这些宏包括如下几个:</p>
+</code></pre></div><p>注意,控制信息的数据部分,是直接存储在cmsg_type之后的。但中间可能有一些由于对齐产生的填充字节,由于这些填充数据的存在，对于这些控制数据的访问,必须使用Linux提供的一些专用宏来完成。这些宏包括如下几个:</p>
 <pre><code>#include &lt;sys/socket.h&gt;  
   
 struct cmsghdr *CMSG_FIRSTHDR(struct msghdr *msgh);  
@@ -136,208 +135,209 @@ size_t CMSG_ALIGN(size_t length);
 size_t CMSG_SPACE(size_t length);  
 size_t CMSG_LEN(size_t length);  
 unsigned char *CMSG_DATA(struct cmsghdr *cmsg);  
-</code></pre><p>其中:</p>
-<p>CMSG_FIRSTHDR()返回msgh所指向的msghdr类型的缓冲区中的第一个cmsghdr结构体的指针。</p>
-<p>CMSG_NXTHDR()返回传入的cmsghdr类型的指针的下一个cmsghdr结构体的指针。</p>
-<p>CMSG_ALIGN()根据传入的length大小,返回一个包含了添加对齐作用的填充数据后的大小。</p>
-<p>CMSG_SPACE()中传入的参数length指的是一个控制信息元素(即一个cmsghdr结构体)后面数据部分的字节数,返回的是这个控制信息的总的字节数,即包含了头部(即cmsghdr各成员)、数据部分和填充数据的总和。</p>
-<p>CMSG_DATA根据传入的cmsghdr指针参数,返回其后面数据部分的指针。</p>
-<p>CMSG_LEN传入的参数是一个控制信息中的数据部分的大小,返回的是这个根据这个数据部分大小,需要配置的cmsghdr结构体中cmsg_len成员的值。这个大小将为对齐添加的填充数据也包含在内。</p>
-<p>用一张图来表示这几个变量和宏的关系为:<br>
-<img src="/img/ipc-3.jpg" alt="ipc-3.jpg"></p>
-<p>如前所述,msghdr结构中,msg_controllen成员的大小为所有cmsghdr控制元素调用CMSG_SPACE()后相加的和。</p>
-<p>讲了这么多msghdr,cmsghdr,还是没有讲到如何传递文件描述符。其实很简单,本来sendmsg是和send一样,是用来传送数据的,只不过其数据部分的buffer由参数msg_iov来指定,至此,其行为和send可以说是类似的。</p>
-<p>但是sendmsg提供了可以传递控制信息的功能,我们要实现的传递描述符这一功能,就必须要用到这个控制信息。在msghdr变量的cmsghdr成员中,由控制头cmsg_level和cmsg_type来设置&quot;传递文件描述符&quot;这一属性,并将要传递的文件描述符作为数据部分,保存在cmsghdr变量的后面。这样就可以实现传递文件描述符这一功能,在此时,是不需要使用msg_iov来传递数据的。</p>
-<p>具体的说,为msghdr的成员msg_control分配一个cmsghdr的空间,将该cmsghdr结构的cmsg_level设置为SOL_SOCKET,cmsg_type设置为SCM_RIGHTS,并将要传递的文件描述符作为数据部分,调用sendmsg即可。其中,SCM表示socket-level control message,SCM_RIGHTS表示我们要传递访问权限。</p>
-<p>弄清楚了发送部分,文件描述符的接收部分就好说了。跟发送部分一样,为控制信息配置好属性,并在其后分配一个文件描述符的数据部分后，在成功调用recvmsg后,控制信息的数据部分就是在接收进程中的新的文件描述符了,接收进程可直接对该文件描述符进行操作。</p>
-<h2 id="nginx中传递文件描述符的代码实现">Nginx中传递文件描述符的代码实现</h2>
-<p>关于如何在进程间传递文件描述符,我们已经理的差不多了。下面看看Nginx中是如何做的。</p>
-<p>Nginx中发送文件描述符的相关代码为:</p>
-<pre><code>ngx_int_t  
-ngx_write_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size,  
-    ngx_log_t *log)  
+</code></pre><p>其中：</p>
+<ul>
+<li><code>CMSG_FIRSTHDR()</code> 返回 msgh 所指向的 msghdr 类型的缓冲区中的第一个 cmsghdr 结构体的指针。</li>
+<li><code>CMSG_NXTHDR()</code> 返回传入的 cmsghdr 类型的指针的下一个 cmsghdr 结构体的指针。</li>
+<li><code>CMSG_ALIGN()</code> 根据传入的 length大小 ，返回一个包含了添加对齐作用的填充数据后的大小。</li>
+<li><code>CMSG_SPACE()</code> 中传入的参数 length 指的是一个控制信息元素（即一个 cmsghdr 结构体）后面数据部分的字节数，返回的是这个控制信息的总的字节数，即包含了头部（即 cmsghdr 各成员）、数据部分和填充数据的总和。</li>
+<li><code>CMSG_DATA()</code> 根据传入的 cmsghdr 指针参数，返回其后面数据部分的指针。</li>
+<li><code>CMSG_LEN()</code> 传入的参数是一个控制信息中的数据部分的大小，返回的是这个根据这个数据部分大小，需要配置的 cmsghdr 结构体中 cmsg_len 成员的值。这个大小将为对齐添加的填充数据也包含在内。</li>
+</ul>
+<p>用一张图来表示这几个变量和宏的关系为：</p>
+<p><img src="/img/ipc-3.jpg" alt="ipc-3.jpg"></p>
+<p>如前所述，msghdr 结构中，msg_controllen 成员的大小为所有 cmsghdr 控制元素调用 <code>CMSG_SPACE()</code> 后相加的和。</p>
+<p>讲了这么多 msghdr、cmsghdr，还是没有讲到如何传递文件描述符。其实很简单，本来 sendmsg 是和 send 一样，是用来传送数据的，只不过其数据部分的 buffer 由参数 msg_iov 来指定，至此，其行为和 send 可以说是类似的。</p>
+<p>但是 sendmsg 提供了可以传递控制信息的功能，我们要实现的传递描述符这一功能，就必须要用到这个控制信息。在 msghdr 变量的 cmsghdr 成员中,由控制头 cmsg_level 和 cmsg_type 来设置“传递文件描述符”这一属性，并将要传递的文件描述符作为数据部分，保存在 cmsghdr 变量的后面。这样就可以实现传递文件描述符这一功能，在此时,是不需要使用 msg_iov 来传递数据的。</p>
+<p>具体的说,为 msghdr 的成员 msg_control 分配一个 cmsghdr 的空间,将该 cmsghdr 结构的 cmsg_level 设置为 SOL_SOCKET，cmsg_type 设置为 SCM_RIGHTS，并将要传递的文件描述符作为数据部分，调用 sendmsg 即可。其中，SCM 表示 socket-level control message，SCM_RIGHTS表示我们要传递访问权限。</p>
+<p>弄清楚了发送部分，文件描述符的接收部分就好说了。跟发送部分一样，为控制信息配置好属性，并在其后分配一个文件描述符的数据部分后，在成功调用 recvmsg 后,控制信息的数据部分就是在接收进程中的新的文件描述符了，接收进程可直接对该文件描述符进行操作。</p>
+<h2 id="nginx-中传递文件描述符的代码实现">Nginx 中传递文件描述符的代码实现</h2>
+<p>关于如何在进程间传递文件描述符，我们已经理的差不多了。下面看看 Nginx 中是如何做的。</p>
+<p>Nginx 中发送文件描述符的相关代码为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#000">ngx_int_t</span>  
+<span style="color:#000">ngx_write_channel</span>(<span style="color:#000">ngx_socket_t</span> <span style="color:#000">s</span>, <span style="color:#000">ngx_channel_t</span> *<span style="color:#000">ch</span>, <span style="color:#000">size_t</span> <span style="color:#000">size</span>,  
+    <span style="color:#000">ngx_log_t</span> *<span style="color:#000">log</span>)  
 {  
-    ssize_t             n;  
-    ngx_err_t           err;  
-    struct iovec        iov[1];  
-    struct msghdr       msg;  
+    <span style="color:#000">ssize_t</span>             <span style="color:#000">n</span>;  
+    <span style="color:#000">ngx_err_t</span>           <span style="color:#000">err</span>;  
+    <span style="color:#00f">struct</span> <span style="color:#000">iovec</span>        <span style="color:#000">iov</span>[<span style="color:#3af">1</span>];  
+    <span style="color:#00f">struct</span> <span style="color:#000">msghdr</span>       <span style="color:#000">msg</span>;  
   
-#if (NGX_HAVE_MSGHDR_MSG_CONTROL)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">if (NGX_HAVE_MSGHDR_MSG_CONTROL)  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#00f">union</span> {  
+        <span style="color:#00f">struct</span> <span style="color:#000">cmsghdr</span>  <span style="color:#000">cm</span>;  
+        <span style="color:#00f">char</span>            <span style="color:#000">space</span>[<span style="color:#000">CMSG_SPACE</span>(<span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>))];  
+    } <span style="color:#000">cmsg</span>;  
   
-    union {  
-        struct cmsghdr  cm;  
-        char            space[CMSG_SPACE(sizeof(int))];  
-    } cmsg;  
+    <span style="color:#00f">if</span> (<span style="color:#000">ch</span>-&gt;<span style="color:#000">fd</span> == -<span style="color:#3af">1</span>) {  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_control</span> = <span style="color:#000">NULL</span>;  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_controllen</span> = <span style="color:#3af">0</span>;  
   
-    if (ch-&gt;fd == -1) {  
-        msg.msg_control = NULL;  
-        msg.msg_controllen = 0;  
+    } <span style="color:#00f">else</span> {  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_control</span> = (<span style="color:#000">caddr_t</span>) &amp;<span style="color:#000">cmsg</span>;  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_controllen</span> = <span style="color:#00f">sizeof</span>(<span style="color:#000">cmsg</span>);  
   
-    } else {  
-        msg.msg_control = (caddr_t) &amp;cmsg;  
-        msg.msg_controllen = sizeof(cmsg);  
+        <span style="color:#000">ngx_memzero</span>(&amp;<span style="color:#000">cmsg</span>, <span style="color:#00f">sizeof</span>(<span style="color:#000">cmsg</span>));  
   
-        ngx_memzero(&amp;cmsg, sizeof(cmsg));  
+        <span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_len</span> = <span style="color:#000">CMSG_LEN</span>(<span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>));  
+        <span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_level</span> = <span style="color:#000">SOL_SOCKET</span>;  
+        <span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_type</span> = <span style="color:#000">SCM_RIGHTS</span>;  
   
-        cmsg.cm.cmsg_len = CMSG_LEN(sizeof(int));  
-        cmsg.cm.cmsg_level = SOL_SOCKET;  
-        cmsg.cm.cmsg_type = SCM_RIGHTS;  
+        <span style="color:#888;font-style:italic">/*  
+</span><span style="color:#888;font-style:italic">         * We have to use ngx_memcpy() instead of simple  
+</span><span style="color:#888;font-style:italic">         *   *(int *) CMSG_DATA(&amp;cmsg.cm) = ch-&gt;fd;  
+</span><span style="color:#888;font-style:italic">         * because some gcc 4.4 with -O2/3/s optimization issues the warning:  
+</span><span style="color:#888;font-style:italic">         *   dereferencing type-punned pointer will break strict-aliasing rules  
+</span><span style="color:#888;font-style:italic">         *  
+</span><span style="color:#888;font-style:italic">         * Fortunately, gcc with -O1 compiles this ngx_memcpy()  
+</span><span style="color:#888;font-style:italic">         * in the same simple assignment as in the code above  
+</span><span style="color:#888;font-style:italic">         */</span>  
   
-        /*  
-         * We have to use ngx_memcpy() instead of simple  
-         *   *(int *) CMSG_DATA(&amp;cmsg.cm) = ch-&gt;fd;  
-         * because some gcc 4.4 with -O2/3/s optimization issues the warning:  
-         *   dereferencing type-punned pointer will break strict-aliasing rules  
-         *  
-         * Fortunately, gcc with -O1 compiles this ngx_memcpy()  
-         * in the same simple assignment as in the code above  
-         */  
-  
-        ngx_memcpy(CMSG_DATA(&amp;cmsg.cm), &amp;ch-&gt;fd, sizeof(int));  
+        <span style="color:#000">ngx_memcpy</span>(<span style="color:#000">CMSG_DATA</span>(&amp;<span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>), &amp;<span style="color:#000">ch</span>-&gt;<span style="color:#000">fd</span>, <span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>));  
     }  
   
-    msg.msg_flags = 0;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_flags</span> = <span style="color:#3af">0</span>;  
   
-#else  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#00f">if</span> (<span style="color:#000">ch</span>-&gt;<span style="color:#000">fd</span> == -<span style="color:#3af">1</span>) {  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_accrights</span> = <span style="color:#000">NULL</span>;  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_accrightslen</span> = <span style="color:#3af">0</span>;  
   
-    if (ch-&gt;fd == -1) {  
-        msg.msg_accrights = NULL;  
-        msg.msg_accrightslen = 0;  
-  
-    } else {  
-        msg.msg_accrights = (caddr_t) &amp;ch-&gt;fd;  
-        msg.msg_accrightslen = sizeof(int);  
+    } <span style="color:#00f">else</span> {  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_accrights</span> = (<span style="color:#000">caddr_t</span>) &amp;<span style="color:#000">ch</span>-&gt;<span style="color:#000">fd</span>;  
+        <span style="color:#000">msg</span>.<span style="color:#000">msg_accrightslen</span> = <span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>);  
     }  
   
-#endif  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#000">iov</span>[<span style="color:#3af">0</span>].<span style="color:#000">iov_base</span> = (<span style="color:#00f">char</span> *) <span style="color:#000">ch</span>;  
+    <span style="color:#000">iov</span>[<span style="color:#3af">0</span>].<span style="color:#000">iov_len</span> = <span style="color:#000">size</span>;  
   
-    iov[0].iov_base = (char *) ch;  
-    iov[0].iov_len = size;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_name</span> = <span style="color:#000">NULL</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_namelen</span> = <span style="color:#3af">0</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_iov</span> = <span style="color:#000">iov</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_iovlen</span> = <span style="color:#3af">1</span>;  
   
-    msg.msg_name = NULL;  
-    msg.msg_namelen = 0;  
-    msg.msg_iov = iov;  
-    msg.msg_iovlen = 1;  
+    <span style="color:#000">n</span> = <span style="color:#000">sendmsg</span>(<span style="color:#000">s</span>, &amp;<span style="color:#000">msg</span>, <span style="color:#3af">0</span>);  
   
-    n = sendmsg(s, &amp;msg, 0);  
-  
-    if (n == -1) {  
-        err = ngx_errno;  
-        if (err == NGX_EAGAIN) {  
-            return NGX_AGAIN;  
+    <span style="color:#00f">if</span> (<span style="color:#000">n</span> == -<span style="color:#3af">1</span>) {  
+        <span style="color:#000">err</span> = <span style="color:#000">ngx_errno</span>;  
+        <span style="color:#00f">if</span> (<span style="color:#000">err</span> == <span style="color:#000">NGX_EAGAIN</span>) {  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_AGAIN</span>;  
         }  
   
-        ngx_log_error(NGX_LOG_ALERT, log, err, &quot;sendmsg() failed&quot;);  
-        return NGX_ERROR;  
+        <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_ALERT</span>, <span style="color:#000">log</span>, <span style="color:#000">err</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">sendmsg() failed</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
     }  
   
-    return NGX_OK;  
+    <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
 }  
-  
-</code></pre><p>其中,参数s就是一个用socketpair创建的管道的一端,要传送的文件描述符位于参数ch所指向的结构体中。ch结构体本身,包含要传送的文件描述符和其他成员,则通过io_vec类型的成员msg_iov传送。</p>
-<p>接收部分的代码为:</p>
-<pre><code>ngx_int_t  
-ngx_read_channel(ngx_socket_t s, ngx_channel_t *ch, size_t size, ngx_log_t *log)  
+</code></pre></div><p>其中，参数 s 就是一个用 socketpair 创建的管道的一端，要传送的文件描述符位于参数 ch 所指向的结构体中。ch 结构体本身，包含要传送的文件描述符和其他成员，则通过 io_vec 类型的成员 msg_iov 传送。</p>
+<p>接收部分的代码为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#000">ngx_int_t</span>  
+<span style="color:#000">ngx_read_channel</span>(<span style="color:#000">ngx_socket_t</span> <span style="color:#000">s</span>, <span style="color:#000">ngx_channel_t</span> *<span style="color:#000">ch</span>, <span style="color:#000">size_t</span> <span style="color:#000">size</span>, <span style="color:#000">ngx_log_t</span> *<span style="color:#000">log</span>)  
 {  
-    ssize_t             n;  
-    ngx_err_t           err;  
-    struct iovec        iov[1];  
-    struct msghdr       msg;  
+    <span style="color:#000">ssize_t</span>             <span style="color:#000">n</span>;  
+    <span style="color:#000">ngx_err_t</span>           <span style="color:#000">err</span>;  
+    <span style="color:#00f">struct</span> <span style="color:#000">iovec</span>        <span style="color:#000">iov</span>[<span style="color:#3af">1</span>];  
+    <span style="color:#00f">struct</span> <span style="color:#000">msghdr</span>       <span style="color:#000">msg</span>;  
   
-#if (NGX_HAVE_MSGHDR_MSG_CONTROL)  
-    union {  
-        struct cmsghdr  cm;  
-        char            space[CMSG_SPACE(sizeof(int))];  
-    } cmsg;  
-#else  
-    int                 fd;  
-#endif  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">if (NGX_HAVE_MSGHDR_MSG_CONTROL)  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">union</span> {  
+        <span style="color:#00f">struct</span> <span style="color:#000">cmsghdr</span>  <span style="color:#000">cm</span>;  
+        <span style="color:#00f">char</span>            <span style="color:#000">space</span>[<span style="color:#000">CMSG_SPACE</span>(<span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>))];  
+    } <span style="color:#000">cmsg</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#00f">int</span>                 <span style="color:#000">fd</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#000">iov</span>[<span style="color:#3af">0</span>].<span style="color:#000">iov_base</span> = (<span style="color:#00f">char</span> *) <span style="color:#000">ch</span>;  
+    <span style="color:#000">iov</span>[<span style="color:#3af">0</span>].<span style="color:#000">iov_len</span> = <span style="color:#000">size</span>;  
   
-    iov[0].iov_base = (char *) ch;  
-    iov[0].iov_len = size;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_name</span> = <span style="color:#000">NULL</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_namelen</span> = <span style="color:#3af">0</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_iov</span> = <span style="color:#000">iov</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_iovlen</span> = <span style="color:#3af">1</span>;  
   
-    msg.msg_name = NULL;  
-    msg.msg_namelen = 0;  
-    msg.msg_iov = iov;  
-    msg.msg_iovlen = 1;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">if (NGX_HAVE_MSGHDR_MSG_CONTROL)  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">msg</span>.<span style="color:#000">msg_control</span> = (<span style="color:#000">caddr_t</span>) &amp;<span style="color:#000">cmsg</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_controllen</span> = <span style="color:#00f">sizeof</span>(<span style="color:#000">cmsg</span>);  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">msg</span>.<span style="color:#000">msg_accrights</span> = (<span style="color:#000">caddr_t</span>) &amp;<span style="color:#000">fd</span>;  
+    <span style="color:#000">msg</span>.<span style="color:#000">msg_accrightslen</span> = <span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>);  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#000">n</span> = <span style="color:#000">recvmsg</span>(<span style="color:#000">s</span>, &amp;<span style="color:#000">msg</span>, <span style="color:#3af">0</span>);  
   
-#if (NGX_HAVE_MSGHDR_MSG_CONTROL)  
-    msg.msg_control = (caddr_t) &amp;cmsg;  
-    msg.msg_controllen = sizeof(cmsg);  
-#else  
-    msg.msg_accrights = (caddr_t) &amp;fd;  
-    msg.msg_accrightslen = sizeof(int);  
-#endif  
-  
-    n = recvmsg(s, &amp;msg, 0);  
-  
-    if (n == -1) {  
-        err = ngx_errno;  
-        if (err == NGX_EAGAIN) {  
-            return NGX_AGAIN;  
+    <span style="color:#00f">if</span> (<span style="color:#000">n</span> == -<span style="color:#3af">1</span>) {  
+        <span style="color:#000">err</span> = <span style="color:#000">ngx_errno</span>;  
+        <span style="color:#00f">if</span> (<span style="color:#000">err</span> == <span style="color:#000">NGX_EAGAIN</span>) {  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_AGAIN</span>;  
         }  
   
-        ngx_log_error(NGX_LOG_ALERT, log, err, &quot;recvmsg() failed&quot;);  
-        return NGX_ERROR;  
+        <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_ALERT</span>, <span style="color:#000">log</span>, <span style="color:#000">err</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">recvmsg() failed</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
     }  
   
-    if (n == 0) {  
-        ngx_log_debug0(NGX_LOG_DEBUG_CORE, log, 0, &quot;recvmsg() returned zero&quot;);  
-        return NGX_ERROR;  
+    <span style="color:#00f">if</span> (<span style="color:#000">n</span> == <span style="color:#3af">0</span>) {  
+        <span style="color:#000">ngx_log_debug0</span>(<span style="color:#000">NGX_LOG_DEBUG_CORE</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">recvmsg() returned zero</span><span style="color:#5a2">&#34;</span>);  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
     }  
   
-    if ((size_t) n &lt; sizeof(ngx_channel_t)) {  
-        ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                      &quot;recvmsg() returned not enough data: %z&quot;, n);  
-        return NGX_ERROR;  
+    <span style="color:#00f">if</span> ((<span style="color:#000">size_t</span>) <span style="color:#000">n</span> &lt; <span style="color:#00f">sizeof</span>(<span style="color:#000">ngx_channel_t</span>)) {  
+        <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_ALERT</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
+                      <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">recvmsg() returned not enough data: %z</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">n</span>);  
+        <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
     }  
   
-#if (NGX_HAVE_MSGHDR_MSG_CONTROL)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">if (NGX_HAVE_MSGHDR_MSG_CONTROL)  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#00f">if</span> (<span style="color:#000">ch</span>-&gt;<span style="color:#000">command</span> == <span style="color:#000">NGX_CMD_OPEN_CHANNEL</span>) {  
   
-    if (ch-&gt;command == NGX_CMD_OPEN_CHANNEL) {  
-  
-        if (cmsg.cm.cmsg_len &lt; (socklen_t) CMSG_LEN(sizeof(int))) {  
-            ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                          &quot;recvmsg() returned too small ancillary data&quot;);  
-            return NGX_ERROR;  
+        <span style="color:#00f">if</span> (<span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_len</span> &lt; (<span style="color:#000">socklen_t</span>) <span style="color:#000">CMSG_LEN</span>(<span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>))) {  
+            <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_ALERT</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
+                          <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">recvmsg() returned too small ancillary data</span><span style="color:#5a2">&#34;</span>);  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
         }  
   
-        if (cmsg.cm.cmsg_level != SOL_SOCKET || cmsg.cm.cmsg_type != SCM_RIGHTS)  
+        <span style="color:#00f">if</span> (<span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_level</span> != <span style="color:#000">SOL_SOCKET</span> || <span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_type</span> != <span style="color:#000">SCM_RIGHTS</span>)  
         {  
-            ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                          &quot;recvmsg() returned invalid ancillary data &quot;  
-                          &quot;level %d or type %d&quot;,  
-                          cmsg.cm.cmsg_level, cmsg.cm.cmsg_type);  
-            return NGX_ERROR;  
+            <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_ALERT</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
+                          <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">recvmsg() returned invalid ancillary data </span><span style="color:#5a2">&#34;</span>  
+                          <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">level %d or type %d</span><span style="color:#5a2">&#34;</span>,  
+                          <span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_level</span>, <span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>.<span style="color:#000">cmsg_type</span>);  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
         }  
   
-        /* ch-&gt;fd = *(int *) CMSG_DATA(&amp;cmsg.cm); */  
+        <span style="color:#888;font-style:italic">/* ch-&gt;fd = *(int *) CMSG_DATA(&amp;cmsg.cm); */</span>  
   
-        ngx_memcpy(&amp;ch-&gt;fd, CMSG_DATA(&amp;cmsg.cm), sizeof(int));  
+        <span style="color:#000">ngx_memcpy</span>(&amp;<span style="color:#000">ch</span>-&gt;<span style="color:#000">fd</span>, <span style="color:#000">CMSG_DATA</span>(&amp;<span style="color:#000">cmsg</span>.<span style="color:#000">cm</span>), <span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>));  
     }  
   
-    if (msg.msg_flags &amp; (MSG_TRUNC|MSG_CTRUNC)) {  
-        ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                      &quot;recvmsg() truncated data&quot;);  
+    <span style="color:#00f">if</span> (<span style="color:#000">msg</span>.<span style="color:#000">msg_flags</span> &amp; (<span style="color:#000">MSG_TRUNC</span>|<span style="color:#000">MSG_CTRUNC</span>)) {  
+        <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_ALERT</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
+                      <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">recvmsg() truncated data</span><span style="color:#5a2">&#34;</span>);  
     }  
   
-#else  
-  
-    if (ch-&gt;command == NGX_CMD_OPEN_CHANNEL) {  
-        if (msg.msg_accrightslen != sizeof(int)) {  
-            ngx_log_error(NGX_LOG_ALERT, log, 0,  
-                          &quot;recvmsg() returned no ancillary data&quot;);  
-            return NGX_ERROR;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#00f">if</span> (<span style="color:#000">ch</span>-&gt;<span style="color:#000">command</span> == <span style="color:#000">NGX_CMD_OPEN_CHANNEL</span>) {  
+        <span style="color:#00f">if</span> (<span style="color:#000">msg</span>.<span style="color:#000">msg_accrightslen</span> != <span style="color:#00f">sizeof</span>(<span style="color:#00f">int</span>)) {  
+            <span style="color:#000">ngx_log_error</span>(<span style="color:#000">NGX_LOG_ALERT</span>, <span style="color:#000">log</span>, <span style="color:#3af">0</span>,  
+                          <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">recvmsg() returned no ancillary data</span><span style="color:#5a2">&#34;</span>);  
+            <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
         }  
   
-        ch-&gt;fd = fd;  
+        <span style="color:#000">ch</span>-&gt;<span style="color:#000">fd</span> = <span style="color:#000">fd</span>;  
     }  
   
-#endif  
-  
-    return n;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+    <span style="color:#00f">return</span> <span style="color:#000">n</span>;  
 }  
-</code></pre><p>该代码配合发送部分的代码来读,意义很明确。只不过,在我们上面所讲的基础上,Nginx将ch变量作为发送和接收的数据(此数据指放在iovec缓冲区中的数据,而非控制信息中的数据部分),并用一个成员ch-&gt;command实现了一个简单的协议,使得这一对函数功能更通用。</p></div>
+</code></pre></div><p>该代码配合发送部分的代码来读,意义很明确。只不过，在我们上面所讲的基础上，Nginx 将 ch 变量作为发送和接收的数据（此数据指放在 iovec 缓冲区中的数据，而非控制信息中的数据部分），并用一个成员 <code>ch-&gt;command</code> 实现了一个简单的协议，使得这一对函数功能更通用。</p></div>
 
   </article>
 </main>
