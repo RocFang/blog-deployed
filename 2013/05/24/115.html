@@ -53,7 +53,7 @@
 </code></pre></div><p>这个 C 程序和这个 shell 脚本运行一段时间都没出问题，直到有一天，我发现了这个 C 程序的  bug，动手修改，在调试过程中加了一些打印语句，例如 <code>printf(&quot;XXXX&quot;)</code>，修改后，与脚本联合调试。发现对 redis 操作不成功。操作 redis 的 here document 代码块，整体返回值 <code>$?</code> 都是等于 0 的，无法判断其正确与否。单独调试了下 C 程序，也没发现问题。那么问题在哪里呢？</p>
 <p>其实上面两步都有问题：</p>
 <p>（1）在 shell 脚本中调用 <code>a=$(program)</code> 后，其实 a 的值就是 program 程序运行时所有的输出。如果能保证该程序只输出一个正确的字符串，当然不会发现任何问题。可是在改代码的过程中，加了其他的 printf 语句，例如 <code>printf(&quot;XXXX&quot;)</code>，那么赋值后，a 的值就变成了“XXXX YYYY”，（假设YYYY是正常需要的字符串）。这种情况不光发生在添加调试用的 printf 语句时，假设程序在某个条件判断分支出错，进入 error 处理，如果要执行 printf，那么这个错误信息也会作为字符串传递给 a。</p>
-<p>(2)  在用 here document 操作 redis 时，如果上一步执行正确，例如 a 为“hello&rdquo;，那么在 here document 中，执行 <code>set A &quot;hello&quot;</code>，当然是不会有问题的。</p>
+<p>（2）在用 here document 操作 redis 时，如果上一步执行正确，例如 a 为“hello&rdquo;，那么在 here document 中，执行 <code>set A &quot;hello&quot;</code>，当然是不会有问题的。</p>
 <p>可是，如果第（1）步出现问题，不管是由于加入了多余 printf 语句，还是输出了错误信息，都会把合并后的字符串传递给 a，再展开到 <code>set A $a</code> 中。假设 a 为“hello  haha”，那么就会对 redis 执行 <code>set A hello haha</code>，很明显，格式不符合 redis set 命令的要求，会设置失败。如果是在 redis 的交互界面中，会显示出这一错误，但在 here document 中，并不会显示任何错误，而且在 here document 块执行完后，用 <code>$?</code> 来查看返回值，都会是 0。因为 shell 认为这个代码块是正确执行的。</p>
 <p>发现这个问题是由于改了代码后，突然发现对 redis 的设置不成功了。进而一步步分析，才体会到这两个操作都后患无穷啊！</p></div>
 
