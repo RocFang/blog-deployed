@@ -522,36 +522,38 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
       <pubDate>Thu, 27 Jun 2013 14:45:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/06/27/116.html</guid>
-      <description>&lt;h2 id=&#34;背景描述&#34;&gt;背景描述&lt;/h2&gt;
-&lt;p&gt;近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。&lt;/p&gt;
+      <description>&lt;p&gt;说明：写这篇文章时，我还是一个从电子工程师转行到软件开发没多久的新手程序员，文章的记录现在看来真是让人汗颜，充满了浓浓的小作坊风格。但这就是成长不是吗？&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;背景描述&#34;&gt;背景描述&lt;/h2&gt;
+&lt;p&gt;近几年 redis 应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个 worker 程序，该程序所有的工作就是去 redis 中的一个任务链表 tasklist 里面去取任务，执行一些处理操作。&lt;/p&gt;
 &lt;h2 id=&#34;分工明确化&#34;&gt;分工明确化&lt;/h2&gt;
-&lt;p&gt;从始至终我们持有的一个观点就是，这个worker的功能要极度简化，就是去从tasklist中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个tasklist怎么来的，里面的任务是由谁来插入，worker一概不管。这样的话，有几个好处：&lt;/p&gt;
+&lt;p&gt;从始至终我们持有的一个观点就是，这个 worker 的功能要极度简化，就是去从 tasklist 中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个 tasklist 怎么来的，里面的任务是由谁来插入，worker 一概不管。这样的话，有几个好处：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;worker的角色明确，目标清晰。直接的好处就是代码容易编写。&lt;/li&gt;
+&lt;li&gt;worker 的角色明确，目标清晰。直接的好处就是代码容易编写。&lt;/li&gt;
 &lt;li&gt;设计思想比较通用&lt;/li&gt;
-&lt;li&gt;tasklist的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的log中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。&lt;/li&gt;
+&lt;li&gt;tasklist 的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的 log 中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;关于重试&#34;&gt;关于重试&lt;/h2&gt;
-&lt;p&gt;worker从tasklist中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。关于这个异常处理，在这里多说两句，讲一个亲身经历的例子：&lt;/p&gt;</description>
+&lt;p&gt;worker 从 tasklist 中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。提到异常处理，在这里多说两句，讲一个亲身经历的例子：&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>记一个here document的坑</title>
+      <title>记一个 here document 的坑</title>
       <link>https://pureage.info/2013/05/24/115.html</link>
       <pubDate>Thu, 23 May 2013 16:49:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/05/24/115.html</guid>
-      <description>&lt;h1 id=&#34;1here-document&#34;&gt;1.here document&lt;/h1&gt;
-&lt;p&gt;here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;ftp -n $HOST &amp;lt;&amp;lt;EOF
-quote USER $USER  
-quote PASS $PASS  
-binary  
-put $FileName  
-quit  
-EOF  
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;2踩到的坑&#34;&gt;2.踩到的坑&lt;/h1&gt;
-&lt;p&gt;在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;1-here-document&#34;&gt;1. here document&lt;/h2&gt;
+&lt;p&gt;在 bash 中，here document 经常用于一些需要交互性输入指令的程序中，例如登陆 ftp。例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ftp -n &lt;span style=&#34;color:#000&#34;&gt;$HOST&lt;/span&gt; &lt;span style=&#34;color:#5a2&#34;&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quote USER $USER  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quote PASS $PASS  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;binary  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;put $FileName  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quit  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;EOF&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-踩到的坑&#34;&gt;2. 踩到的坑&lt;/h2&gt;
+&lt;p&gt;在工作中，涉及到很多对 redis 的操作，先简单的用 shell 脚本实现了一下。大概流程是这样的：shell 脚本调用 C 语言程序，根据 C 程序的输出，来操作 redis。因此主要涉及两件事：shell 脚本获取 C 程序输出，shell 脚本用 here document 操作 redis。&lt;/p&gt;</description>
     </item>
     
     <item>

@@ -152,22 +152,22 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
     </item>
     
     <item>
-      <title>记一个here document的坑</title>
+      <title>记一个 here document 的坑</title>
       <link>https://pureage.info/2013/05/24/115.html</link>
       <pubDate>Thu, 23 May 2013 16:49:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/05/24/115.html</guid>
-      <description>&lt;h1 id=&#34;1here-document&#34;&gt;1.here document&lt;/h1&gt;
-&lt;p&gt;here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;ftp -n $HOST &amp;lt;&amp;lt;EOF
-quote USER $USER  
-quote PASS $PASS  
-binary  
-put $FileName  
-quit  
-EOF  
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;2踩到的坑&#34;&gt;2.踩到的坑&lt;/h1&gt;
-&lt;p&gt;在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;1-here-document&#34;&gt;1. here document&lt;/h2&gt;
+&lt;p&gt;在 bash 中，here document 经常用于一些需要交互性输入指令的程序中，例如登陆 ftp。例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ftp -n &lt;span style=&#34;color:#000&#34;&gt;$HOST&lt;/span&gt; &lt;span style=&#34;color:#5a2&#34;&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quote USER $USER  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quote PASS $PASS  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;binary  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;put $FileName  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quit  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;EOF&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-踩到的坑&#34;&gt;2. 踩到的坑&lt;/h2&gt;
+&lt;p&gt;在工作中，涉及到很多对 redis 的操作，先简单的用 shell 脚本实现了一下。大概流程是这样的：shell 脚本调用 C 语言程序，根据 C 程序的输出，来操作 redis。因此主要涉及两件事：shell 脚本获取 C 程序输出，shell 脚本用 here document 操作 redis。&lt;/p&gt;</description>
     </item>
     
   </channel>

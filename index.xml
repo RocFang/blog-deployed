@@ -1638,36 +1638,38 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
       <pubDate>Thu, 27 Jun 2013 14:45:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/06/27/116.html</guid>
-      <description>&lt;h2 id=&#34;背景描述&#34;&gt;背景描述&lt;/h2&gt;
-&lt;p&gt;近几年redis应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个worker程序，该程序所有的工作就是去redis中的一个任务链表tasklist里面去取任务，执行一些处理操作。&lt;/p&gt;
+      <description>&lt;p&gt;说明：写这篇文章时，我还是一个从电子工程师转行到软件开发没多久的新手程序员，文章的记录现在看来真是让人汗颜，充满了浓浓的小作坊风格。但这就是成长不是吗？&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;背景描述&#34;&gt;背景描述&lt;/h2&gt;
+&lt;p&gt;近几年 redis 应用的越来越多，正好现在手上的一个项目就用到了。简化一下需求，就是要实现一个 worker 程序，该程序所有的工作就是去 redis 中的一个任务链表 tasklist 里面去取任务，执行一些处理操作。&lt;/p&gt;
 &lt;h2 id=&#34;分工明确化&#34;&gt;分工明确化&lt;/h2&gt;
-&lt;p&gt;从始至终我们持有的一个观点就是，这个worker的功能要极度简化，就是去从tasklist中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个tasklist怎么来的，里面的任务是由谁来插入，worker一概不管。这样的话，有几个好处：&lt;/p&gt;
+&lt;p&gt;从始至终我们持有的一个观点就是，这个 worker 的功能要极度简化，就是去从 tasklist 中取任务，执行操作，并根据任务执行成功与否进行相关的结果记录。至于这个 tasklist 怎么来的，里面的任务是由谁来插入，worker 一概不管。这样的话，有几个好处：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;worker的角色明确，目标清晰。直接的好处就是代码容易编写。&lt;/li&gt;
+&lt;li&gt;worker 的角色明确，目标清晰。直接的好处就是代码容易编写。&lt;/li&gt;
 &lt;li&gt;设计思想比较通用&lt;/li&gt;
-&lt;li&gt;tasklist的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的log中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。&lt;/li&gt;
+&lt;li&gt;tasklist 的插入在不同的场景下有不同的方式，最常见的是根据某个不断增长的 log 中取任务，插入任务。而这个工作很灵活，通过脚本语言更方便实现。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;关于重试&#34;&gt;关于重试&lt;/h2&gt;
-&lt;p&gt;worker从tasklist中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。关于这个异常处理，在这里多说两句，讲一个亲身经历的例子：&lt;/p&gt;</description>
+&lt;p&gt;worker 从 tasklist 中领取到一个任务来后，就开始执行相关的操作。如果一切顺利，就万事大吉。但在软件设计中，考虑异常情况几乎已经是广大码农们本能的反应了。不是我们天生心思缜密，而是这些都是通过一些惨痛的教训得来的。提到异常处理，在这里多说两句，讲一个亲身经历的例子：&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>记一个here document的坑</title>
+      <title>记一个 here document 的坑</title>
       <link>https://pureage.info/2013/05/24/115.html</link>
       <pubDate>Thu, 23 May 2013 16:49:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/05/24/115.html</guid>
-      <description>&lt;h1 id=&#34;1here-document&#34;&gt;1.here document&lt;/h1&gt;
-&lt;p&gt;here document经常用于一些需要交互性输入指令的程序中，例如登陆ftp。例如：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;ftp -n $HOST &amp;lt;&amp;lt;EOF
-quote USER $USER  
-quote PASS $PASS  
-binary  
-put $FileName  
-quit  
-EOF  
-&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;2踩到的坑&#34;&gt;2.踩到的坑&lt;/h1&gt;
-&lt;p&gt;在工作中，涉及到很多对redis的操作，先简单的用shell脚本实现了一下。大概流程是这样的：shell脚本调用C语言程序，根据C程序的输出，来操作redis。因此主要涉及两件事：shell脚本获取C程序输出，shell脚本用here document操作redis。&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;1-here-document&#34;&gt;1. here document&lt;/h2&gt;
+&lt;p&gt;在 bash 中，here document 经常用于一些需要交互性输入指令的程序中，例如登陆 ftp。例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ftp -n &lt;span style=&#34;color:#000&#34;&gt;$HOST&lt;/span&gt; &lt;span style=&#34;color:#5a2&#34;&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quote USER $USER  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quote PASS $PASS  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;binary  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;put $FileName  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;quit  
+&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;EOF&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-踩到的坑&#34;&gt;2. 踩到的坑&lt;/h2&gt;
+&lt;p&gt;在工作中，涉及到很多对 redis 的操作，先简单的用 shell 脚本实现了一下。大概流程是这样的：shell 脚本调用 C 语言程序，根据 C 程序的输出，来操作 redis。因此主要涉及两件事：shell 脚本获取 C 程序输出，shell 脚本用 here document 操作 redis。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1676,41 +1678,25 @@ EOF
       <pubDate>Mon, 06 May 2013 08:06:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/05/06/114.html</guid>
-      <description>&lt;p&gt;4月19日从前一家公司离职，下一家公司的报道日期是5月7号。报到时需要带的材料中，有一项是“居住证”。&lt;/p&gt;
+      <description>&lt;p&gt;4 月 19 日从前一家公司离职，下一家公司的报道日期是 5 月 7 号。报到时需要带的材料中，有一项是“居住证”。&lt;/p&gt;
 &lt;p&gt;在网上找了广州市办理居住证的流程，发现各种说法不一，没有找到一个官方的说法。于是拉着一个在广州打工多年的亲戚带着我办。从亲戚口中得知，正常的流程应该是房东出具一份证明，拿着这份证明到居住地的社区继续弄齐材料，然后再到更高一级的机构去办理居住证。&lt;/p&gt;
-&lt;p&gt;我问那亲戚，是不是需要先把房子租了才能去办呢，他说他和他房东关系不错，跟房东说一声，直接先开到他的住处就可以了，房子慢慢再找，现在先去社区摸清楚到底什么流程，毕竟每年政策可能不一样。我们在城中村里综合交错的小巷子里找了很久，才找到社区工作站A的位置。&lt;/p&gt;
-&lt;p&gt;可是社区工作站的大门是紧锁着的。那天是5月3号，星期五，五一假期刚过，属于正常工作日。&lt;/p&gt;</description>
+&lt;p&gt;我问那亲戚，是不是需要先把房子租了才能去办呢，他说他和他房东关系不错，跟房东说一声，直接先开到他的住处就可以了，房子慢慢再找，现在先去社区摸清楚到底什么流程，毕竟每年政策可能不一样。我们在城中村里综合交错的小巷子里找了很久，才找到社区工作站 A 的位置。&lt;/p&gt;
+&lt;p&gt;可是社区工作站的大门是紧锁着的。那天是 5 月 3 号，星期五，五一假期刚过，属于正常工作日。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>一个名字毁掉一本书--《全中国最穷的小伙子发财日记》</title>
+      <title>一个名字毁掉一本书：《全中国最穷的小伙子发财日记》</title>
       <link>https://pureage.info/2013/04/26/113.html</link>
       <pubDate>Fri, 26 Apr 2013 15:34:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/04/26/113.html</guid>
       <description>&lt;p&gt;现在，一个年轻人说自己读成功学的书时，会觉得难以启齿吧？但曾经，在成功学还没被现在的某些大师搞臭时，还是能给人一些正面的力量的。老罗曾经在演讲里说过，他当年曾把各种成功学的书一斤一斤的堆在家里，当熬不下去的时候就随机发开一本，打打鸡血，继续干活，每次都能管一段时间。&lt;/p&gt;
 &lt;p&gt;我对于成功学的了解，大概分为如下几个时期:&lt;/p&gt;
-&lt;h2 id=&#34;初窥----好奇&#34;&gt;初窥&amp;mdash;-好奇&lt;/h2&gt;
+&lt;h2 id=&#34;初窥好奇&#34;&gt;初窥：好奇&lt;/h2&gt;
 &lt;p&gt;最早看的一本成功学的书，是《方与圆》，顾名思义，全书就是教育读者想要出人头地的话，就要做到“外圆内方”。那时我还读小学，给我看这本书的是我的一个舅舅。&lt;/p&gt;
 &lt;p&gt;我的这个舅舅是一个很有才华的人，但正因为他不够圆，从世俗的角度来看，他并不成功，颇有怀才不遇之感。很奇怪的是，他既然很多年前就知道自己不够圆，这么多年过去了，却并没有多大改变。简单分析一下，会有两个原因，一是他深知自己想要获得世俗的成功，就必须改变自己，但是他并不知道如何去实践。二是他内心里对这种改变抱有抵触。就他所处的实际情况而言，我认为主要是第一个原因。&lt;/p&gt;
-&lt;p&gt;因此，《方与圆》这类书籍，代表了一类低端的成功学的书籍，它们一方面很难从内心说服你为什么要做出改变，另一方面可操作性极差。但是它们往往喜欢结合中国社会的具体国情，会让你觉得它的观点无可辩驳，你很难说服别人说”外圆内方更容易成功“这个观点是错的。&lt;br&gt;
-它的立足点就有问题，方圆之说，无法操作，无法度量。最终结果是，要么依然外方内方，要么就是外圆内圆，如果它从头到尾都在教育人们外圆内圆，我会对其更有好感。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>咱们墩敦伟大友谊如何？</title>
-      <link>https://pureage.info/2013/04/11/112.html</link>
-      <pubDate>Thu, 11 Apr 2013 15:55:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/2013/04/11/112.html</guid>
-      <description>&lt;p&gt;&lt;img src=&#34;https://pureage.info/img/great-friendship.jpg&#34; alt=&#34;great-friendship&#34;&gt;&lt;/p&gt;
-&lt;p&gt;到了这么一个奔三的不尴不尬的年龄，想提笔写篇主题明确的文章真的不容易。明明是想提笔写一篇《寻找无双》的读后感，却由于在多看上买了一整套《王小波全集》从而结束了东一本《万寿寺》.txt西一本《革命时期的爱情》.txt的状况而又想给多看做一回自带干粮的五毛，可偏偏手贱刚才忍不住又把《黄金时代》看了一遍，于是写了这么个《咱们墩敦伟大友谊如何？》的标题并在网上找到了当年课文《伟大的友谊》里的插画，然后就忽然决定怒转和菜头的一篇文章。但不能否认，《寻找无双》仍是我目前为止最喜欢的，以后再补上吧！&lt;/p&gt;
-&lt;h3 id=&#34;打屁股和爱情&#34;&gt;打屁股和爱情&lt;/h3&gt;
-&lt;p&gt;波哥的小说《黄金时代》最后两段是这么写的:&lt;br&gt;
-　　 　　&lt;br&gt;
-“陈清扬说她真实的罪孽，是指在清平山上。那时她被架在我的肩上，穿着紧裹住双腿的筒裙，头发低垂下去，直到我的腰际。天上白云匆匆，深山里只有我们两个人。我刚在她屁股上打了两下，打得非常之重，火烧火撩的感觉正在飘散。打过之后我就不管别的事，继续往山上攀登。&lt;br&gt;
-　　 　　&lt;br&gt;
-陈清扬说，那一刻她感到浑身无力，就瘫软下来，挂在我肩上。那一刻她觉得如春藤绕树，小鸟依人，她再也不想理会别的事，而且在那一瞬间把一切全部遗忘。在那一瞬间她爱上了我，而且这件事永远不能改变。”&lt;/p&gt;</description>
+&lt;p&gt;因此，《方与圆》这类书籍，代表了一类低端的成功学的书籍，它们一方面很难从内心说服你为什么要做出改变，另一方面可操作性极差。但是它们往往喜欢结合中国社会的具体国情，会让你觉得它的观点无可辩驳，你很难说服别人说”外圆内方更容易成功“这个观点是错的。&lt;/p&gt;
+&lt;p&gt;它的立足点就有问题，方圆之说，无法操作，无法度量。最终结果是，要么依然外方内方，要么就是外圆内圆，如果它从头到尾都在教育人们外圆内圆，我会对其更有好感。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1720,8 +1706,8 @@ EOF
       
       <guid>https://pureage.info/2013/02/24/110.html</guid>
       <description>&lt;p&gt;如果说有什么电影是我非看不可的话，那就是伊斯特伍德的新片和《指环王》系列了。&lt;/p&gt;
-&lt;p&gt;伊斯特伍德老爷子已经是83岁高龄了，电影是看一部少一部，不需要多说。而看到《霍比特人》，则让我想起那些情迷中土的黄金岁月。&lt;/p&gt;
-&lt;p&gt;附上一段自己在2006年写的一点东西，以资纪念。既然是纪念，原文中的错别字也一并保留了。&lt;/p&gt;</description>
+&lt;p&gt;伊斯特伍德老爷子已经是 83 岁高龄了，电影是看一部少一部，不需要多说。而看到《霍比特人》，则让我想起那些情迷中土的黄金岁月。&lt;/p&gt;
+&lt;p&gt;附上一段自己在 2006 年写的一点东西，以资纪念。既然是纪念，原文中的错别字也一并保留了。&lt;/p&gt;</description>
     </item>
     
     <item>
