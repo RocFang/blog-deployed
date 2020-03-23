@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>bash下如何实现perl中seek的功能？ - 纯真年代</title>
+<title>bash 下如何实现 perl 中 seek 的功能？ - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>bash下如何实现perl中seek的功能？</h1>
+  <h1>bash 下如何实现 perl 中 seek 的功能？</h1>
   </div>
 <div class="meta">
   <div>2013-07-21</div>
@@ -32,33 +32,33 @@
     </div>
   </div>
 <div class="content">
-  <p>因为日志处理需要，接触到perl,虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。</p>
-<p>假设有这样的应用场景：客户通过ftp客户端上传文件到接入端ftp服务器，接入端ftp服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端ftp服务器要做的工作就是定时分析ftp server（假设是vsftpd,则日志为xferlog)的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog的记录条数也随之增长。</p>
-<p>perl中通过seek函数可以很方便的做到，每一次脚本执行时，都将上一次脚本执行时xferlog的大小作为本次读操作的偏移量，用这个偏移量来调用seek，本次处理完后再将该偏移量更新后存入到一个文件供下次脚本执行时读取。</p>
-<p>如果是bash该如何实现呢？shell内置的文件操作的命令很少，只好借助外部程序。我只想到了通过dd来实现：</p>
-<pre><code>touch file_size  
+  <p>因为日志处理需要，接触到 perl，虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。</p>
+<p>假设有这样的应用场景：客户通过 ftp 客户端上传文件到接入端 ftp 服务器，接入端 ftp 服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端 ftp 服务器要做的工作就是定时分析 ftp server（假设是 vsftpd，日志为 xferlog）的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog 的记录条数也随之增长。</p>
+<p>perl 中通过 seek 函数可以很方便的做到，每一次脚本执行时，都将上一次脚本执行时 xferlog 的大小作为本次读操作的偏移量，用这个偏移量来调用 seek，本次处理完后再将该偏移量更新后存入到一个文件供下次脚本执行时读取。</p>
+<p>如果是 bash 该如何实现呢？shell 内置的文件操作的命令很少，只好借助外部程序。我只想到了通过 dd 来实现：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">touch file_size  
   
-#读偏移量  
-a=`cat readfile`  
-echo $a  
+<span style="color:#888;font-style:italic">#读偏移量</span>  
+<span style="color:#000">a</span>=<span style="color:#5a2">`</span>cat readfile<span style="color:#5a2">`</span>  
+<span style="color:#000">echo</span> <span style="color:#000">$a</span>  
   
-#把偏移量作为dd的参数  
-skip=$a  
+<span style="color:#888;font-style:italic">#把偏移量作为dd的参数</span>  
+<span style="color:#000">skip</span>=<span style="color:#000">$a</span>  
   
-#从上一次读取的地方开始复制到file2，（跳过上一次的字节，就是这次的开始）  
-dd if=file1 of=file2 bs=1 skip=$skip  
-#获得新增内容的大小（字节）  
-size1=`wc -c file2 | awk '{print $1}'`  
-#获取下次需要skip 的字节数  
-sum=`expr $a + $size1`  
-#记录偏移量  
-echo $sum&gt;file_size  
-#进行本次处理  
-while read line  
-do  
-    #do something  
-done&lt;file2  
-</code></pre><p>perl一个函数seek就可以搞定的事情，用这种方法却需要这么拐弯抹角。不光调用了dd，而且还新增了一个临时文件。当然，这些只是从应用上看，效率上的差异暂时不是我要考虑的问题。</p></div>
+<span style="color:#888;font-style:italic">#从上一次读取的地方开始复制到file2，（跳过上一次的字节，就是这次的开始）</span>  
+dd <span style="color:#00f">if</span>=file1 <span style="color:#000">of</span>=file2 <span style="color:#000">bs</span>=<span style="color:#3af">1</span> <span style="color:#000">skip</span>=<span style="color:#000">$skip</span>  
+<span style="color:#888;font-style:italic">#获得新增内容的大小（字节）</span>  
+<span style="color:#000">size1</span>=<span style="color:#5a2">`</span>wc -c file2 | awk <span style="color:#5a2">&#39;{print $1}&#39;</span><span style="color:#5a2">`</span>  
+<span style="color:#888;font-style:italic">#获取下次需要skip 的字节数</span>  
+<span style="color:#000">sum</span>=<span style="color:#5a2">`</span>expr <span style="color:#000">$a</span> + <span style="color:#000">$size1</span><span style="color:#5a2">`</span>  
+<span style="color:#888;font-style:italic">#记录偏移量</span>  
+<span style="color:#000">echo</span> <span style="color:#000">$sum</span>&gt;file_size  
+<span style="color:#888;font-style:italic">#进行本次处理</span>  
+<span style="color:#00f">while</span> <span style="color:#000">read</span> line  
+<span style="color:#00f">do</span>  
+    <span style="color:#888;font-style:italic">#do something</span>  
+<span style="color:#00f">done</span>&lt;file2  
+</code></pre></div><p>perl 一个函数 seek 就可以搞定的事情，用这种方法却需要这么拐弯抹角。不光调用了 dd，而且还新增了一个临时文件。当然，这些只是从应用上看，效率上的差异暂时不是我要考虑的问题。</p></div>
 
   </article>
 </main>

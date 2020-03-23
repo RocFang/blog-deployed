@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>bash中while循环的一个大坑 - 纯真年代</title>
+<title>bash 中 while 循环的一个大坑 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>bash中while循环的一个大坑</h1>
+  <h1>bash 中 while 循环的一个大坑</h1>
   </div>
 <div class="meta">
   <div>2013-08-22</div>
@@ -32,111 +32,111 @@
     </div>
   </div>
 <div class="content">
-  <p>起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。</p>
-<p>如果就这么过去了，多没意思，我觉得有必要深究一下while的运行机制。</p>
-<p>假设while_test.sh脚本内容如下：</p>
-<pre><code>#!/bin/bash  
-  
-let sum=0
-while((sum&lt;10))  
-do  
-echo $sum  
-let sum++  
-done  
-</code></pre><p>运行后，很正常，在屏幕上打印：<br>
-0<br>
-1<br>
-2<br>
-3<br>
-4<br>
-5<br>
-6<br>
-7<br>
-8<br>
-9</p>
-<p>下面对脚本进行下修改，在while和do之间加上一个echo语句：</p>
-<pre><code>#!/bin/bash  
-  
-let sum=0  
-while((sum&lt;10))  
-echo &quot;nima&quot;  
-do  
-echo $sum  
-let sum++  
-done  
-</code></pre><p>运行之，死循环如约而至，屏幕上翻滚着：</p>
-<p>&hellip;..(略）&hellip;&hellip;<br>
-nima<br>
-1779<br>
-nima<br>
-1780<br>
-nima<br>
-1781<br>
-nima<br>
-1782<br>
-nima<br>
-1783<br>
-nima<br>
-1784<br>
-nima<br>
-1785<br>
-nima<br>
-1786<br>
-nima<br>
-1787<br>
-nima<br>
-1788<br>
-&hellip;&hellip;(略）&hellip;&hellip;</p>
-<p>到这里，答案已经浮出水面了，问题不在bash，而在于受C语言的影响，我们习惯性的认为while应该把sum&lt;10作为循环进行的条件。但bash里,碰到while后，它会把while到do之间的所有语句的执行结果作为循环进行的条件，而所谓“所有语句的执行结果”，就是这所有语句中，最后一个语句的执行结果。如果这最后一个语句执行成功，则继续执行do到done之间的内容，循环继续；如果执行失败，则退出循环。按照shell的惯例，执行成功与否，可以根据返回码来判断，返回码为0，则成功，非0则失败。</p>
+  <p>起因是这样的，我有一个常规的日志处理脚本，是最普通不过的 <code>while read line;do XXXX;done&lt;file</code> 的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出 bash -x 来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在 while 和 do 语句之间，打上了个 echo 语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。</p>
+<p>如果就这么过去了，多没意思，我觉得有必要深究一下 while 的运行机制。</p>
+<p>假设 while_test.sh 脚本内容如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/bash  
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#000">let</span> <span style="color:#000">sum</span>=<span style="color:#3af">0</span>
+<span style="color:#00f">while</span>((sum&lt;10))  
+<span style="color:#00f">do</span>  
+<span style="color:#000">echo</span> <span style="color:#000">$sum</span>  
+<span style="color:#000">let</span> sum++  
+<span style="color:#00f">done</span>  
+</code></pre></div><p>运行后，很正常，在屏幕上打印：</p>
+<pre><code>0  
+1  
+2  
+3  
+4  
+5  
+6  
+7  
+8  
+9  
+</code></pre><p>下面对脚本进行下修改，在 while 和 do 之间加上一个 echo 语句：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/bash  
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#000">let</span> <span style="color:#000">sum</span>=<span style="color:#3af">0</span>  
+<span style="color:#00f">while</span>((sum&lt;10))  
+<span style="color:#000">echo</span> <span style="color:#5a2">&#34;nima&#34;</span>  
+<span style="color:#00f">do</span>  
+<span style="color:#000">echo</span> <span style="color:#000">$sum</span>  
+<span style="color:#000">let</span> sum++  
+<span style="color:#00f">done</span>  
+</code></pre></div><p>运行之，死循环如约而至，屏幕上翻滚着：</p>
+<pre><code>.....(略）......  
+nima  
+1779  
+nima  
+1780  
+nima  
+1781  
+nima  
+1782  
+nima  
+1783  
+nima  
+1784  
+nima  
+1785  
+nima  
+1786  
+nima  
+1787  
+nima  
+1788  
+......(略）......  
+</code></pre><p>到这里，答案已经浮出水面了，问题不在 bash，而在于受 C 语言的影响，我们习惯性的认为 while 应该把 sum&lt;10 作为循环进行的条件。但 bash 里，碰到 while 后，它会把 while 到 do 之间的所有语句的执行结果作为循环进行的条件，而所谓“所有语句的执行结果”，就是这所有语句中，最后一个语句的执行结果。如果这最后一个语句执行成功，则继续执行 do 到 done 之间的内容，循环继续；如果执行失败，则退出循环。按照 shell 的惯例，执行成功与否，可以根据返回码来判断，返回码为 0，则成功，非 0 则失败。</p>
 <p>验证一下，将脚本改为如下：</p>
-<pre><code>#!/bin/bash  
-  
-let sum=0  
-while((sum&lt;5))  
-echo &quot;nima&quot;  
-echo &quot;niba&quot;  
-[ $sum -le 10 ]  
-do  
-echo $sum  
-let sum++  
-done  
-</code></pre><p>执行之，在屏幕上打印：</p>
-<p>nima<br>
-niba<br>
-0<br>
-nima<br>
-niba<br>
-1<br>
-nima<br>
-niba<br>
-2<br>
-nima<br>
-niba<br>
-3<br>
-nima<br>
-niba<br>
-4<br>
-nima<br>
-niba<br>
-5<br>
-nima<br>
-niba<br>
-6<br>
-nima<br>
-niba<br>
-7<br>
-nima<br>
-niba<br>
-8<br>
-nima<br>
-niba<br>
-9<br>
-nima<br>
-niba<br>
-10<br>
-nima<br>
-niba</p>
-<p>当在循环中，sum增加到10后，再次执行while后面的语句，打印nima和niba，但执行[ $sum -le 10 ]时，返回码为非0.所以循环退出。而((sum&lt;5))，完全是个摆设。</p></div>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/bash  
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#000">let</span> <span style="color:#000">sum</span>=<span style="color:#3af">0</span>  
+<span style="color:#00f">while</span>((sum&lt;5))  
+<span style="color:#000">echo</span> <span style="color:#5a2">&#34;nima&#34;</span>  
+<span style="color:#000">echo</span> <span style="color:#5a2">&#34;niba&#34;</span>  
+[ <span style="color:#000">$sum</span> -le <span style="color:#3af">10</span> ]  
+<span style="color:#00f">do</span>  
+<span style="color:#000">echo</span> <span style="color:#000">$sum</span>  
+<span style="color:#000">let</span> sum++  
+<span style="color:#00f">done</span>  
+</code></pre></div><p>执行之，在屏幕上打印：</p>
+<pre><code>nima  
+niba  
+0  
+nima  
+niba  
+1  
+nima  
+niba  
+2  
+nima  
+niba  
+3  
+nima  
+niba  
+4  
+nima  
+niba  
+5  
+nima  
+niba  
+6  
+nima  
+niba  
+7  
+nima  
+niba  
+8  
+nima  
+niba  
+9  
+nima  
+niba  
+10  
+nima  
+niba  
+</code></pre><p>当在循环中，sum 增加到 10 后，再次执行 while 后面的语句，打印 nima 和 niba，但执行 <code>[ $sum -le 10 ]</code> 时，返回码为非 0。所以循环退出。而 <code>((sum&lt;5))</code>，完全是个摆设。</p></div>
 
   </article>
 </main>

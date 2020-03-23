@@ -1568,22 +1568,22 @@ output=$(./a.out)
       
       <guid>https://pureage.info/2013/08/23/123.html</guid>
       <description>&lt;p&gt;我一直有一个目标：连续做俯卧撑一百个。&lt;/p&gt;
-&lt;p&gt;我最早开始接触俯卧撑是在初中，那时在校外借宿，每天中午拿着饭盒到宿舍后，做的第一件事情就是做三十个俯卧撑再吃饭，最多的时候能连续做七十个。也就是从那个时候起，我的胸肌一直处于比一般同龄人大一圈的状态，但到了高中之后，就没有再坚持下去了。到了大学，偶尔心血来潮会试一下，快速的能做个三四十个，慢速的做十个都很费劲。这个状态，虽然与自己巅峰状态相去甚远，但跟身边的人比，也差不到哪里去。毕竟大家基本上都是死宅男，除了真三（那时候dota还没那么流行），就是武藤兰，剩下几个搞电子设计、算法竞赛的，一天到晚在实验室呆着。&lt;/p&gt;
+&lt;p&gt;我最早开始接触俯卧撑是在初中，那时在校外借宿，每天中午拿着饭盒到宿舍后，做的第一件事情就是做三十个俯卧撑再吃饭，最多的时候能连续做七十个。也就是从那个时候起，我的胸肌一直处于比一般同龄人大一圈的状态，但到了高中之后，就没有再坚持下去了。到了大学，偶尔心血来潮会试一下，快速的能做个三四十个，慢速的做十个都很费劲。这个状态，虽然与自己巅峰状态相去甚远，但跟身边的人比，也差不到哪里去。毕竟大家基本上都是死宅男，除了真三（那时候 dota 还没那么流行），就是武藤兰，剩下几个搞电子设计、算法竞赛的，一天到晚在实验室呆着。&lt;/p&gt;
 &lt;p&gt;但也有例外，正是在大学里，我才知道有人真的能连续慢速俯卧撑一百下，而且还是自己的同班同学。很多事情，其实你很早就知道不是什么稀奇的事，而一旦在你身边发生了，那感觉还是不一样的。但很遗憾，没有在大学里向他看齐，只是在心里埋下了一粒种子：其实我也可以做一百个，这东西并没有想象中那么遥远。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>bash中while循环的一个大坑</title>
+      <title>bash 中 while 循环的一个大坑</title>
       <link>https://pureage.info/2013/08/22/122.html</link>
       <pubDate>Thu, 22 Aug 2013 03:06:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/08/22/122.html</guid>
-      <description>&lt;p&gt;起因是这样的，在一个常规的日志处理脚本中，最普通不过的while read line;do XXXX;done&amp;lt;file的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出bash -x来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在while和do语句之间，打上了个echo语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。&lt;/p&gt;
-&lt;p&gt;如果就这么过去了，多没意思，我觉得有必要深究一下while的运行机制。&lt;/p&gt;</description>
+      <description>&lt;p&gt;起因是这样的，我有一个常规的日志处理脚本，是最普通不过的 &lt;code&gt;while read line;do XXXX;done&amp;lt;file&lt;/code&gt; 的应用场景。可是发现文件处理完后，该脚本并没有停止，仍在不停执行，准确点说，是死循环了。第一反应是想到是不是文件格式问题，导致在判断文件结束上出现了问题？但所有的文件都是在服务器上直接生成或创建的，不会存在这个问题。脚本通读了几遍，未果；无奈之下，只好祭出 bash -x 来。才发现，原来是在敲脚本时，不知怎么手抖了一下，在 while 和 do 语句之间，打上了个 echo 语句。这个就是罪魁祸首了，删掉后，脚本就恢复正常了。&lt;/p&gt;
+&lt;p&gt;如果就这么过去了，多没意思，我觉得有必要深究一下 while 的运行机制。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>久旱逢甘雨----读《国家》有感</title>
+      <title>久旱逢甘雨：读《国家》有感</title>
       <link>https://pureage.info/2013/08/13/121.html</link>
       <pubDate>Tue, 13 Aug 2013 12:53:00 +0000</pubDate>
       
@@ -1595,31 +1595,31 @@ output=$(./a.out)
     </item>
     
     <item>
-      <title>sort命令中-k、-t选项的用法</title>
+      <title>sort 命令中 -k、-t 选项的用法</title>
       <link>https://pureage.info/2013/08/05/120.html</link>
       <pubDate>Mon, 05 Aug 2013 12:56:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/08/05/120.html</guid>
-      <description>&lt;h1 id=&#34;需求&#34;&gt;需求：&lt;/h1&gt;
-&lt;p&gt;假设有个result_test_upload.log的文件，里面存放着一些FastDFS系统中的fileid。文本内容如下：&lt;/p&gt;
+      <description>&lt;h2 id=&#34;需求&#34;&gt;需求&lt;/h2&gt;
+&lt;p&gt;假设有个 result_test_upload.log 的文件，里面存放着一些 FastDFS 系统中的 fileid。文本内容如下：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
 ......(略）......  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如何统计出分配到每个group的文件的总和并将其按group1，group2，group3的顺序列出来，以方便观察是否所有的fileid均匀的分配到FastDFS的group中？&lt;/p&gt;
-&lt;h1 id=&#34;方法&#34;&gt;方法：&lt;/h1&gt;
-&lt;pre&gt;&lt;code&gt;cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中，grep -o group-0-9][0-9].*已经把每个group名截取出来了，sort -t p 表示以p为分隔，-k 2 表示按以p为分隔的第二个域来排序，也就是group1,group2,group3&amp;hellip;中的1,2,3.   sort -n很简单，表示按照group1,group2,group3&amp;hellip;groupn的顺序排列。&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如何统计出分配到每个 group 的文件的总和并将其按 group1、group2、group3 的顺序列出来，以方便观察是否所有的 fileid 均匀的分配到 FastDFS 的 group 中？&lt;/p&gt;
+&lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;cat result_test_upload.log  | grep -o group[0-9][0-9]*  | sort -n -t p -k 2| uniq -c  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其中，&lt;code&gt;grep -o group-0-9][0-9].*&lt;/code&gt; 已经把每个 group 名截取出来了，&lt;code&gt;sort -t p&lt;/code&gt; 表示以 p 为分隔，&lt;code&gt;-k 2&lt;/code&gt; 表示按以 p 为分隔的第二个域来排序，也就是 group1、group2、group3&amp;hellip;中的1、2、3。-n 选项则很简单，表示按照group1、group2、group3&amp;hellip;groupn 的顺序排列。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>bash下如何实现perl中seek的功能？</title>
+      <title>bash 下如何实现 perl 中 seek 的功能？</title>
       <link>https://pureage.info/2013/07/21/119.html</link>
       <pubDate>Sun, 21 Jul 2013 15:23:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/07/21/119.html</guid>
-      <description>&lt;p&gt;因为日志处理需要，接触到perl,虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。&lt;/p&gt;
-&lt;p&gt;假设有这样的应用场景：客户通过ftp客户端上传文件到接入端ftp服务器，接入端ftp服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端ftp服务器要做的工作就是定时分析ftp server（假设是vsftpd,则日志为xferlog)的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog的记录条数也随之增长。&lt;/p&gt;
-&lt;p&gt;perl中通过seek函数可以很方便的做到，每一次脚本执行时，都将上一次脚本执行时xferlog的大小作为本次读操作的偏移量，用这个偏移量来调用seek，本次处理完后再将该偏移量更新后存入到一个文件供下次脚本执行时读取。&lt;/p&gt;</description>
+      <description>&lt;p&gt;因为日志处理需要，接触到 perl，虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。&lt;/p&gt;
+&lt;p&gt;假设有这样的应用场景：客户通过 ftp 客户端上传文件到接入端 ftp 服务器，接入端 ftp 服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端 ftp 服务器要做的工作就是定时分析 ftp server（假设是 vsftpd，日志为 xferlog）的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog 的记录条数也随之增长。&lt;/p&gt;
+&lt;p&gt;perl 中通过 seek 函数可以很方便的做到，每一次脚本执行时，都将上一次脚本执行时 xferlog 的大小作为本次读操作的偏移量，用这个偏移量来调用 seek，本次处理完后再将该偏移量更新后存入到一个文件供下次脚本执行时读取。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1628,7 +1628,7 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
       <pubDate>Sat, 13 Jul 2013 06:02:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/07/13/117.html</guid>
-      <description>&lt;p&gt;一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲nginx模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲shell编程吧。于是花了一天时间写了个十几页的PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd到一个目录，该目录是否存在？&lt;/p&gt;
+      <description>&lt;p&gt;一两个月前刚进新公司时，正逢部门内部搞技术交流，每人轮流给部门其他人做一次自己擅长的技术培训。部门内几个老员工，有讲 Nginx 模块开发的，有讲视频编解码的，也有讲分布式存储系统的。由于我刚入行，对公司业务完全不熟，无奈之下，索性说我就讲讲 shell 编程吧。于是花了一天时间写了个十几页的 PPT，其中强调了脚本中对异常分支判断的重要性。脚本不是命令行的堆积，在交互模式下，一个命令的执行成功与否一目了然，根据这个结果我们会很自然的执行相应的命令；可是在脚本中，就不能这么想当然了，最简单的就是，cd 到一个目录，该目录是否存在？&lt;/p&gt;
 &lt;p&gt;可是今天还是犯了一个这样的错误。&lt;/p&gt;</description>
     </item>
     
