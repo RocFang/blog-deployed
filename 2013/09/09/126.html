@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>uniq、sort不得不注意的尾部空格（trailing whitespaces) - 纯真年代</title>
+<title>uniq、sort 不得不注意的尾部空格（trailing whitespaces) - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>uniq、sort不得不注意的尾部空格（trailing whitespaces)</h1>
+  <h1>uniq、sort 不得不注意的尾部空格（trailing whitespaces)</h1>
   </div>
 <div class="meta">
   <div>2013-09-09</div>
@@ -32,8 +32,8 @@
     </div>
   </div>
 <div class="content">
-  <h1 id="问题产生背景">问题产生背景</h1>
-<p>自己写的一个基于FastDFS的客户端软件的日志格式如下：</p>
+  <h2 id="问题产生背景">问题产生背景</h2>
+<p>自己写的一个基于 FastDFS 的客户端程序的日志格式如下：</p>
 <pre><code>[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
@@ -44,46 +44,45 @@
 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
-</code></pre><p>每一行中用分号开始的域是url,且有可能会存在该url域相同的行，现在要做的是在一个有13635条记录的日志中找出这些重复的url。</p>
-<h1 id="awk">awk</h1>
-<p>接触过shell的童鞋可能都会马上想到用一条awk语句即可：</p>
-<pre><code>awk '{print $5}' sum_stat.log | sort | uniq  -d  
-</code></pre><p>结果在意料之中：</p>
+</code></pre><p>每一行中用分号开始的域是 url，且有可能会存在该 url 域相同的行，现在要做的是在一个有 13635 条记录的日志中找出这些重复的 url。</p>
+<h2 id="awk">awk</h2>
+<p>接触过 shell 的童鞋可能都会马上想到用一条 awk 语句即可：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">awk <span style="color:#5a2">&#39;{print $5}&#39;</span> sum_stat.log | sort | uniq  -d  
+</code></pre></div><p>结果在意料之中：</p>
 <pre><code>;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
 </code></pre><p>如果想算出对url去重后的行数，则是：</p>
-<pre><code>awk '{print $5}' sum_stat.log | sort | uniq | wc -l  
-</code></pre><p>结果为：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">awk <span style="color:#5a2">&#39;{print $5}&#39;</span> sum_stat.log | sort | uniq | wc -l  
+</code></pre></div><p>结果为：</p>
 <pre><code>13632  
-</code></pre><p>问题本身到这里其实就解决了，找到那些重复的url。但如果仅仅这样，也没必要写篇文章记录一下了。 从上面的结果可知，虽然url域重复的行找出来了，但仅仅只是打印出了该域部分，而无法把整条记录打印出来。如果需要的话，该怎么做呢？</p>
-<h1 id="sortuniq">sort、uniq</h1>
-<p>上面的需求用几个纯粹的awk语句就可以实现，可惜对于awk我只会简单的print以及利用几个常见的内置变量如NR，NF来做下最基本的处理，因此暂时考虑用sort和uniq来完成。</p>
-<p>由于平时这两个命令用的比较多，马上写出下面的语句来打印出url域重复的行的完整内容：</p>
-<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4  -d  
-</code></pre><p>但是执行后，结果却是为空，没有任何东西打印出来。也就是说，用上面的语句无法找出url域重复的那些行。 为了再次确认，试着用下面的语句打印出sort和uniq处理后的行数：</p>
-<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4 | wc -l  
-</code></pre><p>打印出：</p>
+</code></pre><p>问题本身到这里其实就解决了，找到那些重复的 url。但如果仅仅这样，也没必要写篇文章记录一下了。 从上面的结果可知，虽然 url 域重复的行找出来了，但仅仅只是打印出了该域部分，而无法把整条记录打印出来。如果需要的话，该怎么做呢？</p>
+<h2 id="sortuniq">sort、uniq</h2>
+<p>上面的需求用几个纯粹的 awk 语句就可以实现，可惜对于 awk 我只会简单的 print 以及利用几个常见的内置变量如 NR、NF 来做下最基本的处理，因此暂时考虑用 sort 和 uniq 来完成。</p>
+<p>由于平时这两个命令用的比较多，马上写出下面的语句来打印出 url 域重复的行的完整内容：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#3af">4</span>  -d  
+</code></pre></div><p>但是执行后，结果却是为空，没有任何东西打印出来。也就是说，用上面的语句无法找出 url 域重复的那些行。 为了再次确认，试着用下面的语句打印出 sort 和 uniq 处理后的行数：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#3af">4</span> | wc -l  
+</code></pre></div><p>打印出：</p>
 <pre><code>13635  
-</code></pre><p>如前所属，本文件一共有13635行，url域重复的域一共有3行。显然，确实上面的sort和uniq语句没能找出url重复的行。</p>
-<h1 id="罪魁祸首">罪魁祸首</h1>
-<p>反复确认脚本没有问题后，我猜可能是这些行中，有某些行的结尾有空格或tab。<br>
-用万能的awk找出结尾有whtespace的行：</p>
-<pre><code>awk '/[[:space:]]$/  {print NR, $0}' sum_stat.log  
-</code></pre><p>结果如下：</p>
+</code></pre><p>如前所属，本文件一共有 13635 行，url域重复的域一共有 3 行。显然，确实上面的 sort 和 uniq 语句没能找出 url 重复的行。</p>
+<h2 id="罪魁祸首">罪魁祸首</h2>
+<p>反复确认脚本没有问题后，我猜可能是这些行中，有某些行的结尾有空格或 tab。用万能的 awk 找出结尾有 whtespace 的行：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">awk <span style="color:#5a2">&#39;/[[:space:]]$/  {print NR, $0}&#39;</span> sum_stat.log  
+</code></pre></div><p>结果如下：</p>
 <pre><code>1538 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3 
 1600 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3 
 1633 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
-</code></pre><p>可见，第1538、1600、1633这三行的结尾有多余的空白符。其实也可以猜出，这三行中的url就是那三个重复的url。</p>
+</code></pre><p>可见，第1538、1600、1633这三行的结尾有多余的空白符。其实也可以猜出，这三行中的 url 就是那三个重复的 url。</p>
 <p>把这三行的行末空白去掉后，再次运行：</p>
-<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4  -d -c  
-</code></pre><p>结果如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#3af">4</span>  -d -c  
+</code></pre></div><p>结果如下：</p>
 <pre><code>2 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 2 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
 2 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
-</code></pre><p>这样就顺利完成任务了。 如果打印出url域重复，且没去重的所有行，只需把uniq参数的-d改成-D即可：</p>
-<pre><code>sort  -k 5,5 sum_stat.log | uniq -f 4  -D  
-</code></pre><p>产生如下输出：</p>
+</code></pre><p>这样就顺利完成任务了。 如果打印出 url 域重复，且没去重的所有行，只需把 uniq 参数的 <code>-d</code> 改成 <code>-D</code> 即可：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#3af">4</span>  -D  
+</code></pre></div><p>产生如下输出：</p>
 <pre><code>[2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 [2013-09-06 00:35:54] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
@@ -91,9 +90,9 @@
 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
 [2013-09-06 00:33:54] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
 </code></pre><p>这样就可以实现原来打算的功能了。</p>
-<h1 id="原因">原因</h1>
+<h2 id="原因">原因</h2>
 <p>为什么有行尾空格不行呢？</p>
-<p>因为sort不会去除行尾空格，即使你指定了-k选项，而行中间的空格则不会有此问题。而uniq用了-f选项来跳过前面的不许考虑的域，同样也只能把行中间的空格略过，不会处理行尾的空格，这样导致了行尾的空格参与了比较，因而uniq不会把与之内容除行尾空格外均相同的行视为相同的行来去重了。</p></div>
+<p>因为 sort 不会去除行尾空格，即使你指定了 <code>-k</code> 选项，而行中间的空格则不会有此问题。而 uniq 用了 <code>-f</code> 选项来跳过前面的不许考虑的域，同样也只能把行中间的空格略过，不会处理行尾的空格，这样导致了行尾的空格参与了比较，因而 uniq 不会把与之内容除行尾空格外均相同的行视为相同的行来去重了。</p></div>
 
   </article>
 </main>

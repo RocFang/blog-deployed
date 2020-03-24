@@ -65,41 +65,41 @@ output=$(./a.out)
     </item>
     
     <item>
-      <title>emlog的一键备份</title>
+      <title>emlog 的一键备份</title>
       <link>https://pureage.info/2013/10/01/128.html</link>
       <pubDate>Tue, 01 Oct 2013 03:31:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/10/01/128.html</guid>
-      <description>&lt;p&gt;不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
+      <description>&lt;p&gt;对于一个托管在 LAMP 虚拟主机（不是 vps）环境下的 emlog 博客，不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱）&lt;/li&gt;
-&lt;li&gt;用ftp备份content目录&lt;/li&gt;
+&lt;li&gt;登陆到后台，备份数据库（当然，或者是用插件定期备份发送到邮箱）&lt;/li&gt;
+&lt;li&gt;用 ftp 备份 content 目录&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;如果你想简化操作，并且和我一样苦逼的用着虚拟主机，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。&lt;/p&gt;</description>
+&lt;p&gt;如果你想简化操作，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>漫谈logrotate与crond</title>
+      <title>漫谈 logrotate 与 crond</title>
       <link>https://pureage.info/2013/09/10/127.html</link>
       <pubDate>Tue, 10 Sep 2013 15:11:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/09/10/127.html</guid>
-      <description>&lt;h1 id=&#34;什么是logrotate&#34;&gt;什么是logrotate&lt;/h1&gt;
-&lt;p&gt;logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。&lt;/p&gt;
-&lt;h1 id=&#34;lorotate的切割方式&#34;&gt;lorotate的切割方式&lt;/h1&gt;
-&lt;p&gt;以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。&lt;/p&gt;
-&lt;p&gt;当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。&lt;/p&gt;
-&lt;p&gt;当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;什么是-logrotate&#34;&gt;什么是 logrotate&lt;/h2&gt;
+&lt;p&gt;logrotate 是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。&lt;/p&gt;
+&lt;h2 id=&#34;lorotate的切割方式&#34;&gt;lorotate的切割方式&lt;/h2&gt;
+&lt;p&gt;以 Nginx 为例，假设其错误日志放在 /data/proclog/log/nginx/ 下，名为 nginx_error.log，当 logrotate 运行时，如果满足切割要求了，则会将 nginx_error.log 改名为 nginx_error.log.1，并重新创建一个新的空文件 nginx_error.log 作为新的错误日志。&lt;/p&gt;
+&lt;p&gt;当进行其二次切割时，nginx_error.log.1 被改名为 nginx_error.log.2，刚才创建的 nginx_error.log 被改名为新的 nginx_error.log.1，然后再次重新创建一个新的空文件 nginx_error.log 作为新的错误日志投入使用。&lt;/p&gt;
+&lt;p&gt;当进行第三次切割时，nginx_error.log.2 变为 nginx_error.log.3，nginx_error.log.1 变为nginx_error.log.2，nginx_error.log 变为 nginx_error.log.1，一个新的 nginx_error.log 被再次创建。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>uniq、sort不得不注意的尾部空格（trailing whitespaces)</title>
+      <title>uniq、sort 不得不注意的尾部空格（trailing whitespaces)</title>
       <link>https://pureage.info/2013/09/09/126.html</link>
       <pubDate>Mon, 09 Sep 2013 13:38:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/09/09/126.html</guid>
-      <description>&lt;h1 id=&#34;问题产生背景&#34;&gt;问题产生背景&lt;/h1&gt;
-&lt;p&gt;自己写的一个基于FastDFS的客户端软件的日志格式如下：&lt;/p&gt;
+      <description>&lt;h2 id=&#34;问题产生背景&#34;&gt;问题产生背景&lt;/h2&gt;
+&lt;p&gt;自己写的一个基于 FastDFS 的客户端程序的日志格式如下：&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  

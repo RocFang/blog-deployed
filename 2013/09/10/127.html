@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>漫谈logrotate与crond - 纯真年代</title>
+<title>漫谈 logrotate 与 crond - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>漫谈logrotate与crond</h1>
+  <h1>漫谈 logrotate 与 crond</h1>
   </div>
 <div class="meta">
   <div>2013-09-10</div>
@@ -32,39 +32,39 @@
     </div>
   </div>
 <div class="content">
-  <h1 id="什么是logrotate">什么是logrotate</h1>
-<p>logrotate是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。</p>
-<h1 id="lorotate的切割方式">lorotate的切割方式</h1>
-<p>以nginx为例，假设其错误日志放在/data/proclog/log/nginx/下，名为nginx_error.log,当logrotate运行时，如果满足切割要求了，则会将nginx_error.log改名为nginx_error.log.1,并重新创建一个新的空文件nginx_error.log作为新的错误日志。</p>
-<p>当进行其二次切割时，nginx_error.log.1被改名为nginx_error.log.2,刚才创建的nginx_error.log被改名为新的nginx_error.log.1,然后再次重新创建一个新的空文件nginx_error.log作为新的错误日志投入使用。</p>
-<p>当进行第三次切割时，nginx_error.log.2变为nginx_error.log.3,nginx_error.log.1变为nginx_error.log.2,nginx_error.log变为nginx_error.log.1,一个新的nginx_error.log被再次创建。</p>
+  <h2 id="什么是-logrotate">什么是 logrotate</h2>
+<p>logrotate 是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。</p>
+<h2 id="lorotate的切割方式">lorotate的切割方式</h2>
+<p>以 Nginx 为例，假设其错误日志放在 /data/proclog/log/nginx/ 下，名为 nginx_error.log，当 logrotate 运行时，如果满足切割要求了，则会将 nginx_error.log 改名为 nginx_error.log.1，并重新创建一个新的空文件 nginx_error.log 作为新的错误日志。</p>
+<p>当进行其二次切割时，nginx_error.log.1 被改名为 nginx_error.log.2，刚才创建的 nginx_error.log 被改名为新的 nginx_error.log.1，然后再次重新创建一个新的空文件 nginx_error.log 作为新的错误日志投入使用。</p>
+<p>当进行第三次切割时，nginx_error.log.2 变为 nginx_error.log.3，nginx_error.log.1 变为nginx_error.log.2，nginx_error.log 变为 nginx_error.log.1，一个新的 nginx_error.log 被再次创建。</p>
 <p>依次类推。</p>
-<p>至于到底会保留多少份nginx_error.log.N(N代表数字)，则是在logrotate的配置文件一个参数rotate设置的。例如，当rotate设置为3时，则只会保留nginx_error.log.1、nginx_error.log.2和nginx_error.log.3，老的文件会被删除。</p>
-<h1 id="logrotate与crond">logrotate与crond</h1>
-<p>logrotate默认会放在cron.daily目录下，每天自动运行。 执行：</p>
-<pre><code>vim /etc/cron.daily/logrotate  
-</code></pre><p>看到该文件内容如下：</p>
-<pre><code>#!/bin/sh  
-  
+<p>至于到底会保留多少份 nginx_error.log.N（N 代表数字），则是在 logrotate 的配置文件一个参数 rotate 设置的。例如，当 rotate 设置为3时，则只会保留 nginx_error.log.1、nginx_error.log.2 和 nginx_error.log.3，老的文件会被删除。</p>
+<h2 id="logrotate-与-crond">logrotate 与 crond</h2>
+<p>logrotate 默认会放在 cron.daily 目录下，每天自动运行。 执行：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /etc/cron.daily/logrotate  
+</code></pre></div><p>看到该文件内容如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/sh  
+</span><span style="color:#888;font-style:italic"></span>  
 /usr/sbin/logrotate /etc/logrotate.conf  
-EXITVALUE=$?  
-if [ $EXITVALUE != 0 ]; then  
-    /usr/bin/logger -t logrotate &quot;ALERT exited abnormally with [$EXITVALUE]&quot;  
-fi  
-</code></pre><p>上面的shell脚本主要是执行/usr/sbin/logrotate程序，并检查执行状态，如果执行出错，则通过logger程序向系统日志中发送一条错误消息。</p>
-<p>注意，现在说道的logrotate有两个，一个是shell脚本，位于/etc/cron.daily下，一个是可执行文件，位于/usr/sbin目录下。</p>
-<p>继续看上面的logrotate脚本，其中错误处理语句中，logger程序是怎么运行的呢？我们可以做个小测试。 执行：</p>
-<pre><code>/usr/bin/logger -t strider &quot;Good Morning&quot;  
-</code></pre><p>屏幕没有任何打印信息，但我们可以查看/var/log/message:</p>
-<pre><code>tail /var/log/messages  
-</code></pre><p>观察最后一条信息：</p>
+<span style="color:#000">EXITVALUE</span>=<span style="color:#000">$?</span>  
+<span style="color:#00f">if</span> [ <span style="color:#000">$EXITVALUE</span> != <span style="color:#3af">0</span> ]; <span style="color:#00f">then</span>  
+    /usr/bin/logger -t logrotate <span style="color:#5a2">&#34;</span><span style="color:#5a2">ALERT exited abnormally with [</span><span style="color:#000">$EXITVALUE</span><span style="color:#5a2">]</span><span style="color:#5a2">&#34;</span>  
+<span style="color:#00f">fi</span>  
+</code></pre></div><p>上面的 shell 脚本主要是执行 /usr/sbin/logrotate 程序，并检查执行状态，如果执行出错，则通过 logger 程序向系统日志中发送一条错误消息。</p>
+<p>注意，现在说道的 logrotate 有两个，一个是 shell 脚本，位于 /etc/cron.daily 下，一个是可执行文件，位于 /usr/sbin 目录下。</p>
+<p>继续看上面的 logrotate 脚本，其中错误处理语句中，logger 程序是怎么运行的呢？我们可以做个小测试。 执行：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/usr/bin/logger -t strider <span style="color:#5a2">&#34;Good Morning&#34;</span>  
+</code></pre></div><p>屏幕没有任何打印信息，但我们可以查看 /var/log/message:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tail /var/log/messages  
+</code></pre></div><p>观察最后一条信息：</p>
 <pre><code>Sep 10 06:53:55 localhost strider: Good Morning  
-</code></pre><p>可见logrotate脚本的错误信息通过通过logger程序送到系统日志中去了。</p>
-<h1 id="etccrondailyetccrontab">/etc/cron.daily、/etc/crontab</h1>
-<p>上面我们说到，logrotate脚本放在/etc/cron.daily目录下，所以它会每天定期执行一次。为什么放在cron.daily目录下就会有此效果呢？而且，到底是在每天的什么时候执行呢？<br>
-linux下的定时任务是由系统服务crond来管理的。crond的配置文件是/etc/crontab,可以打开观察一下：</p>
-<pre><code>vim /etc/crontab  
-</code></pre><p>会看到如下内容：</p>
+</code></pre><p>可见 logrotate 脚本的错误信息通过通过 logger 程序送到系统日志中去了。</p>
+<h2 id="etccrondailyetccrontab">/etc/cron.daily、/etc/crontab</h2>
+<p>上面我们说到，logrotate 脚本放在 /etc/cron.daily 目录下，所以它会每天定期执行一次。为什么放在 cron.daily 目录下就会有此效果呢？而且，到底是在每天的什么时候执行呢？</p>
+<p>linux 下的定时任务是由系统服务 crond 来管理的。crond 的配置文件是 /etc/crontab，可以打开观察一下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /etc/crontab  
+</code></pre></div><p>会看到如下内容：</p>
 <pre><code>SHELL=/bin/bash  
 PATH=/sbin:/bin:/usr/sbin:/usr/bin  
 MAILTO=root  
@@ -75,81 +75,81 @@ HOME=/
 02 4 * * * root run-parts /etc/cron.daily  
 22 4 * * 0 root run-parts /etc/cron.weekly  
 42 4 1 * * root run-parts /etc/cron.monthly  
-</code></pre><p>其中，SHELL字段、PATH字段等内容不用多说，重点看下下面的字段。如果你用crontab -e指令来写过crontab定时任务的话，一定会觉得跟crontab中的格式一模一样。其实这是错觉，/etc/crontab的配置中，每一行都多了一个root，表示以什么用户来执行，而crontab -e配置中，则没有这一个用户名字段。</p>
+</code></pre><p>其中，SHELL 字段、PATH 字段等内容不用多说，重点看下下面的字段。如果你用 <code>crontab -e</code> 指令来写过 crontab 定时任务的话，一定会觉得跟 crontab 中的格式一模一样。其实这是错觉，/etc/crontab 的配置中，每一行都多了一个 root，表示以什么用户来执行，而 <code>crontab -e</code> 配置中，则没有这一个用户名字段。</p>
 <p>虽然有这一点区别，其他地方意义还是一样的，例如：</p>
 <pre><code>02 4 * * * root run-parts /etc/cron.daily  
-</code></pre><p>就表明，每天凌晨的4:02时刻，以root身份执行run-parts /etc/cron.daily命令。我们大概也能猜出来了，run-parts的作用就是执行后面目录下的所有脚本，所以放在cron.daily目录下的脚本，会每天被执行一次。cron.hourly、cron.weekly、cron.monthly等也是如此。</p>
-<h1 id="run-parts">run-parts</h1>
-<p>那么run-parts到底是怎么做的呢？我们可以确定一下，执行：</p>
-<pre><code>whereis run-parts  
-</code></pre><p>输出：</p>
+</code></pre><p>就表明，每天凌晨的 4:02 时刻，以 root 身份执行 run-parts /etc/cron.daily 命令。我们大概也能猜出来了，run-parts 的作用就是执行后面目录下的所有脚本，所以放在 cron.daily 目录下的脚本，会每天被执行一次。cron.hourly、cron.weekly、cron.monthly 等也是类似。</p>
+<h2 id="run-parts">run-parts</h2>
+<p>那么 run-parts 到底是怎么做的呢？我们可以确定一下，执行：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">whereis run-parts  
+</code></pre></div><p>输出：</p>
 <pre><code>run-parts: /usr/bin/run-parts  
-</code></pre><p>查看run-parts类型，执行：</p>
-<pre><code>file /usr/bin/run-parts  
-</code></pre><p>输出：</p>
+</code></pre><p>查看 run-parts 类型，执行：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">file /usr/bin/run-parts  
+</code></pre></div><p>输出：</p>
 <pre><code>/usr/bin/run-parts: Bourne-Again shell script text executable  
-</code></pre><p>可见run-parts是一个bash脚本，其内容及注释如下：</p>
-<pre><code>#!/bin/bash  
+</code></pre><p>可见 run-parts 是一个 bash 脚本，其内容及注释如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/bash  
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#888;font-style:italic"># run-parts - concept taken from Debian</span>  
   
-# run-parts - concept taken from Debian  
+<span style="color:#888;font-style:italic"># keep going when something fails</span>  
+<span style="color:#888;font-style:italic">#当shell中某些命令或子shell执行错误时，该脚本让然能够执行下去。</span>  
+<span style="color:#000">set</span> +e  
   
-# keep going when something fails  
-#当shell中某些命令或子shell执行错误时，该脚本让然能够执行下去。  
-set +e  
+<span style="color:#888;font-style:italic">#如果参数小于1，则打印用法信息，并退出</span>  
+<span style="color:#00f">if</span> [ <span style="color:#000">$#</span> -lt <span style="color:#3af">1</span> ]; <span style="color:#00f">then</span>  
+        <span style="color:#000">echo</span> <span style="color:#5a2">&#34;Usage: run-parts &lt;dir&gt;&#34;</span>  
+        <span style="color:#000">exit</span> <span style="color:#3af">1</span>  
+<span style="color:#00f">fi</span>  
   
-#如果参数小于1，则打印用法信息，并退出  
-if [ $# -lt 1 ]; then  
-        echo &quot;Usage: run-parts &lt;dir&gt;&quot;  
-        exit 1  
-fi  
+<span style="color:#888;font-style:italic">#如果所带参数不是一个目录，则报错，并退出</span>  
+<span style="color:#00f">if</span> [ ! -d <span style="color:#000">$1</span> ]; <span style="color:#00f">then</span>  
+        <span style="color:#000">echo</span> <span style="color:#5a2">&#34;</span><span style="color:#5a2">Not a directory: </span><span style="color:#000">$1</span><span style="color:#5a2">&#34;</span>  
+        <span style="color:#000">exit</span> <span style="color:#3af">1</span>  
+<span style="color:#00f">fi</span>  
   
-#如果所带参数不是一个目录，则报错，并退出  
-if [ ! -d $1 ]; then  
-        echo &quot;Not a directory: $1&quot;  
-        exit 1  
-fi  
+<span style="color:#888;font-style:italic"># Ignore *~ and *, scripts</span>  
+<span style="color:#888;font-style:italic">#忽略该目录下，文件名中带有~和,的脚本</span>  
+<span style="color:#00f">for</span> i in <span style="color:#000">$1</span>/*[^~,] ; <span style="color:#00f">do</span>  
+        <span style="color:#888;font-style:italic">#忽略子目录</span>  
+        [ -d <span style="color:#000">$i</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
   
-# Ignore *~ and *, scripts  
-#忽略该目录下，文件名中带有~和,的脚本  
-for i in $1/*[^~,] ; do  
-        #忽略子目录  
-        [ -d $i ] &amp;&amp; continue  
+        <span style="color:#888;font-style:italic">#忽略rpmsave、rpmorig、rpmnew、swp、v格式的文件</span>  
+        <span style="color:#888;font-style:italic"># Don&#39;t run *.{rpmsave,rpmorig,rpmnew,swp} scripts</span>  
+        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.rpmsave<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
+        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.rpmorig<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
+        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.rpmnew<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
+        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.swp<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
+        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%,v<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
   
-        #忽略rpmsave、rpmorig、rpmnew、swp、v格式的文件  
-        # Don't run *.{rpmsave,rpmorig,rpmnew,swp} scripts  
-        [ &quot;${i%.rpmsave}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%.rpmorig}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%.rpmnew}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%.swp}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
-        [ &quot;${i%,v}&quot; != &quot;${i}&quot; ] &amp;&amp; continue  
+        <span style="color:#888;font-style:italic">#如果该文件可执行，则执行之</span>  
+        <span style="color:#00f">if</span> [ -x <span style="color:#000">$i</span> ]; <span style="color:#00f">then</span>  
+                <span style="color:#000">$i</span> 2&gt;&amp;<span style="color:#3af">1</span> | awk -v <span style="color:#5a2">&#34;</span><span style="color:#5a2">progname=</span><span style="color:#000">$i</span><span style="color:#5a2">&#34;</span> <span style="color:#5a2">\ </span> 
+                              <span style="color:#5a2">&#39;progname {  
+</span><span style="color:#5a2">                                   print progname &#34;:\n&#34;  
+</span><span style="color:#5a2">                                   progname=&#34;&#34;;  
+</span><span style="color:#5a2">                               }  
+</span><span style="color:#5a2">                               { print; }&#39;</span>  
+        <span style="color:#00f">fi</span>  
+<span style="color:#00f">done</span>  
   
-        #如果该文件可执行，则执行之  
-        if [ -x $i ]; then  
-                $i 2&gt;&amp;1 | awk -v &quot;progname=$i&quot; \  
-                              'progname {  
-                                   print progname &quot;:\n&quot;  
-                                   progname=&quot;&quot;;  
-                               }  
-                               { print; }'  
-        fi  
-done  
-  
-exit 0  
-</code></pre><h1 id="etccrontab和crontab--e">/etc/crontab和crontab -e</h1>
-<p>与前面所说的logrotate一样，也有两个都叫crontab的文件，一个是/etc/crontab，是crond的配置文件，另一个是一个程序，是用户与crond交互的外部接口。</p>
-<p>一面已经提到,/etc/crontab与 crontab的配置格式是不一样的，例如：</p>
+<span style="color:#000">exit</span> <span style="color:#3af">0</span>  
+</code></pre></div><h2 id="etccrontab-和-crontab--e">/etc/crontab 和 crontab -e</h2>
+<p>与前面所说的 logrotate 一样，也有两个都叫 crontab 的文件，一个是 /etc/crontab，是 crond 的配置文件，另一个是一个程序，是用户与 crond 交互的外部接口。</p>
+<p>前面已经提到，/etc/crontab 与 crontab 的配置格式是不一样的，例如：</p>
 <p>/etc/crontab中：</p>
 <pre><code>...(略）  
 02 4 * * * root run-parts /etc/cron.daily  
-</code></pre><p>与程序crontab对比一下，执行crontab -u root -l，可得到：</p>
+</code></pre><p>与程序 crontab 对比一下，执行 crontab -u root -l，可得到：</p>
 <pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
 * * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
-</code></pre><p>可见，通过crontab程序设置crond时，是不需要添加用户的。原因很简单，crontab必须在执行时指定用户名（如果不指定，则默认为当前登录的用户），执行crontab -u username -e设置完规则后，这些规则会保存在/var/spool/cron/username文件中,每个用户的crontab配置都会保存在属于该用户的文件中。例如：</p>
-<pre><code>vim /var/spool/cron/root  
-</code></pre><p>输出：</p>
+</code></pre><p>可见，通过 crontab 程序设置 crond 时，是不需要添加用户的。原因很简单，crontab 必须在执行时指定用户名（如果不指定，则默认为当前登录的用户），执行 <code>crontab -u username -e</code> 设置完规则后，这些规则会保存在 /var/spool/cron/username 文件中，每个用户的 crontab 配置都会保存在属于该用户的文件中。例如：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /var/spool/cron/root  
+</code></pre></div><p>输出：</p>
 <pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
 * * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
-</code></pre><p>与cront -u root -l回显一致。</p></div>
+</code></pre><p>与<code>cront -u root -l</code> 回显一致。</p></div>
 
   </article>
 </main>

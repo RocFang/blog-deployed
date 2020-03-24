@@ -63,17 +63,17 @@
     </item>
     
     <item>
-      <title>emlog的一键备份</title>
+      <title>emlog 的一键备份</title>
       <link>https://pureage.info/2013/10/01/128.html</link>
       <pubDate>Tue, 01 Oct 2013 03:31:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/10/01/128.html</guid>
-      <description>&lt;p&gt;不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
+      <description>&lt;p&gt;对于一个托管在 LAMP 虚拟主机（不是 vps）环境下的 emlog 博客，不知道大家平时备份是不是和我一样这么操作的：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱）&lt;/li&gt;
-&lt;li&gt;用ftp备份content目录&lt;/li&gt;
+&lt;li&gt;登陆到后台，备份数据库（当然，或者是用插件定期备份发送到邮箱）&lt;/li&gt;
+&lt;li&gt;用 ftp 备份 content 目录&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;如果你想简化操作，并且和我一样苦逼的用着虚拟主机，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。&lt;/p&gt;</description>
+&lt;p&gt;如果你想简化操作，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。&lt;/p&gt;</description>
     </item>
     
     <item>

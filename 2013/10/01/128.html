@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>emlog的一键备份 - 纯真年代</title>
+<title>emlog 的一键备份 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>emlog的一键备份</h1>
+  <h1>emlog 的一键备份</h1>
   </div>
 <div class="meta">
   <div>2013-10-01</div>
@@ -32,133 +32,133 @@
     </div>
   </div>
 <div class="content">
-  <p>不知道大家平时备份是不是和我一样这么操作的：</p>
+  <p>对于一个托管在 LAMP 虚拟主机（不是 vps）环境下的 emlog 博客，不知道大家平时备份是不是和我一样这么操作的：</p>
 <ol>
-<li>登陆到后台，备份sql（当然，或者是用插件定期备份发送到邮箱）</li>
-<li>用ftp备份content目录</li>
+<li>登陆到后台，备份数据库（当然，或者是用插件定期备份发送到邮箱）</li>
+<li>用 ftp 备份 content 目录</li>
 </ol>
-<p>如果你想简化操作，并且和我一样苦逼的用着虚拟主机，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。</p>
-<p><strong>1.linux</strong></p>
-<p>（1） 将下面脚本中config标记部分需要自己配置，意义如下：</p>
+<p>如果你想简化操作，下面的脚本也许可以帮到你。脚本很丑陋，能完成功能即可。</p>
+<h2 id="1-linux">1. linux</h2>
+<p>（1）将下面脚本中 config 标记部分需要自己配置，意义如下：</p>
 <ul>
-<li>backup_path：content目录和sql文件要存放的目录</li>
-<li>emlog_domain:你的博客域名，例如：http://www.pureage.info</li>
-<li>emlog_user:你博客的登录名</li>
+<li>backup_path：content 目录和 sql 文件要存放的目录</li>
+<li>emlog_domain：你的博客域名，例如：<code>http://www.pureage.info</code></li>
+<li>emlog_user：你博客的登录名</li>
 <li>emlog_password：你博客的登陆密码</li>
-<li>remotecontent：你ftp上content目录的完整url，带上你的ftp账号和密码信息，例如：     ftp://admin:password@127.0.0.1/domains/xxxx.com/public_html/content 将admin,password改成你自己的ftp账号、密码，把127.0.0.1改成你ftp的IP（通常就是主机IP）,domains/xxxx.com/public_html/contentg改成你自己的content在ftp上的目录即可。</li>
+<li>remotecontent：你 ftp 上 content 目录的完整 url，带上你的 ftp 账号和密码信息，例如：      <code>ftp://admin:password@127.0.0.1/domains/xxxx.com/public_html/content</code> 将admin、password改成你自己的 ftp 账号、密码，把 127.0.0.1 改成你 ftp 的 IP（通常就是主机 IP），<code>domains/xxxx.com/public_html/contentg</code> 改成你自己的 content 在 ftp 上的目录即可。</li>
 </ul>
-<p>（2）假设将该脚本命名为emlog_backup.sh，执行chmod +x emlog_backup.sh，赋予可执行属性。</p>
-<p>（3）执行./emlog_backup.sh:</p>
+<p>（2）假设将该脚本命名为 emlog_backup.sh，执行 chmod +x emlog_backup.sh，赋予可执行属性。</p>
+<p>（3）执行./emlog_backup.sh：</p>
 <ul>
-<li>如果不带参数，或执行./emlog_backup.sh all 则先备份数据库，再备份content目录</li>
-<li>如果是执行./emlog_backup.sh sql，则只备份数据库</li>
-<li>如果是执行./emlog_backup.sh content，则只备份content目录</li>
+<li>如果不带参数，或执行 <code>./emlog_backup.sh all</code> 则先备份数据库，再备份 content 目录</li>
+<li>如果是执行 <code>./emlog_backup.sh sql</code>，则只备份数据库</li>
+<li>如果是执行 <code>./emlog_backup.sh content</code>，则只备份 content 目录</li>
 </ul>
-<pre><code>#!/bin/bash  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/bash  
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#888;font-style:italic">#-----config------------</span>  
+<span style="color:#000">backup_path</span>=<span style="color:#5a2">&#34;/home/strider/blog/backup&#34;</span>  
+<span style="color:#000">emlog_domain</span>=<span style="color:#5a2">&#34;http://www.pureage.info&#34;</span>  
+<span style="color:#000">emlog_user</span>=<span style="color:#5a2">&#34;aaaaa&#34;</span>  
+<span style="color:#000">emlog_password</span>=<span style="color:#3af">123456</span>  
+<span style="color:#000">remote_content</span>=<span style="color:#5a2">&#34;ftp://admin:123456@127.0.0.1/domains/pureage.info/public_html/content&#34;</span>  
+<span style="color:#888;font-style:italic">#----------------------</span>  
   
-#-----config------------  
-backup_path=&quot;/home/strider/blog/backup&quot;  
-emlog_domain=&quot;http://www.pureage.info&quot;  
-emlog_user=&quot;aaaaa&quot;  
-emlog_password=123456  
-remote_content=&quot;ftp://admin:123456@127.0.0.1/domains/pureage.info/public_html/content&quot;  
-#----------------------  
   
+<span style="color:#888;font-style:italic">#-----</span>  
+mkdir -p <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">&#34;</span>  
   
-#-----  
-mkdir -p &quot;$backup_path&quot;  
-  
-if [ -d &quot;$backup_path/content&quot; ];then  
-mv &quot;$backup_path/content&quot; &quot;$backup_path/content_old&quot;  
-fi  
+<span style="color:#00f">if</span> [ -d <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/content</span><span style="color:#5a2">&#34;</span> ];<span style="color:#00f">then</span>  
+mv <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/content</span><span style="color:#5a2">&#34;</span> <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/content_old</span><span style="color:#5a2">&#34;</span>  
+<span style="color:#00f">fi</span>  
   
   
   
 backup_database()  
 {  
-        #----get the cookie----  
-        curl -d &quot;user=$emlog_user&amp;pw=$emlog_password&quot;  &quot;$emlog_domain&quot;/admin/index.php?action=login -c &quot;$backup_path/cookie&quot;  
+        <span style="color:#888;font-style:italic">#----get the cookie----</span>  
+        curl -d <span style="color:#5a2">&#34;</span><span style="color:#5a2">user=</span><span style="color:#000">$emlog_user</span><span style="color:#5a2">&amp;pw=</span><span style="color:#000">$emlog_password</span><span style="color:#5a2">&#34;</span>  <span style="color:#5a2">&#34;</span><span style="color:#000">$emlog_domain</span><span style="color:#5a2">&#34;</span>/admin/index.php?action=login -c <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/cookie</span><span style="color:#5a2">&#34;</span>  
   
   
-        #----back up database----  
-        table_backup=(  
-        &quot;emlog_attachment&quot;  
-        &quot;emlog_blog&quot;  
-        &quot;emlog_comment&quot;  
-        &quot;emlog_options&quot;  
-        &quot;emlog_navi&quot;  
-        &quot;emlog_reply&quot;  
-        &quot;emlog_sort&quot;  
-        &quot;emlog_link&quot;  
-        &quot;emlog_tag&quot;  
-        &quot;emlog_trackback&quot;  
-        &quot;emlog_twitter&quot;  
-        &quot;emlog_user&quot;  
+        <span style="color:#888;font-style:italic">#----back up database----</span>  
+        <span style="color:#000">table_backup</span>=(  
+        <span style="color:#5a2">&#34;emlog_attachment&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_blog&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_comment&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_options&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_navi&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_reply&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_sort&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_link&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_tag&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_trackback&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_twitter&#34;</span>  
+        <span style="color:#5a2">&#34;emlog_user&#34;</span>  
         )  
-        table_box=$(  
-        let i=0;  
-        for((i=0;i&lt;${#table_backup[@]}-1;i=i+1))  
-        do  
-        echo -n &quot;table_box[$i]=${table_backup[$i]}&amp;&quot;  
-        done  
-        echo -n &quot;table_box[$i]=${table_backup[$i]}&quot;  
+        <span style="color:#000">table_box</span>=<span style="color:#00f">$(</span>  
+        <span style="color:#000">let</span> <span style="color:#000">i</span>=0;  
+        <span style="color:#00f">for</span>((<span style="color:#000">i</span>=0;i&lt;<span style="color:#5a2">${#</span><span style="color:#000">table_backup</span>[@]<span style="color:#5a2">}</span>-1;<span style="color:#000">i</span>=i+1<span style="color:#00f">)</span>)  
+        <span style="color:#00f">do</span>  
+        <span style="color:#000">echo</span> -n <span style="color:#5a2">&#34;</span><span style="color:#5a2">table_box[</span><span style="color:#000">$i</span><span style="color:#5a2">]=</span><span style="color:#5a2">${</span><span style="color:#000">table_backup</span>[<span style="color:#000">$i</span>]<span style="color:#5a2">}</span><span style="color:#5a2">&amp;</span><span style="color:#5a2">&#34;</span>  
+        <span style="color:#00f">done</span>  
+        <span style="color:#000">echo</span> -n <span style="color:#5a2">&#34;</span><span style="color:#5a2">table_box[</span><span style="color:#000">$i</span><span style="color:#5a2">]=</span><span style="color:#5a2">${</span><span style="color:#000">table_backup</span>[<span style="color:#000">$i</span>]<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span>  
         )  
-        echo $table_box  
+        <span style="color:#000">echo</span> <span style="color:#000">$table_box</span>  
   
-        sql_file=&quot;$(date &quot;+%Y_%m_%d_%H_%M_%S&quot;).sql&quot;  
+        <span style="color:#000">sql_file</span>=<span style="color:#5a2">&#34;</span><span style="color:#00f">$(</span>date <span style="color:#5a2">&#34;+%Y_%m_%d_%H_%M_%S&#34;</span><span style="color:#00f">)</span><span style="color:#5a2">.sql</span><span style="color:#5a2">&#34;</span>  
   
-        curl  -b &quot;$backup_path/cookie&quot; -L    -d &quot;$table_box&quot;  &quot;$emlog_domain&quot;/admin/data.php?action=bakstart&gt;&quot;$backup_path/$sql_file&quot;  
+        curl  -b <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/cookie</span><span style="color:#5a2">&#34;</span> -L    -d <span style="color:#5a2">&#34;</span><span style="color:#000">$table_box</span><span style="color:#5a2">&#34;</span>  <span style="color:#5a2">&#34;</span><span style="color:#000">$emlog_domain</span><span style="color:#5a2">&#34;</span>/admin/data.php?action=bakstart&gt;<span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/</span><span style="color:#000">$sql_file</span><span style="color:#5a2">&#34;</span>  
   
-        #----delete the cookie----  
-        rm -rf &quot;$backup_path/cookie&quot;  
+        <span style="color:#888;font-style:italic">#----delete the cookie----</span>  
+        rm -rf <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/cookie</span><span style="color:#5a2">&#34;</span>  
 }  
   
 backup_content()  
 {  
-        wget  -r  -nH --cut-dirs=3  -nv &quot;$remote_content&quot; -P &quot;$backup_path&quot;  
+        wget  -r  -nH --cut-dirs=<span style="color:#3af">3</span>  -nv <span style="color:#5a2">&#34;</span><span style="color:#000">$remote_content</span><span style="color:#5a2">&#34;</span> -P <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">&#34;</span>  
   
-        #----delete old content  
-        if  [ -d &quot;$backup__path/content&quot; ];then  
-                rm -rf &quot;$backup_path/content&quot;  
-        fi  
+        <span style="color:#888;font-style:italic">#----delete old content</span>  
+        <span style="color:#00f">if</span>  [ -d <span style="color:#5a2">&#34;</span><span style="color:#000">$backup__path</span><span style="color:#5a2">/content</span><span style="color:#5a2">&#34;</span> ];<span style="color:#00f">then</span>  
+                rm -rf <span style="color:#5a2">&#34;</span><span style="color:#000">$backup_path</span><span style="color:#5a2">/content</span><span style="color:#5a2">&#34;</span>  
+        <span style="color:#00f">fi</span>  
 }  
   
   
-if [ $# -eq 0 ];then  
+<span style="color:#00f">if</span> [ <span style="color:#000">$#</span> -eq <span style="color:#3af">0</span> ];<span style="color:#00f">then</span>  
         backup_database  
         backup_content  
-        exit 0  
+        <span style="color:#000">exit</span> <span style="color:#3af">0</span>  
   
-elif [ $# -eq 1 ];then  
-        if [ &quot;$1&quot; == &quot;all&quot; ];then  
+<span style="color:#00f">elif</span> [ <span style="color:#000">$#</span> -eq <span style="color:#3af">1</span> ];<span style="color:#00f">then</span>  
+        <span style="color:#00f">if</span> [ <span style="color:#5a2">&#34;</span><span style="color:#000">$1</span><span style="color:#5a2">&#34;</span> == <span style="color:#5a2">&#34;all&#34;</span> ];<span style="color:#00f">then</span>  
                 backup_database  
                 backup_content  
-                exit 0  
+                <span style="color:#000">exit</span> <span style="color:#3af">0</span>  
   
-        elif [ &quot;$1&quot; == &quot;sql&quot; ];then  
+        <span style="color:#00f">elif</span> [ <span style="color:#5a2">&#34;</span><span style="color:#000">$1</span><span style="color:#5a2">&#34;</span> == <span style="color:#5a2">&#34;sql&#34;</span> ];<span style="color:#00f">then</span>  
                 backup_database  
-                exit 0  
+                <span style="color:#000">exit</span> <span style="color:#3af">0</span>  
   
-        elif [ &quot;$1&quot; == &quot;content&quot; ];then  
+        <span style="color:#00f">elif</span> [ <span style="color:#5a2">&#34;</span><span style="color:#000">$1</span><span style="color:#5a2">&#34;</span> == <span style="color:#5a2">&#34;content&#34;</span> ];<span style="color:#00f">then</span>  
                 backup_content  
-                exit 0  
-        else  
-                echo &quot;operation not supported!&quot;  
-                exit 1  
-        fi  
+                <span style="color:#000">exit</span> <span style="color:#3af">0</span>  
+        <span style="color:#00f">else</span>  
+                <span style="color:#000">echo</span> <span style="color:#5a2">&#34;operation not supported!&#34;</span>  
+                <span style="color:#000">exit</span> <span style="color:#3af">1</span>  
+        <span style="color:#00f">fi</span>  
   
-else  
-        echo &quot;operation not supported!&quot;  
-        exit 1  
-fi  
-</code></pre><p><strong>2.windows</strong></p>
-<p>由于对bat不熟，所以没有写成上面那种比较详细的脚本。但其实上面真正有用的只有三句：两个curl语句和一个wget语句。而curl和wget都有windows版本的。也很好写，最简单的例子，把下面的内容复制到一个文本里，将其改名为emlog_backup.bat，也可以工作：</p>
-<pre><code>curl -d &quot;user=xxxx&amp;pw=123456&quot;  http://www.pureage.info/admin/index.php?action=login -c cookie  
+<span style="color:#00f">else</span>  
+        <span style="color:#000">echo</span> <span style="color:#5a2">&#34;operation not supported!&#34;</span>  
+        <span style="color:#000">exit</span> <span style="color:#3af">1</span>  
+<span style="color:#00f">fi</span>  
+</code></pre></div><h2 id="2-windows">2. windows</h2>
+<p>由于对 bat 不熟，所以没有写成上面那种比较详细的脚本。但其实上面真正有用的只有三句：两个 curl 语句和一个 wget 语句。而 curl 和 wget 都有 windows 版本的。也很好写，最简单的例子，把下面的内容复制到一个文本里，将其改名为 emlog_backup.bat，也可以工作：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cmd" data-lang="cmd">curl -d <span style="color:#5a2">&#34;</span><span style="color:#5a2">user=xxxx&amp;pw=123456</span><span style="color:#5a2">&#34;</span>  http://www.pureage.info/admin/index.php?action=login -c cookie  
   
-curl  -b cookie -L -d &quot;table_box[0]=emlog_attachment&amp;table_box[1]=emlog_blog&amp;table_box[2]=emlog_comment&amp;table_box[3]=emlog_options&amp;table_box[4]=emlog_navi&amp;table_box[5]=emlog_reply&amp;table_box[6]=emlog_sort&amp;table_box[7]=emlog_link&amp;table_box[8]=emlog_tag&amp;table_box[9]=emlog_trackback&amp;table_box[10]=emlog_twitter&amp;table_box[11]=emlog_user&quot;  www.pureage.info/admin/data.php?action=bakstart&gt;myemlog.sql  
+curl  -b cookie -L -d <span style="color:#5a2">&#34;</span><span style="color:#5a2">table_box[0]=emlog_attachment&amp;table_box[1]=emlog_blog&amp;table_box[2]=emlog_comment&amp;table_box[3]=emlog_options&amp;table_box[4]=emlog_navi&amp;table_box[5]=emlog_reply&amp;table_box[6]=emlog_sort&amp;table_box[7]=emlog_link&amp;table_box[8]=emlog_tag&amp;table_box[9]=emlog_trackback&amp;table_box[10]=emlog_twitter&amp;table_box[11]=emlog_user</span><span style="color:#5a2">&#34;</span>  www.pureage.info/admin/data.php?action=bakstart<span style="color:#3af"></span>&gt;myemlog.sql  
   
 wget  -r  -nH --cut-dirs=3 -nv  ftp://admin:123456@127.0.0.1/domains/pureage.info/public_html/content  
-</code></pre></div>
+</code></pre></div></div>
 
   </article>
 </main>
