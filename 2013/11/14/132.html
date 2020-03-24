@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用 - 纯真年代</title>
+<title>在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</h1>
+  <h1>在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用</h1>
   </div>
 <div class="meta">
   <div>2013-11-14</div>
@@ -34,151 +34,140 @@
 <div class="content">
   <p>本文主要内容参考自：</p>
 <p><a href="http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691">http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691</a></p>
-<p>使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。</p>
-<p>这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.</p>
-<p>以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：</p>
-<blockquote>
-<p>[root@vps1 ~]# ls   -l /usr/bin/python<br>
+<p>使用 Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。</p>
+<p>这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，Python 在 linux 中属于基础组件，各发行版会默认安装一个 Python，例如 CentOS5.5 中的是 2.4.3，而CentOS6.2 中是 2.6.6。</p>
+<p>以 CentOS6.2 为例，在 /usr/bin 目录下有一个 Python 和一个 Python2.6。这两者有什么区别呢：</p>
+<pre><code>&gt;[root@vps1 ~]# ls   -l /usr/bin/python  
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
-[root@vps1 ~]# ls   -l /usr/bin/python2.6
--rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6</p>
-</blockquote>
-<p>可以看到两个都不是软链接。通过计算一下md5值，可以发现这两者一模一样：</p>
-<blockquote>
-<p>958a320a8c3f4d352d398bb0ebc46ed8  /usr/bin/python<br>
-[root@vps1 ~]# md5sum  /usr/bin/python2.6
-958a320a8c3f4d352d398bb0ebc46ed8  /usr/bin/python2.6</p>
-</blockquote>
-<p>因此，/usr/bin/python实际上是/usr/bin/python2.6的一个拷贝。如果我们此时想安装一个python3.3，应该怎么做呢？首先绝对不要想着先去卸载已有的python，曾经apt-get remove python或者yum remove python的人肯定会会心一笑。最通常的做法，下载到python3.3的源码来编译。</p>
-<p>在CentOS下，通过./configure&amp;&amp;make&amp;&amp;make install安装后，python会被安装到/usr/local/bin目录下，可能同时有python,python3,python3.3。其中python3.3和python是两个一模一样h的可执行文件，而python3则是一个指向/usr/local/bin/python的软链接。这样带来的问题是，在/usr/bin和/usr/local/bin目录下，都有一个名为python的可执行文件。虽然通过环境变量的可以确定在shell中执行python时到底是执行了哪个目录下的python，但总归显的很麻烦，时间长了更容易引起混乱。</p>
-<p>这个仅仅是安装一个python时遇到的问题，现实情况下，你可能同时跑着两个版本的django，每个版本的django依赖的python又不同，通过分别指定路径、建立软连接等方式虽然能解决，但还是一个字，乱。不知什么时候，就会互相影响了。</p>
-<p>自从有了virtualenv，pythoner的生活就好起来了。</p>
-<p>virtualenv的目的就是让每个python应用程序和自己依赖的python解释器及python库，各自隔离开来，互相不影响，更不会破坏系统自带的python环境。</p>
-<p>下面就来详细的演示virtualenv的操作过程：</p>
-<p>1.系统环境说明：</p>
-<blockquote>
-<p>操作系统：CentOS6.2<br>
-# cat /etc/issue<br>
-CentOS release 6.2 (Final)<br>
-Kernel \r on an \m</p>
-</blockquote>
-<p>系统自带python环境：</p>
-<blockquote>
-<p># python -V<br>
-Python 2.6.6<br>
-|# whereis python<br>
-python: /usr/bin/python /usr/bin/python2.6 /usr/lib/python2.6 /usr/include/python2.6 /usr/share/man/man1/python.1.gz<br>
-# ls -l /usr/bin/python*<br>
--rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python<br>
-lrwxrwxrwx 1 root root    6 Nov 12 06:29 /usr/bin/python2 -&gt; python<br>
--rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6</p>
-</blockquote>
-<p>2.操作预期：</p>
-<p>分别安装最新版的python2.7和python3.3，并各自安装一个flask框架，互相隔离。</p>
-<p>3.操作过程：</p>
+[root@vps1 ~]# ls   -l /usr/bin/python2.6 
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
+</code></pre><p>可以看到两个都不是软链接。通过计算一下 md5 值，可以发现这两者一模一样。</p>
+<p>因此，/usr/bin/python 实际上是 /usr/bin/python2.6 的一个拷贝。如果我们此时想安装一个 python3.3，应该怎么做呢？首先绝对不要想着先去卸载已有的 Python，曾经 <code>apt-get remove python</code> 或者 <code>yum remove python</code> 的人肯定会会心一笑。最通常的做法，下载到 python3.3的源码来编译。</p>
+<p>在 CentOS 下，通过 <code>./configure&amp;&amp;make&amp;&amp;make install</code> 安装后，Python 会被安装到 /usr/local/bin 目录下，可能同时有 python、python3、python3.3。其中 python3.3 和 python 是两个一模一样h的可执行文件，而 python3 则是一个指向 /usr/local/bin/python 的软链接。这样带来的问题是，在 /usr/bin 和 /usr/local/bin 目录下，都有一个名为 python 的可执行文件。虽然通过环境变量的可以确定在 shell 中执行 python 时到底是执行了哪个目录下的 python，但总归显的很麻烦，时间长了更容易引起混乱。</p>
+<p>这个仅仅是安装一个 Python 时遇到的问题，现实情况下，你可能同时跑着两个版本的
+Django，每个版本的 Django 依赖的 Python 又不同，通过分别指定路径、建立软连接等方式虽然能解决，但还是一个字，乱。不知什么时候，就会互相影响了。</p>
+<p>自从有了 virtualenv，pythoner 的生活就好起来了。</p>
+<p>virtualenv 的目的就是让每个 Python 应用程序和自己依赖的 Python 解释器及 Python 库，各自隔离开来，互相不影响，更不会破坏系统自带的 Python 环境。</p>
+<p>下面就来详细的演示 virtualenv 的操作过程：</p>
+<p><strong>1. 系统环境说明</strong></p>
+<pre><code>操作系统：CentOS6.2  
+\# cat /etc/issue  
+CentOS release 6.2 (Final)  
+Kernel \r on an \m  
+</code></pre><p>系统自带python环境：</p>
+<pre><code>&gt;\# python -V  
+Python 2.6.6  
+|# whereis python  
+python: /usr/bin/python /usr/bin/python2.6 /usr/lib/python2.6 /usr/include/python2.6 /usr/share/man/man1/python.1.gz  
+\# ls -l /usr/bin/python*  
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python  
+lrwxrwxrwx 1 root root    6 Nov 12 06:29 /usr/bin/python2 -&gt; python  
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
+</code></pre><p><strong>2. 操作预期</strong></p>
+<p>分别安装最新版的 python2.7 和 python3.3，并各自安装一个 flask 框架，互相隔离。</p>
+<p><strong>3. 操作过程</strong></p>
 <p>（1）方便起见，首先安装一些其它常用的组件：</p>
-<pre><code>yum groupinstall &quot;Development tools&quot;  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">yum groupinstall <span style="color:#5a2">&#34;Development tools&#34;</span>  
 yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel  
-</code></pre><p>（2）下载和安装python2.7.6</p>
-<pre><code># mkdir -p /home/fangpeng/sources  
-# cd /home/fangpeng/sources/  
-# wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz  
-#tar xvfz Python-2.7.6.tgz  
-#cd Python-2.7.6  
-# ./configure --prefix=/usr/local  
-# make &amp;&amp; make altinstall  
-</code></pre><p>注意，是make altinstall，而不是make install。这样可以避免造成系统存在多个名为python，实际版本却各异的文件。</p>
-<p>安装完毕后，/usr/bin下系统自带的几个python文件都没有任何影响。在/usr/local/bin目录下，则多了一个python2.7和python2.7-config。</p>
-<p>（3）下载和安装Python3.3.2</p>
-<pre><code># cd /home/fangpeng/sources  
-# wget http://www.python.org/ftp/python/3.3.2/Python-3.3.2.tgz  
-#tar xvfz Python-3.3.2.tgz  
-# cd Python-3.3.2  
-# ./configure --prefix=/usr/local  
-# make &amp;&amp; make altinstall  
-</code></pre><p>同样注意，是make altinstall，而非make install。安装完成后，在/usr/local/bin目录下，多出三个文件，分别是python3.3m,python3.3和python3.3-config,其中python3.3和python3.3m是同一个文件的两份拷贝。对系统自带的python2.6.6和上一步安装的python2.7.6无影响。</p>
-<p>（4）下载distribute</p>
-<pre><code># cd /home/fangpeng/sources  
-# wget --no-check-certificate https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz  
-</code></pre><p>（5）为python2.7.6安装easy_install</p>
-<pre><code># tar xvfz distribute-0.6.49.tar.gz  
-# cd distribute-0.6.49  
-# python2.7 setup.py  install  
-</code></pre><p>（6）为python3.3.2安装easy_install</p>
-<pre><code># cd /home/fangpeng/sources/  
-# rm -rf distribute-0.6.49  
-# tar xvfz distribute-0.6.49.tar.gz  
-# cd distribute-0.6.49  
-# python3.3 setup.py install  
-</code></pre><p>执行完（5）和（6）后，在/usr/local/bin目录下，会多出三个文件，分别是easy_install，easy_install-2.7和easy_install-3.3。其中，easy_install在两次安装时都会生成，因此会存在覆盖。我们直接使用easy_install-2.7和easy_install-3.3即可。</p>
-<p>（7）为python2.7安装virtualenv<br>
-终于到了virtualenv了，这才是我们今天的主角。</p>
-<pre><code>easy_install-2.7 virtualenv  
-</code></pre><p>（8）为python3.3安装virtualenv</p>
-<pre><code># easy_install-3.3  virtualenv  
-</code></pre><p>至此，我们分别为python2.7.6和python3.3.2安装了virtualenv。同样在/usr/local/bin目录下多出了三个文件，分别是virtualenv，virtualenv-2.7和virtualenv-3.3。其中，virtualenv在两次安装时都会生成，因此会存在覆盖。我们直接使用virtualenv-2.7和virtualenv-3.3即可。</p>
-<p>下面用web框架flask的安装，来演示virtualenv的使用。创建两个flask的沙盒，其中一个依赖的是python2.7.6,另一个依赖python3.3.2。</p>
+</code></pre></div><p>（2）下载和安装 python2.7.6</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># mkdir -p /home/fangpeng/sources</span>  
+<span style="color:#888;font-style:italic"># cd /home/fangpeng/sources/</span>  
+<span style="color:#888;font-style:italic"># wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz</span>  
+<span style="color:#888;font-style:italic">#tar xvfz Python-2.7.6.tgz</span>  
+<span style="color:#888;font-style:italic">#cd Python-2.7.6</span>  
+<span style="color:#888;font-style:italic"># ./configure --prefix=/usr/local</span>  
+<span style="color:#888;font-style:italic"># make &amp;&amp; make altinstall</span>  
+</code></pre></div><p>注意，是 <code>make altinstall</code>，而不是 <code>make install</code>。这样可以避免造成系统存在多个名为 Python，实际版本却各异的文件。安装完毕后，/usr/bin 下系统自带的几个 Python 文件都没有任何影响。在 /usr/local/bin 目录下，则多了一个 python2.7 和 python2.7-config。</p>
+<p>（3）下载和安装 python3.3.2</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/sources</span>  
+<span style="color:#888;font-style:italic"># wget http://www.python.org/ftp/python/3.3.2/Python-3.3.2.tgz</span>  
+<span style="color:#888;font-style:italic">#tar xvfz Python-3.3.2.tgz</span>  
+<span style="color:#888;font-style:italic"># cd Python-3.3.2</span>  
+<span style="color:#888;font-style:italic"># ./configure --prefix=/usr/local</span>  
+<span style="color:#888;font-style:italic"># make &amp;&amp; make altinstall</span>  
+</code></pre></div><p>同样注意，是 <code>make altinstall</code>，而非 <code>make install</code>。安装完成后，在 /usr/local/bin 目录下，多出三个文件，分别是 python3.3m、python3.3 和 python3.3-config，其中 python3.3 和 python3.3m 是同一个文件的两份拷贝。对系统自带的 python2.6.6 和上一步安装的 python2.7.6 无影响。</p>
+<p>（4）下载 distribute</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/sources</span>  
+<span style="color:#888;font-style:italic"># wget --no-check-certificate https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz</span>  
+</code></pre></div><p>（5）为 python2.7.6 安装 easy_install</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># tar xvfz distribute-0.6.49.tar.gz</span>  
+<span style="color:#888;font-style:italic"># cd distribute-0.6.49</span>  
+<span style="color:#888;font-style:italic"># python2.7 setup.py  install</span>  
+</code></pre></div><p>（6）为 python3.3.2 安装easy_install</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/sources/</span>  
+<span style="color:#888;font-style:italic"># rm -rf distribute-0.6.49</span>  
+<span style="color:#888;font-style:italic"># tar xvfz distribute-0.6.49.tar.gz</span>  
+<span style="color:#888;font-style:italic"># cd distribute-0.6.49</span>  
+<span style="color:#888;font-style:italic"># python3.3 setup.py install</span>  
+</code></pre></div><p>执行完（5）和（6）后，在 /usr/local/bin 目录下，会多出三个文件，分别是 easy_install、easy_install-2.7和easy_install-3.3。其中，easy_install 在两次安装时都会生成，因此会存在覆盖。我们直接使用 easy_install-2.7 和 easy_install-3.3 即可。</p>
+<p>（7）为 python2.7 安装 virtualenv</p>
+<p>终于到了virtualenv了，这才是我们今天的主角。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">easy_install-2.7 virtualenv  
+</code></pre></div><p>（8）为 python3.3 安装 virtualenv</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">easy_install-3.3  virtualenv  
+</code></pre></div><p>至此，我们分别为 python2.7.6 和 python3.3.2 安装了 virtualenv。同样在 /usr/local/bin 目录下多出了三个文件，分别是 virtualenv、virtualenv-2.7 和 virtualenv-3.3。其中，virtualenv 在两次安装时都会生成，因此会存在覆盖。我们直接使用 virtualenv-2.7 和 virtualenv-3.3 即可。</p>
+<p>下面用 web 框架 flask 的安装，来演示 virtualenv 的使用。创建两个 flask 的沙盒，其中一个依赖的是 python2.7.6，另一个依赖 python3.3.2。</p>
 <p>（1）创建相应的工程目录</p>
-<pre><code># mkdir -p /home/fangpeng/project/hello_flask  
-# cd /home/fangpeng/project/hello_flask/  
-# mkdir python2.7 python3.3  
-</code></pre><p>（2）创建基于python2.7的flask工程</p>
-<pre><code># cd /home/fangpeng/project/hello_flask/python2.7/  
-# virtualenv-2.7 --distribute env  
-Using base prefix '/usr/local'  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># mkdir -p /home/fangpeng/project/hello_flask</span>  
+<span style="color:#888;font-style:italic"># cd /home/fangpeng/project/hello_flask/</span>  
+<span style="color:#888;font-style:italic"># mkdir python2.7 python3.3</span>  
+</code></pre></div><p>（2）创建基于 python2.7 的 flask 工程</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/project/hello_flask/python2.7/</span>  
+<span style="color:#888;font-style:italic"># virtualenv-2.7 --distribute env</span>  
+Using base prefix <span style="color:#5a2">&#39;/usr/local&#39;</span>  
 New python executable in env/bin/python3.3  
 Also creating executable in env/bin/python  
 Installing Setuptools..................................................................................................................................done.  
 Installing Pip.............................................................................................................................................done.  
-# source env/bin/activate  
+<span style="color:#888;font-style:italic"># source env/bin/activate</span>  
 (env)# 
-(env)# python -V  
+(env)<span style="color:#888;font-style:italic"># python -V</span>  
 Python 2.7.6  
-# pip install flask  
-(env)# vim hello.py  
-</code></pre><p>hello.py内容如下：</p>
-<pre><code>from flask import Flask  
-app=Flask(__name__)  
+<span style="color:#888;font-style:italic"># pip install flask</span>  
+(env)<span style="color:#888;font-style:italic"># vim hello.py</span>  
+</code></pre></div><p>hello.py 内容如下：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">from</span> <span style="color:#000">flask</span> <span style="color:#00f">import</span> <span style="color:#000">Flask</span>  
+<span style="color:#000">app</span>=<span style="color:#000">Flask</span>(<span style="color:#000">__name__</span>)  
   
-@app.route('/hello')  
-def hello():  
-        return &quot;Hello,Flask!&quot;  
-if __name__=='__main__':  
-        app.run(host='0.0.0.0',debug=True)  
-</code></pre><p>执行hello.py:</p>
-<pre><code>(env)# python hello.py 
+<span style="color:#000">@app.route</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">/hello</span><span style="color:#5a2">&#39;</span>)  
+<span style="color:#00f">def</span> <span style="color:#000">hello</span>():  
+        <span style="color:#00f">return</span> <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">Hello,Flask!</span><span style="color:#5a2">&#34;</span>  
+<span style="color:#00f">if</span> <span style="color:#000">__name__</span>==<span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">__main__</span><span style="color:#5a2">&#39;</span>:  
+        <span style="color:#000">app</span>.<span style="color:#000">run</span>(<span style="color:#000">host</span>=<span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0.0.0.0</span><span style="color:#5a2">&#39;</span>,<span style="color:#000">debug</span>=<span style="color:#000">True</span>)  
+</code></pre></div><p>执行hello.py：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">(env)<span style="color:#888;font-style:italic"># python hello.py</span> 
  * Running on http://0.0.0.0:5000/  
  * Restarting with reloader  
-</code></pre><p>用浏览器或在另一个终端用curl访问该hello接口，如下：</p>
+</code></pre></div><p>用浏览器或在另一个终端用 curl 访问该 hello 接口，如下：</p>
 <pre><code># curl 192.168.1.101:5000/hello  
 Hello,Flask!#  
-</code></pre><p>（3）退出python2.7的virtualenv环境</p>
-<p>继续上一步，按ctr+c退出hello.py的执行。如下所示，此时还处于python2.7的virtualenv中，执行deactivate退出。</p>
-<pre><code>(env)# deactivate  
+</code></pre><p>（3）退出 python2.7 的 virtualenv 环境</p>
+<p>继续上一步，按 ctr+c 退出 hello.py 的执行。如下所示，此时还处于 python2.7 的 virtualenv 中，执行 deactivate 退出。</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">(env)<span style="color:#888;font-style:italic"># deactivate</span>  
 # 
-</code></pre><p>（4）创建基于python3.3的flask工程</p>
-<pre><code>#cd /home/fangpeng/project/hello_flask/python3.3/  
-# virtualenv-3.3 --distribute env  
-Using base prefix '/usr/local'  
+</code></pre></div><p>（4）创建基于 python3.3 的 flask 工程</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#cd /home/fangpeng/project/hello_flask/python3.3/</span>  
+<span style="color:#888;font-style:italic"># virtualenv-3.3 --distribute env</span>  
+Using base prefix <span style="color:#5a2">&#39;/usr/local&#39;</span>  
 New python executable in env/bin/python3.3  
 Also creating executable in env/bin/python  
 Installing Setuptools.........................................................................................done.  
 Installing Pip....................................................................................................done.  
-# source env/bin/activate  
+<span style="color:#888;font-style:italic"># source env/bin/activate</span>  
 (env)# 
-#（env) python -V  
+<span style="color:#888;font-style:italic">#（env) python -V</span>  
 Python 3.3.2  
-(env)# pip  install flask  
-</code></pre><p>hello.py的内容和上面完全一致，此处略去。<br>
-执行hello.py:</p>
-<pre><code>(env)# python hello.py 
+(env)<span style="color:#888;font-style:italic"># pip  install flask</span>  
+</code></pre></div><p>hello.py 的内容和上面完全一致，此处略去。</p>
+<p>执行hello.py:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">(env)<span style="color:#888;font-style:italic"># python hello.py</span> 
  * Running on http://0.0.0.0:5000/  
  * Restarting with reloader  
-</code></pre><p>用浏览器或在另一个终端用curl访问该hello接口，如下：</p>
+</code></pre></div><p>用浏览器或在另一个终端用 curl 访问该 hello 接口，如下：</p>
 <pre><code># curl 192.168.1.101:5000/hello  
 Hello,Flask!#  
 </code></pre><p>至此演示完毕。</p>
-<p>与上面的例子类似，以后如果要python2.7.6,则在创建应用程序前，先用virtualenv-2.7创建一个沙盘，要用python3.3.2,则用virtualenv-3.3创建一个沙盘。这样，依赖不同版本python的应用程序彼此完全隔离开来。在各自的virtualenv中，执行python命令就不用管版本问题了，更重要的是，系统自带的python环境也完全被隔离开来。</p></div>
+<p>与上面的例子类似，以后如果要 python2.7.6，则在创建应用程序前，先用 virtualenv-2.7 创建一个沙盘，要用 python3.3.2，则用 virtualenv-3.3 创建一个沙盘。这样，依赖不同版本 Python 的应用程序彼此完全隔离开来。在各自的 virtualenv 中，执行 Python 命令就不用管版本问题了，系统自带的 Python 环境也完全被隔离开来。</p></div>
 
   </article>
 </main>

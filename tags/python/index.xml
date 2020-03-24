@@ -12,22 +12,21 @@
     
     
     <item>
-      <title>在CentOS6.2下用virtualenv分别创建python2.7.6和python3.3.2的应用</title>
+      <title>在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用</title>
       <link>https://pureage.info/2013/11/14/132.html</link>
       <pubDate>Thu, 14 Nov 2013 11:20:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/11/14/132.html</guid>
       <description>&lt;p&gt;本文主要内容参考自：&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&#34;&gt;http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;使用Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。&lt;/p&gt;
-&lt;p&gt;这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，python在linux中属于基础组件，各发行版会默认安装一个python，例如CentOS5.5中的是2.4.3，而CentOS6.2中是2.6.6.&lt;/p&gt;
-&lt;p&gt;以CentOS6.2为例，在/usr/bin目录下有一个python和一个python2.6.这两者有什么区别呢：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;[root@vps1 ~]# ls   -l /usr/bin/python&lt;br&gt;
+&lt;p&gt;使用 Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。&lt;/p&gt;
+&lt;p&gt;这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，Python 在 linux 中属于基础组件，各发行版会默认安装一个 Python，例如 CentOS5.5 中的是 2.4.3，而CentOS6.2 中是 2.6.6。&lt;/p&gt;
+&lt;p&gt;以 CentOS6.2 为例，在 /usr/bin 目录下有一个 Python 和一个 Python2.6。这两者有什么区别呢：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt;[root@vps1 ~]# ls   -l /usr/bin/python  
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
-[root@vps1 ~]# ls   -l /usr/bin/python2.6
--rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+[root@vps1 ~]# ls   -l /usr/bin/python2.6 
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
   </channel>
