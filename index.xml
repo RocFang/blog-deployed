@@ -1447,43 +1447,24 @@ location /test2 {
     </item>
     
     <item>
-      <title>关于proxy_pass的参数路径问题</title>
+      <title>关于 proxy_pass 的参数路径问题</title>
       <link>https://pureage.info/2013/10/31/130.html</link>
       <pubDate>Thu, 31 Oct 2013 04:16:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/10/31/130.html</guid>
-      <description>&lt;p&gt;由于工作需要，开始分析nginx的proxy模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属proxy_pass了。nginx的英文文档总是看着感觉有些别扭，于是按惯例先google了一些文章。&lt;/p&gt;
+      <description>&lt;p&gt;由于工作需要，开始分析 Nginx 的 proxy 模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属 proxy_pass 了。Nginx 的英文文档总是看着感觉有些别扭，于是按惯例先 google 了一些文章。&lt;/p&gt;
 &lt;p&gt;这一搜，就掉进坑里了。&lt;/p&gt;
-&lt;p&gt;这些文章里都把proxy_pass的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/&amp;ldquo;的作用是删除url中匹配的部分，然后再讨论目标地址中带了uri的情况。&lt;/p&gt;
-&lt;p&gt;其实根本没这么复杂，只有两种情况：&lt;/p&gt;
-&lt;p&gt;（1）目标地址中不带uri。即proxy_pass的参数形如&amp;quot;http://127.0.0.1:8090&amp;rdquo;。
-此时新的目标url中，匹配的uri部分不做修改，原来是什么样就是什么样。&lt;/p&gt;
-&lt;p&gt;（2）目标地址中带uri。即proxy_pass的参数形如“http://127.0.0.1:8090/dir1/dir2&amp;rdquo;&lt;/p&gt;</description>
+&lt;p&gt;这些文章里都把 proxy_pass 的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/”的作用是删除 url 中匹配的部分，然后再讨论目标地址中带了 uri 的情况。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>利用here document携带c代码</title>
+      <title>利用 here document 携带 c 代码</title>
       <link>https://pureage.info/2013/10/08/129.html</link>
       <pubDate>Tue, 08 Oct 2013 03:23:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/10/08/129.html</guid>
-      <description>&lt;p&gt;假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;tmp_src_filename=fdfs_check_bits.c  
-cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_filename  
-#include &amp;lt;stdio.h&amp;gt;  
-#include &amp;lt;unistd.h&amp;gt;  
-#include &amp;lt;fcntl.h&amp;gt;  
-int main()  
-{  
-        printf(&amp;quot;%d\n&amp;quot;, (int)sizeof(long));  
-        printf(&amp;quot;%d\n&amp;quot;, (int)sizeof(off_t));  
-        return 0;  
-}  
-EOF  
-  
-gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
-output=$(./a.out)  
-&lt;/code&gt;&lt;/pre&gt;</description>
+      <description>假设你想通过一段脚本调用 make 来编译代码，并且在脚本中将一些编译需要的系统信息传递给 makefile，可以通过 bash 的 here document 来实现。例如：
+tmp_src_filename=fdfs_check_bits.c cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_filename #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;fcntl.h&amp;gt; int main() { printf(&amp;#34;%d\n&amp;#34;, (int)sizeof(long)); printf(&amp;#34;%d\n&amp;#34;, (int)sizeof(off_t)); return 0; } EOF gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename output=$(./a.out) 上面的代码摘自 FastDFS 的 make.sh。</description>
     </item>
     
     <item>

@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>利用here document携带c代码 - 纯真年代</title>
+<title>利用 here document 携带 c 代码 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>利用here document携带c代码</h1>
+  <h1>利用 here document 携带 c 代码</h1>
   </div>
 <div class="meta">
   <div>2013-10-08</div>
@@ -32,23 +32,24 @@
     </div>
   </div>
 <div class="content">
-  <p>假设你想通过一段脚本调用make来编译代码，并且在脚本中将一些编译需要的系统信息传递给makefile，可以通过bash的here document来实现。例如：</p>
-<pre><code>tmp_src_filename=fdfs_check_bits.c  
-cat &lt;&lt;EOF &gt; $tmp_src_filename  
-#include &lt;stdio.h&gt;  
-#include &lt;unistd.h&gt;  
-#include &lt;fcntl.h&gt;  
-int main()  
-{  
-        printf(&quot;%d\n&quot;, (int)sizeof(long));  
-        printf(&quot;%d\n&quot;, (int)sizeof(off_t));  
-        return 0;  
-}  
-EOF  
+  <p>假设你想通过一段脚本调用 make 来编译代码，并且在脚本中将一些编译需要的系统信息传递给 makefile，可以通过 bash 的 here document 来实现。例如：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#000">tmp_src_filename</span>=fdfs_check_bits.c  
+cat <span style="color:#5a2">&lt;&lt;EOF &gt; $tmp_src_filename  
+</span><span style="color:#5a2">#include &lt;stdio.h&gt;  
+</span><span style="color:#5a2">#include &lt;unistd.h&gt;  
+</span><span style="color:#5a2">#include &lt;fcntl.h&gt;  
+</span><span style="color:#5a2">int main()  
+</span><span style="color:#5a2">{  
+</span><span style="color:#5a2">        printf(&#34;%d\n&#34;, (int)sizeof(long));  
+</span><span style="color:#5a2">        printf(&#34;%d\n&#34;, (int)sizeof(off_t));  
+</span><span style="color:#5a2">        return 0;  
+</span><span style="color:#5a2">}  
+</span><span style="color:#5a2">EOF</span>  
   
-gcc -D_FILE_OFFSET_BITS=64 -o a.out $tmp_src_filename  
-output=$(./a.out)  
-</code></pre><p>上面的代码摘自FastDFS的make.sh。</p></div>
+gcc -D_FILE_OFFSET_BITS=<span style="color:#3af">64</span> -o a.out <span style="color:#000">$tmp_src_filename</span>  
+<span style="color:#000">output</span>=<span style="color:#00f">$(</span>./a.out<span style="color:#00f">)</span>  
+</code></pre></div><p>上面的代码摘自 FastDFS 的 make.sh。</p>
+</div>
 
   </article>
 </main>
