@@ -1324,15 +1324,13 @@ location /test2 {
     </item>
     
     <item>
-      <title>linux下获取本地ip的几种方法</title>
+      <title>linux 下获取本地 ip 的几种方法</title>
       <link>https://pureage.info/2013/12/04/155.html</link>
       <pubDate>Wed, 04 Dec 2013 08:06:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/04/155.html</guid>
-      <description>&lt;h2 id=&#34;1调用getifaddrs&#34;&gt;1.调用getifaddrs&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3.  Support of address families other than IPv4 is available only on kernels that support netlink.&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+      <description>1. 调用 getifaddrs  The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3. Support of address families other than IPv4 is available only on kernels that support netlink.
+ int getlocaladdrs(char ip_addrs[][IP_ADDRESS_SIZE], \ const int max_count, int *count) { struct ifaddrs *ifc; struct ifaddrs *ifc1; *count = 0; if (0 != getifaddrs(&amp;amp;ifc)) { logError(&amp;#34;file: &amp;#34;__FILE__&amp;#34;, line: %d, &amp;#34; \ &amp;#34;call getifaddrs fail, &amp;#34; \ &amp;#34;errno: %d, error info: %s&amp;#34;, \ __LINE__, errno, STRERROR(errno)); return errno !</description>
     </item>
     
     <item>
@@ -1347,14 +1345,14 @@ location /test2 {
     </item>
     
     <item>
-      <title>strider教你巧记五度圈</title>
+      <title>strider 教你巧记五度圈</title>
       <link>https://pureage.info/2013/12/01/153.html</link>
       <pubDate>Sun, 01 Dec 2013 09:32:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/01/153.html</guid>
       <description>&lt;p&gt;五度圈在乐理中有很重要的地位，在布鲁斯口琴而言，最直接的用处就是确定不同把位之间调性的转换关系。在这篇文章里不会设计五度圈的来历、作用，仅仅是教您如何牢固的记忆五度圈，这样可以在调性转换的时候直接用到。&lt;/p&gt;
 &lt;p&gt;如果你已经能够很顺利的将五度圈画下来，不管是通过什么方法，哪怕是死记硬背来的，这篇文章就不适合您。&lt;/p&gt;
-&lt;p&gt;我假设您已经知道十二平均律是怎么回事，其实，只需要知道3,4和7,1之间是半音，其他各音之间是全音就可以了。一个八度内的音程被分成了12个半音，所以称为十二平均律。&lt;/p&gt;
+&lt;p&gt;我假设您已经知道十二平均律是怎么回事，其实，只需要知道 3、4 和 7、1 之间是半音，其他各音之间是全音就可以了。一个八度内的音程被分成了 12 个半音，所以称为十二平均律。&lt;/p&gt;
 &lt;p&gt;我们来看看五度圈是个什么样子：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://pureage.info/img/wuduquan-1.jpg&#34; alt=&#34;wuduquan-1.jpg&#34;&gt;&lt;/p&gt;</description>
     </item>

@@ -340,15 +340,13 @@
     </item>
     
     <item>
-      <title>linux下获取本地ip的几种方法</title>
+      <title>linux 下获取本地 ip 的几种方法</title>
       <link>https://pureage.info/2013/12/04/155.html</link>
       <pubDate>Wed, 04 Dec 2013 08:06:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/04/155.html</guid>
-      <description>&lt;h2 id=&#34;1调用getifaddrs&#34;&gt;1.调用getifaddrs&lt;/h2&gt;
-&lt;blockquote&gt;
-&lt;p&gt;The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3.  Support of address families other than IPv4 is available only on kernels that support netlink.&lt;/p&gt;
-&lt;/blockquote&gt;</description>
+      <description>1. 调用 getifaddrs  The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3. Support of address families other than IPv4 is available only on kernels that support netlink.
+ int getlocaladdrs(char ip_addrs[][IP_ADDRESS_SIZE], \ const int max_count, int *count) { struct ifaddrs *ifc; struct ifaddrs *ifc1; *count = 0; if (0 != getifaddrs(&amp;amp;ifc)) { logError(&amp;#34;file: &amp;#34;__FILE__&amp;#34;, line: %d, &amp;#34; \ &amp;#34;call getifaddrs fail, &amp;#34; \ &amp;#34;errno: %d, error info: %s&amp;#34;, \ __LINE__, errno, STRERROR(errno)); return errno !</description>
     </item>
     
     <item>

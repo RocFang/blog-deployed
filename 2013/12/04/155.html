@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>linux下获取本地ip的几种方法 - 纯真年代</title>
+<title>linux 下获取本地 ip 的几种方法 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>linux下获取本地ip的几种方法</h1>
+  <h1>linux 下获取本地 ip 的几种方法</h1>
   </div>
 <div class="meta">
   <div>2013-12-04</div>
@@ -31,78 +31,132 @@
     </div>
   </div>
 <div class="content">
-  <h2 id="1调用getifaddrs">1.调用getifaddrs</h2>
+  <h2 id="1-调用-getifaddrs">1. 调用 getifaddrs</h2>
 <blockquote>
 <p>The getifaddrs() function first appeared in glibc 2.3, but before glibc 2.3.3, the implementation supported only IPv4 addresses; IPv6 support was added in glibc 2.3.3.  Support of address families other than IPv4 is available only on kernels that support netlink.</p>
 </blockquote>
-e><h2 id="2调用ioctl">2.调用ioctl</h2>
-<pre><code>int getlocaladdrs(char ip_addrs[][IP_ADDRESS_SIZE], \  
-	const int max_count, int *count)  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">int</span> <span style="color:#000">getlocaladdrs</span>(<span style="color:#00f">char</span> <span style="color:#000">ip_addrs</span>[][<span style="color:#000">IP_ADDRESS_SIZE</span>], <span style="color:#f00">\</span>  
+	<span style="color:#00f">const</span> <span style="color:#00f">int</span> <span style="color:#000">max_count</span>, <span style="color:#00f">int</span> *<span style="color:#000">count</span>)  
 {  
-	int s;  
-	struct ifconf ifconf;  
-	struct ifreq ifr[32];  
-	int if_count;  
-	int i;  
-	int result;  
-  
-	*count = 0;  
-	s = socket(AF_INET, SOCK_STREAM, 0);  
-	if (s &lt; 0)  
+	<span style="color:#00f">struct</span> <span style="color:#000">ifaddrs</span> *<span style="color:#000">ifc</span>;  
+	<span style="color:#00f">struct</span> <span style="color:#000">ifaddrs</span> *<span style="color:#000">ifc1</span>;  
+
+	*<span style="color:#000">count</span> = <span style="color:#3af">0</span>;
+	<span style="color:#00f">if</span> (<span style="color:#3af">0</span> != <span style="color:#000">getifaddrs</span>(&amp;<span style="color:#000">ifc</span>))  
 	{  
-		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-			&quot;socket create fail, errno: %d, error info: %s&quot;, \  
-			__LINE__, errno, STRERROR(errno));  
-		return errno != 0 ? errno : EMFILE;  
+		<span style="color:#000">logError</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">file: </span><span style="color:#5a2">&#34;</span><span style="color:#000">__FILE__</span><span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">, line: %d, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+			<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">call getifaddrs fail, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+			<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">errno: %d, error info: %s</span><span style="color:#5a2">&#34;</span>, <span style="color:#f00">\</span>  
+			<span style="color:#000">__LINE__</span>, <span style="color:#000">errno</span>, <span style="color:#000">STRERROR</span>(<span style="color:#000">errno</span>));  
+		<span style="color:#00f">return</span> <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EMFILE</span>;  
 	}  
-  
-	ifconf.ifc_buf = (char *) ifr;  
-	ifconf.ifc_len = sizeof(ifr);  
-	if (ioctl(s, SIOCGIFCONF, &amp;ifconf) &lt; 0)  
+	<span style="color:#000">ifc1</span> = <span style="color:#000">ifc</span>;  
+	<span style="color:#00f">while</span> (<span style="color:#000">NULL</span> != <span style="color:#000">ifc</span>)  
 	{  
-		result = errno != 0 ? errno : EMFILE;  
-		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-			&quot;call ioctl fail, errno: %d, error info: %s&quot;, \  
-			__LINE__, result, STRERROR(result));  
- 		close(s);  
-		return result;  
-	}  
-  
-	if_count = ifconf.ifc_len / sizeof(ifr[0]);  
-	if (max_count &lt; if_count)  
-	{  
-		logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-			&quot;max_count: %d &lt; iterface count: %d&quot;, \  
-			__LINE__, max_count, if_count);  
- 		close(s);  
-		return ENOSPC;  
-	}  
-  
-	for (i = 0; i &lt; if_count; i++)  
-	{  
-		struct sockaddr_in *s_in;  
-    		s_in = (struct sockaddr_in *) &amp;ifr[i].ifr_addr;  
-    		if (!inet_ntop(AF_INET, &amp;s_in-&gt;sin_addr, \  
-			ip_addrs[*count], IP_ADDRESS_SIZE))  
+		<span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span> *<span style="color:#000">s</span>;  
+		<span style="color:#000">s</span> = <span style="color:#000">ifc</span>-&gt;<span style="color:#000">ifa_addr</span>;  
+		<span style="color:#00f">if</span> (<span style="color:#000">NULL</span> != <span style="color:#000">s</span> &amp;&amp; <span style="color:#000">AF_INET</span> == <span style="color:#000">s</span>-&gt;<span style="color:#000">sa_family</span>)  
 		{  
-			result = errno != 0 ? errno : EMFILE;  
-			logError(&quot;file: &quot;__FILE__&quot;, line: %d, &quot; \  
-				&quot;call inet_ntop fail, &quot; \  
-				&quot;errno: %d, error info: %s&quot;, \  
-				__LINE__, result, STRERROR(result));  
- 			close(s);  
-			return result;  
-    		}  
-		(*count)++;  
+			<span style="color:#00f">if</span> (<span style="color:#000">max_count</span> &lt;= *<span style="color:#000">count</span>)  
+			{  
+				<span style="color:#000">logError</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">file: </span><span style="color:#5a2">&#34;</span><span style="color:#000">__FILE__</span><span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">, line: %d, </span><span style="color:#5a2">&#34;</span><span style="color:#f00">\</span>  
+				<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">max_count: %d &lt; iterface count: %d</span><span style="color:#5a2">&#34;</span>, <span style="color:#f00">\</span>  
+				<span style="color:#000">__LINE__</span>, <span style="color:#000">max_count</span>, *<span style="color:#000">count</span>);  
+				<span style="color:#000">freeifaddrs</span>(<span style="color:#000">ifc1</span>);  
+				<span style="color:#00f">return</span> <span style="color:#000">ENOSPC</span>;  
+			}  
+  
+			<span style="color:#00f">if</span> (<span style="color:#000">inet_ntop</span>(<span style="color:#000">AF_INET</span>, &amp;((<span style="color:#00f">struct</span> <span style="color:#000">sockaddr_in</span> *)<span style="color:#000">s</span>)-&gt; <span style="color:#f00">\</span>  
+			<span style="color:#000">sin_addr</span>, <span style="color:#000">ip_addrs</span>[*<span style="color:#000">count</span>], <span style="color:#000">IP_ADDRESS_SIZE</span>) != <span style="color:#000">NULL</span>)  
+			{  
+				(*<span style="color:#000">count</span>)++;  
+			}  
+			<span style="color:#00f">else</span>  
+			{  
+				<span style="color:#000">logWarning</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">file: </span><span style="color:#5a2">&#34;</span><span style="color:#000">__FILE__</span><span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">, line: %d, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+					<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">call inet_ntop fail, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+					<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">errno: %d, error info: %s</span><span style="color:#5a2">&#34;</span>, <span style="color:#f00">\</span>  
+					<span style="color:#000">__LINE__</span>, <span style="color:#000">errno</span>, <span style="color:#000">STRERROR</span>(<span style="color:#000">errno</span>));  
+			}  
+		}  
+  
+		<span style="color:#000">ifc</span> = <span style="color:#000">ifc</span>-&gt;<span style="color:#000">ifa_next</span>;  
 	}  
   
-	close(s);  
-	return *count &gt; 0 ? 0 : ENOENT;  
+	<span style="color:#000">freeifaddrs</span>(<span style="color:#000">ifc1</span>);  
+	<span style="color:#00f">return</span> *<span style="color:#000">count</span> &gt; <span style="color:#3af">0</span> ? <span style="color:#3af">0</span> : <span style="color:#000">ENOENT</span>;  
 }  
-</code></pre><h2 id="3判断一个ip是否是本地ip的几种方法">3.判断一个ip是否是本地ip的几种方法：</h2>
-<p>（1）用该ip和指定一个端口号，执行bind操作，成功则说明是本地IP，否则不是。</p>
-<p>（2）上一种方法的问题在于，如果指定的端口被占用了，那么及时是本地Ip，bind也会出错。可以做如下修改：bind时指定0端口，让系统给分配一个可用的端口。</p>
-<p>（3）先用上面提到的获取本地Ip的两种方法把本地ip列表获取到，然后看目标ip是否在其中即可。</p></div>
+</code></pre></div><h2 id="2-调用ioctl">2. 调用ioctl</h2>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">int</span> <span style="color:#000">getlocaladdrs</span>(<span style="color:#00f">char</span> <span style="color:#000">ip_addrs</span>[][<span style="color:#000">IP_ADDRESS_SIZE</span>], <span style="color:#f00">\</span>  
+	<span style="color:#00f">const</span> <span style="color:#00f">int</span> <span style="color:#000">max_count</span>, <span style="color:#00f">int</span> *<span style="color:#000">count</span>)  
+{  
+	<span style="color:#00f">int</span> <span style="color:#000">s</span>;  
+	<span style="color:#00f">struct</span> <span style="color:#000">ifconf</span> <span style="color:#000">ifconf</span>;  
+	<span style="color:#00f">struct</span> <span style="color:#000">ifreq</span> <span style="color:#000">ifr</span>[<span style="color:#3af">32</span>];  
+	<span style="color:#00f">int</span> <span style="color:#000">if_count</span>;  
+	<span style="color:#00f">int</span> <span style="color:#000">i</span>;  
+	<span style="color:#00f">int</span> <span style="color:#000">result</span>;  
+  
+	*<span style="color:#000">count</span> = <span style="color:#3af">0</span>;  
+	<span style="color:#000">s</span> = <span style="color:#000">socket</span>(<span style="color:#000">AF_INET</span>, <span style="color:#000">SOCK_STREAM</span>, <span style="color:#3af">0</span>);  
+	<span style="color:#00f">if</span> (<span style="color:#000">s</span> &lt; <span style="color:#3af">0</span>)  
+	{  
+		<span style="color:#000">logError</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">file: </span><span style="color:#5a2">&#34;</span><span style="color:#000">__FILE__</span><span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">, line: %d, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+			<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">socket create fail, errno: %d, error info: %s</span><span style="color:#5a2">&#34;</span>, <span style="color:#f00">\</span>  
+			<span style="color:#000">__LINE__</span>, <span style="color:#000">errno</span>, <span style="color:#000">STRERROR</span>(<span style="color:#000">errno</span>));  
+		<span style="color:#00f">return</span> <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EMFILE</span>;  
+	}  
+  
+	<span style="color:#000">ifconf</span>.<span style="color:#000">ifc_buf</span> = (<span style="color:#00f">char</span> *) <span style="color:#000">ifr</span>;  
+	<span style="color:#000">ifconf</span>.<span style="color:#000">ifc_len</span> = <span style="color:#00f">sizeof</span>(<span style="color:#000">ifr</span>);  
+	<span style="color:#00f">if</span> (<span style="color:#000">ioctl</span>(<span style="color:#000">s</span>, <span style="color:#000">SIOCGIFCONF</span>, &amp;<span style="color:#000">ifconf</span>) &lt; <span style="color:#3af">0</span>)  
+	{  
+		<span style="color:#000">result</span> = <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EMFILE</span>;  
+		<span style="color:#000">logError</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">file: </span><span style="color:#5a2">&#34;</span><span style="color:#000">__FILE__</span><span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">, line: %d, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+			<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">call ioctl fail, errno: %d, error info: %s</span><span style="color:#5a2">&#34;</span>, <span style="color:#f00">\</span>  
+			<span style="color:#000">__LINE__</span>, <span style="color:#000">result</span>, <span style="color:#000">STRERROR</span>(<span style="color:#000">result</span>));  
+ 		<span style="color:#000">close</span>(<span style="color:#000">s</span>);  
+		<span style="color:#00f">return</span> <span style="color:#000">result</span>;  
+	}  
+  
+	<span style="color:#000">if_count</span> = <span style="color:#000">ifconf</span>.<span style="color:#000">ifc_len</span> / <span style="color:#00f">sizeof</span>(<span style="color:#000">ifr</span>[<span style="color:#3af">0</span>]);  
+	<span style="color:#00f">if</span> (<span style="color:#000">max_count</span> &lt; <span style="color:#000">if_count</span>)  
+	{  
+		<span style="color:#000">logError</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">file: </span><span style="color:#5a2">&#34;</span><span style="color:#000">__FILE__</span><span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">, line: %d, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+			<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">max_count: %d &lt; iterface count: %d</span><span style="color:#5a2">&#34;</span>, <span style="color:#f00">\</span>  
+			<span style="color:#000">__LINE__</span>, <span style="color:#000">max_count</span>, <span style="color:#000">if_count</span>);  
+ 		<span style="color:#000">close</span>(<span style="color:#000">s</span>);  
+		<span style="color:#00f">return</span> <span style="color:#000">ENOSPC</span>;  
+	}  
+  
+	<span style="color:#00f">for</span> (<span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">if_count</span>; <span style="color:#000">i</span>++)  
+	{  
+		<span style="color:#00f">struct</span> <span style="color:#000">sockaddr_in</span> *<span style="color:#000">s_in</span>;  
+    		<span style="color:#000">s_in</span> = (<span style="color:#00f">struct</span> <span style="color:#000">sockaddr_in</span> *) &amp;<span style="color:#000">ifr</span>[<span style="color:#000">i</span>].<span style="color:#000">ifr_addr</span>;  
+    		<span style="color:#00f">if</span> (!<span style="color:#000">inet_ntop</span>(<span style="color:#000">AF_INET</span>, &amp;<span style="color:#000">s_in</span>-&gt;<span style="color:#000">sin_addr</span>, <span style="color:#f00">\</span>  
+			<span style="color:#000">ip_addrs</span>[*<span style="color:#000">count</span>], <span style="color:#000">IP_ADDRESS_SIZE</span>))  
+		{  
+			<span style="color:#000">result</span> = <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EMFILE</span>;  
+			<span style="color:#000">logError</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">file: </span><span style="color:#5a2">&#34;</span><span style="color:#000">__FILE__</span><span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">, line: %d, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+				<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">call inet_ntop fail, </span><span style="color:#5a2">&#34;</span> <span style="color:#f00">\</span>  
+				<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">errno: %d, error info: %s</span><span style="color:#5a2">&#34;</span>, <span style="color:#f00">\</span>  
+				<span style="color:#000">__LINE__</span>, <span style="color:#000">result</span>, <span style="color:#000">STRERROR</span>(<span style="color:#000">result</span>));  
+ 			<span style="color:#000">close</span>(<span style="color:#000">s</span>);  
+			<span style="color:#00f">return</span> <span style="color:#000">result</span>;  
+    		}  
+		(*<span style="color:#000">count</span>)++;  
+	}  
+  
+	<span style="color:#000">close</span>(<span style="color:#000">s</span>);  
+	<span style="color:#00f">return</span> *<span style="color:#000">count</span> &gt; <span style="color:#3af">0</span> ? <span style="color:#3af">0</span> : <span style="color:#000">ENOENT</span>;  
+}  
+</code></pre></div><h2 id="3-判断一个-ip-是否是本地-ip-的几种方法">3. 判断一个 ip 是否是本地 ip 的几种方法</h2>
+<ol>
+<li>用该 ip 和指定一个端口号，执行b ind 操作，成功则说明是本地 ip，否则不是。</li>
+<li>上一种方法的问题在于，如果指定的端口被占用了，那么及时是本地 ip，bind 也会出错。可以做如下修改：bind 时指定 0 端口，让系统给分配一个可用的端口。</li>
+<li>先用上面提到的获取本地 ip 的两种方法把本地 ip 列表获取到，然后看目标 ip 是否在其中即可。</li>
+</ol>
+</div>
 
   </article>
 </main>
