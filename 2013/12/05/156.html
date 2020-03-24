@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex - 纯真年代</title>
+<title>FastDFS 中的 tcprecvdata_ex 与 tcprecvdata_nb_ex - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</h1>
+  <h1>FastDFS 中的 tcprecvdata_ex 与 tcprecvdata_nb_ex</h1>
   </div>
 <div class="meta">
   <div>2013-12-05</div>
@@ -32,188 +32,188 @@
     </div>
   </div>
 <div class="content">
-  <p>FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：</p>
+  <p>FastDFS 与 socket 相关的函数一般放在 common/sockopt.c 文件里，其中有两个函数，非别为 tcprecvdata_ex 和 tcprecvdata_nb_ex。从名字上看，很明显后者是想表达 nonblock 的意思，那么看代码证实一下。它们的代码分别如下：</p>
 <p><strong>1. tcprecvdata_ex</strong></p>
-<pre><code>int tcprecvdata_ex(int sock, void *data, const int size, \  
-		const int timeout, int *count)  
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">int</span> <span style="color:#000">tcprecvdata_ex</span>(<span style="color:#00f">int</span> <span style="color:#000">sock</span>, <span style="color:#00f">void</span> *<span style="color:#000">data</span>, <span style="color:#00f">const</span> <span style="color:#00f">int</span> <span style="color:#000">size</span>, <span style="color:#f00">\</span>  
+		<span style="color:#00f">const</span> <span style="color:#00f">int</span> <span style="color:#000">timeout</span>, <span style="color:#00f">int</span> *<span style="color:#000">count</span>)  
 {  
-	int left_bytes;  
-	int read_bytes;  
-	int res;
-	int ret_code;  
-	unsigned char* p;  
-#ifdef USE_SELECT  
-	fd_set read_set;  
-	struct timeval t;  
-#else  
-	struct pollfd pollfds;  
-#endif  
-  
-#ifdef USE_SELECT  
-	FD_ZERO(&amp;read_set);  
-	FD_SET(sock, &amp;read_set);  
-#else  
-	pollfds.fd = sock;  
-	pollfds.events = POLLIN;  
-#endif  
-  
-	read_bytes = 0;  
-	ret_code = 0;  
-	p = (unsigned char*)data;  
-	left_bytes = size;  
-	while (left_bytes &gt; 0)  
+	<span style="color:#00f">int</span> <span style="color:#000">left_bytes</span>;  
+	<span style="color:#00f">int</span> <span style="color:#000">read_bytes</span>;  
+	<span style="color:#00f">int</span> <span style="color:#000">res</span>;
+	<span style="color:#00f">int</span> <span style="color:#000">ret_code</span>;  
+	<span style="color:#00f">unsigned</span> <span style="color:#00f">char</span>* <span style="color:#000">p</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">ifdef USE_SELECT  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#000">fd_set</span> <span style="color:#000">read_set</span>;  
+	<span style="color:#00f">struct</span> <span style="color:#000">timeval</span> <span style="color:#000">t</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#00f">struct</span> <span style="color:#000">pollfd</span> <span style="color:#000">pollfds</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">ifdef USE_SELECT  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#000">FD_ZERO</span>(&amp;<span style="color:#000">read_set</span>);  
+	<span style="color:#000">FD_SET</span>(<span style="color:#000">sock</span>, &amp;<span style="color:#000">read_set</span>);  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#000">pollfds</span>.<span style="color:#000">fd</span> = <span style="color:#000">sock</span>;  
+	<span style="color:#000">pollfds</span>.<span style="color:#000">events</span> = <span style="color:#000">POLLIN</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+	<span style="color:#000">read_bytes</span> = <span style="color:#3af">0</span>;  
+	<span style="color:#000">ret_code</span> = <span style="color:#3af">0</span>;  
+	<span style="color:#000">p</span> = (<span style="color:#00f">unsigned</span> <span style="color:#00f">char</span>*)<span style="color:#000">data</span>;  
+	<span style="color:#000">left_bytes</span> = <span style="color:#000">size</span>;  
+	<span style="color:#00f">while</span> (<span style="color:#000">left_bytes</span> &gt; <span style="color:#3af">0</span>)  
 	{  
   
-#ifdef USE_SELECT  
-		if (timeout &lt;= 0)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">ifdef USE_SELECT  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#00f">if</span> (<span style="color:#000">timeout</span> &lt;= <span style="color:#3af">0</span>)  
 		{  
-			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
+			<span style="color:#000">res</span> = <span style="color:#000">select</span>(<span style="color:#000">sock</span>+<span style="color:#3af">1</span>, &amp;<span style="color:#000">read_set</span>, <span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>);  
 		}  
-		else  
+		<span style="color:#00f">else</span>  
 		{  
-			t.tv_usec = 0;  
-			t.tv_sec = timeout;  
-			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
+			<span style="color:#000">t</span>.<span style="color:#000">tv_usec</span> = <span style="color:#3af">0</span>;  
+			<span style="color:#000">t</span>.<span style="color:#000">tv_sec</span> = <span style="color:#000">timeout</span>;  
+			<span style="color:#000">res</span> = <span style="color:#000">select</span>(<span style="color:#000">sock</span>+<span style="color:#3af">1</span>, &amp;<span style="color:#000">read_set</span>, <span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>, &amp;<span style="color:#000">t</span>);  
 		}  
-#else  
-		res = poll(&amp;pollfds, 1, 1000 * timeout);  
-		if (pollfds.revents &amp; POLLHUP)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#000">res</span> = <span style="color:#000">poll</span>(&amp;<span style="color:#000">pollfds</span>, <span style="color:#3af">1</span>, <span style="color:#3af">1000</span> * <span style="color:#000">timeout</span>);  
+		<span style="color:#00f">if</span> (<span style="color:#000">pollfds</span>.<span style="color:#000">revents</span> &amp; <span style="color:#000">POLLHUP</span>)  
 		{  
-			ret_code = ENOTCONN;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">ENOTCONN</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
-#endif  
-  
-		if (res &lt; 0)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+		<span style="color:#00f">if</span> (<span style="color:#000">res</span> &lt; <span style="color:#3af">0</span>)  
 		{  
-			ret_code = errno != 0 ? errno : EINTR;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EINTR</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
-		else if (res == 0)  
+		<span style="color:#00f">else</span> <span style="color:#00f">if</span> (<span style="color:#000">res</span> == <span style="color:#3af">0</span>)  
 		{  
-			ret_code = ETIMEDOUT;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">ETIMEDOUT</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
 	  
-		read_bytes = recv(sock, p, left_bytes, 0);  
-		if (read_bytes &lt; 0)  
+		<span style="color:#000">read_bytes</span> = <span style="color:#000">recv</span>(<span style="color:#000">sock</span>, <span style="color:#000">p</span>, <span style="color:#000">left_bytes</span>, <span style="color:#3af">0</span>);  
+		<span style="color:#00f">if</span> (<span style="color:#000">read_bytes</span> &lt; <span style="color:#3af">0</span>)  
 		{  
-			ret_code = errno != 0 ? errno : EINTR;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EINTR</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
-		if (read_bytes == 0)  
+		<span style="color:#00f">if</span> (<span style="color:#000">read_bytes</span> == <span style="color:#3af">0</span>)  
 		{  
-			ret_code = ENOTCONN;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">ENOTCONN</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
   
-		left_bytes -= read_bytes;  
-		p += read_bytes;  
+		<span style="color:#000">left_bytes</span> -= <span style="color:#000">read_bytes</span>;  
+		<span style="color:#000">p</span> += <span style="color:#000">read_bytes</span>;  
 	}  
   
-	if (count != NULL)  
+	<span style="color:#00f">if</span> (<span style="color:#000">count</span> != <span style="color:#000">NULL</span>)  
 	{  
-		*count = size - left_bytes;  
+		*<span style="color:#000">count</span> = <span style="color:#000">size</span> - <span style="color:#000">left_bytes</span>;  
 	}  
   
-	return ret_code;  
+	<span style="color:#00f">return</span> <span style="color:#000">ret_code</span>;  
 }  
-</code></pre><p><strong>2.tcprecvdata_nb_ex</strong></p>
-<pre><code>int tcprecvdata_nb_ex(int sock, void *data, const int size, \  
-		const int timeout, int *count)  
+</code></pre></div><p><strong>2. tcprecvdata_nb_ex</strong></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">int</span> <span style="color:#000">tcprecvdata_nb_ex</span>(<span style="color:#00f">int</span> <span style="color:#000">sock</span>, <span style="color:#00f">void</span> *<span style="color:#000">data</span>, <span style="color:#00f">const</span> <span style="color:#00f">int</span> <span style="color:#000">size</span>, <span style="color:#f00">\</span>  
+		<span style="color:#00f">const</span> <span style="color:#00f">int</span> <span style="color:#000">timeout</span>, <span style="color:#00f">int</span> *<span style="color:#000">count</span>)  
 {  
-	int left_bytes;  
-	int read_bytes;  
-	int res;  
-	int ret_code;  
-	unsigned char* p;  
-#ifdef USE_SELECT  
-	fd_set read_set;  
-	struct timeval t;  
-#else  
-	struct pollfd pollfds;  
-#endif  
-  
-#ifdef USE_SELECT  
-	FD_ZERO(&amp;read_set);  
-	FD_SET(sock, &amp;read_set);  
-#else  
-	pollfds.fd = sock;  
-	pollfds.events = POLLIN;  
-#endif  
-  
-	read_bytes = 0;  
-	ret_code = 0;  
-	p = (unsigned char*)data;  
-	left_bytes = size;  
-	while (left_bytes &gt; 0)  
+	<span style="color:#00f">int</span> <span style="color:#000">left_bytes</span>;  
+	<span style="color:#00f">int</span> <span style="color:#000">read_bytes</span>;  
+	<span style="color:#00f">int</span> <span style="color:#000">res</span>;  
+	<span style="color:#00f">int</span> <span style="color:#000">ret_code</span>;  
+	<span style="color:#00f">unsigned</span> <span style="color:#00f">char</span>* <span style="color:#000">p</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">ifdef USE_SELECT  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#000">fd_set</span> <span style="color:#000">read_set</span>;  
+	<span style="color:#00f">struct</span> <span style="color:#000">timeval</span> <span style="color:#000">t</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#00f">struct</span> <span style="color:#000">pollfd</span> <span style="color:#000">pollfds</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">ifdef USE_SELECT  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#000">FD_ZERO</span>(&amp;<span style="color:#000">read_set</span>);  
+	<span style="color:#000">FD_SET</span>(<span style="color:#000">sock</span>, &amp;<span style="color:#000">read_set</span>);  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#000">pollfds</span>.<span style="color:#000">fd</span> = <span style="color:#000">sock</span>;  
+	<span style="color:#000">pollfds</span>.<span style="color:#000">events</span> = <span style="color:#000">POLLIN</span>;  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+	<span style="color:#000">read_bytes</span> = <span style="color:#3af">0</span>;  
+	<span style="color:#000">ret_code</span> = <span style="color:#3af">0</span>;  
+	<span style="color:#000">p</span> = (<span style="color:#00f">unsigned</span> <span style="color:#00f">char</span>*)<span style="color:#000">data</span>;  
+	<span style="color:#000">left_bytes</span> = <span style="color:#000">size</span>;  
+	<span style="color:#00f">while</span> (<span style="color:#000">left_bytes</span> &gt; <span style="color:#3af">0</span>)  
 	{  
-		read_bytes = recv(sock, p, left_bytes, 0);  
-		if (read_bytes &gt; 0)  
+		<span style="color:#000">read_bytes</span> = <span style="color:#000">recv</span>(<span style="color:#000">sock</span>, <span style="color:#000">p</span>, <span style="color:#000">left_bytes</span>, <span style="color:#3af">0</span>);  
+		<span style="color:#00f">if</span> (<span style="color:#000">read_bytes</span> &gt; <span style="color:#3af">0</span>)  
 		{  
-			left_bytes -= read_bytes;  
-			p += read_bytes;  
-			continue;  
+			<span style="color:#000">left_bytes</span> -= <span style="color:#000">read_bytes</span>;  
+			<span style="color:#000">p</span> += <span style="color:#000">read_bytes</span>;  
+			<span style="color:#00f">continue</span>;  
 		}  
   
-		if (read_bytes &lt; 0)  
+		<span style="color:#00f">if</span> (<span style="color:#000">read_bytes</span> &lt; <span style="color:#3af">0</span>)  
 		{  
   
-			if (!(errno == EAGAIN || errno == EWOULDBLOCK))  
+			<span style="color:#00f">if</span> (!(<span style="color:#000">errno</span> == <span style="color:#000">EAGAIN</span> || <span style="color:#000">errno</span> == <span style="color:#000">EWOULDBLOCK</span>))  
 			{  
-				ret_code = errno != 0 ? errno : EINTR;  
-				break;  
+				<span style="color:#000">ret_code</span> = <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EINTR</span>;  
+				<span style="color:#00f">break</span>;  
 			}  
 		}  
-		else  
+		<span style="color:#00f">else</span>  
 		{  
-			ret_code = ENOTCONN;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">ENOTCONN</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
   
-#ifdef USE_SELECT  
-		if (timeout &lt;= 0)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">ifdef USE_SELECT  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#00f">if</span> (<span style="color:#000">timeout</span> &lt;= <span style="color:#3af">0</span>)  
 		{  
-			res = select(sock+1, &amp;read_set, NULL, NULL, NULL);  
+			<span style="color:#000">res</span> = <span style="color:#000">select</span>(<span style="color:#000">sock</span>+<span style="color:#3af">1</span>, &amp;<span style="color:#000">read_set</span>, <span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>);  
 		}  
-		else  
+		<span style="color:#00f">else</span>  
 		{  
-			t.tv_usec = 0;  
-			t.tv_sec = timeout;  
-			res = select(sock+1, &amp;read_set, NULL, NULL, &amp;t);  
+			<span style="color:#000">t</span>.<span style="color:#000">tv_usec</span> = <span style="color:#3af">0</span>;  
+			<span style="color:#000">t</span>.<span style="color:#000">tv_sec</span> = <span style="color:#000">timeout</span>;  
+			<span style="color:#000">res</span> = <span style="color:#000">select</span>(<span style="color:#000">sock</span>+<span style="color:#3af">1</span>, &amp;<span style="color:#000">read_set</span>, <span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>, &amp;<span style="color:#000">t</span>);  
 		}  
-#else  
-		res = poll(&amp;pollfds, 1, 1000 * timeout);  
-		if (pollfds.revents &amp; POLLHUP)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">else  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#000">res</span> = <span style="color:#000">poll</span>(&amp;<span style="color:#000">pollfds</span>, <span style="color:#3af">1</span>, <span style="color:#3af">1000</span> * <span style="color:#000">timeout</span>);  
+		<span style="color:#00f">if</span> (<span style="color:#000">pollfds</span>.<span style="color:#000">revents</span> &amp; <span style="color:#000">POLLHUP</span>)  
 		{  
-			ret_code = ENOTCONN;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">ENOTCONN</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
-#endif  
-  
-		if (res &lt; 0)  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">endif  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span>  
+		<span style="color:#00f">if</span> (<span style="color:#000">res</span> &lt; <span style="color:#3af">0</span>)  
 		{  
-			ret_code = errno != 0 ? errno : EINTR;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">errno</span> != <span style="color:#3af">0</span> ? <span style="color:#000">errno</span> : <span style="color:#000">EINTR</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
-		else if (res == 0)  
+		<span style="color:#00f">else</span> <span style="color:#00f">if</span> (<span style="color:#000">res</span> == <span style="color:#3af">0</span>)  
 		{  
-			ret_code = ETIMEDOUT;  
-			break;  
+			<span style="color:#000">ret_code</span> = <span style="color:#000">ETIMEDOUT</span>;  
+			<span style="color:#00f">break</span>;  
 		}  
 	}  
   
-	if (count != NULL)  
+	<span style="color:#00f">if</span> (<span style="color:#000">count</span> != <span style="color:#000">NULL</span>)  
 	{  
-		*count = size - left_bytes;  
+		*<span style="color:#000">count</span> = <span style="color:#000">size</span> - <span style="color:#000">left_bytes</span>;  
 	}  
   
-	return ret_code;  
+	<span style="color:#00f">return</span> <span style="color:#000">ret_code</span>;  
 }  
-</code></pre><p>乍一眼看上去，这两个不是一样吗？仔细看下就会发现区别所在：nonblock版本在循环里把recv操作放在了select/poll之前，而block版本在循环里把recv操作放在了select/poll之后。其他地方几乎都是一模一样的。</p>
-<p>其实，这两个函数处理的socket在调用他们之前，都已经被设置为nonblock了，这是一个前提条件。也就是说，我们这两个函数是对一个nonblock的socket在细分为block和nonblock，有点拗口，既然这个socket都已经是nonblock的了，为什么这里还会有block和nonblock的区别呢?</p>
-<p>他们的区别在于，tcprecvdata_nb_ex会调用select/poll从而阻塞的唯一场合就是在一个recv返回EAGAIN错误或 EWOULDBLOCK时，而tcprecvdata_nb在每一次recv调用钱都会调用可能引起阻塞的select/poll。</p>
-<p>在这两个函数中学到了一个技巧，该技巧与这两个函数的区别无关。就是如何在一个nonblock的socket连接中获取希望获取的字节数。由于socket是nonblock的，调用recv马上返回，如果出错且错误是EAGAIN或EWOULDBLOCK，那么我们希望能再重试一下。但如果只是用一个while循环来主动一遍一遍的重试的话，超时该如何处理呢？其实这才是这两个函数中用到select/poll的真正意义所在。即，在一个非阻塞的套接字连接里，达到阻塞接收指定大小的数据的效果，但同时又有超时机制来保证并不会真正的阻塞。</p></div>
+</code></pre></div><p>乍一眼看上去，这两个不是一样吗？仔细看下就会发现区别所在：nonblock 版本在循环里把 recv 操作放在了 select/poll 之前，而 block 版本在循环里把 recv 操作放在了 select/poll 之后。其他地方几乎都是一模一样的。</p>
+<p>其实，这两个函数处理的 socket 在调用他们之前，都已经被设置为 nonblock 了，这是一个前提条件。也就是说，我们这两个函数是对一个 nonblock 的 socket 在细分为 block 和 nonblock，有点拗口，既然这个 socket 都已经是 nonblock 的了，为什么这里还会有 block 和 nonblock 的区别呢？</p>
+<p>他们的区别在于，tcprecvdata_nb_ex 会调用 select/poll 从而阻塞的唯一场合就是在一个 recv 返回 EAGAIN 错误或 EWOULDBLOCK 时，而 tcprecvdata_nb 在每一次 recv 调用前都会调用可能引起阻塞的 select/poll。</p>
+<p>在这两个函数中学到了一个技巧。就是如何在一个 nonblock 的 socket 连接中获取希望获取的字节数。由于 socket 是 nonblock 的，调用 recv 马上返回，如果出错且错误是 EAGAIN 或 EWOULDBLOCK，那么我们希望能再重试一下。但如果只是用一个 while 循环来主动一遍一遍的重试的话，超时该如何处理呢？其实这才是这两个函数中用到 select/poll 的真正意义所在。即，在一个非阻塞的套接字连接里，达到阻塞接收指定大小的数据的效果，但同时又有超时机制来保证并不会真正的阻塞。</p></div>
 
   </article>
 </main>

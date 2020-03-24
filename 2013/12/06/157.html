@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>AF_INET与PF_INET的区别 - 纯真年代</title>
+<title>AF_INET 与 PF_INET 的区别 - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>AF_INET与PF_INET的区别</h1>
+  <h1>AF_INET 与 PF_INET 的区别</h1>
   </div>
 <div class="meta">
   <div>2013-12-06</div>
@@ -31,15 +31,18 @@
     </div>
   </div>
 <div class="content">
-  <p>在一些开源项目的socket相关代码中，会同时看到AF_IENT和PF_INET，这两者有什么区别呢？</p>
-<p>其实这两个东西就是当年设计上的误差而已。AF=Adress Family;PF=Protocal Family，原来的设计是设想一个AF会支持多个PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux源代码为证：</p>
-<pre><code>/* Protocol families, same as address families. */  
-#define PF_UNSPEC	AF_UNSPEC  
-#define PF_UNIX	 AF_UNIX  
-#define PF_LOCAL	AF_LOCAL  
-#define PF_INET	 AF_INET  
-</code></pre><p>参考：<br>
-<a href="http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming">http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming</a></p></div>
+  <p>在一些开源项目的 socket 相关代码中，会同时看到 AF_IENT 和 PF_INET，这两者有什么区别呢？</p>
+<p>其实这两个东西就是当年设计上的误差而已。AF=Adress Family，PF=Protocal Family，原来的设计是设想一个 AF 会支持多个 PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux 源代码为证：</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">/* Protocol families, same as address families. */</span>  
+<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PF_UNSPEC	AF_UNSPEC  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PF_UNIX	 AF_UNIX  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PF_LOCAL	AF_LOCAL  </span><span style="color:#888;font-style:italic">
+</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PF_INET	 AF_INET  </span><span style="color:#888;font-style:italic">
+</span></code></pre></div><p>参考：</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming">http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming</a></li>
+</ul>
+</div>
 
   </article>
 </main>

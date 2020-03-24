@@ -8,7 +8,7 @@
     ">
 <meta name="keywords" content="博客, 技术, 文学, 电影">
 <meta name="referrer" content="always">
-<title>依赖一个RPM来制作新的RPM - 纯真年代</title>
+<title>依赖一个 RPM 来制作新的 RPM - 纯真年代</title>
 <link rel="stylesheet" type="text/css" href="/css/main.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
@@ -22,7 +22,7 @@
 <main>
   <article>
     <div class="title">
-  <h1>依赖一个RPM来制作新的RPM</h1>
+  <h1>依赖一个 RPM 来制作新的 RPM</h1>
   </div>
 <div class="meta">
   <div>2014-01-27</div>
@@ -31,21 +31,21 @@
     </div>
   </div>
 <div class="content">
-  <p>项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。</p>
-<p>在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。</p>
-<p>再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。</p>
-<p>最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。</p>
-<p>第二个方法，制作一个子包。rpm包里有一个subpackage的概念，就是说可以同时生成一个main包和多个subpackage包。子包的制作也很简单，在A包原有的spec文件中，添加%subpackage foo的字样，同样将一下必要的标签，例如%file，都在其后加上foo即可。这个方法很不错，但有几个问题：</p>
+  <p>项目中有这样一个场景：A 软件通过 rpm 包发布，B 软件严重依赖 A 软件，但在它的基础上有一些业务逻辑的添加和修改。A 软件是公司一个历史悠久的产品，且保持频繁的更新，B 软件是我在维护。</p>
+<p>在开发的时候，很简单，先把某一个稳定版本的 A 软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个 A 软件的 rpm 包，安装或更新完后，再去发布服务器上下载一个 B 软件的业务逻辑包，再进行相关的配置。所以，我需要做出一个 B 软件的独立的 rpm 包，用这个 rpm 包安装或更新后，直接能进行相关的配置。</p>
+<p>再来澄清一下需求：B 软件既要严重依赖 A 软件，但要在 A 软件上添加很多业务逻辑。但要求在发布的时候脱离对 A 软件 rpm 包的依赖。</p>
+<p>最简单的方法，当然是先把 A 软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将 B 软件与 A 软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A 软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。</p>
+<p>第二个方法，制作一个子包。rpm 包里有一个 subpackage 的概念，就是说可以同时生成一个 main 包和多个 subpackage 包。子包的制作也很简单，在 A 包原有的 spec 文件中，添加 <code>%subpackage foo</code> 的字样，同样将一些必要的标签，例如 <code>%file</code>，都在其后加上 foo 即可。这个方法很不错，但有几个问题：</p>
 <ol>
-<li>但需要改动A软件的spec文件，我的原则是尽量不要动A原有的文件，最多在其源码路径SOURCE下添加一两个tar.gz包，而且这几个源码包在A的spec文件中是不会有所体现的。</li>
-<li>虽然大部分标签例如%files,%pre,%post等都可以为每个subpackage单独添加，但最重要的标签，%prep,%build和%install确是一个spec文件中只能存在一份。一个解决方法是把业务逻辑的添加放到%post阶段添加。</li>
+<li>但需要改动 A 软件的 spec 文件，我的原则是尽量不要动 A 原有的文件，最多在其源码路径 SOURCE 下添加一两个 tar.gz 包，而且这几个源码包在 A 的 spec 文件中是不会有所体现的。</li>
+<li>虽然大部分标签例如 <code>%files</code>、<code>%pre</code>、<code>%post</code> 等都可以为每个 subpackage 单独添加，但最重要的标签，<code>%prep</code>、<code>%build</code> 和 <code>%install</code> 却是一个 spec 文件中只能存在一份。一个解决方法是把业务逻辑的添加放到 <code>%post</code> 阶段添加。</li>
 </ol>
-<p>其实第二个方法已经可以解决我的问题了，但多少都会动A的spec文件，并且subpackage也加一个%files标签，与main package的%files重复，很占地方，导致以后每次main package更新%files标签的时候，subpackage部分的%files也要去更新。虽然查了一下，spec中可以有include命令，可以把公共部分提取到一个外部文件，再分别include进来，但如前所述，我希望尽可能少的去改A的spec文件。本来A只有一个spec文件，现在为了简洁要拆成两个，不能说没对其产生影响。</p>
+<p>其实第二个方法已经可以解决我的问题了，但多少都会动 A 的 spec 文件，并且 subpackage 也加一个 <code>%files</code> 标签，与 main package 的 <code>%files</code> 重复，很占地方，导致以后每次 main package 更新 <code>%files</code> 标签的时候，subpackage 部分的 <code>%files</code> 也要去更新。虽然查了一下，spec 中可以有 include 命令，可以把公共部分提取到一个外部文件，再分别 include 进来，但如前所述，我希望尽可能少的去改 A 的 spec 文件。本来 A 只有一个 spec 文件，现在为了简洁要拆成两个，不能说没对其产生影响。</p>
 <p>最后只好采用了第三种方法。</p>
-<p>首先，将B的所有业务逻辑放到一个B.tar.gz包里，提交到A的SOURCE目录下，A的spec文件不会去操作这个源码包。注意，为了简便起见，在B.tar.gz中，要有一个Makefile文件，在里面完成install的操作。这样在spec文件中，只用一行语句调用该Makefile即可。</p>
-<p>其次，为B软件维护一个脚本。该脚本完成如下工作：将A的spec文件拷贝出来，用sed,awk等进行修改，主要是修改一些Release信息等。最主要的工作是在%install标签下，调用A.tar.gz中的Makefile。</p>
-<p>最后，该脚本会去用rpmbuild执行这个新生成的spec文件。在调用时将source目录定义到A的SOURCE目录，如前所属，B.tar.gz就放在这里。</p>
-<p>用这种方法，虽然需要维护一个脚本，但最少限度的动用A，又能完全自动的同步A软件包的更新，且生成的是一个B的独立rpm包。目前看来较好的满足的我的需求。</p></div>
+<p>首先，将 B 的所有业务逻辑放到一个 B.tar.gz 包里，提交到 A 的 SOURCE 目录下，A 的 spec 文件不会去操作这个源码包。注意，为了简便起见，在 B.tar.gz 中，要有一个 Makefile 文件，在里面完成 install 的操作。这样在 spec 文件中，只用一行语句调用该 Makefile 即可。</p>
+<p>其次，为 B 软件维护一个脚本。该脚本完成如下工作：将 A 的 spec 文件拷贝出来，用 sed、awk 等进行修改，主要是修改一些 Release 信息等。最主要的工作是在 <code>%install</code> 标签下，调用 B.tar.gz 中的 Makefile。</p>
+<p>最后，该脚本会去用 rpmbuild 执行这个新生成的 spec 文件。在调用时将 source 目录定义到 A 的 SOURCE 目录，如前所述，B.tar.gz 就放在这里。</p>
+<p>用这种方法，虽然需要维护一个脚本，但最少限度的动用 A，又能完全自动的同步 A 软件包的更新，且生成的是一个 B 的独立 rpm 包。目前看来较好的满足的我的需求。</p></div>
 
   </article>
 </main>

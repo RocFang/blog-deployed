@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</title>
+      <title>FastDFS 中的 tcprecvdata_ex 与 tcprecvdata_nb_ex</title>
       <link>https://pureage.info/2013/12/05/156.html</link>
       <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/05/156.html</guid>
-      <description>&lt;p&gt;FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;</description>
+      <description>&lt;p&gt;FastDFS 与 socket 相关的函数一般放在 common/sockopt.c 文件里，其中有两个函数，非别为 tcprecvdata_ex 和 tcprecvdata_nb_ex。从名字上看，很明显后者是想表达 nonblock 的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;</description>
     </item>
     
   </channel>

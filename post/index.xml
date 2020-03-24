@@ -384,7 +384,7 @@
       <pubDate>Fri, 27 May 2016 15:29:00 +0000</pubDate>
       
       <guid>https://pureage.info/2016/05/27/254.html</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://book.douban.com/subject/26320883/&#34;&gt;《丈量世界》&lt;/a&gt;这本书已经读完两周了，按照之前的经验教训，如果想写点读后感而继续不动手的话，基本就永远也不会写了。所以这里赶紧补一篇。&lt;/p&gt;
+      <description>&lt;p&gt;&lt;a href=&#34;https://book.douban.com/subject/26320883/&#34;&gt;《丈量世界》&lt;/a&gt; 这本书已经读完两周了，按照之前的经验教训，如果想写点读后感而继续不动手的话，基本就永远也不会写了。所以这里赶紧补一篇。&lt;/p&gt;
 &lt;p&gt;这本书我很喜欢，所以基本上也是一气呵成看完的。主要讲了高斯和洪堡两个有着截然不同性格和经历的天才，用各自的方式来丈量世界。本书的文字很奇特，读起来有一种如梦似幻的感觉，这种感觉可能也有一部分来自我当时的阅读环境：捧着书看到深夜，直到困意渐渐袭来，然后毫无控制力的睡去。&lt;/p&gt;
 &lt;p&gt;高斯的大名我们当然如雷贯耳，小时候就知道他是个神童，是数学王子，到了大学微积分里面还有高斯定理。但这个名字对于我来说仅仅只是一个符号，我们并不了解他。&lt;/p&gt;</description>
     </item>
@@ -395,7 +395,7 @@
       <pubDate>Tue, 26 Apr 2016 14:32:12 +0000</pubDate>
       
       <guid>https://pureage.info/2016/04/26/253.html</guid>
-      <description>&lt;p&gt;周日在广州的 OpenResty 社区 meetup 中做了一个主题为《巧用openresty结合nginx变量机制提供定制化web服务》的分享，说实话还挺紧张的，毕竟是第一次做这种线下的分享，但是到了现场之后慢慢就放松了。因为来参加活动的，大多都是跟身边的同事、同学一样的程序员，在这种气氛下，其实不用考虑会不会怯场、出丑之类的问题。大家都是同道中人，传说中的“演讲技巧”之类的也没有必要，简单的把自己觉得有用的东西分享给大家，对自己是一种锻炼，如果能对听者也能有点用处，那就更好了。&lt;/p&gt;
+      <description>&lt;p&gt;周日在广州的 OpenResty 社区 meetup 中做了一个主题为《巧用 OpenResty 结合 Nginx 变量机制提供定制化 web 服务》的分享，说实话还挺紧张的，毕竟是第一次做这种线下的分享，但是到了现场之后慢慢就放松了。因为来参加活动的，大多都是跟身边的同事、同学一样的程序员，在这种气氛下，其实不用考虑会不会怯场、出丑之类的问题。大家都是同道中人，传说中的“演讲技巧”之类的也没有必要，简单的把自己觉得有用的东西分享给大家，对自己是一种锻炼，如果能对听者也能有点用处，那就更好了。&lt;/p&gt;
 &lt;p&gt;有几位前公司的同事事前听说我要参加这次分享，自掏门票过来就是为了捧个场，他们中有的工作跟 OpenResty/Nginx 压根没关系，想想挺感动的。都说职场是铁打的营盘流水的兵，能结识这些朋友真是有幸。活动结束后，大家一起去聚了个餐，看了电影《奇幻森林》，这场景太像毕业离别前的小聚，他们中确实有位要马上到另一个城市去了。希望他一切顺心。&lt;/p&gt;</description>
     </item>
     
@@ -522,19 +522,6 @@ headers when using HTTP/2.&lt;/p&gt;
       <guid>https://pureage.info/2016/01/01/first-day-of-2016.html</guid>
       <description>&lt;p&gt;以前从来没有把元旦当作新一年的开始，因为觉得这是农历春节的作用。如今这个观念要做出改变了。一年的时间实在过得太快，如果把春节作为新一年的开始，发现没过多久一年又过去一半。所以，今天就应该回顾一下过去的一年，展望下新的一年了。&lt;/p&gt;
 &lt;p&gt;过去的一年里，生活上最大的变化就是结婚了。结婚本身真是一件非常简单事，简单到之前漫长的等待、纠结都好似不曾存在一样。实际上婚姻相关的主题，占据了这一年大部分的时间，说在今天回顾一下过去的一年的得失，我竟只能想到结婚这两个字。回想一下，让人更觉得在那些没有意义的事情上的纠结，实在是浪费生命。与婚姻相关的痛苦和纠结，很多经历过的人都懂，就不在博客里细说了。反而，婚后的生活，异常的平静，一切更井井有条。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>人有自知之明，挺难的</title>
-      <link>https://pureage.info/2015/12/29/236.html</link>
-      <pubDate>Mon, 28 Dec 2015 17:04:05 +0000</pubDate>
-      
-      <guid>https://pureage.info/2015/12/29/236.html</guid>
-      <description>&lt;p&gt;这两天，金线冯唐火了，因为他的译本《飞鸟集》。&lt;/p&gt;
-&lt;p&gt;但我对这事没什么感受，因为不关心。但是却对他事后的一条反应比较感兴趣。当有读者批评他英文不过关，曲解原文意思的时候，他在微博上晒出了自己的托福成绩，说：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;此事如此简单，我们比比英文和中文，如果你胜，我洗耳恭听。&lt;/p&gt;
-&lt;/blockquote&gt;</description>
     </item>
     
     <item>
@@ -1158,15 +1145,15 @@ location /test2 {
     </item>
     
     <item>
-      <title>依赖一个RPM来制作新的RPM</title>
+      <title>依赖一个 RPM 来制作新的 RPM</title>
       <link>https://pureage.info/2014/01/27/176.html</link>
       <pubDate>Mon, 27 Jan 2014 03:41:46 +0000</pubDate>
       
       <guid>https://pureage.info/2014/01/27/176.html</guid>
-      <description>&lt;p&gt;项目中有这样一个场景：A软件通过RPM包发布，B软件严重依赖A软件，但在它的基础上有一些业务逻辑的添加和修改。A软件是公司一个历史悠久的产品，且保持频繁的更新，B软件是我在维护。&lt;/p&gt;
-&lt;p&gt;在开发的时候，很简单，先把某一个稳定版本的A软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个A软件的rpm包，安装或更新完后，再去发布服务器上下载一个B软件的业务逻辑包，再进行相关的配置。如果是一台机器就罢了，几十上百台服务器这样玩就是作死。所以，我需要做出一个B软件的独立的rpm包，用这个rpm包安装或更新后，直接能进行相关的配置。&lt;/p&gt;
-&lt;p&gt;再来澄清一下需求：B软件既要严重依赖A软件，但要在A软件上添加很多业务逻辑。但要求在发布的时候脱离对A软件rpm包的依赖。&lt;/p&gt;
-&lt;p&gt;最简单的方法，当然是先把A软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将B软件与A软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。&lt;/p&gt;</description>
+      <description>&lt;p&gt;项目中有这样一个场景：A 软件通过 rpm 包发布，B 软件严重依赖 A 软件，但在它的基础上有一些业务逻辑的添加和修改。A 软件是公司一个历史悠久的产品，且保持频繁的更新，B 软件是我在维护。&lt;/p&gt;
+&lt;p&gt;在开发的时候，很简单，先把某一个稳定版本的 A 软件安装到开发机上，然后直接进行业务逻辑的开发就可以了。但在发布的时候肯定就不能这么做了，你很难要求运维先去发布服务器上下载一个 A 软件的 rpm 包，安装或更新完后，再去发布服务器上下载一个 B 软件的业务逻辑包，再进行相关的配置。所以，我需要做出一个 B 软件的独立的 rpm 包，用这个 rpm 包安装或更新后，直接能进行相关的配置。&lt;/p&gt;
+&lt;p&gt;再来澄清一下需求：B 软件既要严重依赖 A 软件，但要在 A 软件上添加很多业务逻辑。但要求在发布的时候脱离对 A 软件 rpm 包的依赖。&lt;/p&gt;
+&lt;p&gt;最简单的方法，当然是先把 A 软件的代码库做一个分支，或者拷贝出一个新的代码库，在上面进行开发，将 B 软件与 A 软件独立开来。这样发布的时候当然就是一个独立的包了。但如前所属，A 软件更新频繁，生命力旺盛，我可不想时时来在同步上花时间。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1260,36 +1247,36 @@ location /test2 {
     </item>
     
     <item>
-      <title>O_EXCL的作用</title>
+      <title>O_EXCL 的作用</title>
       <link>https://pureage.info/2013/12/25/165.html</link>
       <pubDate>Wed, 25 Dec 2013 15:48:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/25/165.html</guid>
-      <description>&lt;h2 id=&#34;1原始语义&#34;&gt;1.原始语义&lt;/h2&gt;
-&lt;p&gt;与O_CREATE标志组合起来调用open，确保指定的文件由open的调用者创建，否则返回错误。即，如果进程A用O_CREATE和O_EXCL标志来调用open，期望创建一个指定的文件file1,如果file1不存在，则open成功返回且创建file1，如果file1已经存在了（即不是由进程A创建的），那么open返回错误。&lt;/p&gt;
-&lt;h2 id=&#34;2使用场景&#34;&gt;2.使用场景&lt;/h2&gt;
-&lt;p&gt;O_CREATE|O_EXCL多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程A是某程序的一个实例，如果它用O_CREATE|O_EXCL标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。&lt;/p&gt;
+      <description>&lt;h2 id=&#34;1-原始语义&#34;&gt;1. 原始语义&lt;/h2&gt;
+&lt;p&gt;与 O_CREATE 标志组合起来调用 open，确保指定的文件由 open 的调用者创建，否则返回错误。即，如果进程 A 用 O_CREATE 和 O_EXCL 标志来调用 open，期望创建一个指定的文件 file1，如果 file1 不存在，则 open 成功返回且创建 file1，如果 file1 已经存在了（即不是由进程 A 创建的），那么 open 返回错误。&lt;/p&gt;
+&lt;h2 id=&#34;2-使用场景&#34;&gt;2. 使用场景&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;O_CREATE|O_EXCL&lt;/code&gt; 多用于确保一个一个程序只能执行单个进程，不能执行多个进程。原理如下，假设进程 A 是某程序的一个实例，如果它用 &lt;code&gt;O_CREATE|O_EXCL&lt;/code&gt; 标志能够成功创建指定的文件，说明它是该程序的唯一实例，可以继续执行；如果返回错误，说明该文件已经存在，进而说明系统中已经运行着一个该程序的其它实例，检测到错误的返回值后，该实例就可以退出了。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;之所以能这么用的唯一理由是该操作是原子的&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;之所以这么说，理由如下。假设同样语义的非原子的操作流程如下:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;if( access(file, R_OK) == -1 )   /* 首先检查文件是否存在 */  
-    open(file, O_RDWR | O_CREAT，0666);  /* 如果不存在，那我创建一个这样的文件 */  
-...  /* 继续执行任务 */  
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;p&gt;之所以这么说，理由如下。假设同样语义的非原子的操作流程如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#00f&#34;&gt;if&lt;/span&gt;( &lt;span style=&#34;color:#000&#34;&gt;access&lt;/span&gt;(&lt;span style=&#34;color:#000&#34;&gt;file&lt;/span&gt;, &lt;span style=&#34;color:#000&#34;&gt;R_OK&lt;/span&gt;) == -&lt;span style=&#34;color:#3af&#34;&gt;1&lt;/span&gt; )   &lt;span style=&#34;color:#888;font-style:italic&#34;&gt;/* 首先检查文件是否存在 */&lt;/span&gt;  
+    &lt;span style=&#34;color:#000&#34;&gt;open&lt;/span&gt;(&lt;span style=&#34;color:#000&#34;&gt;file&lt;/span&gt;, &lt;span style=&#34;color:#000&#34;&gt;O_RDWR&lt;/span&gt; | &lt;span style=&#34;color:#000&#34;&gt;O_CREAT&lt;/span&gt;&lt;span style=&#34;color:#f00&#34;&gt;，&lt;/span&gt;&lt;span style=&#34;color:#3af&#34;&gt;0666&lt;/span&gt;);  &lt;span style=&#34;color:#888;font-style:italic&#34;&gt;/* 如果不存在，那我创建一个这样的文件 */&lt;/span&gt;  
+...  &lt;span style=&#34;color:#888;font-style:italic&#34;&gt;/* 继续执行任务 */&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
-      <title>从emlog换到typecho</title>
+      <title>从 emlog 换到 typecho</title>
       <link>https://pureage.info/2013/12/23/161.html</link>
       <pubDate>Mon, 23 Dec 2013 13:04:44 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/23/161.html</guid>
-      <description>&lt;p&gt;typecho终于迎来大的更新了，从2012年5月8号官网放出一篇名为&lt;a href=&#34;http://typecho.org/archives/65/&#34;&gt;《Its about time》&lt;/a&gt;的日志后，让各路淫民翘首以待，谁都没想到一翘就翘了一年多。&lt;/p&gt;
-&lt;p&gt;从两年前买了域名+空间后，试过了各种博客程序，wordpress,typecho,emlog,textpattern等等，但最喜欢的还是emlog和typecho，后来一直用的是emlog。说实在话，对emlog很满意的，emlog的社区也做的不错，但这次typecho的更新太吸引人了，还是转了过来。更换程序是很彻底的，我丝毫没有考虑如何在url上做文章，对这个网站和搜索引擎而言，意味着N多死链，但幸好对我自己而言，不意味任何东西。&lt;/p&gt;
-&lt;p&gt;这个博客一直放在一个虚拟空间里，除了用ftp上传网站代码外，几乎没有任何权限。虽然早已有一个vps，但仍然没有把它迁过来，让它安静的躺在这里吧。&lt;/p&gt;</description>
+      <description>&lt;p&gt;typecho 终于迎来大的更新了，从 2012 年 5 月 8 号官网放出一篇名为 &lt;a href=&#34;http://typecho.org/archives/65/&#34;&gt;《Its about time》&lt;/a&gt; 的日志后，让各路爱好者翘首以待，谁都没想到一翘就翘了一年多。&lt;/p&gt;
+&lt;p&gt;从两年前买了域名+空间后，试过了各种博客程序，wordpress、typecho、emlog、textpattern 等等，但最喜欢的还是 emlog 和 typecho，后来一直用的是 emlog。说实在话，对 emlog 很满意的，emlog 的社区也做的不错，但这次 typecho 的更新太吸引人了，还是转了过来。更换程序是很彻底的，我丝毫没有考虑如何在 url 上做文章，对这个网站和搜索引擎而言，意味着 N 多死链，但幸好对我自己而言，不意味任何东西。&lt;/p&gt;
+&lt;p&gt;这个博客一直放在一个虚拟空间里，除了用 ftp 上传网站代码外，几乎没有任何权限。虽然早已有一个 vps，但仍然没有把它迁过来，让它安静的躺在这里吧。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>誓要去,入刀山</title>
+      <title>誓要去，入刀山</title>
       <link>https://pureage.info/2013/12/09/158.html</link>
       <pubDate>Mon, 09 Dec 2013 14:17:00 +0000</pubDate>
       
@@ -1299,28 +1286,24 @@ location /test2 {
     </item>
     
     <item>
-      <title>AF_INET与PF_INET的区别</title>
+      <title>AF_INET 与 PF_INET 的区别</title>
       <link>https://pureage.info/2013/12/06/157.html</link>
       <pubDate>Fri, 06 Dec 2013 08:24:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/06/157.html</guid>
-      <description>&lt;p&gt;在一些开源项目的socket相关代码中，会同时看到AF_IENT和PF_INET，这两者有什么区别呢？&lt;/p&gt;
-&lt;p&gt;其实这两个东西就是当年设计上的误差而已。AF=Adress Family;PF=Protocal Family，原来的设计是设想一个AF会支持多个PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux源代码为证：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;/* Protocol families, same as address families. */  
-#define PF_UNSPEC	AF_UNSPEC  
-#define PF_UNIX	 AF_UNIX  
-#define PF_LOCAL	AF_LOCAL  
-#define PF_INET	 AF_INET  
-&lt;/code&gt;&lt;/pre&gt;</description>
+      <description>在一些开源项目的 socket 相关代码中，会同时看到 AF_IENT 和 PF_INET，这两者有什么区别呢？
+其实这两个东西就是当年设计上的误差而已。AF=Adress Family，PF=Protocal Family，原来的设计是设想一个 AF 会支持多个 PF，但是就没有然后了。现在为止，这两个东西就是一样的，Linux 源代码为证：
+/* Protocol families, same as address families. */ #define PF_UNSPEC	AF_UNSPEC #define PF_UNIX	AF_UNIX #define PF_LOCAL	AF_LOCAL #define PF_INET	AF_INET 参考：
+ http://stackoverflow.com/questions/6729366/what-is-the-difference-between-af-inet-and-pf-inet-in-socket-programming  </description>
     </item>
     
     <item>
-      <title>FastDFS中的tcprecvdata_ex与tcprecvdata_nb_ex</title>
+      <title>FastDFS 中的 tcprecvdata_ex 与 tcprecvdata_nb_ex</title>
       <link>https://pureage.info/2013/12/05/156.html</link>
       <pubDate>Thu, 05 Dec 2013 15:33:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/12/05/156.html</guid>
-      <description>&lt;p&gt;FastDFS与socket相关的函数一般放在common/sockopt.c文件里，其中有两个函数，非别为tcprecvdata_ex和tcprecvdata_nb_ex。从名字上看，很明显后者是想表达nonblock的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;</description>
+      <description>&lt;p&gt;FastDFS 与 socket 相关的函数一般放在 common/sockopt.c 文件里，其中有两个函数，非别为 tcprecvdata_ex 和 tcprecvdata_nb_ex。从名字上看，很明显后者是想表达 nonblock 的意思，那么看代码证实一下。它们的代码分别如下：&lt;/p&gt;</description>
     </item>
     
     <item>
