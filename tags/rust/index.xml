@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rust on 纯真年代</title>
+    <title>rust on 纯真年代</title>
     <link>https://pureage.info/tags/rust/</link>
-    <description>Recent content in Rust on 纯真年代</description>
+    <description>Recent content in rust on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>2011-2020 strider. [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)</copyright>
     <lastBuildDate>Sat, 24 Aug 2019 11:10:10 +0800</lastBuildDate>
