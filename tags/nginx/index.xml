@@ -5,12 +5,8 @@
     <link>https://pureage.info/tags/nginx/</link>
     <description>Recent content in nginx on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>2011-2020 strider. [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)</copyright>
-    <lastBuildDate>Mon, 04 Jul 2016 15:17:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://pureage.info/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 04 Jul 2016 15:17:00 +0000</lastBuildDate><atom:link href="https://pureage.info/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>代码中的谎言</title>
       <link>https://pureage.info/2016/07/04/lies-in-code.html</link>
@@ -236,13 +232,41 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
       
       <guid>https://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html</guid>
       <description>&lt;p&gt;&lt;code&gt;ngx.var.arg_xx&lt;/code&gt; 与 &lt;code&gt;ngx.req.get_uri_args[&amp;quot;xx&amp;quot;]&lt;/code&gt; 两者都是为了获取请求 uri 中的参数，例如对于 url：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;为了获取输入参数 strider，以下两种方法都可以：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;color:#00f&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;strider&lt;/span&gt; = &lt;span style=&#34;color:#000&#34;&gt;ngx.var&lt;/span&gt;.&lt;span style=&#34;color:#000&#34;&gt;arg_strider&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;color:#00f&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color:#000&#34;&gt;strider&lt;/span&gt; = &lt;span style=&#34;color:#000&#34;&gt;ngx.req&lt;/span&gt;.&lt;span style=&#34;color:#000&#34;&gt;get_uri_args&lt;/span&gt;[&lt;span style=&#34;color:#5a2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;strider&lt;/span&gt;&lt;span style=&#34;color:#5a2&#34;&gt;&amp;#34;&lt;/span&gt;]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;差别在于，当请求 uri 中有多个同名参数时，&lt;code&gt;ngx.var.arg_xx&lt;/code&gt; 的做法是取第一个出现的值，&lt;code&gt;ngx.req_get_uri_args[&amp;quot;xx&amp;quot;]&lt;/code&gt; 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时，&lt;code&gt;ngx.var.arg_strider&lt;/code&gt; 的值为“1”，而 &lt;code&gt;ngx.req.get_uri_args[&amp;quot;strider&amp;quot;]&lt;/code&gt; 的值为 &lt;code&gt;table [&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;, &amp;quot;3&amp;quot;, &amp;quot;4&amp;quot;]&lt;/code&gt;。因此，&lt;code&gt;ngx.req.get_uri_args&lt;/code&gt; 属于&lt;code&gt;ngx.var.arg_&lt;/code&gt; 的增强。&lt;/p&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;http://pureage.info?strider=1  
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;为了获取输入参数 strider，以下两种方法都可以：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span class=&#34;kd&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strider&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ngx.var&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;arg_strider&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span class=&#34;kd&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strider&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ngx.req&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_uri_args&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;strider&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;差别在于，当请求 uri 中有多个同名参数时，&lt;code&gt;ngx.var.arg_xx&lt;/code&gt; 的做法是取第一个出现的值，&lt;code&gt;ngx.req_get_uri_args[&amp;quot;xx&amp;quot;]&lt;/code&gt; 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4  
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;此时，&lt;code&gt;ngx.var.arg_strider&lt;/code&gt; 的值为“1”，而 &lt;code&gt;ngx.req.get_uri_args[&amp;quot;strider&amp;quot;]&lt;/code&gt; 的值为 &lt;code&gt;table [&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;, &amp;quot;3&amp;quot;, &amp;quot;4&amp;quot;]&lt;/code&gt;。因此，&lt;code&gt;ngx.req.get_uri_args&lt;/code&gt; 属于&lt;code&gt;ngx.var.arg_&lt;/code&gt; 的增强。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -265,7 +289,20 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
 &lt;p&gt;Nginx 有两种定义变量的方法，一种是在模块中定义，从而成为内建变量；另一种是在配置文件中通过 set 指令来定义。&lt;/p&gt;
 &lt;p&gt;配置过 Nginx 的同学可能都知道这样一个事实：一个请求在其处理过程中，即使经历多个不同的  location 配置块，它使用的还是同一套 Nginx 变量的副本。&lt;/p&gt;
 &lt;p&gt;例如，如果有如下的配置：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;location /test1 {  
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;location /test1 {  
         set $hello hello;  
         rewrite /test1 /test2 last;
 
@@ -274,7 +311,9 @@ variables; the bug had appeared in 1.9.8.&lt;/p&gt;
 location /test2 {  
         echo $hello;  
 }  
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;虽然变量是定义在 location /test1 中，但 Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在 /test2 中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问 /test2，得到的变量 &lt;code&gt;$hello&lt;/code&gt; 是一个空值，而访问 /test1，则会内部跳转到 /test2，将 /test1 中赋值的 hello 打印出来。&lt;/p&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;虽然变量是定义在 location /test1 中，但 Nginx 变量一旦创建，其变量名的可见范围就是整个 Nginx 配置，所以在 /test2 中直接使用该变量是不会报错的。另一方面，由于变量的生命周期是与请求相关的，所以如果直接访问 /test2，得到的变量 &lt;code&gt;$hello&lt;/code&gt; 是一个空值，而访问 /test1，则会内部跳转到 /test2，将 /test1 中赋值的 hello 打印出来。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -314,7 +353,7 @@ location /test2 {
 &lt;p&gt;而如果在配置文件中，先调用 set 命令：&lt;code&gt;set $B $A；&lt;/code&gt;，那么在 lua 代码中，通过代码 &lt;code&gt;local A2 = ngx.var.B&lt;/code&gt; 则可以间接访问到该变量。&lt;/p&gt;
 &lt;p&gt;翻了一下邮件列表，发现该问题 agentzh 早有解答：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;逆雪寒：&lt;/br&gt;
+&lt;p&gt;逆雪寒：&lt;!-- raw HTML omitted --&gt;
 通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是 &lt;code&gt;nil&lt;/code&gt; 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug  ? 还是我理解问题？&lt;/p&gt;
 &lt;/blockquote&gt;</description>
     </item>
@@ -328,18 +367,6 @@ location /test2 {
       <description>&lt;p&gt;由于工作需要，开始分析 Nginx 的 proxy 模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属 proxy_pass 了。Nginx 的英文文档总是看着感觉有些别扭，于是按惯例先 google 了一些文章。&lt;/p&gt;
 &lt;p&gt;这一搜，就掉进坑里了。&lt;/p&gt;
 &lt;p&gt;这些文章里都把 proxy_pass 的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/”的作用是删除 url 中匹配的部分，然后再讨论目标地址中带了 uri 的情况。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>nil、null 与 ngx.null</title>
-      <link>https://pureage.info/2013/09/02/125.html</link>
-      <pubDate>Mon, 02 Sep 2013 14:06:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/2013/09/02/125.html</guid>
-      <description>&lt;h2 id=&#34;问题概述&#34;&gt;问题概述&lt;/h2&gt;
-&lt;p&gt;今天第一次使用 Nginx+lua，写了个需要操作 Redis 的后台接口，该接口的功能主要是接受客户端的 json 格式的 post 请求，实现对保存在 redis 中的任务插入、删除、查询等。虽然 Nginx、lua 等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。&lt;/p&gt;
-&lt;p&gt;在 Redis 中记录的任务其实很简单，每插入一个任务，就在 redis 中增加一个 HASH 结构，每次查询返回该 SET 的各个 Field 和对应的 Value 值，例如 md5，filesize 等。由于任务类型的不同，有的 Field 可能在该任务中不存在，此时在以 json 格式将查询结果返回时不应显示该 Field。&lt;/p&gt;
-&lt;p&gt;以 md5 域为例，在对当前任务以 md5 域执行 hget 后，应该对返回结果做一个判断，如果该 HASH 结构并没有设置 md5 这个域，则跳过，继续执行后面的逻辑，如果设置了 md5 域，则把该域的 Value 取出来，插入到结果 table 中，后续再作为 json 格式返回结果的一部分，返回给后台。&lt;/p&gt;</description>
     </item>
     
   </channel>

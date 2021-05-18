@@ -1,38 +1,339 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="strider (方鹏)">
-<meta name="description" content="一个伪文青兼程序员的自嗨
-    ">
-<meta name="keywords" content="博客, 技术, 文学, 电影">
-<meta name="referrer" content="always">
-<title>漫谈 logrotate 与 crond - 纯真年代</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>漫谈 logrotate 与 crond - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="什么是 logrotate logrotate 是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
+lorotate的切割方式 以 Nginx 为例，假设其错误日志放在 /data/proclog/log/nginx/ 下，名为 nginx_error.log，当 logrotate 运行时，如果满足切割要求了，则会将 nginx_error.log 改名为 nginx_error.log.1，并重新创建一个新的空文件 nginx_error.log 作为新的错误日志。
+当进行其二次切割时，nginx_error.log.1 被改名为 nginx_error.log.2，刚才创建的 nginx_error.log 被改名为新的 nginx_error.log.1，然后再次重新创建一个新的空文件 nginx_error.log 作为新的错误日志投入使用。
+当进行第三次切割时，nginx_error.log.2 变为 nginx_error.log.3，nginx_error.log.1 变为nginx_error.log.2，nginx_error.log 变为 nginx_error.log.1，一个新的 nginx_error.log 被再次创建。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<link rel="canonical" href="https://pureage.info/2013/09/10/127.html" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="漫谈 logrotate 与 crond" />
+<meta property="og:description" content="什么是 logrotate
+logrotate 是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
+lorotate的切割方式
+以 Nginx 为例，假设其错误日志放在 /data/proclog/log/nginx/ 下，名为 nginx_error.log，当 logrotate 运行时，如果满足切割要求了，则会将 nginx_error.log 改名为 nginx_error.log.1，并重新创建一个新的空文件 nginx_error.log 作为新的错误日志。
+当进行其二次切割时，nginx_error.log.1 被改名为 nginx_error.log.2，刚才创建的 nginx_error.log 被改名为新的 nginx_error.log.1，然后再次重新创建一个新的空文件 nginx_error.log 作为新的错误日志投入使用。
+当进行第三次切割时，nginx_error.log.2 变为 nginx_error.log.3，nginx_error.log.1 变为nginx_error.log.2，nginx_error.log 变为 nginx_error.log.1，一个新的 nginx_error.log 被再次创建。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/2013/09/10/127.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2013-09-10T15:11:00&#43;00:00" />
+<meta property="article:modified_time" content="2013-09-10T15:11:00&#43;00:00" />
+
+<meta itemprop="name" content="漫谈 logrotate 与 crond">
+<meta itemprop="description" content="什么是 logrotate
+logrotate 是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
+lorotate的切割方式
+以 Nginx 为例，假设其错误日志放在 /data/proclog/log/nginx/ 下，名为 nginx_error.log，当 logrotate 运行时，如果满足切割要求了，则会将 nginx_error.log 改名为 nginx_error.log.1，并重新创建一个新的空文件 nginx_error.log 作为新的错误日志。
+当进行其二次切割时，nginx_error.log.1 被改名为 nginx_error.log.2，刚才创建的 nginx_error.log 被改名为新的 nginx_error.log.1，然后再次重新创建一个新的空文件 nginx_error.log 作为新的错误日志投入使用。
+当进行第三次切割时，nginx_error.log.2 变为 nginx_error.log.3，nginx_error.log.1 变为nginx_error.log.2，nginx_error.log 变为 nginx_error.log.1，一个新的 nginx_error.log 被再次创建。"><meta itemprop="datePublished" content="2013-09-10T15:11:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-09-10T15:11:00&#43;00:00" />
+<meta itemprop="wordCount" content="2086">
+<meta itemprop="keywords" content="程序员,shell," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="漫谈 logrotate 与 crond"/>
+<meta name="twitter:description" content="什么是 logrotate
+logrotate 是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。
+lorotate的切割方式
+以 Nginx 为例，假设其错误日志放在 /data/proclog/log/nginx/ 下，名为 nginx_error.log，当 logrotate 运行时，如果满足切割要求了，则会将 nginx_error.log 改名为 nginx_error.log.1，并重新创建一个新的空文件 nginx_error.log 作为新的错误日志。
+当进行其二次切割时，nginx_error.log.1 被改名为 nginx_error.log.2，刚才创建的 nginx_error.log 被改名为新的 nginx_error.log.1，然后再次重新创建一个新的空文件 nginx_error.log 作为新的错误日志投入使用。
+当进行第三次切割时，nginx_error.log.2 变为 nginx_error.log.3，nginx_error.log.1 变为nginx_error.log.2，nginx_error.log 变为 nginx_error.log.1，一个新的 nginx_error.log 被再次创建。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
 <body>
-<header>
-  <div>
-    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
   </div>
-  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
-</header>
-<main>
-  <article>
-    <div class="title">
-  <h1>漫谈 logrotate 与 crond</h1>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-<div class="meta">
-  <div>2013-09-10</div>
-  <div>
-    <span><a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98">#程序员</a></span>
-    <span><a href="/tags/shell">#shell</a></span>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
     </div>
-  </div>
-<div class="content">
-  <h2 id="什么是-logrotate">什么是 logrotate</h2>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">漫谈 logrotate 与 crond</h1>
+      
+      <div class="post-meta">
+        <time datetime="2013-09-10" class="post-time">
+          2013-09-10
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <h2 id="什么是-logrotate">什么是 logrotate</h2>
 <p>logrotate 是一款用来切割日志的工具，更确切的说，是切割文本的工具，但通常用在软件日志切割上。为什么要进行日志切割呢？原因可以有很多，最明显的一个就是防止日志文件变得太大。</p>
 <h2 id="lorotate的切割方式">lorotate的切割方式</h2>
 <p>以 Nginx 为例，假设其错误日志放在 /data/proclog/log/nginx/ 下，名为 nginx_error.log，当 logrotate 运行时，如果满足切割要求了，则会将 nginx_error.log 改名为 nginx_error.log.1，并重新创建一个新的空文件 nginx_error.log 作为新的错误日志。</p>
@@ -42,30 +343,92 @@
 <p>至于到底会保留多少份 nginx_error.log.N（N 代表数字），则是在 logrotate 的配置文件一个参数 rotate 设置的。例如，当 rotate 设置为3时，则只会保留 nginx_error.log.1、nginx_error.log.2 和 nginx_error.log.3，老的文件会被删除。</p>
 <h2 id="logrotate-与-crond">logrotate 与 crond</h2>
 <p>logrotate 默认会放在 cron.daily 目录下，每天自动运行。 执行：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /etc/cron.daily/logrotate  
-</code></pre></div><p>看到该文件内容如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/sh  
-</span><span style="color:#888;font-style:italic"></span>  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/cron.daily/logrotate  
+</code></pre></td></tr></table>
+</div>
+</div><p>看到该文件内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/sh  
+</span><span class="cp"></span>  
 /usr/sbin/logrotate /etc/logrotate.conf  
-<span style="color:#000">EXITVALUE</span>=<span style="color:#000">$?</span>  
-<span style="color:#00f">if</span> [ <span style="color:#000">$EXITVALUE</span> != <span style="color:#3af">0</span> ]; <span style="color:#00f">then</span>  
-    /usr/bin/logger -t logrotate <span style="color:#5a2">&#34;</span><span style="color:#5a2">ALERT exited abnormally with [</span><span style="color:#000">$EXITVALUE</span><span style="color:#5a2">]</span><span style="color:#5a2">&#34;</span>  
-<span style="color:#00f">fi</span>  
-</code></pre></div><p>上面的 shell 脚本主要是执行 /usr/sbin/logrotate 程序，并检查执行状态，如果执行出错，则通过 logger 程序向系统日志中发送一条错误消息。</p>
+<span class="nv">EXITVALUE</span><span class="o">=</span><span class="nv">$?</span>  
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$EXITVALUE</span> !<span class="o">=</span> <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+    /usr/bin/logger -t logrotate <span class="s2">&#34;ALERT exited abnormally with [</span><span class="nv">$EXITVALUE</span><span class="s2">]&#34;</span>  
+<span class="k">fi</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的 shell 脚本主要是执行 /usr/sbin/logrotate 程序，并检查执行状态，如果执行出错，则通过 logger 程序向系统日志中发送一条错误消息。</p>
 <p>注意，现在说道的 logrotate 有两个，一个是 shell 脚本，位于 /etc/cron.daily 下，一个是可执行文件，位于 /usr/sbin 目录下。</p>
 <p>继续看上面的 logrotate 脚本，其中错误处理语句中，logger 程序是怎么运行的呢？我们可以做个小测试。 执行：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">/usr/bin/logger -t strider <span style="color:#5a2">&#34;Good Morning&#34;</span>  
-</code></pre></div><p>屏幕没有任何打印信息，但我们可以查看 /var/log/message:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">tail /var/log/messages  
-</code></pre></div><p>观察最后一条信息：</p>
-<pre><code>Sep 10 06:53:55 localhost strider: Good Morning  
-</code></pre><p>可见 logrotate 脚本的错误信息通过通过 logger 程序送到系统日志中去了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">/usr/bin/logger -t strider <span class="s2">&#34;Good Morning&#34;</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>屏幕没有任何打印信息，但我们可以查看 /var/log/message:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">tail /var/log/messages  
+</code></pre></td></tr></table>
+</div>
+</div><p>观察最后一条信息：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Sep 10 06:53:55 localhost strider: Good Morning  
+</code></pre></td></tr></table>
+</div>
+</div><p>可见 logrotate 脚本的错误信息通过通过 logger 程序送到系统日志中去了。</p>
 <h2 id="etccrondailyetccrontab">/etc/cron.daily、/etc/crontab</h2>
 <p>上面我们说到，logrotate 脚本放在 /etc/cron.daily 目录下，所以它会每天定期执行一次。为什么放在 cron.daily 目录下就会有此效果呢？而且，到底是在每天的什么时候执行呢？</p>
 <p>linux 下的定时任务是由系统服务 crond 来管理的。crond 的配置文件是 /etc/crontab，可以打开观察一下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /etc/crontab  
-</code></pre></div><p>会看到如下内容：</p>
-<pre><code>SHELL=/bin/bash  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /etc/crontab  
+</code></pre></td></tr></table>
+</div>
+</div><p>会看到如下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">SHELL=/bin/bash  
 PATH=/sbin:/bin:/usr/sbin:/usr/bin  
 MAILTO=root  
 HOME=/  
@@ -75,88 +438,400 @@ HOME=/
 02 4 * * * root run-parts /etc/cron.daily  
 22 4 * * 0 root run-parts /etc/cron.weekly  
 42 4 1 * * root run-parts /etc/cron.monthly  
-</code></pre><p>其中，SHELL 字段、PATH 字段等内容不用多说，重点看下下面的字段。如果你用 <code>crontab -e</code> 指令来写过 crontab 定时任务的话，一定会觉得跟 crontab 中的格式一模一样。其实这是错觉，/etc/crontab 的配置中，每一行都多了一个 root，表示以什么用户来执行，而 <code>crontab -e</code> 配置中，则没有这一个用户名字段。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>其中，SHELL 字段、PATH 字段等内容不用多说，重点看下下面的字段。如果你用 <code>crontab -e</code> 指令来写过 crontab 定时任务的话，一定会觉得跟 crontab 中的格式一模一样。其实这是错觉，/etc/crontab 的配置中，每一行都多了一个 root，表示以什么用户来执行，而 <code>crontab -e</code> 配置中，则没有这一个用户名字段。</p>
 <p>虽然有这一点区别，其他地方意义还是一样的，例如：</p>
-<pre><code>02 4 * * * root run-parts /etc/cron.daily  
-</code></pre><p>就表明，每天凌晨的 4:02 时刻，以 root 身份执行 run-parts /etc/cron.daily 命令。我们大概也能猜出来了，run-parts 的作用就是执行后面目录下的所有脚本，所以放在 cron.daily 目录下的脚本，会每天被执行一次。cron.hourly、cron.weekly、cron.monthly 等也是类似。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">02 4 * * * root run-parts /etc/cron.daily  
+</code></pre></td></tr></table>
+</div>
+</div><p>就表明，每天凌晨的 4:02 时刻，以 root 身份执行 run-parts /etc/cron.daily 命令。我们大概也能猜出来了，run-parts 的作用就是执行后面目录下的所有脚本，所以放在 cron.daily 目录下的脚本，会每天被执行一次。cron.hourly、cron.weekly、cron.monthly 等也是类似。</p>
 <h2 id="run-parts">run-parts</h2>
 <p>那么 run-parts 到底是怎么做的呢？我们可以确定一下，执行：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">whereis run-parts  
-</code></pre></div><p>输出：</p>
-<pre><code>run-parts: /usr/bin/run-parts  
-</code></pre><p>查看 run-parts 类型，执行：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">file /usr/bin/run-parts  
-</code></pre></div><p>输出：</p>
-<pre><code>/usr/bin/run-parts: Bourne-Again shell script text executable  
-</code></pre><p>可见 run-parts 是一个 bash 脚本，其内容及注释如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#!/bin/bash  
-</span><span style="color:#888;font-style:italic"></span>  
-<span style="color:#888;font-style:italic"># run-parts - concept taken from Debian</span>  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">whereis run-parts  
+</code></pre></td></tr></table>
+</div>
+</div><p>输出：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">run-parts: /usr/bin/run-parts  
+</code></pre></td></tr></table>
+</div>
+</div><p>查看 run-parts 类型，执行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">file /usr/bin/run-parts  
+</code></pre></td></tr></table>
+</div>
+</div><p>输出：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/usr/bin/run-parts: Bourne-Again shell script text executable  
+</code></pre></td></tr></table>
+</div>
+</div><p>可见 run-parts 是一个 bash 脚本，其内容及注释如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash  
+</span><span class="cp"></span>  
+<span class="c1"># run-parts - concept taken from Debian  </span>
   
-<span style="color:#888;font-style:italic"># keep going when something fails</span>  
-<span style="color:#888;font-style:italic">#当shell中某些命令或子shell执行错误时，该脚本让然能够执行下去。</span>  
-<span style="color:#000">set</span> +e  
+<span class="c1"># keep going when something fails  </span>
+<span class="c1">#当shell中某些命令或子shell执行错误时，该脚本让然能够执行下去。  </span>
+<span class="nb">set</span> +e  
   
-<span style="color:#888;font-style:italic">#如果参数小于1，则打印用法信息，并退出</span>  
-<span style="color:#00f">if</span> [ <span style="color:#000">$#</span> -lt <span style="color:#3af">1</span> ]; <span style="color:#00f">then</span>  
-        <span style="color:#000">echo</span> <span style="color:#5a2">&#34;Usage: run-parts &lt;dir&gt;&#34;</span>  
-        <span style="color:#000">exit</span> <span style="color:#3af">1</span>  
-<span style="color:#00f">fi</span>  
+<span class="c1">#如果参数小于1，则打印用法信息，并退出  </span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -lt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+        <span class="nb">echo</span> <span class="s2">&#34;Usage: run-parts &lt;dir&gt;&#34;</span>  
+        <span class="nb">exit</span> <span class="m">1</span>  
+<span class="k">fi</span>  
   
-<span style="color:#888;font-style:italic">#如果所带参数不是一个目录，则报错，并退出</span>  
-<span style="color:#00f">if</span> [ ! -d <span style="color:#000">$1</span> ]; <span style="color:#00f">then</span>  
-        <span style="color:#000">echo</span> <span style="color:#5a2">&#34;</span><span style="color:#5a2">Not a directory: </span><span style="color:#000">$1</span><span style="color:#5a2">&#34;</span>  
-        <span style="color:#000">exit</span> <span style="color:#3af">1</span>  
-<span style="color:#00f">fi</span>  
+<span class="c1">#如果所带参数不是一个目录，则报错，并退出  </span>
+<span class="k">if</span> <span class="o">[</span> ! -d <span class="nv">$1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+        <span class="nb">echo</span> <span class="s2">&#34;Not a directory: </span><span class="nv">$1</span><span class="s2">&#34;</span>  
+        <span class="nb">exit</span> <span class="m">1</span>  
+<span class="k">fi</span>  
   
-<span style="color:#888;font-style:italic"># Ignore *~ and *, scripts</span>  
-<span style="color:#888;font-style:italic">#忽略该目录下，文件名中带有~和,的脚本</span>  
-<span style="color:#00f">for</span> i in <span style="color:#000">$1</span>/*[^~,] ; <span style="color:#00f">do</span>  
-        <span style="color:#888;font-style:italic">#忽略子目录</span>  
-        [ -d <span style="color:#000">$i</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
+<span class="c1"># Ignore *~ and *, scripts  </span>
+<span class="c1">#忽略该目录下，文件名中带有~和,的脚本  </span>
+<span class="k">for</span> i in <span class="nv">$1</span>/*<span class="o">[</span>^~,<span class="o">]</span> <span class="p">;</span> <span class="k">do</span>  
+        <span class="c1">#忽略子目录  </span>
+        <span class="o">[</span> -d <span class="nv">$i</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
   
-        <span style="color:#888;font-style:italic">#忽略rpmsave、rpmorig、rpmnew、swp、v格式的文件</span>  
-        <span style="color:#888;font-style:italic"># Don&#39;t run *.{rpmsave,rpmorig,rpmnew,swp} scripts</span>  
-        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.rpmsave<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
-        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.rpmorig<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
-        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.rpmnew<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
-        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%.swp<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
-        [ <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span>%,v<span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> != <span style="color:#5a2">&#34;</span><span style="color:#5a2">${</span><span style="color:#000">i</span><span style="color:#5a2">}</span><span style="color:#5a2">&#34;</span> ] &amp;&amp; <span style="color:#00f">continue</span>  
+        <span class="c1">#忽略rpmsave、rpmorig、rpmnew、swp、v格式的文件  </span>
+        <span class="c1"># Don&#39;t run *.{rpmsave,rpmorig,rpmnew,swp} scripts  </span>
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.rpmsave</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.rpmorig</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.rpmnew</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%.swp</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
+        <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="p">%,v</span><span class="si">}</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>  
   
-        <span style="color:#888;font-style:italic">#如果该文件可执行，则执行之</span>  
-        <span style="color:#00f">if</span> [ -x <span style="color:#000">$i</span> ]; <span style="color:#00f">then</span>  
-                <span style="color:#000">$i</span> 2&gt;&amp;<span style="color:#3af">1</span> | awk -v <span style="color:#5a2">&#34;</span><span style="color:#5a2">progname=</span><span style="color:#000">$i</span><span style="color:#5a2">&#34;</span> <span style="color:#5a2">\ </span> 
-                              <span style="color:#5a2">&#39;progname {  
-</span><span style="color:#5a2">                                   print progname &#34;:\n&#34;  
-</span><span style="color:#5a2">                                   progname=&#34;&#34;;  
-</span><span style="color:#5a2">                               }  
-</span><span style="color:#5a2">                               { print; }&#39;</span>  
-        <span style="color:#00f">fi</span>  
-<span style="color:#00f">done</span>  
+        <span class="c1">#如果该文件可执行，则执行之  </span>
+        <span class="k">if</span> <span class="o">[</span> -x <span class="nv">$i</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+                <span class="nv">$i</span> 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> awk -v <span class="s2">&#34;progname=</span><span class="nv">$i</span><span class="s2">&#34;</span> <span class="se">\ </span> 
+                              <span class="s1">&#39;progname {  
+</span><span class="s1">                                   print progname &#34;:\n&#34;  
+</span><span class="s1">                                   progname=&#34;&#34;;  
+</span><span class="s1">                               }  
+</span><span class="s1">                               { print; }&#39;</span>  
+        <span class="k">fi</span>  
+<span class="k">done</span>  
   
-<span style="color:#000">exit</span> <span style="color:#3af">0</span>  
-</code></pre></div><h2 id="etccrontab-和-crontab--e">/etc/crontab 和 crontab -e</h2>
+<span class="nb">exit</span> <span class="m">0</span>  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="etccrontab-和-crontab--e">/etc/crontab 和 crontab -e</h2>
 <p>与前面所说的 logrotate 一样，也有两个都叫 crontab 的文件，一个是 /etc/crontab，是 crond 的配置文件，另一个是一个程序，是用户与 crond 交互的外部接口。</p>
 <p>前面已经提到，/etc/crontab 与 crontab 的配置格式是不一样的，例如：</p>
 <p>/etc/crontab中：</p>
-<pre><code>...(略）  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">...(略）  
 02 4 * * * root run-parts /etc/cron.daily  
-</code></pre><p>与程序 crontab 对比一下，执行 crontab -u root -l，可得到：</p>
-<pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
+</code></pre></td></tr></table>
+</div>
+</div><p>与程序 crontab 对比一下，执行 crontab -u root -l，可得到：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
 * * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
-</code></pre><p>可见，通过 crontab 程序设置 crond 时，是不需要添加用户的。原因很简单，crontab 必须在执行时指定用户名（如果不指定，则默认为当前登录的用户），执行 <code>crontab -u username -e</code> 设置完规则后，这些规则会保存在 /var/spool/cron/username 文件中，每个用户的 crontab 配置都会保存在属于该用户的文件中。例如：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat /var/spool/cron/root  
-</code></pre></div><p>输出：</p>
-<pre><code>* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
+</code></pre></td></tr></table>
+</div>
+</div><p>可见，通过 crontab 程序设置 crond 时，是不需要添加用户的。原因很简单，crontab 必须在执行时指定用户名（如果不指定，则默认为当前登录的用户），执行 <code>crontab -u username -e</code> 设置完规则后，这些规则会保存在 /var/spool/cron/username 文件中，每个用户的 crontab 配置都会保存在属于该用户的文件中。例如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">cat /var/spool/cron/root  
+</code></pre></td></tr></table>
+</div>
+</div><p>输出：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">* * * * * /home/strider/project/worker/fdfs-v4.07/script/fdfs_worker_demeon.sh  
 * * * * * /bin/bash /home/strider/project/worker/fdfs-v4.07/script/fdfs_add_task.sh 
-</code></pre><p>与<code>cront -u root -l</code> 回显一致。</p></div>
+</code></pre></td></tr></table>
+</div>
+</div><p>与<code>cront -u root -l</code> 回显一致。</p>
+    </div>
 
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2013-09-10
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          <a href="https://pureage.info/tags/shell/">shell</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/10/01/128.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">emlog 的一键备份</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2013/09/09/126.html">
+            <span class="next-text nav-default">uniq、sort 不得不注意的尾部空格（trailing whitespaces)</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
   </article>
-</main>
-<footer>
-  <div>
-    <div>2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a><p>Powered by <a href="https://gohugo.io/">Hugo</a> with <a href="https://github.com/yanlinlin82/simple-style">Simple-Style</a></div>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2021
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
   </div>
-</footer>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

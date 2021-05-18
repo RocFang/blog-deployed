@@ -1,37 +1,358 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="strider (方鹏)">
-<meta name="description" content="一个伪文青兼程序员的自嗨
-    ">
-<meta name="keywords" content="博客, 技术, 文学, 电影">
-<meta name="referrer" content="always">
-<title>Nginx 对 Connection 头的处理过程 - 纯真年代</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Nginx 对 Connection 头的处理过程 - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="1. 标准 RFC2616 中，对 Connection 的说明如下：
+ HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
+ 综合 RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
+ 控制不再转发给代理的首部字段 管理持久连接  其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
+第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<link rel="canonical" href="https://pureage.info/2015/12/08/connection-header-in-nginx.html" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="Nginx 对 Connection 头的处理过程" />
+<meta property="og:description" content="1. 标准
+RFC2616 中，对 Connection 的说明如下：
+
+HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
+
+综合 RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
+
+控制不再转发给代理的首部字段
+管理持久连接
+
+其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
+第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/2015/12/08/connection-header-in-nginx.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2015-12-08T07:04:00&#43;00:00" />
+<meta property="article:modified_time" content="2015-12-08T07:04:00&#43;00:00" />
+
+<meta itemprop="name" content="Nginx 对 Connection 头的处理过程">
+<meta itemprop="description" content="1. 标准
+RFC2616 中，对 Connection 的说明如下：
+
+HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
+
+综合 RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
+
+控制不再转发给代理的首部字段
+管理持久连接
+
+其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
+第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。"><meta itemprop="datePublished" content="2015-12-08T07:04:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-12-08T07:04:00&#43;00:00" />
+<meta itemprop="wordCount" content="3008">
+<meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Nginx 对 Connection 头的处理过程"/>
+<meta name="twitter:description" content="1. 标准
+RFC2616 中，对 Connection 的说明如下：
+
+HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.
+
+综合 RFC2626 14.10、《HTTP权威指南》4.3.1、《图解HTTP》6.3.2中的说法，均指明了 Connection 头部（请求头、响应头）主要包括如下两方面的作用：
+
+控制不再转发给代理的首部字段
+管理持久连接
+
+其中，我个人经常见到的是第二种用法，对第一种用法还不甚了解。
+第一种用法，大概意思就是，在一个 HTTP 应用（客户端、服务器）将报文转发出之前，必须删除 Connection 首部列出的所有首部字段（多个不同的字段用逗号分隔），当然一些 end-to-end 的头部是肯定不能放进去的，例如 Cache-Control 头。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
 <body>
-<header>
-  <div>
-    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
   </div>
-  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
-</header>
-<main>
-  <article>
-    <div class="title">
-  <h1>Nginx 对 Connection 头的处理过程</h1>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-<div class="meta">
-  <div>2015-12-08</div>
-  <div>
-    <span><a href="/tags/nginx">#nginx</a></span>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
     </div>
-  </div>
-<div class="content">
-  <h3 id="1-标准">1. 标准</h3>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Nginx 对 Connection 头的处理过程</h1>
+      
+      <div class="post-meta">
+        <time datetime="2015-12-08" class="post-time">
+          2015-12-08
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <h3 id="1-标准">1. 标准</h3>
 <p>RFC2616 中，对 Connection 的说明如下：</p>
 <blockquote>
 <p>HTTP/1.1 proxies MUST parse the Connection header field before a message is forwarded and, for each connection-token in this field, remove any header field(s) from the message with the same name as the connection-token. Connection options are signaled by the presence of a connection-token in the Connection header field, not by any corresponding additional header field(s), since the additional header field may not be sent if there are no parameters associated with that connection option.</p>
@@ -46,20 +367,39 @@
 <h3 id="2nginx-是如何做的">2.Nginx 是如何做的</h3>
 <p>注：以下代码均来自 Nginx-1.8.0。</p>
 <p>对于请求中的 Connection 头， Nginx 在 http 解析时调用 <code>ngx_http_process_connection</code> 方法：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">static</span> <span style="color:#000">ngx_int_t</span>  
-<span style="color:#000">ngx_http_process_connection</span>(<span style="color:#000">ngx_http_request_t</span> *<span style="color:#000">r</span>, <span style="color:#000">ngx_table_elt_t</span> *<span style="color:#000">h</span>,  
-    <span style="color:#000">ngx_uint_t</span> <span style="color:#000">offset</span>)  
-{  
-    <span style="color:#00f">if</span> (<span style="color:#000">ngx_strcasestrn</span>(<span style="color:#000">h</span>-&gt;<span style="color:#000">value</span>.<span style="color:#000">data</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">close</span><span style="color:#5a2">&#34;</span>, <span style="color:#3af">5</span> - <span style="color:#3af">1</span>)) {  
-        <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">connection_type</span> = <span style="color:#000">NGX_HTTP_CONNECTION_CLOSE</span>;  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="n">ngx_int_t</span>  
+<span class="nf">ngx_http_process_connection</span><span class="p">(</span><span class="n">ngx_http_request_t</span> <span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">ngx_table_elt_t</span> <span class="o">*</span><span class="n">h</span><span class="p">,</span>  
+    <span class="n">ngx_uint_t</span> <span class="n">offset</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">ngx_strcasestrn</span><span class="p">(</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="s">&#34;close&#34;</span><span class="p">,</span> <span class="mi">5</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>  
+        <span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_in</span><span class="p">.</span><span class="n">connection_type</span> <span class="o">=</span> <span class="n">NGX_HTTP_CONNECTION_CLOSE</span><span class="p">;</span>  
   
-    } <span style="color:#00f">else</span> <span style="color:#00f">if</span> (<span style="color:#000">ngx_strcasestrn</span>(<span style="color:#000">h</span>-&gt;<span style="color:#000">value</span>.<span style="color:#000">data</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">keep-alive</span><span style="color:#5a2">&#34;</span>, <span style="color:#3af">10</span> - <span style="color:#3af">1</span>)) {  
-        <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">connection_type</span> = <span style="color:#000">NGX_HTTP_CONNECTION_KEEP_ALIVE</span>;  
-    }  
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">ngx_strcasestrn</span><span class="p">(</span><span class="n">h</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="s">&#34;keep-alive&#34;</span><span class="p">,</span> <span class="mi">10</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>  
+        <span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_in</span><span class="p">.</span><span class="n">connection_type</span> <span class="o">=</span> <span class="n">NGX_HTTP_CONNECTION_KEEP_ALIVE</span><span class="p">;</span>  
+    <span class="p">}</span>  
   
-    <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
-}  
-</code></pre></div><p>可见，该方法主要功能只涉及到上面所述的 Connection 作用的第 2 个作用，而没有第 1 个。这应该算的上是实现对标准的支持不完整吧。</p>
+    <span class="k">return</span> <span class="n">NGX_OK</span><span class="p">;</span>  
+<span class="p">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>可见，该方法主要功能只涉及到上面所述的 Connection 作用的第 2 个作用，而没有第 1 个。这应该算的上是实现对标准的支持不完整吧。</p>
 <p>不管怎么样，我们继续分析一下 Nginx 在管理持久连接上具体是怎么做的，上面的代码逻辑很简单：</p>
 <ol>
 <li>如果 Connection 头是 close（不区分大小写），则 <code>r-&gt;headers_in.connection_type</code> 被置为 <code>NGX_HTTP_CONNECTION_CLOSE</code></li>
@@ -84,8 +424,15 @@
 </li>
 <li>
 <p>当一个请求来临时，<code>ngx_event_accpet</code> 被回调，其中上面第（3）步里为监听套接字设置的 <code>handler</code>，即 <code>ngx_http_init_connection</code> 被调用：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#000">ls</span>-&gt;<span style="color:#000">handler</span>(<span style="color:#000">c</span>);  
-</code></pre></div><p>这个调用非常有趣，<code>ls</code> 实质上是代表着监听套接字，而参数 <code>c</code> 则是 accept 后建立起来的连接套接字，根据 socket 的基本知识，该连接上后续客户端与 Nginx 之间的信息传输，都通过这个连接套接字上的读写来进行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="n">ls</span><span class="o">-&gt;</span><span class="n">handler</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>这个调用非常有趣，<code>ls</code> 实质上是代表着监听套接字，而参数 <code>c</code> 则是 accept 后建立起来的连接套接字，根据 socket 的基本知识，该连接上后续客户端与 Nginx 之间的信息传输，都通过这个连接套接字上的读写来进行。</p>
 </li>
 <li>
 <p>从 <code>ngx_http_init_connection</code> 开始，就着手进行一系列 HTTP 协议解析。中间涉及到<code>ngx_http_wait_request_handler</code>、<code>ngx_http_create_request</code>、<code>ngx_http_process_request_line</code>、<code>ngx_http_process_request_headers</code> 等解析方法。</p>
@@ -99,30 +446,59 @@
 </li>
 <li>
 <p>在 <code>ngx_http_handler</code> 里，有这样一段代码：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">if</span> (!<span style="color:#000">r</span>-&gt;<span style="color:#000">internal</span>) {  
-        <span style="color:#00f">switch</span> (<span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">connection_type</span>) {  
-        <span style="color:#00f">case</span> <span style="color:#3af">0</span>:  
-            <span style="color:#000">r</span>-&gt;<span style="color:#000">keepalive</span> = (<span style="color:#000">r</span>-&gt;<span style="color:#000">http_version</span> &gt; <span style="color:#000">NGX_HTTP_VERSION_10</span>);  
-            <span style="color:#00f">break</span>;  
-     
-        <span style="color:#00f">case</span> <span style="color:#000">NGX_HTTP_CONNECTION_CLOSE</span>:  
-            <span style="color:#000">r</span>-&gt;<span style="color:#000">keepalive</span> = <span style="color:#3af">0</span>;  
-            <span style="color:#00f">break</span>;  
-     
-        <span style="color:#00f">case</span> <span style="color:#000">NGX_HTTP_CONNECTION_KEEP_ALIVE</span>:  
-            <span style="color:#000">r</span>-&gt;<span style="color:#000">keepalive</span> = <span style="color:#3af">1</span>;  
-            <span style="color:#00f">break</span>;  
-        }  
-     
-        <span style="color:#000">r</span>-&gt;<span style="color:#000">lingering_close</span> = (<span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">content_length_n</span> &gt; <span style="color:#3af">0</span>  
-                              || <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">chunked</span>);  
-        <span style="color:#000">r</span>-&gt;<span style="color:#000">phase_handler</span> = <span style="color:#3af">0</span>;  
-     
-    } <span style="color:#00f">else</span> {  
-        <span style="color:#000">cmcf</span> = <span style="color:#000">ngx_http_get_module_main_conf</span>(<span style="color:#000">r</span>, <span style="color:#000">ngx_http_core_module</span>);  
-        <span style="color:#000">r</span>-&gt;<span style="color:#000">phase_handler</span> = <span style="color:#000">cmcf</span>-&gt;<span style="color:#000">phase_engine</span>.<span style="color:#000">server_rewrite_index</span>;  
-    }  
-</code></pre></div><p>所以，到现在为止，客户端请求里带来的 Connection 头部，落在了 <code>r-&gt;keepalive</code> 上了。规则如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">internal</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="k">switch</span> <span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_in</span><span class="p">.</span><span class="n">connection_type</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>  
+            <span class="n">r</span><span class="o">-&gt;</span><span class="n">keepalive</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">http_version</span> <span class="o">&gt;</span> <span class="n">NGX_HTTP_VERSION_10</span><span class="p">);</span>  
+            <span class="k">break</span><span class="p">;</span>  
+
+        <span class="k">case</span> <span class="nl">NGX_HTTP_CONNECTION_CLOSE</span><span class="p">:</span>  
+            <span class="n">r</span><span class="o">-&gt;</span><span class="n">keepalive</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+            <span class="k">break</span><span class="p">;</span>  
+
+        <span class="k">case</span> <span class="nl">NGX_HTTP_CONNECTION_KEEP_ALIVE</span><span class="p">:</span>  
+            <span class="n">r</span><span class="o">-&gt;</span><span class="n">keepalive</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
+            <span class="k">break</span><span class="p">;</span>  
+        <span class="p">}</span>  
+
+        <span class="n">r</span><span class="o">-&gt;</span><span class="n">lingering_close</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_in</span><span class="p">.</span><span class="n">content_length_n</span> <span class="o">&gt;</span> <span class="mi">0</span>  
+                              <span class="o">||</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_in</span><span class="p">.</span><span class="n">chunked</span><span class="p">);</span>  
+        <span class="n">r</span><span class="o">-&gt;</span><span class="n">phase_handler</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+        <span class="n">cmcf</span> <span class="o">=</span> <span class="n">ngx_http_get_module_main_conf</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">ngx_http_core_module</span><span class="p">);</span>  
+        <span class="n">r</span><span class="o">-&gt;</span><span class="n">phase_handler</span> <span class="o">=</span> <span class="n">cmcf</span><span class="o">-&gt;</span><span class="n">phase_engine</span><span class="p">.</span><span class="n">server_rewrite_index</span><span class="p">;</span>  
+    <span class="p">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>所以，到现在为止，客户端请求里带来的 Connection 头部，落在了 <code>r-&gt;keepalive</code> 上了。规则如下：</p>
 <ul>
 <li>如果 Connection 头部里为“close”，则 <code>r-&gt;keepalive</code> 为 0。</li>
 <li>如果 Connection 头部里为“keep-alive”，则 r-&gt;keepalive为 1。</li>
@@ -135,14 +511,205 @@
 <p>在 <code>ngx_http_finalize_connection</code> 中，如果 r-&gt;keepalive 为 1，则会调用<code>ngx_http_set_keepalive</code> 并返回。<code>ngx_http_set_keepalive</code> 方法完成将当前连接设为 keepalive 状态的实质性工作。它实际上会把表示请求的 <code>ngx_http_request_t</code> 结构体释放，却又不会调用 <code>ngx_http_close_connection</code> 方法关闭连接，同时也在检测 keepalive 连接是否超时。</p>
 </li>
 </ol>
-<p>至此，Connection 头部在 Nginx 里的处理流程差不多都讲完了，具体细节可按照这个脉络查看相应的代码。</p></div>
+<p>至此，Connection 头部在 Nginx 里的处理流程差不多都讲完了，具体细节可按照这个脉络查看相应的代码。</p>
+    </div>
 
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2015-12-08
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2015/12/10/bugfix-of-nginx.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">Nginx 紧急发布 1.9.9 修复 bug</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2015/12/07/guangzhou-marathon.html">
+            <span class="next-text nav-default">2015 广马小结</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
   </article>
-</main>
-<footer>
-  <div>
-    <div>2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a><p>Powered by <a href="https://gohugo.io/">Hugo</a> with <a href="https://github.com/yanlinlin82/simple-style">Simple-Style</a></div>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2021
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
   </div>
-</footer>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

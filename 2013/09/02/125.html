@@ -1,68 +1,413 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="strider (方鹏)">
-<meta name="description" content="一个伪文青兼程序员的自嗨
-    ">
-<meta name="keywords" content="博客, 技术, 文学, 电影">
-<meta name="referrer" content="always">
-<title>nil、null 与 ngx.null - 纯真年代</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>nil、null 与 ngx.null - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="问题概述 今天第一次使用 Nginx&#43;lua，写了个需要操作 Redis 的后台接口，该接口的功能主要是接受客户端的 json 格式的 post 请求，实现对保存在 redis 中的任务插入、删除、查询等。虽然 Nginx、lua 等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。
+在 Redis 中记录的任务其实很简单，每插入一个任务，就在 redis 中增加一个 HASH 结构，每次查询返回该 SET 的各个 Field 和对应的 Value 值，例如 md5，filesize 等。由于任务类型的不同，有的 Field 可能在该任务中不存在，此时在以 json 格式将查询结果返回时不应显示该 Field。
+以 md5 域为例，在对当前任务以 md5 域执行 hget 后，应该对返回结果做一个判断，如果该 HASH 结构并没有设置 md5 这个域，则跳过，继续执行后面的逻辑，如果设置了 md5 域，则把该域的 Value 取出来，插入到结果 table 中，后续再作为 json 格式返回结果的一部分，返回给后台。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<link rel="canonical" href="https://pureage.info/2013/09/02/125.html" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="nil、null 与 ngx.null" />
+<meta property="og:description" content="问题概述
+今天第一次使用 Nginx&#43;lua，写了个需要操作 Redis 的后台接口，该接口的功能主要是接受客户端的 json 格式的 post 请求，实现对保存在 redis 中的任务插入、删除、查询等。虽然 Nginx、lua 等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。
+在 Redis 中记录的任务其实很简单，每插入一个任务，就在 redis 中增加一个 HASH 结构，每次查询返回该 SET 的各个 Field 和对应的 Value 值，例如 md5，filesize 等。由于任务类型的不同，有的 Field 可能在该任务中不存在，此时在以 json 格式将查询结果返回时不应显示该 Field。
+以 md5 域为例，在对当前任务以 md5 域执行 hget 后，应该对返回结果做一个判断，如果该 HASH 结构并没有设置 md5 这个域，则跳过，继续执行后面的逻辑，如果设置了 md5 域，则把该域的 Value 取出来，插入到结果 table 中，后续再作为 json 格式返回结果的一部分，返回给后台。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/2013/09/02/125.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2013-09-02T14:06:00&#43;00:00" />
+<meta property="article:modified_time" content="2013-09-02T14:06:00&#43;00:00" />
+
+<meta itemprop="name" content="nil、null 与 ngx.null">
+<meta itemprop="description" content="问题概述
+今天第一次使用 Nginx&#43;lua，写了个需要操作 Redis 的后台接口，该接口的功能主要是接受客户端的 json 格式的 post 请求，实现对保存在 redis 中的任务插入、删除、查询等。虽然 Nginx、lua 等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。
+在 Redis 中记录的任务其实很简单，每插入一个任务，就在 redis 中增加一个 HASH 结构，每次查询返回该 SET 的各个 Field 和对应的 Value 值，例如 md5，filesize 等。由于任务类型的不同，有的 Field 可能在该任务中不存在，此时在以 json 格式将查询结果返回时不应显示该 Field。
+以 md5 域为例，在对当前任务以 md5 域执行 hget 后，应该对返回结果做一个判断，如果该 HASH 结构并没有设置 md5 这个域，则跳过，继续执行后面的逻辑，如果设置了 md5 域，则把该域的 Value 取出来，插入到结果 table 中，后续再作为 json 格式返回结果的一部分，返回给后台。"><meta itemprop="datePublished" content="2013-09-02T14:06:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-09-02T14:06:00&#43;00:00" />
+<meta itemprop="wordCount" content="1864">
+<meta itemprop="keywords" content="程序员,nginx," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="nil、null 与 ngx.null"/>
+<meta name="twitter:description" content="问题概述
+今天第一次使用 Nginx&#43;lua，写了个需要操作 Redis 的后台接口，该接口的功能主要是接受客户端的 json 格式的 post 请求，实现对保存在 redis 中的任务插入、删除、查询等。虽然 Nginx、lua 等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。
+在 Redis 中记录的任务其实很简单，每插入一个任务，就在 redis 中增加一个 HASH 结构，每次查询返回该 SET 的各个 Field 和对应的 Value 值，例如 md5，filesize 等。由于任务类型的不同，有的 Field 可能在该任务中不存在，此时在以 json 格式将查询结果返回时不应显示该 Field。
+以 md5 域为例，在对当前任务以 md5 域执行 hget 后，应该对返回结果做一个判断，如果该 HASH 结构并没有设置 md5 这个域，则跳过，继续执行后面的逻辑，如果设置了 md5 域，则把该域的 Value 取出来，插入到结果 table 中，后续再作为 json 格式返回结果的一部分，返回给后台。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
 <body>
-<header>
-  <div>
-    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
   </div>
-  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
-</header>
-<main>
-  <article>
-    <div class="title">
-  <h1>nil、null 与 ngx.null</h1>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-<div class="meta">
-  <div>2013-09-02</div>
-  <div>
-    <span><a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98">#程序员</a></span>
-    <span><a href="/tags/nginx">#nginx</a></span>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
     </div>
-  </div>
-<div class="content">
-  <h2 id="问题概述">问题概述</h2>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">nil、null 与 ngx.null</h1>
+      
+      <div class="post-meta">
+        <time datetime="2013-09-02" class="post-time">
+          2013-09-02
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <h2 id="问题概述">问题概述</h2>
 <p>今天第一次使用 Nginx+lua，写了个需要操作 Redis 的后台接口，该接口的功能主要是接受客户端的 json 格式的 post 请求，实现对保存在 redis 中的任务插入、删除、查询等。虽然 Nginx、lua 等都是刚接触，但这几个接口还是顺风顺水的坐下来了，不能忘了感谢春哥章亦春。</p>
 <p>在 Redis 中记录的任务其实很简单，每插入一个任务，就在 redis 中增加一个 HASH 结构，每次查询返回该 SET 的各个 Field 和对应的 Value 值，例如 md5，filesize 等。由于任务类型的不同，有的 Field 可能在该任务中不存在，此时在以 json 格式将查询结果返回时不应显示该 Field。</p>
 <p>以 md5 域为例，在对当前任务以 md5 域执行 hget 后，应该对返回结果做一个判断，如果该 HASH 结构并没有设置 md5 这个域，则跳过，继续执行后面的逻辑，如果设置了 md5 域，则把该域的 Value 取出来，插入到结果 table 中，后续再作为 json 格式返回结果的一部分，返回给后台。</p>
 <p>测试时，却发现在某些域未设置时，查询结果中却仍然会把该域返回给查询调用者，但其 Value 部分是 null。例如，执行下面的测试用例：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -d <span style="color:#5a2">&#34;{\&#34;queryfile\&#34;:[{\&#34;url\&#34;:\&#34;/www.baidu.com/img/bdlogo.gif\&#34; }]}&#34;</span> <span style="color:#5a2">&#34;127.0.0.1/cjson&#34;</span>  
-</code></pre></div><p>尽管对该任务而言，在插入时并没有设置 md5 域，但返回结果包含了 md5 域：</p>
-<pre><code>{&quot;result&quot;:[{&quot;url&quot;:&quot;\/www.baidu.com\/img\/bdlogo.gif&quot;,&quot;result&quot;:0,&quot;md5&quot;:null,&quot;putflag&quot;:&quot;remote&quot;}]}  
-</code></pre><h2 id="问题分析">问题分析</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">curl -d <span class="s2">&#34;{\&#34;queryfile\&#34;:[{\&#34;url\&#34;:\&#34;/www.baidu.com/img/bdlogo.gif\&#34; }]}&#34;</span> <span class="s2">&#34;127.0.0.1/cjson&#34;</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>尽管对该任务而言，在插入时并没有设置 md5 域，但返回结果包含了 md5 域：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{&#34;result&#34;:[{&#34;url&#34;:&#34;\/www.baidu.com\/img\/bdlogo.gif&#34;,&#34;result&#34;:0,&#34;md5&#34;:null,&#34;putflag&#34;:&#34;remote&#34;}]}  
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="问题分析">问题分析</h2>
 <p>看到这个现象，首先想到的当然是 lua 脚本中对执行 hget md5 操作的返回值判断失效了，我第一次是这么写的：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#00f">local</span> <span style="color:#000">md5</span>,<span style="color:#000">err</span>=<span style="color:#000">red</span>:<span style="color:#000">hget</span>(<span style="color:#000">tasklist</span>,<span style="color:#5a2">&#34;</span><span style="color:#5a2">md5</span><span style="color:#5a2">&#34;</span>)  
-<span style="color:#00f">if</span> <span style="color:#000">md5</span> <span style="color:#00f">and</span>  <span style="color:#000">md5</span> ~= <span style="color:#5a2">&#34;</span><span style="color:#5a2">&#34;</span>  <span style="color:#00f">then</span>  
-    <span style="color:#000">tb.md5</span>=<span style="color:#000">md5</span>  
-<span style="color:#00f">end</span>  
-</code></pre></div><p>从后面的结果看，当 md5 值为空时，该判断条件并没有将其过滤掉，依然执行了 <code>tb.md5=md5</code>。由于 redis 模块也是调用春哥的 lua-resty-redis，因此猜测是否春哥把 redis 查询结果中的空值用“null”字符串返回了，于是将上面的几行代码改为：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#00f">local</span> <span style="color:#000">md5</span>,<span style="color:#000">err</span>=<span style="color:#000">red</span>:<span style="color:#000">hget</span>(<span style="color:#000">tasklist</span>,<span style="color:#5a2">&#34;</span><span style="color:#5a2">md5</span><span style="color:#5a2">&#34;</span>)  
-<span style="color:#00f">if</span> <span style="color:#000">md5</span> <span style="color:#00f">and</span>  <span style="color:#000">md5</span> ~= <span style="color:#f00">“</span><span style="color:#000">null</span><span style="color:#f00">”</span>  <span style="color:#00f">then</span>  
-    <span style="color:#000">tb.md5</span>=<span style="color:#000">md5</span>  
-<span style="color:#00f">end</span>  
-</code></pre></div><p>仍然过滤失败，忽然眼前一亮，发现查询结果中显示的是<code>&quot;md5&quot;:null</code>，而非<code>&quot;md5&quot;:&quot;null&quot;</code>，上面这种猜测不攻自破。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">md5</span><span class="p">,</span><span class="n">err</span><span class="o">=</span><span class="n">red</span><span class="p">:</span><span class="n">hget</span><span class="p">(</span><span class="n">tasklist</span><span class="p">,</span><span class="s2">&#34;md5&#34;</span><span class="p">)</span>  
+<span class="kr">if</span> <span class="n">md5</span> <span class="ow">and</span>  <span class="n">md5</span> <span class="o">~=</span> <span class="s2">&#34;&#34;</span>  <span class="kr">then</span>  
+    <span class="n">tb.md5</span><span class="o">=</span><span class="n">md5</span>  
+<span class="kr">end</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>从后面的结果看，当 md5 值为空时，该判断条件并没有将其过滤掉，依然执行了 <code>tb.md5=md5</code>。由于 redis 模块也是调用春哥的 lua-resty-redis，因此猜测是否春哥把 redis 查询结果中的空值用“null”字符串返回了，于是将上面的几行代码改为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">md5</span><span class="p">,</span><span class="n">err</span><span class="o">=</span><span class="n">red</span><span class="p">:</span><span class="n">hget</span><span class="p">(</span><span class="n">tasklist</span><span class="p">,</span><span class="s2">&#34;md5&#34;</span><span class="p">)</span>  
+<span class="kr">if</span> <span class="n">md5</span> <span class="ow">and</span>  <span class="n">md5</span> <span class="o">~=</span> <span class="err">“</span><span class="n">null</span><span class="err">”</span>  <span class="kr">then</span>  
+    <span class="n">tb.md5</span><span class="o">=</span><span class="n">md5</span>  
+<span class="kr">end</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>仍然过滤失败，忽然眼前一亮，发现查询结果中显示的是<code>&quot;md5&quot;:null</code>，而非<code>&quot;md5&quot;:&quot;null&quot;</code>，上面这种猜测不攻自破。</p>
 <p><code>red:hget(tasklist,&quot;md5&quot;)</code> 肯定是返回了一个跟 null 相关的结果，但这个结果既不是 nil，又不是空字符串，也不是“null“。再次猜测，该值类型可能不是 string，虽然这个猜测看上去很奇怪，因为在设置了 md5 的情况下，其类型的确是 string。于是在判断语句前面加了一句打印信息：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#000">ngx.say</span>(<span style="color:#5a2">&#34;</span><span style="color:#5a2">type of null is </span><span style="color:#5a2">&#34;</span>..<span style="color:#000">type</span>(<span style="color:#000">md5</span>))  
-</code></pre></div><p>果然，这个”空值“并不是 string 类型，而是 userdata 类型，userdata 类型当然跟字符串类型不会相等，所以上面的过滤条件不管设置成什么样子，都不会生效，永远会执行 <code>tb.md5=md5</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="n">ngx.say</span><span class="p">(</span><span class="s2">&#34;type of null is &#34;</span><span class="o">..</span><span class="n">type</span><span class="p">(</span><span class="n">md5</span><span class="p">))</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>果然，这个”空值“并不是 string 类型，而是 userdata 类型，userdata 类型当然跟字符串类型不会相等，所以上面的过滤条件不管设置成什么样子，都不会生效，永远会执行 <code>tb.md5=md5</code>。</p>
 <p>这样是找到原因了，但还未最终解决。既然当 hget 操作返回一个空值时，lua-resty-redis 将其设置为一个 userdata 类型，那我们在代码里该如何过滤这种情况呢？本质问题就是，<code>red:hget</code> 当查询 resdis 结果为空时，到底返回了什么？（不为空时，是 string)</p>
 <p>这时候开源的好处就体现出来了，在 <a href="https://github.com/agentzh/lua-resty-redis">https://github.com/agentzh/lua-resty-redis</a> 里扫了下 redis.lua 文件，发现返回的是 <code>ngx.null</code>。</p>
 <p>恩，问题到这就解决了，将上面的过滤代码改为：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#00f">local</span> <span style="color:#000">md5</span>,<span style="color:#000">err</span>=<span style="color:#000">red</span>:<span style="color:#000">hget</span>(<span style="color:#000">tasklist</span>,<span style="color:#5a2">&#34;</span><span style="color:#5a2">md5</span><span style="color:#5a2">&#34;</span>)  
-<span style="color:#00f">if</span> <span style="color:#000">md5</span> <span style="color:#00f">and</span> <span style="color:#000">md5</span> ~= <span style="color:#000">null</span> <span style="color:#00f">and</span> <span style="color:#000">md5</span> ~= <span style="color:#000">ngx.null</span>  <span style="color:#00f">then</span>  
-    <span style="color:#000">tb.md5</span>=<span style="color:#000">md5</span>  
-<span style="color:#00f">end</span>  
-</code></pre></div><p>就能保证返回结果里不会包含值为 null 的域了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">md5</span><span class="p">,</span><span class="n">err</span><span class="o">=</span><span class="n">red</span><span class="p">:</span><span class="n">hget</span><span class="p">(</span><span class="n">tasklist</span><span class="p">,</span><span class="s2">&#34;md5&#34;</span><span class="p">)</span>  
+<span class="kr">if</span> <span class="n">md5</span> <span class="ow">and</span> <span class="n">md5</span> <span class="o">~=</span> <span class="n">null</span> <span class="ow">and</span> <span class="n">md5</span> <span class="o">~=</span> <span class="n">ngx.null</span>  <span class="kr">then</span>  
+    <span class="n">tb.md5</span><span class="o">=</span><span class="n">md5</span>  
+<span class="kr">end</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>就能保证返回结果里不会包含值为 null 的域了。</p>
 <h2 id="眼高手低">眼高手低</h2>
 <p>回头看了一下 lua-resty-redis 的文档，发现关于上面的内容，在 Readme 里已经写的清清楚楚了，在 <a href="https://github.com/agentzh/lua-resty-redis/blob/master/README.markdown">https://github.com/agentzh/lua-resty-redis/blob/master/README.markdown</a> 中，有这么一句：</p>
 <blockquote>
@@ -82,14 +427,206 @@
 <p>答案是不行，因为 nil 在 lua 中有其特殊意义，如果一个变量被设置为 nil，就等于说该变量未定义。那么，如果把 redis 查询为空的结果设置为 nil，就无法把“查询为空”和“未定义”区分开来了，例如在一个 table 中，一个 key 对应一个 value，如果将该 value 设置为 nil，则相当让 key value 对消失，这显然是不合理的。所以必须用一个 userdata 类型的独特的值来表示这种查询为空，但又不等同于未定义的变量，例如 <code>ngx.null</code>。同样的情况想必在 sql 的 lua 模块中也会出现，用来处理记录中键值查询为空的情况。</p>
 <h2 id="再说说-nil">再说说 nil</h2>
 <p>nil 是一种类型，该类型只有一个值，这个值也叫 nil。该值的作用只有一个，表示一个变量不存在。跟 C\C++ 等常规语言不同，”不存在“跟空、0 完全是两个概念。在 C 语言中，一个字符串如果为空，那么它就只有一个为 0 的  nul 结束符，如果对其进行逻辑判断，则是假。</p>
-<p>但 lua 中，只要一个变量不是 nil 类型或者是 boolean 类型中的 false，则对它进行逻辑判断，结果是真，即使该值是一个数字 0，或者是一个空字符串。</p></div>
+<p>但 lua 中，只要一个变量不是 nil 类型或者是 boolean 类型中的 false，则对它进行逻辑判断，结果是真，即使该值是一个数字 0，或者是一个空字符串。</p>
+    </div>
 
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2013-09-02
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          <a href="https://pureage.info/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/09/09/126.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">uniq、sort 不得不注意的尾部空格（trailing whitespaces)</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2013/08/30/124.html">
+            <span class="next-text nav-default">无题</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
   </article>
-</main>
-<footer>
-  <div>
-    <div>2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a><p>Powered by <a href="https://gohugo.io/">Hugo</a> with <a href="https://github.com/yanlinlin82/simple-style">Simple-Style</a></div>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2021
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
   </div>
-</footer>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

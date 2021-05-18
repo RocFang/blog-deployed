@@ -1,38 +1,350 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="strider (方鹏)">
-<meta name="description" content="一个伪文青兼程序员的自嗨
-    ">
-<meta name="keywords" content="博客, 技术, 文学, 电影">
-<meta name="referrer" content="always">
-<title>accept 与 epoll 惊群 - 纯真年代</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>accept 与 epoll 惊群 - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+1. 什么叫惊群现象 首先，我们看看维基百科对惊群的定义:
+ The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+ 简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<link rel="canonical" href="https://pureage.info/2015/12/22/thundering-herd.html" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="accept 与 epoll 惊群" />
+<meta property="og:description" content="今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+1. 什么叫惊群现象
+首先，我们看看维基百科对惊群的定义:
+
+The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+
+简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/2015/12/22/thundering-herd.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2015-12-22T07:01:00&#43;00:00" />
+<meta property="article:modified_time" content="2015-12-22T07:01:00&#43;00:00" />
+
+<meta itemprop="name" content="accept 与 epoll 惊群">
+<meta itemprop="description" content="今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+1. 什么叫惊群现象
+首先，我们看看维基百科对惊群的定义:
+
+The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+
+简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。"><meta itemprop="datePublished" content="2015-12-22T07:01:00&#43;00:00" />
+<meta itemprop="dateModified" content="2015-12-22T07:01:00&#43;00:00" />
+<meta itemprop="wordCount" content="3361">
+<meta itemprop="keywords" content="程序员,nginx," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="accept 与 epoll 惊群"/>
+<meta name="twitter:description" content="今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。
+1. 什么叫惊群现象
+首先，我们看看维基百科对惊群的定义:
+
+The thundering herd problem occurs when a large number of processes waiting for an event are awoken when that event occurs, but only one process is able to proceed at a time. After the processes wake up, they all demand the resource and a decision must be made as to which process can continue. After the decision is made, the remaining processes are put back to sleep, only to all wake up again to request access to the resource.
+This occurs repeatedly, until there are no more processes to be woken up. Because all the processes use system resources upon waking, it is more efficient if only one process was woken up at a time.
+This may render the computer unusable, but it can also be used as a technique if there is no other way to decide which process should continue (for example when programming with semaphores).
+
+简而言之，惊群现象（thundering herd）就是当多个进程和线程在同时阻塞等待同一个事件时，如果这个事件发生，会唤醒所有的进程，但最终只可能有一个进程/线程对该事件进行处理，其他进程/线程会在失败后重新休眠，这种性能浪费就是惊群。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
 <body>
-<header>
-  <div>
-    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
   </div>
-  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
-</header>
-<main>
-  <article>
-    <div class="title">
-  <h1>accept 与 epoll 惊群</h1>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-<div class="meta">
-  <div>2015-12-22</div>
-  <div>
-    <span><a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98">#程序员</a></span>
-    <span><a href="/tags/nginx">#nginx</a></span>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
     </div>
-  </div>
-<div class="content">
-  <p>今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。</p>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">accept 与 epoll 惊群</h1>
+      
+      <div class="post-meta">
+        <time datetime="2015-12-22" class="post-time">
+          2015-12-22
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>今天打开 OneNote，发现里面躺着一篇很久以前写的笔记，现在将它贴出来。</p>
 <h2 id="1-什么叫惊群现象">1. 什么叫惊群现象</h2>
 <p>首先，我们看看<a href="http://en.wikipedia.org/wiki/Thundering_herd_problem">维基百科对惊群的定义</a>:</p>
 <blockquote>
@@ -47,47 +359,93 @@
 <p>那么这个问题真的存在吗？</p>
 <p>事实上，历史上，Linux 的 accpet 确实存在惊群问题，但现在的内核都解决该问题了。即，当多个进程/线程都阻塞在对同一个 socket 的 accept 调用上时，当有一个新的连接到来，内核只会唤醒一个进程，其他进程保持休眠，压根就不会被唤醒。</p>
 <p>测试代码如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/types.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/socket.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;netinet/in.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/wait.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;stdio.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;string.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PROCESS_NUM 10  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#00f">int</span> <span style="color:#000">main</span>()  
-{  
-    <span style="color:#00f">int</span> <span style="color:#000">fd</span> = <span style="color:#000">socket</span>(<span style="color:#000">PF_INET</span>, <span style="color:#000">SOCK_STREAM</span>, <span style="color:#3af">0</span>);  
-    <span style="color:#00f">int</span> <span style="color:#000">connfd</span>;  
-    <span style="color:#00f">int</span> <span style="color:#000">pid</span>;  
-    <span style="color:#00f">char</span> <span style="color:#000">sendbuff</span>[<span style="color:#3af">1024</span>];  
-    <span style="color:#00f">struct</span> <span style="color:#000">sockaddr_in</span> <span style="color:#000">serveraddr</span>;  
-    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_family</span> = <span style="color:#000">AF_INET</span>;  
-    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_addr</span>.<span style="color:#000">s_addr</span> = <span style="color:#000">htonl</span>(<span style="color:#000">INADDR_ANY</span>);  
-    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_port</span> = <span style="color:#000">htons</span>(<span style="color:#3af">1234</span>);  
-    <span style="color:#000">bind</span>(<span style="color:#000">fd</span>, (<span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span>*)&amp;<span style="color:#000">serveraddr</span>, <span style="color:#00f">sizeof</span>(<span style="color:#000">serveraddr</span>));  
-    <span style="color:#000">listen</span>(<span style="color:#000">fd</span>, <span style="color:#3af">1024</span>);  
-    <span style="color:#00f">int</span> <span style="color:#000">i</span>;  
-    <span style="color:#00f">for</span>(<span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">PROCESS_NUM</span>; <span style="color:#000">i</span>++)  
-    {  
-        <span style="color:#00f">int</span> <span style="color:#000">pid</span> = <span style="color:#000">fork</span>();  
-        <span style="color:#00f">if</span>(<span style="color:#000">pid</span> == <span style="color:#3af">0</span>)  
-        {  
-            <span style="color:#00f">while</span>(<span style="color:#3af">1</span>)  
-            {  
-                <span style="color:#000">connfd</span> = <span style="color:#000">accept</span>(<span style="color:#000">fd</span>, (<span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span>*)<span style="color:#000">NULL</span>, <span style="color:#000">NULL</span>);  
-                <span style="color:#000">snprintf</span>(<span style="color:#000">sendbuff</span>, <span style="color:#00f">sizeof</span>(<span style="color:#000">sendbuff</span>), <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">accept PID is %d</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;netinet/in.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/wait.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;  </span><span class="cp">
+</span><span class="cp">#define PROCESS_NUM 10  
+</span><span class="cp"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">PF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
+    <span class="kt">int</span> <span class="n">connfd</span><span class="p">;</span>  
+    <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>  
+    <span class="kt">char</span> <span class="n">sendbuff</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>  
+    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">serveraddr</span><span class="p">;</span>  
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>  
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>  
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="mi">1234</span><span class="p">);</span>  
+    <span class="n">bind</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">serveraddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">serveraddr</span><span class="p">));</span>  
+    <span class="n">listen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>  
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>  
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">PROCESS_NUM</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="kt">int</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>  
+        <span class="k">if</span><span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  
+        <span class="p">{</span>  
+            <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+            <span class="p">{</span>  
+                <span class="n">connfd</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>  
+                <span class="n">snprintf</span><span class="p">(</span><span class="n">sendbuff</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sendbuff</span><span class="p">),</span> <span class="s">&#34;accept PID is %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>  
                 
-                <span style="color:#000">send</span>(<span style="color:#000">connfd</span>, <span style="color:#000">sendbuff</span>, <span style="color:#000">strlen</span>(<span style="color:#000">sendbuff</span>) + <span style="color:#3af">1</span>, <span style="color:#3af">0</span>);  
-                <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d accept success!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
-                <span style="color:#000">close</span>(<span style="color:#000">connfd</span>);  
-            }  
-        }  
-    }  
-    <span style="color:#00f">int</span> <span style="color:#000">status</span>;  
-    <span style="color:#000">wait</span>(&amp;<span style="color:#000">status</span>);  
-    <span style="color:#00f">return</span> <span style="color:#3af">0</span>;  
-} 
-</code></pre></div><p>当我们对该服务器发起连接请求（用 telnet/curl 等模拟）时，会看到只有一个进程被唤醒。</p>
+                <span class="n">send</span><span class="p">(</span><span class="n">connfd</span><span class="p">,</span> <span class="n">sendbuff</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">sendbuff</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
+                <span class="n">printf</span><span class="p">(</span><span class="s">&#34;process %d accept success!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>  
+                <span class="n">close</span><span class="p">(</span><span class="n">connfd</span><span class="p">);</span>  
+            <span class="p">}</span>  
+        <span class="p">}</span>  
+    <span class="p">}</span>  
+    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>  
+    <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>  
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+<span class="p">}</span> 
+</code></pre></td></tr></table>
+</div>
+</div><p>当我们对该服务器发起连接请求（用 telnet/curl 等模拟）时，会看到只有一个进程被唤醒。</p>
 <p>关于 accept 惊群的一些帖子或文章：</p>
 <ul>
 <li><a href="http://bbs.chinaunix.net/thread-946261-1-1.html">惊群问题在 linux 上可能是莫须有的问题</a></li>
@@ -101,155 +459,309 @@
 <p>那么，当新的连接到来时，是否每个阻塞在 epoll_wait 上的进程都会被唤醒呢？</p>
 <p>很多博客中提到，测试表明虽然 epoll_wait 不会像 accept 那样只唤醒一个进程/线程，但也不会把所有的进程/线程都唤醒。例如这篇文章：<a href="http://blog.163.com/pandalove@126/blog/static/9800324520122633515612">关于多进程 epoll 与 “惊群”问题</a>。</p>
 <p>为了验证这个问题，我自己写了一个测试程序：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/types.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/socket.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/epoll.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;netdb.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;string.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;stdio.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;unistd.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;fcntl.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;stdlib.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;errno.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">include</span> <span style="color:#888;font-style:italic">&lt;sys/wait.h&gt;  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define PROCESS_NUM 10  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span><span style="color:#00f">static</span> <span style="color:#00f">int</span>  
-<span style="color:#000">create_and_bind</span> (<span style="color:#00f">char</span> *<span style="color:#000">port</span>)  
-{  
-    <span style="color:#00f">int</span> <span style="color:#000">fd</span> = <span style="color:#000">socket</span>(<span style="color:#000">PF_INET</span>, <span style="color:#000">SOCK_STREAM</span>, <span style="color:#3af">0</span>);  
-    <span style="color:#00f">struct</span> <span style="color:#000">sockaddr_in</span> <span style="color:#000">serveraddr</span>;  
-    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_family</span> = <span style="color:#000">AF_INET</span>;  
-    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_addr</span>.<span style="color:#000">s_addr</span> = <span style="color:#000">htonl</span>(<span style="color:#000">INADDR_ANY</span>);  
-    <span style="color:#000">serveraddr</span>.<span style="color:#000">sin_port</span> = <span style="color:#000">htons</span>(<span style="color:#000">atoi</span>(<span style="color:#000">port</span>));  
-    <span style="color:#000">bind</span>(<span style="color:#000">fd</span>, (<span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span>*)&amp;<span style="color:#000">serveraddr</span>, <span style="color:#00f">sizeof</span>(<span style="color:#000">serveraddr</span>));  
-    <span style="color:#00f">return</span> <span style="color:#000">fd</span>;  
-}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/epoll.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;netdb.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;  </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;sys/wait.h&gt;  </span><span class="cp">
+</span><span class="cp">#define PROCESS_NUM 10  
+</span><span class="cp"></span><span class="k">static</span> <span class="kt">int</span>  
+<span class="nf">create_and_bind</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">port</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">PF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
+    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">serveraddr</span><span class="p">;</span>  
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>  
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>  
+    <span class="n">serveraddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="n">atoi</span><span class="p">(</span><span class="n">port</span><span class="p">));</span>  
+    <span class="n">bind</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">serveraddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">serveraddr</span><span class="p">));</span>  
+    <span class="k">return</span> <span class="n">fd</span><span class="p">;</span>  
+<span class="p">}</span>
 
-<span style="color:#00f">static</span> <span style="color:#00f">int</span>  
-<span style="color:#000">make_socket_non_blocking</span> (<span style="color:#00f">int</span> <span style="color:#000">sfd</span>)  
-{  
-    <span style="color:#00f">int</span> <span style="color:#000">flags</span>, <span style="color:#000">s</span>;  
+<span class="k">static</span> <span class="kt">int</span>  
+<span class="nf">make_socket_non_blocking</span> <span class="p">(</span><span class="kt">int</span> <span class="n">sfd</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">flags</span><span class="p">,</span> <span class="n">s</span><span class="p">;</span>  
  
-    <span style="color:#000">flags</span> = <span style="color:#000">fcntl</span> (<span style="color:#000">sfd</span>, <span style="color:#000">F_GETFL</span>, <span style="color:#3af">0</span>);  
-    <span style="color:#00f">if</span> (<span style="color:#000">flags</span> == -<span style="color:#3af">1</span>)  
-    {  
-        <span style="color:#000">perror</span> (<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">fcntl</span><span style="color:#5a2">&#34;</span>);  
-        <span style="color:#00f">return</span> -<span style="color:#3af">1</span>;  
-    }  
+    <span class="n">flags</span> <span class="o">=</span> <span class="n">fcntl</span> <span class="p">(</span><span class="n">sfd</span><span class="p">,</span> <span class="n">F_GETFL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">flags</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="n">perror</span> <span class="p">(</span><span class="s">&#34;fcntl&#34;</span><span class="p">);</span>  
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>  
+    <span class="p">}</span>  
  
-    <span style="color:#000">flags</span> |= <span style="color:#000">O_NONBLOCK</span>;  
-    <span style="color:#000">s</span> = <span style="color:#000">fcntl</span> (<span style="color:#000">sfd</span>, <span style="color:#000">F_SETFL</span>, <span style="color:#000">flags</span>);  
-    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
-    {  
-        <span style="color:#000">perror</span> (<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">fcntl</span><span style="color:#5a2">&#34;</span>);  
-        <span style="color:#00f">return</span> -<span style="color:#3af">1</span>;  
-    }  
+    <span class="n">flags</span> <span class="o">|=</span> <span class="n">O_NONBLOCK</span><span class="p">;</span>  
+    <span class="n">s</span> <span class="o">=</span> <span class="n">fcntl</span> <span class="p">(</span><span class="n">sfd</span><span class="p">,</span> <span class="n">F_SETFL</span><span class="p">,</span> <span class="n">flags</span><span class="p">);</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="n">perror</span> <span class="p">(</span><span class="s">&#34;fcntl&#34;</span><span class="p">);</span>  
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>  
+    <span class="p">}</span>  
  
-    <span style="color:#00f">return</span> <span style="color:#3af">0</span>;  
-}  
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+<span class="p">}</span>  
   
-<span style="color:#888;font-style:italic">#</span><span style="color:#888;font-style:italic">define MAXEVENTS 64  </span><span style="color:#888;font-style:italic">
-</span><span style="color:#888;font-style:italic"></span> 
-<span style="color:#00f">int</span>  
-<span style="color:#000">main</span> (<span style="color:#00f">int</span> <span style="color:#000">argc</span>, <span style="color:#00f">char</span> *<span style="color:#000">argv</span>[])  
-{  
-    <span style="color:#00f">int</span> <span style="color:#000">sfd</span>, <span style="color:#000">s</span>;  
-    <span style="color:#00f">int</span> <span style="color:#000">efd</span>;  
-    <span style="color:#00f">struct</span> <span style="color:#000">epoll_event</span> <span style="color:#000">event</span>;  
-    <span style="color:#00f">struct</span> <span style="color:#000">epoll_event</span> *<span style="color:#000">events</span>;  
+<span class="cp">#define MAXEVENTS 64  
+</span><span class="cp"></span> 
+<span class="kt">int</span>  
+<span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>  
+<span class="p">{</span>  
+    <span class="kt">int</span> <span class="n">sfd</span><span class="p">,</span> <span class="n">s</span><span class="p">;</span>  
+    <span class="kt">int</span> <span class="n">efd</span><span class="p">;</span>  
+    <span class="k">struct</span> <span class="n">epoll_event</span> <span class="n">event</span><span class="p">;</span>  
+    <span class="k">struct</span> <span class="n">epoll_event</span> <span class="o">*</span><span class="n">events</span><span class="p">;</span>  
  
-    <span style="color:#000">sfd</span> = <span style="color:#000">create_and_bind</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">1234</span><span style="color:#5a2">&#34;</span>);  
-    <span style="color:#00f">if</span> (<span style="color:#000">sfd</span> == -<span style="color:#3af">1</span>)  
-        <span style="color:#000">abort</span> ();  
+    <span class="n">sfd</span> <span class="o">=</span> <span class="n">create_and_bind</span><span class="p">(</span><span class="s">&#34;1234&#34;</span><span class="p">);</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">sfd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+        <span class="n">abort</span> <span class="p">();</span>  
  
-    <span style="color:#000">s</span> = <span style="color:#000">make_socket_non_blocking</span> (<span style="color:#000">sfd</span>);  
-    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
-        <span style="color:#000">abort</span> ();  
+    <span class="n">s</span> <span class="o">=</span> <span class="n">make_socket_non_blocking</span> <span class="p">(</span><span class="n">sfd</span><span class="p">);</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+        <span class="n">abort</span> <span class="p">();</span>  
  
-    <span style="color:#000">s</span> = <span style="color:#000">listen</span>(<span style="color:#000">sfd</span>, <span style="color:#000">SOMAXCONN</span>);  
-    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
-    {  
-        <span style="color:#000">perror</span> (<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">listen</span><span style="color:#5a2">&#34;</span>);  
-        <span style="color:#000">abort</span> ();  
-    }  
+    <span class="n">s</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">sfd</span><span class="p">,</span> <span class="n">SOMAXCONN</span><span class="p">);</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="n">perror</span> <span class="p">(</span><span class="s">&#34;listen&#34;</span><span class="p">);</span>  
+        <span class="n">abort</span> <span class="p">();</span>  
+    <span class="p">}</span>  
  
-    <span style="color:#000">efd</span> = <span style="color:#000">epoll_create</span>(<span style="color:#000">MAXEVENTS</span>);  
-    <span style="color:#00f">if</span> (<span style="color:#000">efd</span> == -<span style="color:#3af">1</span>)  
-    {  
-        <span style="color:#000">perror</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">epoll_create</span><span style="color:#5a2">&#34;</span>);  
-        <span style="color:#000">abort</span>();  
-    }  
+    <span class="n">efd</span> <span class="o">=</span> <span class="n">epoll_create</span><span class="p">(</span><span class="n">MAXEVENTS</span><span class="p">);</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">efd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;epoll_create&#34;</span><span class="p">);</span>  
+        <span class="n">abort</span><span class="p">();</span>  
+    <span class="p">}</span>  
  
-    <span style="color:#000">event</span>.<span style="color:#000">data</span>.<span style="color:#000">fd</span> = <span style="color:#000">sfd</span>;  
-    <span style="color:#888;font-style:italic">//event.events = EPOLLIN | EPOLLET;  
-</span><span style="color:#888;font-style:italic"></span>    <span style="color:#000">event</span>.<span style="color:#000">events</span> = <span style="color:#000">EPOLLIN</span>;  
-    <span style="color:#000">s</span> = <span style="color:#000">epoll_ctl</span>(<span style="color:#000">efd</span>, <span style="color:#000">EPOLL_CTL_ADD</span>, <span style="color:#000">sfd</span>, &amp;<span style="color:#000">event</span>);  
-    <span style="color:#00f">if</span> (<span style="color:#000">s</span> == -<span style="color:#3af">1</span>)  
-    {  
-        <span style="color:#000">perror</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">epoll_ctl</span><span style="color:#5a2">&#34;</span>);  
-        <span style="color:#000">abort</span>();  
-    }  
+    <span class="n">event</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span> <span class="o">=</span> <span class="n">sfd</span><span class="p">;</span>  
+    <span class="c1">//event.events = EPOLLIN | EPOLLET;  
+</span><span class="c1"></span>    <span class="n">event</span><span class="p">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">EPOLLIN</span><span class="p">;</span>  
+    <span class="n">s</span> <span class="o">=</span> <span class="n">epoll_ctl</span><span class="p">(</span><span class="n">efd</span><span class="p">,</span> <span class="n">EPOLL_CTL_ADD</span><span class="p">,</span> <span class="n">sfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">event</span><span class="p">);</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="n">perror</span><span class="p">(</span><span class="s">&#34;epoll_ctl&#34;</span><span class="p">);</span>  
+        <span class="n">abort</span><span class="p">();</span>  
+    <span class="p">}</span>  
  
-    <span style="color:#888;font-style:italic">/* Buffer where events are returned */</span>  
-    <span style="color:#000">events</span> = <span style="color:#000">calloc</span>(<span style="color:#000">MAXEVENTS</span>, <span style="color:#00f">sizeof</span> <span style="color:#000">event</span>);  
-	        <span style="color:#00f">int</span> <span style="color:#000">k</span>;  
-    <span style="color:#00f">for</span>(<span style="color:#000">k</span> = <span style="color:#3af">0</span>; <span style="color:#000">k</span> &lt; <span style="color:#000">PROCESS_NUM</span>; <span style="color:#000">k</span>++)  
-    {  
-        <span style="color:#00f">int</span> <span style="color:#000">pid</span> = <span style="color:#000">fork</span>();  
-        <span style="color:#00f">if</span>(<span style="color:#000">pid</span> == <span style="color:#3af">0</span>)  
-        {  
+    <span class="cm">/* Buffer where events are returned */</span>  
+    <span class="n">events</span> <span class="o">=</span> <span class="n">calloc</span><span class="p">(</span><span class="n">MAXEVENTS</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">event</span><span class="p">);</span>  
+	        <span class="kt">int</span> <span class="n">k</span><span class="p">;</span>  
+    <span class="k">for</span><span class="p">(</span><span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">PROCESS_NUM</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>  
+    <span class="p">{</span>  
+        <span class="kt">int</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>  
+        <span class="k">if</span><span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  
+        <span class="p">{</span>  
  
-            <span style="color:#888;font-style:italic">/* The event loop */</span>  
-            <span style="color:#00f">while</span> (<span style="color:#3af">1</span>)  
-            {  
-                <span style="color:#00f">int</span> <span style="color:#000">n</span>, <span style="color:#000">i</span>;  
-                <span style="color:#000">n</span> = <span style="color:#000">epoll_wait</span>(<span style="color:#000">efd</span>, <span style="color:#000">events</span>, <span style="color:#000">MAXEVENTS</span>, -<span style="color:#3af">1</span>);  
-                <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d return from epoll_wait!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
-	                                   <span style="color:#888;font-style:italic">/* sleep here is very important!*/</span>  
-                <span style="color:#888;font-style:italic">//sleep(2);  
-</span><span style="color:#888;font-style:italic"></span>	                                   <span style="color:#00f">for</span> (<span style="color:#000">i</span> = <span style="color:#3af">0</span>; <span style="color:#000">i</span> &lt; <span style="color:#000">n</span>; <span style="color:#000">i</span>++)  
-                {  
-                    <span style="color:#00f">if</span> ((<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">events</span> &amp; <span style="color:#000">EPOLLERR</span>) || (<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">events</span> &amp; <span style="color:#000">EPOLLHUP</span>) || (!(<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">events</span> &amp;                                    <span style="color:#000">EPOLLIN</span>)))  
-                    {  
-                        <span style="color:#888;font-style:italic">/* An error has occured on this fd, or the socket is not  
-</span><span style="color:#888;font-style:italic">                        ready for reading (why were we notified then?) */</span>  
-                        <span style="color:#000">fprintf</span> (<span style="color:#000">stderr</span>, <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">epoll error</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>);  
-                        <span style="color:#000">close</span> (<span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">data</span>.<span style="color:#000">fd</span>);  
-                        <span style="color:#00f">continue</span>;  
-                    }  
-                    <span style="color:#00f">else</span> <span style="color:#00f">if</span> (<span style="color:#000">sfd</span> == <span style="color:#000">events</span>[<span style="color:#000">i</span>].<span style="color:#000">data</span>.<span style="color:#000">fd</span>)  
-                    {  
-                        <span style="color:#888;font-style:italic">/* We have a notification on the listening socket, which  
-</span><span style="color:#888;font-style:italic">                        means one or more incoming connections. */</span>  
-                        <span style="color:#00f">struct</span> <span style="color:#000">sockaddr</span> <span style="color:#000">in_addr</span>;  
-                        <span style="color:#000">socklen_t</span> <span style="color:#000">in_len</span>;  
-                        <span style="color:#00f">int</span> <span style="color:#000">infd</span>;  
-                        <span style="color:#00f">char</span> <span style="color:#000">hbuf</span>[<span style="color:#000">NI_MAXHOST</span>], <span style="color:#000">sbuf</span>[<span style="color:#000">NI_MAXSERV</span>];  
+            <span class="cm">/* The event loop */</span>  
+            <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+            <span class="p">{</span>  
+                <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>  
+                <span class="n">n</span> <span class="o">=</span> <span class="n">epoll_wait</span><span class="p">(</span><span class="n">efd</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">MAXEVENTS</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>  
+                <span class="n">printf</span><span class="p">(</span><span class="s">&#34;process %d return from epoll_wait!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>  
+	                                   <span class="cm">/* sleep here is very important!*/</span>  
+                <span class="c1">//sleep(2);  
+</span><span class="c1"></span>	                                   <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>  
+                <span class="p">{</span>  
+                    <span class="k">if</span> <span class="p">((</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">events</span> <span class="o">&amp;</span> <span class="n">EPOLLERR</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">events</span> <span class="o">&amp;</span> <span class="n">EPOLLHUP</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">events</span> <span class="o">&amp;</span>                                    <span class="n">EPOLLIN</span><span class="p">)))</span>  
+                    <span class="p">{</span>  
+                        <span class="cm">/* An error has occured on this fd, or the socket is not  
+</span><span class="cm">                        ready for reading (why were we notified then?) */</span>  
+                        <span class="n">fprintf</span> <span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;epoll error</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>  
+                        <span class="n">close</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>  
+                        <span class="k">continue</span><span class="p">;</span>  
+                    <span class="p">}</span>  
+                    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">sfd</span> <span class="o">==</span> <span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">data</span><span class="p">.</span><span class="n">fd</span><span class="p">)</span>  
+                    <span class="p">{</span>  
+                        <span class="cm">/* We have a notification on the listening socket, which  
+</span><span class="cm">                        means one or more incoming connections. */</span>  
+                        <span class="k">struct</span> <span class="n">sockaddr</span> <span class="n">in_addr</span><span class="p">;</span>  
+                        <span class="n">socklen_t</span> <span class="n">in_len</span><span class="p">;</span>  
+                        <span class="kt">int</span> <span class="n">infd</span><span class="p">;</span>  
+                        <span class="kt">char</span> <span class="n">hbuf</span><span class="p">[</span><span class="n">NI_MAXHOST</span><span class="p">],</span> <span class="n">sbuf</span><span class="p">[</span><span class="n">NI_MAXSERV</span><span class="p">];</span>  
  
-                        <span style="color:#000">in_len</span> = <span style="color:#00f">sizeof</span> <span style="color:#000">in_addr</span>;  
-                        <span style="color:#000">infd</span> = <span style="color:#000">accept</span>(<span style="color:#000">sfd</span>, &amp;<span style="color:#000">in_addr</span>, &amp;<span style="color:#000">in_len</span>);  
-                        <span style="color:#00f">if</span> (<span style="color:#000">infd</span> == -<span style="color:#3af">1</span>)  
-                        {  
-                            <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d accept failed!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
-                            <span style="color:#00f">break</span>;  
-                        }  
-                        <span style="color:#000">printf</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">process %d accept successed!</span><span style="color:#5a2">\n</span><span style="color:#5a2">&#34;</span>, <span style="color:#000">getpid</span>());  
+                        <span class="n">in_len</span> <span class="o">=</span> <span class="k">sizeof</span> <span class="n">in_addr</span><span class="p">;</span>  
+                        <span class="n">infd</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">sfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in_addr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in_len</span><span class="p">);</span>  
+                        <span class="k">if</span> <span class="p">(</span><span class="n">infd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
+                        <span class="p">{</span>  
+                            <span class="n">printf</span><span class="p">(</span><span class="s">&#34;process %d accept failed!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>  
+                            <span class="k">break</span><span class="p">;</span>  
+                        <span class="p">}</span>  
+                        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;process %d accept successed!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">getpid</span><span class="p">());</span>  
  
-                        <span style="color:#888;font-style:italic">/* Make the incoming socket non-blocking and add it to the  
-</span><span style="color:#888;font-style:italic">                        list of fds to monitor. */</span>  
-                        <span style="color:#000">close</span>(<span style="color:#000">infd</span>); 
-                    }  
-                }  
-            }  
-        }  
-    }  
-    <span style="color:#00f">int</span> <span style="color:#000">status</span>;  
-    <span style="color:#000">wait</span>(&amp;<span style="color:#000">status</span>);  
-    <span style="color:#000">free</span> (<span style="color:#000">events</span>);  
-    <span style="color:#000">close</span> (<span style="color:#000">sfd</span>);  
-    <span style="color:#00f">return</span> <span style="color:#000">EXIT_SUCCESS</span>;  
-}  
-</code></pre></div><p>发现确实如上面那篇博客里所说，当我模拟发起一个请求时，只有一个或少数几个进程被唤醒了。</p>
+                        <span class="cm">/* Make the incoming socket non-blocking and add it to the  
+</span><span class="cm">                        list of fds to monitor. */</span>  
+                        <span class="n">close</span><span class="p">(</span><span class="n">infd</span><span class="p">);</span> 
+                    <span class="p">}</span>  
+                <span class="p">}</span>  
+            <span class="p">}</span>  
+        <span class="p">}</span>  
+    <span class="p">}</span>  
+    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>  
+    <span class="n">wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>  
+    <span class="n">free</span> <span class="p">(</span><span class="n">events</span><span class="p">);</span>  
+    <span class="n">close</span> <span class="p">(</span><span class="n">sfd</span><span class="p">);</span>  
+    <span class="k">return</span> <span class="n">EXIT_SUCCESS</span><span class="p">;</span>  
+<span class="p">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>发现确实如上面那篇博客里所说，当我模拟发起一个请求时，只有一个或少数几个进程被唤醒了。</p>
 <p>也就是说，到目前为止，还没有得到一个确定的答案。但后来，在下面这篇博客中看到这样一个评论：http://blog.csdn.net/spch2008/article/details/18301357</p>
 <blockquote>
 <p>这个总结，需要进一步阐述，你的实验，看上去是只有 4 个进程唤醒了，而事实上，其余进程没有被唤醒的原因是你的某个进程已经处理完这个 accept，内核队列上已经没有这个事件，无需唤醒其他进程。你可以在 epoll 获知这个 accept 事件的时候，不要立即去处理，而是 sleep 下，这样所有的进程都会被唤起。</p>
@@ -284,14 +796,206 @@
 <li>说Nginx 解决了 epoll_wait 惊群问题，也是不对的，它只是控制是否将监听套接字加入到 epoll  中。监听套接字只在一个子进程的 epoll 中，当新的连接来到时，其他子进程当然不会惊醒了。</li>
 </ul>
 <h2 id="7-其他参考文章">7. 其他参考文章</h2>
-<p><a href="http://blog.csdn.net/russell_tao/article/details/7204260">“惊群”，看看 nginx 是怎么解决它的</a></p></div>
+<p><a href="http://blog.csdn.net/russell_tao/article/details/7204260">“惊群”，看看 nginx 是怎么解决它的</a></p>
+    </div>
 
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2015-12-22
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          <a href="https://pureage.info/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2015/12/26/the-stars.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">雾霾感怀</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2015/12/20/meet-an-old-friend.html">
+            <span class="next-text nav-default">小聚，小感</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
   </article>
-</main>
-<footer>
-  <div>
-    <div>2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a><p>Powered by <a href="https://gohugo.io/">Hugo</a> with <a href="https://github.com/yanlinlin82/simple-style">Simple-Style</a></div>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2021
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
   </div>
-</footer>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

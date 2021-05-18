@@ -1,47 +1,401 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="strider (方鹏)">
-<meta name="description" content="一个伪文青兼程序员的自嗨
-    ">
-<meta name="keywords" content="博客, 技术, 文学, 电影">
-<meta name="referrer" content="always">
-<title>在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用 - 纯真年代</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用 - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="本文主要内容参考自：
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+使用 Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，Python 在 linux 中属于基础组件，各发行版会默认安装一个 Python，例如 CentOS5.5 中的是 2.4.3，而CentOS6.2 中是 2.6.6。
+以 CentOS6.2 为例，在 /usr/bin 目录下有一个 Python 和一个 Python2.6。这两者有什么区别呢：
+1 2 3 4  &amp;gt;[root@vps1 ~]# ls -l /usr/bin/python -rwxr-xr-x 2 root root 3592 Dec 7 2011 /usr/bin/python [root@vps1 ~]# ls -l /usr/bin/python2.6 -rwxr-xr-x 2 root root 3592 Dec 7 2011 /usr/bin/python2.6   " />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<link rel="canonical" href="https://pureage.info/2013/11/14/132.html" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用" />
+<meta property="og:description" content="本文主要内容参考自：
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+使用 Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，Python 在 linux 中属于基础组件，各发行版会默认安装一个 Python，例如 CentOS5.5 中的是 2.4.3，而CentOS6.2 中是 2.6.6。
+以 CentOS6.2 为例，在 /usr/bin 目录下有一个 Python 和一个 Python2.6。这两者有什么区别呢：
+
+
+1
+2
+3
+4
+
+
+&gt;[root@vps1 ~]# ls   -l /usr/bin/python  
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6 
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/2013/11/14/132.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2013-11-14T11:20:00&#43;00:00" />
+<meta property="article:modified_time" content="2013-11-14T11:20:00&#43;00:00" />
+
+<meta itemprop="name" content="在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用">
+<meta itemprop="description" content="本文主要内容参考自：
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+使用 Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，Python 在 linux 中属于基础组件，各发行版会默认安装一个 Python，例如 CentOS5.5 中的是 2.4.3，而CentOS6.2 中是 2.6.6。
+以 CentOS6.2 为例，在 /usr/bin 目录下有一个 Python 和一个 Python2.6。这两者有什么区别呢：
+
+
+1
+2
+3
+4
+
+
+&gt;[root@vps1 ~]# ls   -l /usr/bin/python  
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6 
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
+
+
+"><meta itemprop="datePublished" content="2013-11-14T11:20:00&#43;00:00" />
+<meta itemprop="dateModified" content="2013-11-14T11:20:00&#43;00:00" />
+<meta itemprop="wordCount" content="2271">
+<meta itemprop="keywords" content="程序员,python," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用"/>
+<meta name="twitter:description" content="本文主要内容参考自：
+http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691
+使用 Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。
+这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，Python 在 linux 中属于基础组件，各发行版会默认安装一个 Python，例如 CentOS5.5 中的是 2.4.3，而CentOS6.2 中是 2.6.6。
+以 CentOS6.2 为例，在 /usr/bin 目录下有一个 Python 和一个 Python2.6。这两者有什么区别呢：
+
+
+1
+2
+3
+4
+
+
+&gt;[root@vps1 ~]# ls   -l /usr/bin/python  
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
+[root@vps1 ~]# ls   -l /usr/bin/python2.6 
+-rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
+
+
+"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
 <body>
-<header>
-  <div>
-    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
   </div>
-  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
-</header>
-<main>
-  <article>
-    <div class="title">
-  <h1>在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用</h1>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-<div class="meta">
-  <div>2013-11-14</div>
-  <div>
-    <span><a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98">#程序员</a></span>
-    <span><a href="/tags/python">#python</a></span>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
     </div>
-  </div>
-<div class="content">
-  <p>本文主要内容参考自：</p>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">在 CentOS6.2 下用 virtualenv 分别创建 python2.7.6 和 python3.3.2 的应用</h1>
+      
+      <div class="post-meta">
+        <time datetime="2013-11-14" class="post-time">
+          2013-11-14
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>本文主要内容参考自：</p>
 <p><a href="http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691">http://toomuchdata.com/2012/06/25/how-to-install-python-2-7-3-on-centos-6-2/#comment-5691</a></p>
 <p>使用 Python，一个绕不过去的问题，就是其版本繁多的问题。首先是版本选择问题，这个不在我们讨论的范围之内，官网上在显眼的位置做了一些说明和建议：Python2 or Python3。</p>
 <p>这里我们假设知道自己该选哪个或哪几个版本了。这里就会遇到第二个问题，Python 在 linux 中属于基础组件，各发行版会默认安装一个 Python，例如 CentOS5.5 中的是 2.4.3，而CentOS6.2 中是 2.6.6。</p>
 <p>以 CentOS6.2 为例，在 /usr/bin 目录下有一个 Python 和一个 Python2.6。这两者有什么区别呢：</p>
-<pre><code>&gt;[root@vps1 ~]# ls   -l /usr/bin/python  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;[root@vps1 ~]# ls   -l /usr/bin/python  
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python
 [root@vps1 ~]# ls   -l /usr/bin/python2.6 
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
-</code></pre><p>可以看到两个都不是软链接。通过计算一下 md5 值，可以发现这两者一模一样。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到两个都不是软链接。通过计算一下 md5 值，可以发现这两者一模一样。</p>
 <p>因此，/usr/bin/python 实际上是 /usr/bin/python2.6 的一个拷贝。如果我们此时想安装一个 python3.3，应该怎么做呢？首先绝对不要想着先去卸载已有的 Python，曾经 <code>apt-get remove python</code> 或者 <code>yum remove python</code> 的人肯定会会心一笑。最通常的做法，下载到 python3.3的源码来编译。</p>
 <p>在 CentOS 下，通过 <code>./configure&amp;&amp;make&amp;&amp;make install</code> 安装后，Python 会被安装到 /usr/local/bin 目录下，可能同时有 python、python3、python3.3。其中 python3.3 和 python 是两个一模一样h的可执行文件，而 python3 则是一个指向 /usr/local/bin/python 的软链接。这样带来的问题是，在 /usr/bin 和 /usr/local/bin 目录下，都有一个名为 python 的可执行文件。虽然通过环境变量的可以确定在 shell 中执行 python 时到底是执行了哪个目录下的 python，但总归显的很麻烦，时间长了更容易引起混乱。</p>
 <p>这个仅仅是安装一个 Python 时遇到的问题，现实情况下，你可能同时跑着两个版本的
@@ -50,12 +404,34 @@ Django，每个版本的 Django 依赖的 Python 又不同，通过分别指定�
 <p>virtualenv 的目的就是让每个 Python 应用程序和自己依赖的 Python 解释器及 Python 库，各自隔离开来，互相不影响，更不会破坏系统自带的 Python 环境。</p>
 <p>下面就来详细的演示 virtualenv 的操作过程：</p>
 <p><strong>1. 系统环境说明</strong></p>
-<pre><code>操作系统：CentOS6.2  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">操作系统：CentOS6.2  
 \# cat /etc/issue  
 CentOS release 6.2 (Final)  
 Kernel \r on an \m  
-</code></pre><p>系统自带python环境：</p>
-<pre><code>&gt;\# python -V  
+</code></pre></td></tr></table>
+</div>
+</div><p>系统自带python环境：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">&gt;\# python -V  
 Python 2.6.6  
 |# whereis python  
 python: /usr/bin/python /usr/bin/python2.6 /usr/lib/python2.6 /usr/include/python2.6 /usr/share/man/man1/python.1.gz  
@@ -63,118 +439,489 @@ python: /usr/bin/python /usr/bin/python2.6 /usr/lib/python2.6 /usr/include/pytho
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python  
 lrwxrwxrwx 1 root root    6 Nov 12 06:29 /usr/bin/python2 -&gt; python  
 -rwxr-xr-x 2 root root 3592 Dec  7  2011 /usr/bin/python2.6  
-</code></pre><p><strong>2. 操作预期</strong></p>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>2. 操作预期</strong></p>
 <p>分别安装最新版的 python2.7 和 python3.3，并各自安装一个 flask 框架，互相隔离。</p>
 <p><strong>3. 操作过程</strong></p>
 <p>（1）方便起见，首先安装一些其它常用的组件：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">yum groupinstall <span style="color:#5a2">&#34;Development tools&#34;</span>  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">yum groupinstall <span class="s2">&#34;Development tools&#34;</span>  
 yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel  
-</code></pre></div><p>（2）下载和安装 python2.7.6</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># mkdir -p /home/fangpeng/sources</span>  
-<span style="color:#888;font-style:italic"># cd /home/fangpeng/sources/</span>  
-<span style="color:#888;font-style:italic"># wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz</span>  
-<span style="color:#888;font-style:italic">#tar xvfz Python-2.7.6.tgz</span>  
-<span style="color:#888;font-style:italic">#cd Python-2.7.6</span>  
-<span style="color:#888;font-style:italic"># ./configure --prefix=/usr/local</span>  
-<span style="color:#888;font-style:italic"># make &amp;&amp; make altinstall</span>  
-</code></pre></div><p>注意，是 <code>make altinstall</code>，而不是 <code>make install</code>。这样可以避免造成系统存在多个名为 Python，实际版本却各异的文件。安装完毕后，/usr/bin 下系统自带的几个 Python 文件都没有任何影响。在 /usr/local/bin 目录下，则多了一个 python2.7 和 python2.7-config。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>（2）下载和安装 python2.7.6</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># mkdir -p /home/fangpeng/sources  </span>
+<span class="c1"># cd /home/fangpeng/sources/  </span>
+<span class="c1"># wget http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz  </span>
+<span class="c1">#tar xvfz Python-2.7.6.tgz  </span>
+<span class="c1">#cd Python-2.7.6  </span>
+<span class="c1"># ./configure --prefix=/usr/local  </span>
+<span class="c1"># make &amp;&amp; make altinstall  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>注意，是 <code>make altinstall</code>，而不是 <code>make install</code>。这样可以避免造成系统存在多个名为 Python，实际版本却各异的文件。安装完毕后，/usr/bin 下系统自带的几个 Python 文件都没有任何影响。在 /usr/local/bin 目录下，则多了一个 python2.7 和 python2.7-config。</p>
 <p>（3）下载和安装 python3.3.2</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/sources</span>  
-<span style="color:#888;font-style:italic"># wget http://www.python.org/ftp/python/3.3.2/Python-3.3.2.tgz</span>  
-<span style="color:#888;font-style:italic">#tar xvfz Python-3.3.2.tgz</span>  
-<span style="color:#888;font-style:italic"># cd Python-3.3.2</span>  
-<span style="color:#888;font-style:italic"># ./configure --prefix=/usr/local</span>  
-<span style="color:#888;font-style:italic"># make &amp;&amp; make altinstall</span>  
-</code></pre></div><p>同样注意，是 <code>make altinstall</code>，而非 <code>make install</code>。安装完成后，在 /usr/local/bin 目录下，多出三个文件，分别是 python3.3m、python3.3 和 python3.3-config，其中 python3.3 和 python3.3m 是同一个文件的两份拷贝。对系统自带的 python2.6.6 和上一步安装的 python2.7.6 无影响。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># cd /home/fangpeng/sources  </span>
+<span class="c1"># wget http://www.python.org/ftp/python/3.3.2/Python-3.3.2.tgz  </span>
+<span class="c1">#tar xvfz Python-3.3.2.tgz  </span>
+<span class="c1"># cd Python-3.3.2  </span>
+<span class="c1"># ./configure --prefix=/usr/local  </span>
+<span class="c1"># make &amp;&amp; make altinstall  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>同样注意，是 <code>make altinstall</code>，而非 <code>make install</code>。安装完成后，在 /usr/local/bin 目录下，多出三个文件，分别是 python3.3m、python3.3 和 python3.3-config，其中 python3.3 和 python3.3m 是同一个文件的两份拷贝。对系统自带的 python2.6.6 和上一步安装的 python2.7.6 无影响。</p>
 <p>（4）下载 distribute</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/sources</span>  
-<span style="color:#888;font-style:italic"># wget --no-check-certificate https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz</span>  
-</code></pre></div><p>（5）为 python2.7.6 安装 easy_install</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># tar xvfz distribute-0.6.49.tar.gz</span>  
-<span style="color:#888;font-style:italic"># cd distribute-0.6.49</span>  
-<span style="color:#888;font-style:italic"># python2.7 setup.py  install</span>  
-</code></pre></div><p>（6）为 python3.3.2 安装easy_install</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/sources/</span>  
-<span style="color:#888;font-style:italic"># rm -rf distribute-0.6.49</span>  
-<span style="color:#888;font-style:italic"># tar xvfz distribute-0.6.49.tar.gz</span>  
-<span style="color:#888;font-style:italic"># cd distribute-0.6.49</span>  
-<span style="color:#888;font-style:italic"># python3.3 setup.py install</span>  
-</code></pre></div><p>执行完（5）和（6）后，在 /usr/local/bin 目录下，会多出三个文件，分别是 easy_install、easy_install-2.7和easy_install-3.3。其中，easy_install 在两次安装时都会生成，因此会存在覆盖。我们直接使用 easy_install-2.7 和 easy_install-3.3 即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># cd /home/fangpeng/sources  </span>
+<span class="c1"># wget --no-check-certificate https://pypi.python.org/packages/source/d/distribute/distribute-0.6.49.tar.gz  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（5）为 python2.7.6 安装 easy_install</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># tar xvfz distribute-0.6.49.tar.gz  </span>
+<span class="c1"># cd distribute-0.6.49  </span>
+<span class="c1"># python2.7 setup.py  install  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（6）为 python3.3.2 安装easy_install</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># cd /home/fangpeng/sources/  </span>
+<span class="c1"># rm -rf distribute-0.6.49  </span>
+<span class="c1"># tar xvfz distribute-0.6.49.tar.gz  </span>
+<span class="c1"># cd distribute-0.6.49  </span>
+<span class="c1"># python3.3 setup.py install  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>执行完（5）和（6）后，在 /usr/local/bin 目录下，会多出三个文件，分别是 easy_install、easy_install-2.7和easy_install-3.3。其中，easy_install 在两次安装时都会生成，因此会存在覆盖。我们直接使用 easy_install-2.7 和 easy_install-3.3 即可。</p>
 <p>（7）为 python2.7 安装 virtualenv</p>
 <p>终于到了virtualenv了，这才是我们今天的主角。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">easy_install-2.7 virtualenv  
-</code></pre></div><p>（8）为 python3.3 安装 virtualenv</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">easy_install-3.3  virtualenv  
-</code></pre></div><p>至此，我们分别为 python2.7.6 和 python3.3.2 安装了 virtualenv。同样在 /usr/local/bin 目录下多出了三个文件，分别是 virtualenv、virtualenv-2.7 和 virtualenv-3.3。其中，virtualenv 在两次安装时都会生成，因此会存在覆盖。我们直接使用 virtualenv-2.7 和 virtualenv-3.3 即可。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">easy_install-2.7 virtualenv  
+</code></pre></td></tr></table>
+</div>
+</div><p>（8）为 python3.3 安装 virtualenv</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">easy_install-3.3  virtualenv  
+</code></pre></td></tr></table>
+</div>
+</div><p>至此，我们分别为 python2.7.6 和 python3.3.2 安装了 virtualenv。同样在 /usr/local/bin 目录下多出了三个文件，分别是 virtualenv、virtualenv-2.7 和 virtualenv-3.3。其中，virtualenv 在两次安装时都会生成，因此会存在覆盖。我们直接使用 virtualenv-2.7 和 virtualenv-3.3 即可。</p>
 <p>下面用 web 框架 flask 的安装，来演示 virtualenv 的使用。创建两个 flask 的沙盒，其中一个依赖的是 python2.7.6，另一个依赖 python3.3.2。</p>
 <p>（1）创建相应的工程目录</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># mkdir -p /home/fangpeng/project/hello_flask</span>  
-<span style="color:#888;font-style:italic"># cd /home/fangpeng/project/hello_flask/</span>  
-<span style="color:#888;font-style:italic"># mkdir python2.7 python3.3</span>  
-</code></pre></div><p>（2）创建基于 python2.7 的 flask 工程</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># cd /home/fangpeng/project/hello_flask/python2.7/</span>  
-<span style="color:#888;font-style:italic"># virtualenv-2.7 --distribute env</span>  
-Using base prefix <span style="color:#5a2">&#39;/usr/local&#39;</span>  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># mkdir -p /home/fangpeng/project/hello_flask  </span>
+<span class="c1"># cd /home/fangpeng/project/hello_flask/  </span>
+<span class="c1"># mkdir python2.7 python3.3  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（2）创建基于 python2.7 的 flask 工程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># cd /home/fangpeng/project/hello_flask/python2.7/  </span>
+<span class="c1"># virtualenv-2.7 --distribute env  </span>
+Using base prefix <span class="s1">&#39;/usr/local&#39;</span>  
 New python executable in env/bin/python3.3  
 Also creating executable in env/bin/python  
 Installing Setuptools..................................................................................................................................done.  
 Installing Pip.............................................................................................................................................done.  
-<span style="color:#888;font-style:italic"># source env/bin/activate</span>  
-(env)# 
-(env)<span style="color:#888;font-style:italic"># python -V</span>  
+<span class="c1"># source env/bin/activate  </span>
+<span class="o">(</span>env<span class="o">)</span><span class="c1"># </span>
+<span class="o">(</span>env<span class="o">)</span><span class="c1"># python -V  </span>
 Python 2.7.6  
-<span style="color:#888;font-style:italic"># pip install flask</span>  
-(env)<span style="color:#888;font-style:italic"># vim hello.py</span>  
-</code></pre></div><p>hello.py 内容如下：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#00f">from</span> <span style="color:#000">flask</span> <span style="color:#00f">import</span> <span style="color:#000">Flask</span>  
-<span style="color:#000">app</span>=<span style="color:#000">Flask</span>(<span style="color:#000">__name__</span>)  
+<span class="c1"># pip install flask  </span>
+<span class="o">(</span>env<span class="o">)</span><span class="c1"># vim hello.py  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>hello.py 内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>  
+<span class="n">app</span><span class="o">=</span><span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>  
   
-<span style="color:#000">@app.route</span>(<span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">/hello</span><span style="color:#5a2">&#39;</span>)  
-<span style="color:#00f">def</span> <span style="color:#000">hello</span>():  
-        <span style="color:#00f">return</span> <span style="color:#5a2"></span><span style="color:#5a2">&#34;</span><span style="color:#5a2">Hello,Flask!</span><span style="color:#5a2">&#34;</span>  
-<span style="color:#00f">if</span> <span style="color:#000">__name__</span>==<span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">__main__</span><span style="color:#5a2">&#39;</span>:  
-        <span style="color:#000">app</span>.<span style="color:#000">run</span>(<span style="color:#000">host</span>=<span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0.0.0.0</span><span style="color:#5a2">&#39;</span>,<span style="color:#000">debug</span>=<span style="color:#000">True</span>)  
-</code></pre></div><p>执行hello.py：</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">(env)<span style="color:#888;font-style:italic"># python hello.py</span> 
+<span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/hello&#39;</span><span class="p">)</span>  
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>  
+        <span class="k">return</span> <span class="s2">&#34;Hello,Flask!&#34;</span>  
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>  
+        <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span><span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>执行hello.py：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">(</span>env<span class="o">)</span><span class="c1"># python hello.py </span>
  * Running on http://0.0.0.0:5000/  
  * Restarting with reloader  
-</code></pre></div><p>用浏览器或在另一个终端用 curl 访问该 hello 接口，如下：</p>
-<pre><code># curl 192.168.1.101:5000/hello  
+</code></pre></td></tr></table>
+</div>
+</div><p>用浏览器或在另一个终端用 curl 访问该 hello 接口，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># curl 192.168.1.101:5000/hello  
 Hello,Flask!#  
-</code></pre><p>（3）退出 python2.7 的 virtualenv 环境</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>（3）退出 python2.7 的 virtualenv 环境</p>
 <p>继续上一步，按 ctr+c 退出 hello.py 的执行。如下所示，此时还处于 python2.7 的 virtualenv 中，执行 deactivate 退出。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">(env)<span style="color:#888;font-style:italic"># deactivate</span>  
-# 
-</code></pre></div><p>（4）创建基于 python3.3 的 flask 工程</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#cd /home/fangpeng/project/hello_flask/python3.3/</span>  
-<span style="color:#888;font-style:italic"># virtualenv-3.3 --distribute env</span>  
-Using base prefix <span style="color:#5a2">&#39;/usr/local&#39;</span>  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">(</span>env<span class="o">)</span><span class="c1"># deactivate  </span>
+<span class="c1"># </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>（4）创建基于 python3.3 的 flask 工程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#cd /home/fangpeng/project/hello_flask/python3.3/  </span>
+<span class="c1"># virtualenv-3.3 --distribute env  </span>
+Using base prefix <span class="s1">&#39;/usr/local&#39;</span>  
 New python executable in env/bin/python3.3  
 Also creating executable in env/bin/python  
 Installing Setuptools.........................................................................................done.  
 Installing Pip....................................................................................................done.  
-<span style="color:#888;font-style:italic"># source env/bin/activate</span>  
-(env)# 
-<span style="color:#888;font-style:italic">#（env) python -V</span>  
+<span class="c1"># source env/bin/activate  </span>
+<span class="o">(</span>env<span class="o">)</span><span class="c1"># </span>
+<span class="c1">#（env) python -V  </span>
 Python 3.3.2  
-(env)<span style="color:#888;font-style:italic"># pip  install flask</span>  
-</code></pre></div><p>hello.py 的内容和上面完全一致，此处略去。</p>
+<span class="o">(</span>env<span class="o">)</span><span class="c1"># pip  install flask  </span>
+</code></pre></td></tr></table>
+</div>
+</div><p>hello.py 的内容和上面完全一致，此处略去。</p>
 <p>执行hello.py:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">(env)<span style="color:#888;font-style:italic"># python hello.py</span> 
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">(</span>env<span class="o">)</span><span class="c1"># python hello.py </span>
  * Running on http://0.0.0.0:5000/  
  * Restarting with reloader  
-</code></pre></div><p>用浏览器或在另一个终端用 curl 访问该 hello 接口，如下：</p>
-<pre><code># curl 192.168.1.101:5000/hello  
+</code></pre></td></tr></table>
+</div>
+</div><p>用浏览器或在另一个终端用 curl 访问该 hello 接口，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># curl 192.168.1.101:5000/hello  
 Hello,Flask!#  
-</code></pre><p>至此演示完毕。</p>
-<p>与上面的例子类似，以后如果要 python2.7.6，则在创建应用程序前，先用 virtualenv-2.7 创建一个沙盘，要用 python3.3.2，则用 virtualenv-3.3 创建一个沙盘。这样，依赖不同版本 Python 的应用程序彼此完全隔离开来。在各自的 virtualenv 中，执行 Python 命令就不用管版本问题了，系统自带的 Python 环境也完全被隔离开来。</p></div>
+</code></pre></td></tr></table>
+</div>
+</div><p>至此演示完毕。</p>
+<p>与上面的例子类似，以后如果要 python2.7.6，则在创建应用程序前，先用 virtualenv-2.7 创建一个沙盘，要用 python3.3.2，则用 virtualenv-3.3 创建一个沙盘。这样，依赖不同版本 Python 的应用程序彼此完全隔离开来。在各自的 virtualenv 中，执行 Python 命令就不用管版本问题了，系统自带的 Python 环境也完全被隔离开来。</p>
+    </div>
 
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2013-11-14
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          <a href="https://pureage.info/tags/python/">python</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2013/11/16/133.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">由《金蝉脱壳》到《习惯的力量》</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2013/11/13/131.html">
+            <span class="next-text nav-default">推倒重做</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
   </article>
-</main>
-<footer>
-  <div>
-    <div>2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a><p>Powered by <a href="https://gohugo.io/">Hugo</a> with <a href="https://github.com/yanlinlin82/simple-style">Simple-Style</a></div>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2021
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
   </div>
-</footer>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

@@ -5,10 +5,6 @@
     <link>https://pureage.info/categories/</link>
     <description>Recent content in Categories on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
-    <copyright>2011-2020 strider. [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/deed.zh)</copyright>
-    
-	<atom:link href="https://pureage.info/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>zh-cn</language><atom:link href="https://pureage.info/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

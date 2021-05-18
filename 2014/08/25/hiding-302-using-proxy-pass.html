@@ -1,37 +1,343 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="strider (方鹏)">
-<meta name="description" content="一个伪文青兼程序员的自嗨
-    ">
-<meta name="keywords" content="博客, 技术, 文学, 电影">
-<meta name="referrer" content="always">
-<title>用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302 - 纯真年代</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302 - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content=" 注意：此文写作时间比较久远，请谨慎参考，自行阅读代码、文档以及测试。
+ 302 是 HTTP 协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的 302 多为误用（与 303，307 混用），在 HTTP/1.1 中，它的语义为“Found”。
+302 有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址 A，然后浏览器地址栏会自动跳到 B，进而打开一个网页，这种情况就很可能是 302。
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现 302 的影子。但由于这些 url 并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+上一段提到了优酷。其实现在多数在线视频网站都会用到 302，原因很简单，视频网站流量一般较大，都会用到 CDN，区别只在于是用自建 CDN 还是商业 CDN。而由于 302 的重定向语义（再重复一遍，302 的语义广泛的被误用，在使用 302 的时候，我们很可能应该使用 303 或 307，但后面都不再纠结这一点），可以与 CDN 中的调度很好的结合起来。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<link rel="canonical" href="https://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302" />
+<meta property="og:description" content="
+注意：此文写作时间比较久远，请谨慎参考，自行阅读代码、文档以及测试。
+
+302 是 HTTP 协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的 302 多为误用（与 303，307 混用），在 HTTP/1.1 中，它的语义为“Found”。
+302 有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址 A，然后浏览器地址栏会自动跳到 B，进而打开一个网页，这种情况就很可能是 302。
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现 302 的影子。但由于这些 url 并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+上一段提到了优酷。其实现在多数在线视频网站都会用到 302，原因很简单，视频网站流量一般较大，都会用到 CDN，区别只在于是用自建 CDN 还是商业 CDN。而由于 302 的重定向语义（再重复一遍，302 的语义广泛的被误用，在使用 302 的时候，我们很可能应该使用 303 或 307，但后面都不再纠结这一点），可以与 CDN 中的调度很好的结合起来。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/2014/08/25/hiding-302-using-proxy-pass.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2014-08-25T15:59:00&#43;00:00" />
+<meta property="article:modified_time" content="2014-08-25T15:59:00&#43;00:00" />
+
+<meta itemprop="name" content="用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302">
+<meta itemprop="description" content="
+注意：此文写作时间比较久远，请谨慎参考，自行阅读代码、文档以及测试。
+
+302 是 HTTP 协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的 302 多为误用（与 303，307 混用），在 HTTP/1.1 中，它的语义为“Found”。
+302 有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址 A，然后浏览器地址栏会自动跳到 B，进而打开一个网页，这种情况就很可能是 302。
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现 302 的影子。但由于这些 url 并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+上一段提到了优酷。其实现在多数在线视频网站都会用到 302，原因很简单，视频网站流量一般较大，都会用到 CDN，区别只在于是用自建 CDN 还是商业 CDN。而由于 302 的重定向语义（再重复一遍，302 的语义广泛的被误用，在使用 302 的时候，我们很可能应该使用 303 或 307，但后面都不再纠结这一点），可以与 CDN 中的调度很好的结合起来。"><meta itemprop="datePublished" content="2014-08-25T15:59:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-08-25T15:59:00&#43;00:00" />
+<meta itemprop="wordCount" content="2664">
+<meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302"/>
+<meta name="twitter:description" content="
+注意：此文写作时间比较久远，请谨慎参考，自行阅读代码、文档以及测试。
+
+302 是 HTTP 协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的 302 多为误用（与 303，307 混用），在 HTTP/1.1 中，它的语义为“Found”。
+302 有时候很明显，有时候又比较隐蔽。最简单的情况，是当我们在浏览器中输入一个网址 A，然后浏览器地址栏会自动跳到 B，进而打开一个网页，这种情况就很可能是 302。
+比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现 302 的影子。但由于这些 url 并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。
+上一段提到了优酷。其实现在多数在线视频网站都会用到 302，原因很简单，视频网站流量一般较大，都会用到 CDN，区别只在于是用自建 CDN 还是商业 CDN。而由于 302 的重定向语义（再重复一遍，302 的语义广泛的被误用，在使用 302 的时候，我们很可能应该使用 303 或 307，但后面都不再纠结这一点），可以与 CDN 中的调度很好的结合起来。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
 <body>
-<header>
-  <div>
-    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
   </div>
-  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
-</header>
-<main>
-  <article>
-    <div class="title">
-  <h1>用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302</h1>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-<div class="meta">
-  <div>2014-08-25</div>
-  <div>
-    <span><a href="/tags/nginx">#nginx</a></span>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
     </div>
-  </div>
-<div class="content">
-  <blockquote>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">用 proxy_intercept_errors 和 recursive_error_pages 代理多次 302</h1>
+      
+      <div class="post-meta">
+        <time datetime="2014-08-25" class="post-time">
+          2014-08-25
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <blockquote>
 <p>注意：此文写作时间比较久远，请谨慎参考，自行阅读代码、文档以及测试。</p>
 </blockquote>
 <p>302 是 HTTP 协议中的一个经常被使用状态码，是多种重定向方式的一种，其语义经常被解释为“Moved Temporarily”。这里顺带提一下，现实中用到的 302 多为误用（与 303，307 混用），在 HTTP/1.1 中，它的语义为“Found”。</p>
@@ -39,11 +345,62 @@
 <p>比较隐蔽的情况经常发生在嵌入到网页的播放器中。例如，当你打开一个优酷视频播放页面时，抓包观察一下就会经常发现 302 的影子。但由于这些 url 并不是直接在浏览器中打开的，所以在浏览器的地址栏看不到变化，当然，如果将这些具体的url特意挑出来复制到浏览器地址栏里，还是可以观察到的。</p>
 <p>上一段提到了优酷。其实现在多数在线视频网站都会用到 302，原因很简单，视频网站流量一般较大，都会用到 CDN，区别只在于是用自建 CDN 还是商业 CDN。而由于 302 的重定向语义（再重复一遍，302 的语义广泛的被误用，在使用 302 的时候，我们很可能应该使用 303 或 307，但后面都不再纠结这一点），可以与 CDN 中的调度很好的结合起来。</p>
 <p>我们来看一个例子，打开一个网易视频播放页面，抓一下包，找到 302 状态的那个 url。例如：</p>
-<pre><code>http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre><p>我们把它复制到浏览器地址栏中，会发现地址栏迅速的变为了另外一个 url，这个 url 是不定的，有可能为：</p>
-<pre><code>http://14.18.140.83/f6c00af500000000-1408987545-236096587/data6/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre><p>用curl工具会更清楚的看到整个过程：</p>
-<pre><code>curl -I &quot;http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre></td></tr></table>
+</div>
+</div><p>我们把它复制到浏览器地址栏中，会发现地址栏迅速的变为了另外一个 url，这个 url 是不定的，有可能为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">http://14.18.140.83/f6c00af500000000-1408987545-236096587/data6/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre></td></tr></table>
+</div>
+</div><p>用curl工具会更清楚的看到整个过程：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">curl -I &#34;http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&#34; -L  
 HTTP/1.1 302 Moved Temporarily 
 Server: nginx 
 Date: Mon, 25 Aug 2014 14:49:43 GMT 
@@ -72,22 +429,41 @@ Content-Length: 3706468
 Last-Modified: Mon, 25 Aug 2014 00:23:50 GMT 
 Connection: keep-alive 
 Cache-Control: no-cache 
-ETag: &quot;53fa8216-388e64&quot; 
+ETag: &#34;53fa8216-388e64&#34; 
 NG: CHN-SW-1-3g6 
 X-Mod-Name: Mvod-Server/4.3.3 
 Accept-Ranges: bytes 
-</code></pre><p>可以看到，这中间经历了两次 302。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，这中间经历了两次 302。</p>
 <p>先暂时将这个例子放在一边，再来说说另一个重要的术语：proxy。我们通常会戏称，某些领导是302 类型的，某些领导是 proxy 类型的。302 类型的领导，一件事情经过他的手，会迅速的转给他人，而 proxy 类型的领导则会参与到事情中来，甚至把事情全部做完。</p>
 <p>回到上面的例子，如果访问一个 url 中途会有多个 302，那如果需要用 Nginx 设计一个 proxy，来隐藏掉中间所有的这些 302，该怎么做呢？</p>
 <h3 id="1原始proxy">1.原始Proxy</h3>
 <p>我们知道，Nginx本身就是一个优秀的代理服务器。因此，首先我们来架设一个Nginx正向代理，服务器 IP 为 192.168.109.128（我的一个测试虚拟机）。</p>
 <p>初始配置简化如下：</p>
-<pre><code>server {  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">server {  
         listen 80;  
         location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
+                rewrite_by_lua &#39;  
+                        ngx.exec(&#34;/proxy-to&#34; .. ngx.var.request_uri)  
+                &#39;;  
         }  
   
         location ~ /proxy-to/([^/]+)(.*) {  
@@ -95,11 +471,57 @@ Accept-Ranges: bytes
   
         }  
 }  
-</code></pre><p>实现的功能是，当使用</p>
-<pre><code>http://192.168.109.128/xxxxxx  
-</code></pre><p>访问该代理时，会 proxy 到 xxxxxx 所代表的真实服务器。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>实现的功能是，当使用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">http://192.168.109.128/xxxxxx  
+</code></pre></td></tr></table>
+</div>
+</div><p>访问该代理时，会 proxy 到 xxxxxx 所代表的真实服务器。</p>
 <p>测试结果如下：</p>
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">curl -I &#34;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&#34; -L  
 HTTP/1.1 302 Moved Temporarily 
 Server: nginx/1.4.6 
 Date: Mon, 25 Aug 2014 14:50:54 GMT 
@@ -128,23 +550,66 @@ Content-Length: 3706468
 Last-Modified: Mon, 25 Aug 2014 00:31:03 GMT 
 Connection: keep-alive 
 Cache-Control: no-cache 
-ETag: &quot;53fa83c7-388e64&quot; 
+ETag: &#34;53fa83c7-388e64&#34; 
 NG: CHN-ZJ-4-3M4 
 X-Mod-Name: Mvod-Server/4.3.3 
 Accept-Ranges: bytes  
-</code></pre><p>可见，虽然使用 proxy，但过程与原始访问没有什么区别。访问过程为，当访问</p>
-<pre><code>http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre><p>时，Nginx会将该请求 proxy 到</p>
-<pre><code>http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
-</code></pre><p>而后者马上就会返回一个 302，所以 Nginx 作为 proxy，将该 302 传回到客户端，客户端重新发起请求，进而重复之前的多次 302。这里说明一个问题，一旦 Nginx 的 proxy 的后端返回 302 后，客户端即与 Nginx 这个 proxy 脱离关系了，Nginx 无法起到完整的代理的作用。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>可见，虽然使用 proxy，但过程与原始访问没有什么区别。访问过程为，当访问</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre></td></tr></table>
+</div>
+</div><p>时，Nginx会将该请求 proxy 到</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">http://flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4  
+</code></pre></td></tr></table>
+</div>
+</div><p>而后者马上就会返回一个 302，所以 Nginx 作为 proxy，将该 302 传回到客户端，客户端重新发起请求，进而重复之前的多次 302。这里说明一个问题，一旦 Nginx 的 proxy 的后端返回 302 后，客户端即与 Nginx 这个 proxy 脱离关系了，Nginx 无法起到完整的代理的作用。</p>
 <h3 id="2-第-1-次修改">2. 第 1 次修改</h3>
 <p>将配置文件修改为：</p>
-<pre><code>server {  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">server {  
         listen 80;  
         location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
+                rewrite_by_lua &#39;  
+                        ngx.exec(&#34;/proxy-to&#34; .. ngx.var.request_uri)  
+                &#39;;  
         }  
   
         location ~ /proxy-to/([^/]+)(.*) {  
@@ -153,17 +618,56 @@ Accept-Ranges: bytes
   
         }  
         location @error_page_302 {  
-                rewrite_by_lua '  
-                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
-                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
-                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
-                ';  
+                rewrite_by_lua &#39;  
+                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &#34;^http:/(.*)$&#34;)  
+                        ngx.header[&#34;zzzz&#34;] = &#34;/proxy-to&#34; .. upstream_http_location  
+                        ngx.exec(&#34;/proxy-to&#34; .. upstream_http_location);  
+                &#39;;  
   
         }  
 }
 
-</code></pre><p>与上面的区别在于，使用了一个 error_page，目的是当发现 proxy 的后端返回 302 时，则用这个302 的目的 location 继续 proxy，而不是直接返回给客户端。并且这个逻辑里面包含着递归的意思，一路跟踪 302，直到最终返回 200 的那个地址。测试结果如下：</p>
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L  
+</code></pre></td></tr></table>
+</div>
+</div><p>与上面的区别在于，使用了一个 error_page，目的是当发现 proxy 的后端返回 302 时，则用这个302 的目的 location 继续 proxy，而不是直接返回给客户端。并且这个逻辑里面包含着递归的意思，一路跟踪 302，直到最终返回 200 的那个地址。测试结果如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">curl -I &#34;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&#34; -L  
 HTTP/1.1 302 Moved Temporarily 
 Server: nginx/1.4.6 
 Date: Mon, 25 Aug 2014 15:01:17 GMT 
@@ -192,28 +696,73 @@ Content-Length: 3706468
 Last-Modified: Mon, 25 Aug 2014 00:31:03 GMT 
 Connection: keep-alive 
 Cache-Control: no-cache 
-ETag: &quot;53fa83c7-388e64&quot; 
+ETag: &#34;53fa83c7-388e64&#34; 
 NG: CHN-ZJ-4-3M4 
 X-Mod-Name: Mvod-Server/4.3.3 
 Accept-Ranges: bytes  
-</code></pre><p>可见，本次修改仍然没有成功！</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>可见，本次修改仍然没有成功！</p>
 <p>为什么呢？分析一下，我们在 <code>@error_page_302</code> 这个 location 里已经加了一个头部打印语句，可是在测试中，该头部并没有打出来，可见流程并没有进入到 <code>@error_page_302</code> 这个location。</p>
 <p>原因在于</p>
-<pre><code>error_page 302 = @error_page_302;  
-</code></pre><p><code>error_page</code> 默认是本次处理的返回码。作为 proxy，本次处理，只要转发上游服务器的响应成功，应该状态码都是 200。即，我们真正需要检查的，是 proxy 的后端服务器返回的状态码，而不是 proxy 本身返回的状态码。查一下 Nginx 的 wiki，<code>proxy_intercept_errors</code> 指令正是干这个的：</p>
-<pre><code>Syntax:	proxy_intercept_errors on | off;  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">error_page 302 = @error_page_302;  
+</code></pre></td></tr></table>
+</div>
+</div><p><code>error_page</code> 默认是本次处理的返回码。作为 proxy，本次处理，只要转发上游服务器的响应成功，应该状态码都是 200。即，我们真正需要检查的，是 proxy 的后端服务器返回的状态码，而不是 proxy 本身返回的状态码。查一下 Nginx 的 wiki，<code>proxy_intercept_errors</code> 指令正是干这个的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Syntax:	proxy_intercept_errors on | off;  
 Default:	  
 proxy_intercept_errors off;  
 Context:	http, server, location  
 Determines whether proxied responses with codes greater than or equal to 300 should be passed to a client or be redirected to nginx for processing with the error_page directive.  
-</code></pre><h3 id="3-第二次修改">3. 第二次修改</h3>
-<pre><code>server {  
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="3-第二次修改">3. 第二次修改</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">server {  
         listen 80;  
         proxy_intercept_errors on;  
         location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
+                rewrite_by_lua &#39;  
+                        ngx.exec(&#34;/proxy-to&#34; .. ngx.var.request_uri)  
+                &#39;;  
         }  
         location ~ /proxy-to/([^/]+)(.*) {  
                 proxy_pass http://$1$2$is_args$query_string;  
@@ -221,15 +770,29 @@ Determines whether proxied responses with codes greater than or equal to 300 sho
   
         }  
         location @error_page_302 {  
-                rewrite_by_lua '  
-                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
-                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
-                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
-                ';  
+                rewrite_by_lua &#39;  
+                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &#34;^http:/(.*)$&#34;)  
+                        ngx.header[&#34;zzzz&#34;] = &#34;/proxy-to&#34; .. upstream_http_location  
+                        ngx.exec(&#34;/proxy-to&#34; .. upstream_http_location);  
+                &#39;;  
         }  
 }  
-</code></pre><p>与上一次修改相比，区别仅仅在于增加了一个 <code>proxy_intercept_errors</code> 指令。测试结果如下：</p>
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L 
+</code></pre></td></tr></table>
+</div>
+</div><p>与上一次修改相比，区别仅仅在于增加了一个 <code>proxy_intercept_errors</code> 指令。测试结果如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">curl -I &#34;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&#34; -L 
 HTTP/1.1 302 Moved Temporarily  
 Server: nginx/1.4.6  
 Date: Mon, 25 Aug 2014 15:05:54 GMT  
@@ -237,18 +800,47 @@ Content-Type: text/html
 Content-Length: 160  
 Connection: keep-alive  
 zzzz: /proxy-to/183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
-</code></pre><p>这次更神奇了，直接返回一个 302 状态完事，也不继续跳转了。
+</code></pre></td></tr></table>
+</div>
+</div><p>这次更神奇了，直接返回一个 302 状态完事，也不继续跳转了。
 问题出在，虽然第一次 302，请求成功的进入到 <code>@error_page_302</code>，但后续的 <code>error_page</code> 指令却没起作用。也就是说，<code>error_page</code> 只检查了第一次后端返回的状态码，而没有继续检查后续的后端状态码。</p>
 <p>查一下资料，这个时候，另一个指令 <code>recursive_error_pages</code> 就派上用场了。</p>
 <h3 id="4-第3次修改">4. 第3次修改</h3>
-<pre><code>server {  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">server {  
         listen 80;  
         proxy_intercept_errors on;  
         recursive_error_pages on;  
         location / {  
-                rewrite_by_lua '  
-                        ngx.exec(&quot;/proxy-to&quot; .. ngx.var.request_uri)  
-                ';  
+                rewrite_by_lua &#39;  
+                        ngx.exec(&#34;/proxy-to&#34; .. ngx.var.request_uri)  
+                &#39;;  
         }  
         location ~ /proxy-to/([^/]+)(.*) {  
                 proxy_pass http://$1$2$is_args$query_string;  
@@ -256,16 +848,36 @@ zzzz: /proxy-to/183.61.140.24/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD
   
         }  
         location @error_page_302 {  
-                rewrite_by_lua '  
-                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &quot;^http:/(.*)$&quot;)  
-                        ngx.header[&quot;zzzz&quot;] = &quot;/proxy-to&quot; .. upstream_http_location  
-                        ngx.exec(&quot;/proxy-to&quot; .. upstream_http_location);  
-                ';  
+                rewrite_by_lua &#39;  
+                        local _, _, upstream_http_location = string.find(ngx.var.upstream_http_location, &#34;^http:/(.*)$&#34;)  
+                        ngx.header[&#34;zzzz&#34;] = &#34;/proxy-to&#34; .. upstream_http_location  
+                        ngx.exec(&#34;/proxy-to&#34; .. upstream_http_location);  
+                &#39;;  
         }  
 }  
 
-</code></pre><p>与上一次相比，仅仅增加了 <code>recursive_error_pages on</code> 这条指令。测试结果如下：</p>
-<pre><code>curl -I &quot;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&quot; -L 
+</code></pre></td></tr></table>
+</div>
+</div><p>与上一次相比，仅仅增加了 <code>recursive_error_pages on</code> 这条指令。测试结果如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">curl -I &#34;http://192.168.109.128/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4&#34; -L 
 HTTP/1.1 200 OK 
 Server: nginx/1.4.6 
 Date: Mon, 25 Aug 2014 15:09:04 GMT 
@@ -275,21 +887,214 @@ Connection: keep-alive
 zzzz: /proxy-to/14.18.140.83/f48bad0100000000-1408984745-236096587/data6/flv.bn.netease.com/tvmrepo/2014/8/5/P/EA3I1J05P/SD/EA3I1J05P-mobile.mp4 
 Last-Modified: Mon, 25 Aug 2014 00:21:07 GMT 
 Cache-Control: no-cache 
-ETag: &quot;53fa8173-388e64&quot; 
+ETag: &#34;53fa8173-388e64&#34; 
 NG: CHN-MM-4-3FE 
 X-Mod-Name: Mvod-Server/4.3.3 
 Accept-Ranges: bytes  
-</code></pre><p>可见，Nginx 终于成功的返回 200 了。此时，Nginx 才真正起到了一个 proxy 的功能，隐藏了一个请求原本的多个 302 链路，只返回客户端一个最终结果。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>可见，Nginx 终于成功的返回 200 了。此时，Nginx 才真正起到了一个 proxy 的功能，隐藏了一个请求原本的多个 302 链路，只返回客户端一个最终结果。</p>
 <h3 id="5-小结">5. 小结</h3>
 <p>综上，通过 <code>proxy_pass</code>、<code>error_page</code>、<code>proxy_intercept_errors</code>、<code>recursive_error_pages</code> 这几个指令的配合使用，可以向客户端隐藏一条请求的跳转细节，直接返回用户一个状态码为 200 的最终结果。</p>
-<p>奇怪的是，在 Nginx 的官方 wiki 中并没有 <code>recursive_error_pages</code> 指令的相关说明。</p></div>
+<p>奇怪的是，在 Nginx 的官方 wiki 中并没有 <code>recursive_error_pages</code> 指令的相关说明。</p>
+    </div>
 
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2014-08-25
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/nginx/">nginx</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/09/28/running-is-a-happy-sport.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">跑步是一件快乐的事情</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2014/08/24/what-i-talk-about-when-i-talk-about-running.html">
+            <span class="next-text nav-default">读《当我谈跑步时我谈些什么》有感</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
   </article>
-</main>
-<footer>
-  <div>
-    <div>2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a><p>Powered by <a href="https://gohugo.io/">Hugo</a> with <a href="https://github.com/yanlinlin82/simple-style">Simple-Style</a></div>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2021
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
   </div>
-</footer>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

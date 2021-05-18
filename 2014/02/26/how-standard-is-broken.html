@@ -1,43 +1,345 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="strider (方鹏)">
-<meta name="description" content="一个伪文青兼程序员的自嗨
-    ">
-<meta name="keywords" content="博客, 技术, 文学, 电影">
-<meta name="referrer" content="always">
-<title>从 HTTP Range 请求谈标准是如何被破坏的 - 纯真年代</title>
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>从 HTTP Range 请求谈标准是如何被破坏的 - 纯真年代</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="strider" />
+  <meta name="description" content="如今 cdn 已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个 Nginx 代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的 cdn 市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的 cdn 厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
+但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
+背景 A 是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家 cdn 厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些 4XX 的错误请求。所以，cdn 厂商的运维及管理人员，会很重视这些指标。
+" />
+
+  <meta name="keywords" content="程序员, 文学, 生活" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.83.1" />
+
+
+<link rel="canonical" href="https://pureage.info/2014/02/26/how-standard-is-broken.html" />
+
+
+
+
+
+<link rel="icon" href="/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="从 HTTP Range 请求谈标准是如何被破坏的" />
+<meta property="og:description" content="如今 cdn 已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个 Nginx 代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的 cdn 市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的 cdn 厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
+但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
+背景
+A 是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家 cdn 厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些 4XX 的错误请求。所以，cdn 厂商的运维及管理人员，会很重视这些指标。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://pureage.info/2014/02/26/how-standard-is-broken.html" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2014-02-25T16:14:00&#43;00:00" />
+<meta property="article:modified_time" content="2014-02-25T16:14:00&#43;00:00" />
+
+<meta itemprop="name" content="从 HTTP Range 请求谈标准是如何被破坏的">
+<meta itemprop="description" content="如今 cdn 已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个 Nginx 代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的 cdn 市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的 cdn 厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
+但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
+背景
+A 是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家 cdn 厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些 4XX 的错误请求。所以，cdn 厂商的运维及管理人员，会很重视这些指标。"><meta itemprop="datePublished" content="2014-02-25T16:14:00&#43;00:00" />
+<meta itemprop="dateModified" content="2014-02-25T16:14:00&#43;00:00" />
+<meta itemprop="wordCount" content="1603">
+<meta itemprop="keywords" content="程序员," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="从 HTTP Range 请求谈标准是如何被破坏的"/>
+<meta name="twitter:description" content="如今 cdn 已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个 Nginx 代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的 cdn 市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的 cdn 厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。
+但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。
+背景
+A 是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家 cdn 厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些 4XX 的错误请求。所以，cdn 厂商的运维及管理人员，会很重视这些指标。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
 </head>
 <body>
-<header>
-  <div>
-    <h1><a href="https://pureage.info/">纯真年代</a></h1><h2><a href="https://pureage.info/">阅读、体验、沉淀...</a></h2>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">纯真年代</a>
   </div>
-  <nav><a href="/">博客</a><a href="/tools/">工具</a><a href="/about/">关于</a></nav>
-</header>
-<main>
-  <article>
-    <div class="title">
-  <h1>从 HTTP Range 请求谈标准是如何被破坏的</h1>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-<div class="meta">
-  <div>2014-02-25</div>
-  <div>
-    <span><a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98">#程序员</a></span>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
     </div>
-  </div>
-<div class="content">
-  <p>如今 cdn 已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个 Nginx 代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的 cdn 市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的 cdn 厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。</p>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/" class="logo">
+    
+      纯真年代
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/">首页</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/post/">归档</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tags/">标签</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/tools/">工具</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://pureage.info/about/">关于</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">从 HTTP Range 请求谈标准是如何被破坏的</h1>
+      
+      <div class="post-meta">
+        <time datetime="2014-02-25" class="post-time">
+          2014-02-25
+        </time>
+        
+        
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>如今 cdn 已成为互联网上的基础设施，会与形形色色的公司打交道。其中既有一些拿着政府资金，结果只让你草草布一个 Nginx 代理就完事的；也有现在那些中国最强势的互联网公司。这里只说互联网公司，为什么它们强势呢？一方面，它们拥有着巨大的流量，中国的 cdn 市场竞争又如此激烈，一个不爽，把量切走，反正排队等着为我服务的 cdn 厂商多的很；另一方面，它们本身的技术积累都很强，所以提起需求来是毫不手软，底气十足。</p>
 <p>但这些有着深厚技术积累的公司，有时候提出来的需求只能让人苦笑。</p>
 <h3 id="背景">背景</h3>
 <p>A 是中国目前最大的互联网公司之一，它的视频当然流量也很大。按照业内惯例，它会把内容同时让多家 cdn 厂商服务，然后定期进行打分，排名。参与打分的指标很多，最典型的就是一些 4XX 的错误请求。所以，cdn 厂商的运维及管理人员，会很重视这些指标。</p>
 <p>最近，运维发现服务器上有很多 416 请求。416 是 Range 错误的响应码，除去一些正常的 416 外，运维还发现有一类 416 请求的 Range 头是:</p>
-<pre><code>Range: byptes=XXXX-0
-</code></pre><p>XXXX 是个非 0 的数。很明显，这是一个错误的 Range 请求，之所以会出现这样的 Range，是因为对方的播放器 bug 导致。但 A 公司要求，把 <code>XXX-0</code> 按照 <code>xxx-</code> 来处理。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Range: byptes=XXXX-0
+</code></pre></td></tr></table>
+</div>
+</div><p>XXXX 是个非 0 的数。很明显，这是一个错误的 Range 请求，之所以会出现这样的 Range，是因为对方的播放器 bug 导致。但 A 公司要求，把 <code>XXX-0</code> 按照 <code>xxx-</code> 来处理。</p>
 <p>我们知道，在 HTTP 协议中规定的是，一个 Range 头可以有如下形式（假设文件大小为1000个字节）：</p>
 <blockquote>
 <p>bytes=0-499(前500个字节）<br>
@@ -55,144 +357,470 @@ bytes=0-0,-1（第一个字节和最后一个字节）</p>
 <p>所以，理论上，<code>bytes=500-0</code> 这样的 range 段，是错误的。</p>
 <h3 id="实现">实现</h3>
 <p>以 Nginx 为例，我们来看看代码中是如何处理的。</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#00f">static</span> <span style="color:#000">ngx_int_t</span>  
-<span style="color:#000">ngx_http_range_parse</span>(<span style="color:#000">ngx_http_request_t</span> *<span style="color:#000">r</span>, <span style="color:#000">ngx_http_range_filter_ctx_t</span> *<span style="color:#000">ctx</span>,  
-    <span style="color:#000">ngx_uint_t</span> <span style="color:#000">ranges</span>)  
-{  
-    <span style="color:#000">u_char</span>            *<span style="color:#000">p</span>;  
-    <span style="color:#000">off_t</span>              <span style="color:#000">start</span>, <span style="color:#000">end</span>, <span style="color:#000">size</span>, <span style="color:#000">content_length</span>;  
-    <span style="color:#000">ngx_uint_t</span>         <span style="color:#000">suffix</span>;  
-    <span style="color:#000">ngx_http_range_t</span>  *<span style="color:#000">range</span>;  
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="n">ngx_int_t</span>  
+<span class="nf">ngx_http_range_parse</span><span class="p">(</span><span class="n">ngx_http_request_t</span> <span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">ngx_http_range_filter_ctx_t</span> <span class="o">*</span><span class="n">ctx</span><span class="p">,</span>  
+    <span class="n">ngx_uint_t</span> <span class="n">ranges</span><span class="p">)</span>  
+<span class="p">{</span>  
+    <span class="n">u_char</span>            <span class="o">*</span><span class="n">p</span><span class="p">;</span>  
+    <span class="n">off_t</span>              <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">content_length</span><span class="p">;</span>  
+    <span class="n">ngx_uint_t</span>         <span class="n">suffix</span><span class="p">;</span>  
+    <span class="n">ngx_http_range_t</span>  <span class="o">*</span><span class="n">range</span><span class="p">;</span>  
   
-    <span style="color:#000">p</span> = <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_in</span>.<span style="color:#000">range</span>-&gt;<span style="color:#000">value</span>.<span style="color:#000">data</span> + <span style="color:#3af">6</span>;  
-    <span style="color:#000">size</span> = <span style="color:#3af">0</span>;  
-    <span style="color:#000">content_length</span> = <span style="color:#000">r</span>-&gt;<span style="color:#000">headers_out</span>.<span style="color:#000">content_length_n</span>;  
+    <span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_in</span><span class="p">.</span><span class="n">range</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">.</span><span class="n">data</span> <span class="o">+</span> <span class="mi">6</span><span class="p">;</span>  
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+    <span class="n">content_length</span> <span class="o">=</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_out</span><span class="p">.</span><span class="n">content_length_n</span><span class="p">;</span>  
   
-    <span style="color:#00f">for</span> ( ;; ) {  
-        <span style="color:#000">start</span> = <span style="color:#3af">0</span>;  
-        <span style="color:#000">end</span> = <span style="color:#3af">0</span>;  
-        <span style="color:#000">suffix</span> = <span style="color:#3af">0</span>;  
+    <span class="k">for</span> <span class="p">(</span> <span class="p">;;</span> <span class="p">)</span> <span class="p">{</span>  
+        <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+        <span class="n">end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
+        <span class="n">suffix</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
   
-        <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
+        <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">p</span><span class="o">++</span><span class="p">;</span> <span class="p">}</span>  
   
-        <span style="color:#00f">if</span> (*<span style="color:#000">p</span> != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">-</span><span style="color:#5a2">&#39;</span>) {  
-            <span style="color:#00f">if</span> (*<span style="color:#000">p</span> &lt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> || *<span style="color:#000">p</span> &gt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
-                <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
-            }  
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">!=</span> <span class="sc">&#39;-&#39;</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">&lt;</span> <span class="sc">&#39;0&#39;</span> <span class="o">||</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="k">return</span> <span class="n">NGX_HTTP_RANGE_NOT_SATISFIABLE</span><span class="p">;</span>  
+            <span class="p">}</span>  
   
-            <span style="color:#00f">while</span> (*<span style="color:#000">p</span> &gt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> &amp;&amp; *<span style="color:#000">p</span> &lt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
-                <span style="color:#000">start</span> = <span style="color:#000">start</span> * <span style="color:#3af">10</span> + *<span style="color:#000">p</span>++ - <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span>;  
-            }  
+            <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="sc">&#39;0&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="n">start</span> <span class="o">=</span> <span class="n">start</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="o">*</span><span class="n">p</span><span class="o">++</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>  
+            <span class="p">}</span>  
   
-            <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
+            <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">p</span><span class="o">++</span><span class="p">;</span> <span class="p">}</span>  
   
-            <span style="color:#00f">if</span> (*<span style="color:#000">p</span>++ != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">-</span><span style="color:#5a2">&#39;</span>) {  
-                <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
-            }  
+            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="o">++</span> <span class="o">!=</span> <span class="sc">&#39;-&#39;</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="k">return</span> <span class="n">NGX_HTTP_RANGE_NOT_SATISFIABLE</span><span class="p">;</span>  
+            <span class="p">}</span>  
   
-            <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
+            <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">p</span><span class="o">++</span><span class="p">;</span> <span class="p">}</span>  
   
-            <span style="color:#00f">if</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">,</span><span style="color:#5a2">&#39;</span> || *<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">\0</span><span style="color:#5a2">&#39;</span>) {  
-                <span style="color:#000">end</span> = <span style="color:#000">content_length</span>;  
-                <span style="color:#00f">goto</span> <span style="color:#000">found</span>;  
-            }  
+            <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39;,&#39;</span> <span class="o">||</span> <span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="n">end</span> <span class="o">=</span> <span class="n">content_length</span><span class="p">;</span>  
+                <span class="k">goto</span> <span class="n">found</span><span class="p">;</span>  
+            <span class="p">}</span>  
   
-        } <span style="color:#00f">else</span> {  
-            <span style="color:#000">suffix</span> = <span style="color:#3af">1</span>;  
-            <span style="color:#000">p</span>++;  
-        }  
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+            <span class="n">suffix</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
+            <span class="n">p</span><span class="o">++</span><span class="p">;</span>  
+        <span class="p">}</span>  
   
-        <span style="color:#00f">if</span> (*<span style="color:#000">p</span> &lt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> || *<span style="color:#000">p</span> &gt; <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
-            <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
-        }  
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">&lt;</span> <span class="sc">&#39;0&#39;</span> <span class="o">||</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="k">return</span> <span class="n">NGX_HTTP_RANGE_NOT_SATISFIABLE</span><span class="p">;</span>  
+        <span class="p">}</span>  
   
-        <span style="color:#00f">while</span> (*<span style="color:#000">p</span> &gt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span> &amp;&amp; *<span style="color:#000">p</span> &lt;= <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">9</span><span style="color:#5a2">&#39;</span>) {  
-            <span style="color:#000">end</span> = <span style="color:#000">end</span> * <span style="color:#3af">10</span> + *<span style="color:#000">p</span>++ - <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">0</span><span style="color:#5a2">&#39;</span>;  
-        }  
+        <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="sc">&#39;0&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="n">end</span> <span class="o">=</span> <span class="n">end</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="o">*</span><span class="n">p</span><span class="o">++</span> <span class="o">-</span> <span class="sc">&#39;0&#39;</span><span class="p">;</span>  
+        <span class="p">}</span>  
   
-        <span style="color:#00f">while</span> (*<span style="color:#000">p</span> == <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2"> </span><span style="color:#5a2">&#39;</span>) { <span style="color:#000">p</span>++; }  
+        <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span> <span class="n">p</span><span class="o">++</span><span class="p">;</span> <span class="p">}</span>  
   
-        <span style="color:#00f">if</span> (*<span style="color:#000">p</span> != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">,</span><span style="color:#5a2">&#39;</span> &amp;&amp; *<span style="color:#000">p</span> != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">\0</span><span style="color:#5a2">&#39;</span>) {  
-            <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
-        }  
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">!=</span> <span class="sc">&#39;,&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">p</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="k">return</span> <span class="n">NGX_HTTP_RANGE_NOT_SATISFIABLE</span><span class="p">;</span>  
+        <span class="p">}</span>  
   
-        <span style="color:#00f">if</span> (<span style="color:#000">suffix</span>) {  
-            <span style="color:#000">start</span> = <span style="color:#000">content_length</span> - <span style="color:#000">end</span>;  
-            <span style="color:#000">end</span> = <span style="color:#000">content_length</span> - <span style="color:#3af">1</span>;  
-        }  
+        <span class="k">if</span> <span class="p">(</span><span class="n">suffix</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="n">start</span> <span class="o">=</span> <span class="n">content_length</span> <span class="o">-</span> <span class="n">end</span><span class="p">;</span>  
+            <span class="n">end</span> <span class="o">=</span> <span class="n">content_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>  
+        <span class="p">}</span>  
   
-        <span style="color:#00f">if</span> (<span style="color:#000">end</span> &gt;= <span style="color:#000">content_length</span>) {  
-            <span style="color:#000">end</span> = <span style="color:#000">content_length</span>;  
+        <span class="k">if</span> <span class="p">(</span><span class="n">end</span> <span class="o">&gt;=</span> <span class="n">content_length</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="n">end</span> <span class="o">=</span> <span class="n">content_length</span><span class="p">;</span>  
   
-        } <span style="color:#00f">else</span> {  
-            <span style="color:#000">end</span>++;  
-        }  
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
+            <span class="n">end</span><span class="o">++</span><span class="p">;</span>  
+        <span class="p">}</span>  
   
-    <span style="color:#000">found</span>:  
+    <span class="nl">found</span><span class="p">:</span>  
   
-        <span style="color:#00f">if</span> (<span style="color:#000">start</span> &lt; <span style="color:#000">end</span>) {  
-            <span style="color:#000">range</span> = <span style="color:#000">ngx_array_push</span>(&amp;<span style="color:#000">ctx</span>-&gt;<span style="color:#000">ranges</span>);  
-            <span style="color:#00f">if</span> (<span style="color:#000">range</span> == <span style="color:#000">NULL</span>) {  
-                <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
-            }  
+        <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="n">range</span> <span class="o">=</span> <span class="n">ngx_array_push</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">ranges</span><span class="p">);</span>  
+            <span class="k">if</span> <span class="p">(</span><span class="n">range</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="k">return</span> <span class="n">NGX_ERROR</span><span class="p">;</span>  
+            <span class="p">}</span>  
   
-            <span style="color:#000">range</span>-&gt;<span style="color:#000">start</span> = <span style="color:#000">start</span>;  
-            <span style="color:#000">range</span>-&gt;<span style="color:#000">end</span> = <span style="color:#000">end</span>;  
+            <span class="n">range</span><span class="o">-&gt;</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span>  
+            <span class="n">range</span><span class="o">-&gt;</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span><span class="p">;</span>  
   
-            <span style="color:#000">size</span> += <span style="color:#000">end</span> - <span style="color:#000">start</span>;  
+            <span class="n">size</span> <span class="o">+=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">;</span>  
   
-            <span style="color:#00f">if</span> (<span style="color:#000">ranges</span>-- == <span style="color:#3af">0</span>) {  
-                <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
-            }  
-        }  
+            <span class="k">if</span> <span class="p">(</span><span class="n">ranges</span><span class="o">--</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="k">return</span> <span class="n">NGX_DECLINED</span><span class="p">;</span>  
+            <span class="p">}</span>  
+        <span class="p">}</span>  
   
-        <span style="color:#00f">if</span> (*<span style="color:#000">p</span>++ != <span style="color:#5a2"></span><span style="color:#5a2">&#39;</span><span style="color:#5a2">,</span><span style="color:#5a2">&#39;</span>) {  
-            <span style="color:#00f">break</span>;  
-        }  
-    }  
+        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="o">++</span> <span class="o">!=</span> <span class="sc">&#39;,&#39;</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="k">break</span><span class="p">;</span>  
+        <span class="p">}</span>  
+    <span class="p">}</span>  
   
-    <span style="color:#00f">if</span> (<span style="color:#000">ctx</span>-&gt;<span style="color:#000">ranges</span>.<span style="color:#000">nelts</span> == <span style="color:#3af">0</span>) {  
-        <span style="color:#00f">return</span> <span style="color:#000">NGX_HTTP_RANGE_NOT_SATISFIABLE</span>;  
-    }  
+    <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">ranges</span><span class="p">.</span><span class="n">nelts</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="k">return</span> <span class="n">NGX_HTTP_RANGE_NOT_SATISFIABLE</span><span class="p">;</span>  
+    <span class="p">}</span>  
   
-    <span style="color:#00f">if</span> (<span style="color:#000">size</span> &gt; <span style="color:#000">content_length</span>) {  
-        <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
-    }  
+    <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">content_length</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="k">return</span> <span class="n">NGX_DECLINED</span><span class="p">;</span>  
+    <span class="p">}</span>  
   
-    <span style="color:#00f">return</span> <span style="color:#000">NGX_OK</span>;  
-}  
-</code></pre></div><p>其中，</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"> <span style="color:#000">found</span>:  
+    <span class="k">return</span> <span class="n">NGX_OK</span><span class="p">;</span>  
+<span class="p">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>其中，</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"> <span class="nl">found</span><span class="p">:</span>  
   
-        <span style="color:#00f">if</span> (<span style="color:#000">start</span> &lt; <span style="color:#000">end</span>) {  
-            <span style="color:#000">range</span> = <span style="color:#000">ngx_array_push</span>(&amp;<span style="color:#000">ctx</span>-&gt;<span style="color:#000">ranges</span>);  
-            <span style="color:#00f">if</span> (<span style="color:#000">range</span> == <span style="color:#000">NULL</span>) {  
-                <span style="color:#00f">return</span> <span style="color:#000">NGX_ERROR</span>;  
-            }  
+        <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">)</span> <span class="p">{</span>  
+            <span class="n">range</span> <span class="o">=</span> <span class="n">ngx_array_push</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">ranges</span><span class="p">);</span>  
+            <span class="k">if</span> <span class="p">(</span><span class="n">range</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="k">return</span> <span class="n">NGX_ERROR</span><span class="p">;</span>  
+            <span class="p">}</span>  
   
-            <span style="color:#000">range</span>-&gt;<span style="color:#000">start</span> = <span style="color:#000">start</span>;  
-            <span style="color:#000">range</span>-&gt;<span style="color:#000">end</span> = <span style="color:#000">end</span>;  
+            <span class="n">range</span><span class="o">-&gt;</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="p">;</span>  
+            <span class="n">range</span><span class="o">-&gt;</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span><span class="p">;</span>  
   
-            <span style="color:#000">size</span> += <span style="color:#000">end</span> - <span style="color:#000">start</span>; 
+            <span class="n">size</span> <span class="o">+=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">;</span> 
   
-            <span style="color:#00f">if</span> (<span style="color:#000">ranges</span>-- == <span style="color:#3af">0</span>) {  
-                <span style="color:#00f">return</span> <span style="color:#000">NGX_DECLINED</span>;  
-            }  
-        }  
-</code></pre></div><p>表明，只有 start&lt;end 的，才会后续进行 range 处理。这里的 start，是指 bytes=a-b 中的 a，end 指的是 b+1。</p>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ranges</span><span class="o">--</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  
+                <span class="k">return</span> <span class="n">NGX_DECLINED</span><span class="p">;</span>  
+            <span class="p">}</span>  
+        <span class="p">}</span>  
+</code></pre></td></tr></table>
+</div>
+</div><p>表明，只有 start&lt;end 的，才会后续进行 range 处理。这里的 start，是指 bytes=a-b 中的 a，end 指的是 b+1。</p>
 <p>所以，在 HTTP 服务器的典型实现上，<code>Range: bytes=500-0</code> 也是错误的请求。</p>
 <h3 id="现实世界">现实世界</h3>
 <p>好了，从理论和典型实现上讨论了 Range 头之后，我们回到第三次元，现实世界。</p>
 <p>可以猜想，出现这个问题的原因是 A 公司的播放器开发人员代码的一处 bug 导致。但由于它们是甲方，所以我们应该予以配合。结果是我们在服务器端将 <code>Range: bytes=500-0</code> 这类的请求与 <code>Range: bytes=500-</code> 等同处理。</p>
 <p>解决起来很简单，非常简单。但是，好好的标准就这么被破坏了。可以想象，A 是 Top 级的互联网大佬，某家 cdn 帮他们解决这种 Range 错误了，它肯定会对其他 cdn 商家说，这个很简单，那谁都是这么处理的。然后，中国所有的 cdn 商家都这么处理了。再然后，没人记的这东西是否遵循标准了，即使有人拿标准说起，也会被老人们这么教育：“标准只是理想情况，现实中的实现，是复杂多变的&hellip;”</p>
-<p>更没人会记得，罪魁祸首是某个不合格的播放器开发程序员。</p></div>
+<p>更没人会记得，罪魁祸首是某个不合格的播放器开发程序员。</p>
+    </div>
 
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">strider</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+      2014-02-25
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/2014/03/31/difference-of-rd-and-sales.html">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">研发与销售的一些区别</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+          <a class="next" href="/2014/02/23/gift-not-sent-out.html">
+            <span class="next-text nav-default">送礼要抓紧</span>
+            <span class="prev-text nav-mobile">下一篇</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
   </article>
-</main>
-<footer>
-  <div>
-    <div>2011-2020 strider. <a href="https://creativecommons.org/licenses/by/4.0/deed.zh">CC-BY-4.0</a><p>Powered by <a href="https://gohugo.io/">Hugo</a> with <a href="https://github.com/yanlinlin82/simple-style">Simple-Style</a></div>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://pureage.info/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2011 -
+    2021
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        strider
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
   </div>
-</footer>
+  
+<script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
