@@ -2,15 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://pureage.info/tags/nginx/</loc>
+    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/x-accel-redirect-header-in-nginx/</loc>
+    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://pureage.info/post/</loc>
-    <lastmod>2020-02-20T18:10:05+08:00</lastmod>
+    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://pureage.info/tags/</loc>
-    <lastmod>2020-02-20T18:10:05+08:00</lastmod>
+    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/</loc>
+    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,13 +52,6 @@
   
   <url>
     <loc>https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</loc>
-    <lastmod>2020-02-20T18:10:05+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/</loc>
     <lastmod>2020-02-20T18:10:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -333,13 +347,6 @@
   <url>
     <loc>https://pureage.info/2016/08/28/goto-qinghai-lake.html</loc>
     <lastmod>2016-08-28T03:46:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/tags/nginx/</loc>
-    <lastmod>2016-07-04T15:17:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

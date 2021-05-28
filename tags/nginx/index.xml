@@ -6,7 +6,20 @@
     <description>Recent content in nginx on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 04 Jul 2016 15:17:00 +0000</lastBuildDate><atom:link href="https://pureage.info/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 May 2021 15:32:35 +0800</lastBuildDate><atom:link href="https://pureage.info/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>nginx 中的 X-Accel-Redirect 响应头</title>
+      <link>https://pureage.info/post/x-accel-redirect-header-in-nginx/</link>
+      <pubDate>Fri, 28 May 2021 15:32:35 +0800</pubDate>
+      
+      <guid>https://pureage.info/post/x-accel-redirect-header-in-nginx/</guid>
+      <description>&lt;p&gt;在 Nginx 的 ngx_http_proxy_module 的&lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_proxy_module.html&#34;&gt;使用说明&lt;/a&gt;中，有对 &lt;code&gt;X-Accel-Redirect&lt;/code&gt; 的描述：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“X-Accel-Redirect” performs an &lt;a href=&#34;http://nginx.org/en/docs/http/ngx_http_core_module.html#internal&#34;&gt;internal redirect&lt;/a&gt; to the specified URI;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本文就简单的描述一下在某种特殊场景下 &lt;code&gt;X-Accel-Redirect&lt;/code&gt; 的使用。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>代码中的谎言</title>
       <link>https://pureage.info/2016/07/04/lies-in-code.html</link>
@@ -356,17 +369,6 @@ location /test2 {
 &lt;p&gt;逆雪寒：&lt;!-- raw HTML omitted --&gt;
 通过 &lt;code&gt;ngx.var.fastcgi_script_name&lt;/code&gt; 是 &lt;code&gt;nil&lt;/code&gt; 。 但 &lt;code&gt;set $fsn $fastcgi_script_name&lt;/code&gt; 然后 &lt;code&gt;ngx.var.fsn&lt;/code&gt; 就能正常获取了。bug  ? 还是我理解问题？&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>关于 proxy_pass 的参数路径问题</title>
-      <link>https://pureage.info/2013/10/31/130.html</link>
-      <pubDate>Thu, 31 Oct 2013 04:16:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/2013/10/31/130.html</guid>
-      <description>&lt;p&gt;由于工作需要，开始分析 Nginx 的 proxy 模块，在分析之前，当然要先会用了。于是开始熟悉该模块的一些指令，其中最基本的指令要属 proxy_pass 了。Nginx 的英文文档总是看着感觉有些别扭，于是按惯例先 google 了一些文章。&lt;/p&gt;
-&lt;p&gt;这一搜，就掉进坑里了。&lt;/p&gt;
-&lt;p&gt;这些文章里都把 proxy_pass 的目标地址是形如“127.0.0.1:8090”和“127.0.0.1:8090/”分开讨论，认为后者“/”的作用是删除 url 中匹配的部分，然后再讨论目标地址中带了 uri 的情况。&lt;/p&gt;</description>
     </item>
     
   </channel>

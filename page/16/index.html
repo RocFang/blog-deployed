@@ -297,6 +297,39 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2014/08/19/start-runngin-again.html">重新开始跑步</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2014-08-19" class="post-time">
+        2014-08-19
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>大三那年，跑了整整一年步，风雨无阻。五年后，我再度下了这个决心。</p>
+<p>巧得很，正当我下完决心后，发现自己手里捧着一本村上春树的《当我谈跑步时我谈些什么》。当然这只是一种主观的说法，到底是在看这本书书的时候下了决心还是在看书之前已经下了决心，我自己也搞不清了。</p>
+<p>跑步其实不仅仅是跑步这项运动。跑步意味着生活的一切都开始逐渐规律化，平静化，意味着对自己的掌控。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2014/08/19/start-runngin-again.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2014/08/14/local-backup-using-git.html">用 git 做本地备份</a>
     </h1>
     
@@ -459,44 +492,6 @@
     </div>
     <div class="read-more">
       <a href="/2014/05/29/two-fishes.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2014/04/30/noreplace-in-rpm-spec-file.html">RPM 中的 %config 和 %config(noreplace)</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2014-04-30" class="post-time">
-        2014-04-30
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>打开一个 rpm spec 文件，在 <code>%files</code> 段有一个指令很常见：<code>%config(noreplace)</code>，这个指定到底是干什么用的呢？</p>
-<p>答案是，该指令决定如果一个文件被管理员修改过后，下次更新该文件所在的rpm包时，该文件的存在状态。例如，一般升级软件时，配置文件是不会变化的，而主程序则一般需要被升级（替换）。</p>
-<p>对于 spec 文件中在 <code>%files</code> 段的某一个文件，我们要讨论三种情况：</p>
-<ol>
-<li>没有带 <code>%config</code> 指令。例如：<code>%{_sbindir}/redis-server</code></li>
-<li>带了 <code>%congfig</code> 指令。例如：<code>%config %{_sysconfdir}/redis/redis.conf</code></li>
-<li>带了 <code>%config(noreplace)</code> 指令。例如：<code>%config(noreplace) %{_sysconfdir}/redis/redis.conf</code></li>
-</ol>
-    </div>
-    <div class="read-more">
-      <a href="/2014/04/30/noreplace-in-rpm-spec-file.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>

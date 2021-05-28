@@ -6,7 +6,16 @@
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Feb 2020 18:10:05 +0800</lastBuildDate><atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 May 2021 15:32:35 +0800</lastBuildDate><atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>nginx</title>
+      <link>https://pureage.info/tags/nginx/</link>
+      <pubDate>Fri, 28 May 2021 15:32:35 +0800</pubDate>
+      
+      <guid>https://pureage.info/tags/nginx/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>思考</title>
       <link>https://pureage.info/tags/%E6%80%9D%E8%80%83/</link>
@@ -130,15 +139,6 @@
       <pubDate>Sun, 28 Aug 2016 03:46:00 +0000</pubDate>
       
       <guid>https://pureage.info/tags/%E6%97%85%E8%A1%8C/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>nginx</title>
-      <link>https://pureage.info/tags/nginx/</link>
-      <pubDate>Mon, 04 Jul 2016 15:17:00 +0000</pubDate>
-      
-      <guid>https://pureage.info/tags/nginx/</guid>
       <description></description>
     </item>
     

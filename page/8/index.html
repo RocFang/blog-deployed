@@ -297,6 +297,38 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2016/04/26/253.html">第一次在线下活动中做技术分享</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2016-04-26" class="post-time">
+        2016-04-26
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>周日在广州的 OpenResty 社区 meetup 中做了一个主题为《巧用 OpenResty 结合 Nginx 变量机制提供定制化 web 服务》的分享，说实话还挺紧张的，毕竟是第一次做这种线下的分享，但是到了现场之后慢慢就放松了。因为来参加活动的，大多都是跟身边的同事、同学一样的程序员，在这种气氛下，其实不用考虑会不会怯场、出丑之类的问题。大家都是同道中人，传说中的“演讲技巧”之类的也没有必要，简单的把自己觉得有用的东西分享给大家，对自己是一种锻炼，如果能对听者也能有点用处，那就更好了。</p>
+<p>有几位前公司的同事事前听说我要参加这次分享，自掏门票过来就是为了捧个场，他们中有的工作跟 OpenResty/Nginx 压根没关系，想想挺感动的。都说职场是铁打的营盘流水的兵，能结识这些朋友真是有幸。活动结束后，大家一起去聚了个餐，看了电影《奇幻森林》，这场景太像毕业离别前的小聚，他们中确实有位要马上到另一个城市去了。希望他一切顺心。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2016/04/26/253.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2016/03/27/basic-respect-to-a-programming-language.html">对一门编程语言的基本尊重</a>
     </h1>
     
@@ -431,39 +463,6 @@ headers when using HTTP/2.</p>
     </div>
     <div class="read-more">
       <a href="/2016/01/22/leaving-edooon.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2016/01/17/modify-accept-ranges-header.html">使用 ngx.header 修改 Accept-Ranges 的问题</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2016-01-17" class="post-time">
-        2016-01-17
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>今天有位朋友在使用 OpenResty 时发现一个奇怪的事情。</p>
-<p>他打算用 <code>ngx.header</code> 来修改响应的 Accept-Ranges 头，于是按照惯例做法，在 <code>*_by_lua</code>  脚本中写入 <code>ngx.header[&quot;Accept-Ranges&quot;] = &quot;xxx&quot;</code>。在 OpenResty 中，这是一种经常被使用到的方法。</p>
-<p>他发现的问题是，当这么修改后，真实响应的 Accept-Ranges 头不是被改写了，而是出现了两个并列的 Accept-Ranges 头，其中第一个的值是他打算修改的值，而第二个 Accept-Ranges 头的值却是原始的值。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2016/01/17/modify-accept-ranges-header.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>
