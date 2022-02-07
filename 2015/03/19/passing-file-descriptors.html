@@ -36,7 +36,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.83.1" />
+<meta name="generator" content="Hugo 0.89.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2015/03/19/passing-file-descriptors.html" />
@@ -57,7 +57,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
 
 
 
@@ -72,8 +72,8 @@
 这里说的“进程间传递文件描述符”是指，A 进程打开文件 fileA，获得文件描述符为 fdA，现在 A 进程要通过某种方法，根据 fdA，使得另一个进程 B，获得一个新的文件描述符 fdB，这个 fdB 在进程 B 中的作用，跟 fdA 在进程 A 中的作用一样。即在 fdB 上的操作，即是对 fileA 的操作。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2015/03/19/passing-file-descriptors.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2015-03-19T08:46:00&#43;00:00" />
-<meta property="article:modified_time" content="2015-03-19T08:46:00&#43;00:00" />
+<meta property="article:published_time" content="2015-03-19T08:46:00+00:00" />
+<meta property="article:modified_time" content="2015-03-19T08:46:00+00:00" />
 
 <meta itemprop="name" content="进程间传递文件描述符">
 <meta itemprop="description" content="首先，必须声明，“进程间传递文件描述符”这个说法是错误的。
@@ -81,8 +81,8 @@
 在处理文件时，内核空间和用户空间使用的主要对象是不同的。对用户程序来说，一个文件由一个文件描述符标识。该描述符是一个整数，在所有有关文件的操作中用作标识文件的参数。文件描述符是在打开文件时由内核分配，只在一个进程内部有效。两个不同进程可以使用同样的文件描述符，但二者并不指向同一个文件。基于同一个描述符来共享文件是不可能的。
 《深入理解 Linux 内核架构》
 
-这里说的“进程间传递文件描述符”是指，A 进程打开文件 fileA，获得文件描述符为 fdA，现在 A 进程要通过某种方法，根据 fdA，使得另一个进程 B，获得一个新的文件描述符 fdB，这个 fdB 在进程 B 中的作用，跟 fdA 在进程 A 中的作用一样。即在 fdB 上的操作，即是对 fileA 的操作。"><meta itemprop="datePublished" content="2015-03-19T08:46:00&#43;00:00" />
-<meta itemprop="dateModified" content="2015-03-19T08:46:00&#43;00:00" />
+这里说的“进程间传递文件描述符”是指，A 进程打开文件 fileA，获得文件描述符为 fdA，现在 A 进程要通过某种方法，根据 fdA，使得另一个进程 B，获得一个新的文件描述符 fdB，这个 fdB 在进程 B 中的作用，跟 fdA 在进程 A 中的作用一样。即在 fdB 上的操作，即是对 fileA 的操作。"><meta itemprop="datePublished" content="2015-03-19T08:46:00+00:00" />
+<meta itemprop="dateModified" content="2015-03-19T08:46:00+00:00" />
 <meta itemprop="wordCount" content="3743">
 <meta itemprop="keywords" content="程序员,nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="进程间传递文件描述符"/>
@@ -353,13 +353,13 @@ APUE 3rd edition,17.2</p>
 <p>socketpair的原型为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;  </span><span class="cp">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;  </span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;  </span><span class="cp">
 </span><span class="cp"></span>  
 <span class="kt">int</span> <span class="nf">socketpair</span><span class="p">(</span><span class="kt">int</span> <span class="n">d</span><span class="p">,</span> <span class="kt">int</span> <span class="n">type</span><span class="p">,</span> <span class="kt">int</span> <span class="n">protocol</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>  
@@ -379,18 +379,18 @@ APUE 3rd edition,17.2</p>
 <p>sendmsg函数原型如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;  </span><span class="cp">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;  </span><span class="cp">
 </span><span class="cp"></span><span class="n">ssize_t</span> <span class="nf">sendmsg</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">msghdr</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>  
 </code></pre></td></tr></table>
 </div>
 </div><p>其中，根据 POSIX.1 msghdr 的定义至少应该包含下面几个成员：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -402,7 +402,7 @@ APUE 3rd edition,17.2</p>
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">msghdr</span> <span class="p">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">msghdr</span> <span class="p">{</span>  
     <span class="kt">void</span> <span class="o">*</span><span class="n">msg_name</span><span class="p">;</span> <span class="cm">/* optional address */</span>  
     <span class="n">socklen_t</span> <span class="n">msg_namelen</span><span class="p">;</span> <span class="cm">/* address size in bytes */</span>  
     <span class="k">struct</span> <span class="n">iovec</span> <span class="o">*</span><span class="n">msg_iov</span><span class="p">;</span> <span class="cm">/* array of I/O buffers */</span>  
@@ -417,7 +417,7 @@ APUE 3rd edition,17.2</p>
 </div><p>在 Linux 的 manual page 中，msghdr 的定义为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -428,7 +428,7 @@ APUE 3rd edition,17.2</p>
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">msghdr</span> <span class="p">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">msghdr</span> <span class="p">{</span>  
     <span class="kt">void</span>         <span class="o">*</span><span class="n">msg_name</span><span class="p">;</span>       <span class="cm">/* optional address */</span>  
     <span class="n">socklen_t</span>     <span class="n">msg_namelen</span><span class="p">;</span>    <span class="cm">/* size of address */</span>  
     <span class="k">struct</span> <span class="n">iovec</span> <span class="o">*</span><span class="n">msg_iov</span><span class="p">;</span>        <span class="cm">/* scatter/gather array */</span>  
@@ -442,7 +442,7 @@ APUE 3rd edition,17.2</p>
 </div><p>查看 Linux 内核源代码（3.18.1），可知 msghdr 的准确定义为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -454,7 +454,7 @@ APUE 3rd edition,17.2</p>
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">msghdr</span> <span class="p">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">msghdr</span> <span class="p">{</span>  
 	<span class="kt">void</span>		<span class="o">*</span><span class="n">msg_name</span><span class="p">;</span>	<span class="cm">/* ptr to socket address structure */</span>  
 	<span class="kt">int</span>		<span class="n">msg_namelen</span><span class="p">;</span>	<span class="cm">/* size of socket address structure */</span>  
 	<span class="k">struct</span> <span class="n">iovec</span>	<span class="o">*</span><span class="n">msg_iov</span><span class="p">;</span>	<span class="cm">/* scatter/gather array */</span>  
@@ -471,13 +471,13 @@ APUE 3rd edition,17.2</p>
 <p>接下来的两个成员，msg_iov 和 msg_iovlen，则是用来指定发送缓冲区数组的。其中，msg_iovlen 是 iovec 类型的元素的个数。每一个缓冲区的起始地址和大小由 iovec 类型自包含，iovec 的定义为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">iovec</span> <span class="p">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">iovec</span> <span class="p">{</span>  
     <span class="kt">void</span> <span class="o">*</span><span class="n">iov_base</span><span class="p">;</span>   <span class="cm">/* Starting address */</span>  
     <span class="n">size_t</span> <span class="n">iov_len</span><span class="p">;</span>   <span class="cm">/* Number of bytes */</span>  
 <span class="p">};</span>  
@@ -486,11 +486,11 @@ APUE 3rd edition,17.2</p>
 </div><p>成员 msg_flags 用来描述接受到的消息的性质，由调用 recvmsg 时传入的 flags 参数设置。recvmsg 的函数原型为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;  </span><span class="cp">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;  </span><span class="cp">
 </span><span class="cp"></span><span class="n">ssize_t</span> <span class="nf">recvmsg</span><span class="p">(</span><span class="kt">int</span> <span class="n">sockfd</span><span class="p">,</span> <span class="k">struct</span> <span class="n">msghdr</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">);</span>  
 </code></pre></td></tr></table>
 </div>
@@ -506,7 +506,7 @@ APUE 3rd edition,17.2</p>
 <p>在 Linux 的 Manual page（man cmsg）中，cmsghdr 的定义为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -514,7 +514,7 @@ APUE 3rd edition,17.2</p>
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">cmsghdr</span> <span class="p">{</span>  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">cmsghdr</span> <span class="p">{</span>  
     <span class="n">socklen_t</span>   <span class="n">cmsg_len</span><span class="p">;</span>   <span class="cm">/* data byte count, including header */</span>  
     <span class="kt">int</span>         <span class="n">cmsg_level</span><span class="p">;</span> <span class="cm">/* originating protocol */</span>  
     <span class="kt">int</span>         <span class="n">cmsg_type</span><span class="p">;</span>  <span class="cm">/* protocol-specific type */</span>  
@@ -525,7 +525,7 @@ APUE 3rd edition,17.2</p>
 </div><p>注意,控制信息的数据部分,是直接存储在cmsg_type之后的。但中间可能有一些由于对齐产生的填充字节,由于这些填充数据的存在，对于这些控制数据的访问,必须使用Linux提供的一些专用宏来完成。这些宏包括如下几个:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -535,7 +535,7 @@ APUE 3rd edition,17.2</p>
 </span><span class="lnt">8
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;sys/socket.h&gt;  
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">#include &lt;sys/socket.h&gt;  
   
 struct cmsghdr *CMSG_FIRSTHDR(struct msghdr *msgh);  
 struct cmsghdr *CMSG_NXTHDR(struct msghdr *msgh, struct cmsghdr *cmsg);  
@@ -566,7 +566,7 @@ unsigned char *CMSG_DATA(struct cmsghdr *cmsg);
 <p>Nginx 中发送文件描述符的相关代码为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -648,7 +648,7 @@ unsigned char *CMSG_DATA(struct cmsghdr *cmsg);
 </span><span class="lnt">80
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_int_t</span>  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_int_t</span>  
 <span class="nf">ngx_write_channel</span><span class="p">(</span><span class="n">ngx_socket_t</span> <span class="n">s</span><span class="p">,</span> <span class="n">ngx_channel_t</span> <span class="o">*</span><span class="n">ch</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span>  
     <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">)</span>  
 <span class="p">{</span>  
@@ -734,7 +734,7 @@ unsigned char *CMSG_DATA(struct cmsghdr *cmsg);
 <p>接收部分的代码为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">  1
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
 </span><span class="lnt">  2
 </span><span class="lnt">  3
 </span><span class="lnt">  4
@@ -837,7 +837,7 @@ unsigned char *CMSG_DATA(struct cmsghdr *cmsg);
 </span><span class="lnt">101
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_int_t</span>  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_int_t</span>  
 <span class="nf">ngx_read_channel</span><span class="p">(</span><span class="n">ngx_socket_t</span> <span class="n">s</span><span class="p">,</span> <span class="n">ngx_channel_t</span> <span class="o">*</span><span class="n">ch</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">)</span>  
 <span class="p">{</span>  
     <span class="n">ssize_t</span>             <span class="n">n</span><span class="p">;</span>  
@@ -1064,7 +1064,7 @@ unsigned char *CMSG_DATA(struct cmsghdr *cmsg);
     &copy;
     
       2011 -
-    2021
+    2022
     <span class="heart">
       
       <i class="iconfont">

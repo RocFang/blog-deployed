@@ -33,7 +33,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.83.1" />
+<meta name="generator" content="Hugo 0.89.4" />
 
 
 <link rel="canonical" href="https://pureage.info/" />
@@ -54,7 +54,7 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
 
 
 
@@ -216,7 +216,7 @@
   <ul id="menu" class="menu">
     
     
-        <li class="menu-item active">
+        <li class="menu-item">
         
           
           
@@ -391,36 +391,36 @@
       <p><code>ngx.var.arg_xx</code> 与 <code>ngx.req.get_uri_args[&quot;xx&quot;]</code> 两者都是为了获取请求 uri 中的参数，例如对于 url：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">http://pureage.info?strider=1  
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">http://pureage.info?strider=1  
 </code></pre></td></tr></table>
 </div>
 </div><p>为了获取输入参数 strider，以下两种方法都可以：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">strider</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">.</span><span class="n">arg_strider</span>
+<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">strider</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">.</span><span class="n">arg_strider</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">strider</span> <span class="o">=</span> <span class="n">ngx.req</span><span class="p">.</span><span class="n">get_uri_args</span><span class="p">[</span><span class="s2">&#34;strider&#34;</span><span class="p">]</span>
+<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">strider</span> <span class="o">=</span> <span class="n">ngx.req</span><span class="p">.</span><span class="n">get_uri_args</span><span class="p">[</span><span class="s2">&#34;strider&#34;</span><span class="p">]</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>差别在于，当请求 uri 中有多个同名参数时，<code>ngx.var.arg_xx</code> 的做法是取第一个出现的值，<code>ngx.req_get_uri_args[&quot;xx&quot;]</code> 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-fallback" data-lang="fallback">http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
 </code></pre></td></tr></table>
 </div>
 </div><p>此时，<code>ngx.var.arg_strider</code> 的值为“1”，而 <code>ngx.req.get_uri_args[&quot;strider&quot;]</code> 的值为 <code>table [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]</code>。因此，<code>ngx.req.get_uri_args</code> 属于<code>ngx.var.arg_</code> 的增强。</p>
@@ -1470,7 +1470,7 @@
     &copy;
     
       2011 -
-    2021
+    2022
     <span class="heart">
       
       <i class="iconfont">

@@ -82,7 +82,7 @@
 &lt;p&gt;自己写的一个基于 FastDFS 的客户端程序的日志格式如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
@@ -94,7 +94,7 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
 [2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
@@ -129,12 +129,12 @@
 &lt;p&gt;假设有个 result_test_upload.log 的文件，里面存放着一些 FastDFS 系统中的 fileid。文本内容如下：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
 ......(略）......  
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
@@ -143,10 +143,10 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
 &lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;cat result_test_upload.log  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -o group&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0-9&lt;span class=&#34;o&#34;&gt;][&lt;/span&gt;0-9&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;*  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort -n -t p -k 2&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq -c  
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;cat result_test_upload.log  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -o group&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0-9&lt;span class=&#34;o&#34;&gt;][&lt;/span&gt;0-9&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;*  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort -n -t p -k 2&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq -c  
 &lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;其中，&lt;code&gt;grep -o group-0-9][0-9].*&lt;/code&gt; 已经把每个 group 名截取出来了，&lt;code&gt;sort -t p&lt;/code&gt; 表示以 p 为分隔，&lt;code&gt;-k 2&lt;/code&gt; 表示按以 p 为分隔的第二个域来排序，也就是 group1、group2、group3&amp;hellip;中的1、2、3。-n 选项则很简单，表示按照group1、group2、group3&amp;hellip;groupn 的顺序排列。&lt;/p&gt;</description>
@@ -173,7 +173,7 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
 &lt;p&gt;在 bash 中，here document 经常用于一些需要交互性输入指令的程序中，例如登陆 ftp。例如：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
@@ -182,7 +182,7 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
-&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ftp -n &lt;span class=&#34;nv&#34;&gt;$HOST&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;EOF
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ftp -n &lt;span class=&#34;nv&#34;&gt;$HOST&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;EOF
 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;quote USER $USER  
 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;quote PASS $PASS  
 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;binary  

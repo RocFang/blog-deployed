@@ -35,7 +35,7 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 
 
 
-<meta name="generator" content="Hugo 0.83.1" />
+<meta name="generator" content="Hugo 0.89.4" />
 
 
 <link rel="canonical" href="https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html" />
@@ -56,7 +56,7 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.0995afa14b62cd93e93cfc066b646c4c17a3eddca0e9d52a1d9dcf5d90aaacd3.css" integrity="sha256-CZWvoUtizZPpPPwGa2RsTBej7dyg6dUqHZ3PXZCqrNM=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
 
 
 
@@ -68,14 +68,14 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    auto 目录下。本文重点涉及其中两个脚本：auto/have 和 auto/define。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2014-10-17T09:31:00&#43;00:00" />
-<meta property="article:modified_time" content="2014-10-17T09:31:00&#43;00:00" />
+<meta property="article:published_time" content="2014-10-17T09:31:00+00:00" />
+<meta property="article:modified_time" content="2014-10-17T09:31:00+00:00" />
 
 <meta itemprop="name" content="Nginx 如何控制某个特性是否打开">
 <meta itemprop="description" content="提到 Nginx，大家首先会想到它的高性能、事件框架、模块化、upstream 等耳熟能详的技术实现。这些确实也是 Nginx 的核心，但作为一个优秀的开源项目，Nginx 可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？
 我们知道，在 Linux 下用源码安装方式编译安装一个软件时，标准情况下是有一个 configure 的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。
-Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    auto 目录下。本文重点涉及其中两个脚本：auto/have 和 auto/define。"><meta itemprop="datePublished" content="2014-10-17T09:31:00&#43;00:00" />
-<meta itemprop="dateModified" content="2014-10-17T09:31:00&#43;00:00" />
+Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    auto 目录下。本文重点涉及其中两个脚本：auto/have 和 auto/define。"><meta itemprop="datePublished" content="2014-10-17T09:31:00+00:00" />
+<meta itemprop="dateModified" content="2014-10-17T09:31:00+00:00" />
 <meta itemprop="wordCount" content="1423">
 <meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Nginx 如何控制某个特性是否打开"/>
@@ -332,7 +332,7 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -345,7 +345,7 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Copyright (C) Igor Sysoev</span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Copyright (C) Igor Sysoev</span>
 <span class="c1"># Copyright (C) Nginx, Inc.  </span>
 
 
@@ -363,7 +363,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -376,7 +376,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Copyright (C) Igor Sysoev  </span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Copyright (C) Igor Sysoev  </span>
 <span class="c1"># Copyright (C) Nginx, Inc.  </span>
 
 
@@ -393,21 +393,21 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 <p><code>have</code> 脚本的用法：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">have</span><span class="o">=</span>XXXX  . auto/have
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">have</span><span class="o">=</span>XXXX  . auto/have
 </code></pre></td></tr></table>
 </div>
 </div><p>就会在 <code>$NGX_AUTO_CONFIG_H</code> 所代表的文件里（默认为 <code>objs/ngx_auto_config.h</code>)追加如下内容：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#ifndef XXXX  </span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#ifndef XXXX  </span>
 <span class="c1">#define XXXX 1  </span>
 <span class="c1">#endif  </span>
 </code></pre></td></tr></table>
@@ -417,14 +417,14 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 <p><code>ngx_memalign</code> 是 Nginx 里最基本的接口之一，经常会被调用。从接口的名字就可以看出，这个接口是用来处理内存分配和对齐的。其定义在 <code>ngx_alloc.h</code> 中：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
 </span><span class="cp"></span><span class="kt">void</span> <span class="o">*</span><span class="nf">ngx_memalign</span><span class="p">(</span><span class="n">size_t</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">);</span> 
 <span class="cp">#else 
 </span><span class="cp">#define ngx_memalign(alignment, size, log) ngx_alloc(size, log) 
@@ -435,7 +435,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 <p>我们在来看函数 <code>ngx_memalign</code> 在 <code>ngx_alloc.c</code> 中的定义：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -479,7 +479,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 </span><span class="lnt">42
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#if (NGX_HAVE_POSIX_MEMALIGN)  
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#if (NGX_HAVE_POSIX_MEMALIGN)  
 </span><span class="cp"></span>
 <span class="kt">void</span> <span class="o">*</span>  
 <span class="nf">ngx_memalign</span><span class="p">(</span><span class="n">size_t</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">)</span>  
@@ -530,10 +530,10 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 <p>如果 <code>feature</code> 脚本验证出 <code>posix_memalign</code> 和 <code>memalign</code> 接口在当前系统中都可用后，则会逐一调用 <code>have</code> 脚本：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">have</span><span class="o">=</span><span class="nv">$ngx_have_feature</span> . auto/have  
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">have</span><span class="o">=</span><span class="nv">$ngx_have_feature</span> . auto/have  
 </code></pre></td></tr></table>
 </div>
 </div><p>这里，变量 <code>ngx_have_feature</code> 即是 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和  <code>NGX_HAVE_MEMALIGN</code>。</p>
@@ -667,7 +667,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
     &copy;
     
       2011 -
-    2021
+    2022
     <span class="heart">
       
       <i class="iconfont">
