@@ -6,7 +6,16 @@
     <description>Recent content in Tags on 纯真年代</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 28 May 2021 15:32:35 +0800</lastBuildDate><atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Feb 2022 17:07:27 +0800</lastBuildDate><atom:link href="https://pureage.info/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>读书</title>
+      <link>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</link>
+      <pubDate>Mon, 07 Feb 2022 17:07:27 +0800</pubDate>
+      
+      <guid>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>nginx</title>
       <link>https://pureage.info/tags/nginx/</link>
@@ -85,15 +94,6 @@
       <pubDate>Sat, 24 Aug 2019 11:10:10 +0800</pubDate>
       
       <guid>https://pureage.info/tags/rust/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>读书</title>
-      <link>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</link>
-      <pubDate>Fri, 16 Aug 2019 23:59:34 +0800</pubDate>
-      
-      <guid>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</guid>
       <description></description>
     </item>
     

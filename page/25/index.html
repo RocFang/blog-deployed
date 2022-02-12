@@ -297,6 +297,39 @@
   <header class="post-header">
     <h1 class="post-title">
       
+      <a class="post-link" href="/2013/07/21/119.html">bash 下如何实现 perl 中 seek 的功能？</a>
+    </h1>
+    
+    <div class="post-meta">
+      <time datetime="2013-07-21" class="post-time">
+        2013-07-21
+      </time>
+      
+      
+      
+      
+    </div>
+  </header>
+  
+  <div class="post-content">
+    
+    <div class="post-summary">
+      <p>因为日志处理需要，接触到 perl，虽然还未入门，但通过几个函数就可以发现其在文本处理上的威力确实名不虚传，更不用提正则表达式了。</p>
+<p>假设有这样的应用场景：客户通过 ftp 客户端上传文件到接入端 ftp 服务器，接入端 ftp 服务器作为分布式存储系统的客户端，再将这些文件存入到后面的分布式存储服务器中。这个接入端 ftp 服务器要做的工作就是定时分析 ftp server（假设是 vsftpd，日志为 xferlog）的日志来获取客户上传的文件，再对这些文件做后续处理。客户上传时随时进行的，xferlog 的记录条数也随之增长。</p>
+<p>perl 中通过 seek 函数可以很方便的做到，每一次脚本执行时，都将上一次脚本执行时 xferlog 的大小作为本次读操作的偏移量，用这个偏移量来调用 seek，本次处理完后再将该偏移量更新后存入到一个文件供下次脚本执行时读取。</p>
+    </div>
+    <div class="read-more">
+      <a href="/2013/07/21/119.html" class="read-more-link">阅读全文</a>
+    </div>
+    
+  </div>
+</article>
+
+  
+    <article class="post bg-white">
+  <header class="post-header">
+    <h1 class="post-title">
+      
       <a class="post-link" href="/2013/07/13/117.html">再不判断异常分支就剁手</a>
     </h1>
     
@@ -450,43 +483,6 @@
     </div>
     <div class="read-more">
       <a href="/2013/05/06/114.html" class="read-more-link">阅读全文</a>
-    </div>
-    
-  </div>
-</article>
-
-  
-    <article class="post bg-white">
-  <header class="post-header">
-    <h1 class="post-title">
-      
-      <a class="post-link" href="/2013/04/26/113.html">一个名字毁掉一本书：《全中国最穷的小伙子发财日记》</a>
-    </h1>
-    
-    <div class="post-meta">
-      <time datetime="2013-04-26" class="post-time">
-        2013-04-26
-      </time>
-      
-      
-      
-      
-    </div>
-  </header>
-  
-  <div class="post-content">
-    
-    <div class="post-summary">
-      <p>现在，一个年轻人说自己读成功学的书时，会觉得难以启齿吧？但曾经，在成功学还没被现在的某些大师搞臭时，还是能给人一些正面的力量的。老罗曾经在演讲里说过，他当年曾把各种成功学的书一斤一斤的堆在家里，当熬不下去的时候就随机发开一本，打打鸡血，继续干活，每次都能管一段时间。</p>
-<p>我对于成功学的了解，大概分为如下几个时期:</p>
-<h2 id="初窥好奇">初窥：好奇</h2>
-<p>最早看的一本成功学的书，是《方与圆》，顾名思义，全书就是教育读者想要出人头地的话，就要做到“外圆内方”。那时我还读小学，给我看这本书的是我的一个舅舅。</p>
-<p>我的这个舅舅是一个很有才华的人，但正因为他不够圆，从世俗的角度来看，他并不成功，颇有怀才不遇之感。很奇怪的是，他既然很多年前就知道自己不够圆，这么多年过去了，却并没有多大改变。简单分析一下，会有两个原因，一是他深知自己想要获得世俗的成功，就必须改变自己，但是他并不知道如何去实践。二是他内心里对这种改变抱有抵触。就他所处的实际情况而言，我认为主要是第一个原因。</p>
-<p>因此，《方与圆》这类书籍，代表了一类低端的成功学的书籍，它们一方面很难从内心说服你为什么要做出改变，另一方面可操作性极差。但是它们往往喜欢结合中国社会的具体国情，会让你觉得它的观点无可辩驳，你很难说服别人说”外圆内方更容易成功“这个观点是错的。</p>
-<p>它的立足点就有问题，方圆之说，无法操作，无法度量。最终结果是，要么依然外方内方，要么就是外圆内圆，如果它从头到尾都在教育人们外圆内圆，我会对其更有好感。</p>
-    </div>
-    <div class="read-more">
-      <a href="/2013/04/26/113.html" class="read-more-link">阅读全文</a>
     </div>
     
   </div>

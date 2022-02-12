@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://pureage.info/post/</loc>
+    <lastmod>2022-02-07T17:07:27+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/tags/</loc>
+    <lastmod>2022-02-07T17:07:27+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/</loc>
+    <lastmod>2022-02-07T17:07:27+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/post/a-deceased-gongfu-story-writer-wuji/</loc>
+    <lastmod>2022-02-07T17:07:27+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</loc>
+    <lastmod>2022-02-07T17:07:27+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://pureage.info/tags/nginx/</loc>
     <lastmod>2021-05-28T15:32:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -10,27 +45,6 @@
   
   <url>
     <loc>https://pureage.info/post/x-accel-redirect-header-in-nginx/</loc>
-    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/post/</loc>
-    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/tags/</loc>
-    <lastmod>2021-05-28T15:32:35+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/</loc>
     <lastmod>2021-05-28T15:32:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -157,13 +171,6 @@
   
   <url>
     <loc>https://pureage.info/post/a-misunderstanding-of-tao-of-rust/</loc>
-    <lastmod>2019-08-16T23:59:34+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://pureage.info/tags/%E8%AF%BB%E4%B9%A6/</loc>
     <lastmod>2019-08-16T23:59:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
