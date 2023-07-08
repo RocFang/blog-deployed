@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>关于 nginx 中的 host 变量 - 纯真年代</title>
-  
+<html
+  lang="zh-cn"
+  itemscope
+  itemtype="http://schema.org/WebPage"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+          关于 nginx 中的 host 变量 - 纯真年代
+        </title>
+    
 
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
@@ -24,9 +30,9 @@
 
 <meta name="author" content="strider" />
   <meta name="description" content="关于变量 host，在 Nginx 的官网 wiki 中是如下说明的：
- $host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
- 直白的翻译一下：host 变量的值按照如下优先级获得：
- 请求行中的 host 请求头中的 Host 头部 与一条请求匹配的 server name  很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有 host 信息，则以请求行中的 host 作为 host 变量的值（host 与 host 变量不是一个东西，很拗口）；如果请求行中没有 host 信息，则以请求头中的 Host 头的值作为 host 变量的值；如果前面两者都没有，那么 host 变量就是与该请求匹配所匹配的 serve 名。
+$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request
+直白的翻译一下：host 变量的值按照如下优先级获得：
+请求行中的 host 请求头中的 Host 头部 与一条请求匹配的 server name 很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有 host 信息，则以请求行中的 host 作为 host 变量的值（host 与 host 变量不是一个东西，很拗口）；如果请求行中没有 host 信息，则以请求头中的 Host 头的值作为 host 变量的值；如果前面两者都没有，那么 host 变量就是与该请求匹配所匹配的 serve 名。
 " />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
@@ -36,7 +42,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.89.4" />
+<meta name="generator" content="Hugo 0.115.1" />
 
 
 <link rel="canonical" href="https://pureage.info/2014/02/22/host-variable-in-nginx.html" />
@@ -57,7 +63,9 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.d8d87b982993a745e5e7b6a6cbf257be8c3e82aab5e485f0908ad7e6c3501ab2.css" integrity="sha256-2Nh7mCmTp0Xl57amy/JXvow&#43;gqq15IXwkIrX5sNQGrI=" media="screen" crossorigin="anonymous">
+
+
 
 
 
@@ -79,7 +87,6 @@ $host：in this order of precedence: host name from the request line, or host na
 <meta property="og:url" content="https://pureage.info/2014/02/22/host-variable-in-nginx.html" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2014-02-21T19:51:00+00:00" />
 <meta property="article:modified_time" content="2014-02-21T19:51:00+00:00" />
-
 <meta itemprop="name" content="关于 nginx 中的 host 变量">
 <meta itemprop="description" content="关于变量 host，在 Nginx 的官网 wiki 中是如下说明的：
 
@@ -93,7 +100,7 @@ $host：in this order of precedence: host name from the request line, or host na
 
 很清楚，有三点，取优先级最高的那个。仅从字面意思上来理解，这个选择的过程为：如果请求行中有 host 信息，则以请求行中的 host 作为 host 变量的值（host 与 host 变量不是一个东西，很拗口）；如果请求行中没有 host 信息，则以请求头中的 Host 头的值作为 host 变量的值；如果前面两者都没有，那么 host 变量就是与该请求匹配所匹配的 serve 名。"><meta itemprop="datePublished" content="2014-02-21T19:51:00+00:00" />
 <meta itemprop="dateModified" content="2014-02-21T19:51:00+00:00" />
-<meta itemprop="wordCount" content="2160">
+<meta itemprop="wordCount" content="2135">
 <meta itemprop="keywords" content="程序员,nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="关于 nginx 中的 host 变量"/>
 <meta name="twitter:description" content="关于变量 host，在 Nginx 的官网 wiki 中是如下说明的：
@@ -120,9 +127,11 @@ $host：in this order of precedence: host name from the request line, or host na
 
 
 
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
+  </head>
+  <body>
+    <div id="back-to-top"></div>
+
+    <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
     <a href="/" class="logo">纯真年代</a>
   </div>
@@ -184,8 +193,8 @@ $host：in this order of precedence: host name from the request line, or host na
 </nav>
 
 
-  
     
+      
 
 
 
@@ -242,14 +251,15 @@ $host：in this order of precedence: host name from the request line, or host na
     </div>
 </div>
 
-  
+    
 
-  
+    
 
-  
+    
 
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
+
+    <header id="header" class="header">
+      <div class="logo-wrapper">
   <a href="/" class="logo">
     
       纯真年代
@@ -335,38 +345,54 @@ $host：in this order of precedence: host name from the request line, or host na
   </ul>
 </nav>
 
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">关于 nginx 中的 host 变量</h1>
-      
-      <div class="post-meta">
-        <time datetime="2014-02-21" class="post-time">
-          2014-02-21
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
     </header>
 
+    <div id="mobile-panel">
+      <main id="main" class="main bg-llight wallpaper">
+        <div class="content-wrapper">
+    <div id="content" class="content">
+      <article class="post">
+        
+        <header class="post-header">
+          <h1 class="post-title">关于 nginx 中的 host 变量</h1>
+          
+
+          <div class="post-meta">
+  <div class="post-meta-author">
+    by
+      strider
     
+  </div>
+
+  <div class="post-meta-time">
+    <time datetime="2014-02-21">
+      2014-02-21
+    </time>
+  </div>
+
+  
+
+
+  <div class="post-meta__right">
     
 
     
-    <div class="post-content">
-      <p>关于变量 host，在 Nginx 的官网 wiki 中是如下说明的：</p>
+
+
+    
+    
+
+
+    
+    
+  </div>
+</div>
+
+        </header>
+
+        
+        <div class="post-content">
+          <p>关于变量 host，在 Nginx 的官网 wiki 中是如下说明的：</p>
 <blockquote>
 <p>$host：in this order of precedence: host name from the request line, or host name from the “Host” request header field, or the server name matching a request</p>
 </blockquote>
@@ -399,61 +425,25 @@ $host：in this order of precedence: host name from the request line, or host na
 </blockquote>
 <p>这就是一个完整的 HTTP 请求行。虽然请求行中不需要有服务器的信息，但仍然可以在请求行中包含服务器的信息。例如：</p>
 <blockquote>
-<p>GET <a href="http://www.pureage.info/index.php">www.pureage.info/index.php</a> HTTP/1.1</p>
+<p>GET <a href="https://www.pureage.info/index.php">www.pureage.info/index.php</a> HTTP/1.1</p>
 </blockquote>
 <p>两者一比较，就很容易理解什么叫请求行中的 host 了。第一个请求行中，就没有 host，第二种请求行中，就带了 host，为 <code>wwww.pureage.info</code>。</p>
 <h3 id="2-host-请求头与-http10http11">2. Host 请求头与 HTTP/1.0、HTTP/1.1</h3>
 <p>一个请求，请求行下面就是一些列的请求头。这些请求头，在 HTTP/1.0 中，都是可选的，且 HTTP/1.0 不支持 Host 请求头；而<strong>在 HTTP/1.1 中，Host 请求头部必须存在</strong>。</p>
 <p>除了阅读 RFC2616 来确认这一点外，我们来看看 Nginx 中的代码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_int_t</span>  
-<span class="nf">ngx_http_process_request_header</span><span class="p">(</span><span class="n">ngx_http_request_t</span> <span class="o">*</span><span class="n">r</span><span class="p">)</span>  
-<span class="p">...(</span><span class="err">略</span><span class="p">)...</span>  
-<span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">headers_in</span><span class="p">.</span><span class="n">host</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">http_version</span> <span class="o">&gt;</span> <span class="n">NGX_HTTP_VERSION_10</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_INFO</span><span class="p">,</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">connection</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  
-                   <span class="s">&#34;client sent HTTP/1.1 request without </span><span class="se">\&#34;</span><span class="s">Host</span><span class="se">\&#34;</span><span class="s"> header&#34;</span><span class="p">);</span>  
-        <span class="n">ngx_http_finalize_request</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">NGX_HTTP_BAD_REQUEST</span><span class="p">);</span>  
-        <span class="k">return</span> <span class="n">NGX_ERROR</span><span class="p">;</span>  
-<span class="p">...(</span><span class="err">略</span><span class="p">)...</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>即，如果协议版本在 HTTP/1.0 之上，且请求头部没有 Host 的话，会直接返回一个 Bad Request 错误响应。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">ngx_int_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_http_process_request_header</span>(<span style="color:#66d9ef">ngx_http_request_t</span> <span style="color:#f92672">*</span>r)  
+</span></span><span style="display:flex;"><span>...(<span style="color:#960050;background-color:#1e0010">略</span>)...  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (r<span style="color:#f92672">-&gt;</span>headers_in.host <span style="color:#f92672">==</span> NULL <span style="color:#f92672">&amp;&amp;</span> r<span style="color:#f92672">-&gt;</span>http_version <span style="color:#f92672">&gt;</span> NGX_HTTP_VERSION_10) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_INFO, r<span style="color:#f92672">-&gt;</span>connection<span style="color:#f92672">-&gt;</span>log, <span style="color:#ae81ff">0</span>,  
+</span></span><span style="display:flex;"><span>                   <span style="color:#e6db74">&#34;client sent HTTP/1.1 request without </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">Host</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74"> header&#34;</span>);  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_http_finalize_request</span>(r, NGX_HTTP_BAD_REQUEST);  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_ERROR;  
+</span></span><span style="display:flex;"><span>...(<span style="color:#960050;background-color:#1e0010">略</span>)...  
+</span></span></code></pre></div><p>即，如果协议版本在 HTTP/1.0 之上，且请求头部没有 Host 的话，会直接返回一个 Bad Request 错误响应。</p>
 <h3 id="3-什么是与请求匹配的-server-name">3. 什么是与请求匹配的 server name?</h3>
 <p>server name 是指在 Nginx 配置文件中，在 server 块中，用 server_name 指令设置的值。一个server 可以多次使用 server_name 指令，来实现俗称的“虚拟主机”。例如：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">server {  
+<pre tabindex="0"><code>server {  
     listen      80;  
     server_name example.org www.example.org;  
     ...  
@@ -470,14 +460,12 @@ server {
     server_name example.com www.example.com;  
     ...  
 }  
-</code></pre></td></tr></table>
-</div>
-</div><p>关于虚拟主机的确定方法，还是引用 Nginx 的官方文档：</p>
+</code></pre><p>关于虚拟主机的确定方法，还是引用 Nginx 的官方文档：</p>
 <blockquote>
 <p>在这个配置中，nginx 仅仅检查请求的“Host”头以决定该请求应由哪个虚拟主机来处理。如果Host 头没有匹配任意一个虚拟主机，或者请求中根本没有包含 Host 头，那 nginx 会将请求分发到定义在此端口上的默认虚拟主机。在以上配置中，第一个被列出的虚拟主机即 nginx 的默认虚拟主机——这是 nginx 的默认行为。而且，可以显式地设置某个主机为默认虚拟主机，即在&quot;listen&quot;指令中设置&quot;default_server&quot;参数：</p>
 <p>server {<br>
 listen      80 default_server;<br>
-server_name example.net <a href="http://www.example.net">www.example.net</a>;<br>
+server_name example.net <a href="https://www.example.net">www.example.net</a>;<br>
 &hellip;<br>
 }</p>
 </blockquote>
@@ -501,7 +489,7 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 <li>
 <p>HTTP/1.0请求，带Host头</p>
 <blockquote>
-<p>GET /index.php HTTP/1.0<!-- raw HTML omitted -->Host: <a href="http://www.pureage.info">www.pureage.info</a></p>
+<p>GET /index.php HTTP/1.0<!-- raw HTML omitted -->Host: <a href="https://www.pureage.info">www.pureage.info</a></p>
 </blockquote>
 <p>此时，host 变量即为 <code>www.pureage.info</code></p>
 </li>
@@ -515,7 +503,7 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 <li>
 <p>HTTP/1.1请求，带Host头</p>
 <blockquote>
-<p>GET /index.php HTTP/1.1<!-- raw HTML omitted -->Host: <a href="http://www.pureage.info">www.pureage.info</a></p>
+<p>GET /index.php HTTP/1.1<!-- raw HTML omitted -->Host: <a href="https://www.pureage.info">www.pureage.info</a></p>
 </blockquote>
 <p>此时，host 变量即为 <code>www.pureage.info</code></p>
 </li>
@@ -523,10 +511,10 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 <p>通过上面的例子，可以看出，对于HTTP/1.1 请求，host 变量不会为空，它要么在请求行中指定，要么在 Host 头部指定，要么就是一条错误的请求；而对于 HTTP/1.0 请求，host 变量有为空的情况，即请求行和请求头中没有指定 host，且匹配的 server 也没有名称时。</p>
 <h3 id="5--验证">5 . 验证</h3>
 <p>可以搭建一台 Nginx 服务器，用 telnet 来验证上面的说法。此处略过，但这个操作很有必要。</p>
-    </div>
+        </div>
 
-    
-    
+        
+        
 <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
@@ -547,61 +535,66 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 </div>
 
 
-    
-    
 
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          <a href="https://pureage.info/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
         
-          <a class="prev" href="/2014/02/23/gift-not-sent-out.html">
+        
+
+
+        <footer class="post-footer">
+          <div class="post-tags">
+              <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+                <a href="https://pureage.info/tags/nginx/">nginx</a>
+                
+            </div>
+
+
+          
+          <nav class="post-nav">
             
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="prev" href="/2014/02/23/gift-not-sent-out.html">
+                
+                <i class="iconfont">
+                  <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
 </svg>
 
-            </i>
-            <span class="prev-text nav-default">送礼要抓紧</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2014/01/27/176.html">
-            <span class="next-text nav-default">依赖一个 RPM 来制作新的 RPM</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+                </i>
+                <span class="prev-text nav-default">送礼要抓紧</span>
+                <span class="prev-text nav-mobile">上一篇</span>
+              </a>
             
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="next" href="/2014/01/27/176.html">
+                <span class="next-text nav-default">依赖一个 RPM 来制作新的 RPM</span>
+                <span class="prev-text nav-mobile">下一篇</span>
+                
+                <i class="iconfont">
+                  <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
 </svg>
 
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                </i>
+              </a>
+          </nav>
+        </footer>
+      </article>
+
+      
+      
+
+
+      
+      
+
+  
 
   
   
 
   
-  
-
-  
-
-  
-  
-
   
 
   
@@ -612,12 +605,21 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 
   
 
-        </div>
-      </div>
-    </main>
+  
 
-    <footer id="footer" class="footer">
-      <div class="icon-links">
+
+    </div>
+
+    
+    
+
+
+  </div>
+
+      </main>
+
+      <footer id="footer" class="footer">
+        <div class="icon-links">
   
 
 
@@ -630,7 +632,7 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 </svg>
 
   </a>
-   
+  
 </div>
 
 <div class="copyright">
@@ -646,7 +648,7 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
     &copy;
     
       2011 -
-    2022
+    2023
     <span class="heart">
       
       <i class="iconfont">
@@ -669,28 +671,30 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
   
 </div>
 
-    </footer>
+      </footer>
 
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+      <div class="button__back-to-top">
+        <a href="#back-to-top">
+          <i class="iconfont">
+            
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="35" height="35">
   <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
 </svg>
 
-      </i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div>
-  
+    
 <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
 
 
 
 
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/main.419d62fdd33d03e55ca7c874a720b9a5d8bc25d215992621f18eb9f8dad9ac3c.js" integrity="sha256-QZ1i/dM9A&#43;Vcp8h0pyC5pdi8JdIVmSYh8Y65&#43;NrZrDw=" crossorigin="anonymous"></script>
 
 
 
@@ -704,7 +708,6 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 
 
   
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
@@ -723,5 +726,7 @@ GET <a href="http://www.pureage.info/index.php">http://www.pureage.info/index.ph
 
 
 
-</body>
+
+
+  </body>
 </html>

@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>uniq、sort 不得不注意的尾部空格（trailing whitespaces) - 纯真年代</title>
-  
+<html
+  lang="zh-cn"
+  itemscope
+  itemtype="http://schema.org/WebPage"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+          uniq、sort 不得不注意的尾部空格（trailing whitespaces) - 纯真年代
+        </title>
+    
 
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
@@ -24,7 +30,7 @@
 
 <meta name="author" content="strider" />
   <meta name="description" content="问题产生背景 自己写的一个基于 FastDFS 的客户端程序的日志格式如下：
-1 2 3 4 5 6 7 8 9 10  [2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3 [2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3 [2013-09-06 08:57:01] 1734272 group6/M00/00/28/Kj4ZK1IpKL-AZF8OABp2gDqh-sA949.mp3 ;fuckgfw.com/mp3k18/a2/1429_9466.mp3 [2013-09-06 08:57:01] 2453888 group6/M00/00/2D/Kj4ZKlIpKL6AOkQ-ACVxgMD1aRE474.mp3 ;fuckgfw.com/mp3k18/a2/1429_9460.mp3 [2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3   " />
+[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3 [2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3 [2013-09-06 08:57:01] 1734272 group6/M00/00/28/Kj4ZK1IpKL-AZF8OABp2gDqh-sA949.mp3 ;fuckgfw.com/mp3k18/a2/1429_9466.mp3 [2013-09-06 08:57:01] 2453888 group6/M00/00/2D/Kj4ZKlIpKL6AOkQ-ACVxgMD1aRE474.mp3 ;fuckgfw.com/mp3k18/a2/1429_9460.mp3 [2013-09-06 08:58:00] 1375232 group14/M00/00/0C/Kj4ZLVIpKPqAFmmkABT8AAoz9lU552.mp3 ;fuckgfw.com/mp3k18/a2/1487_10243.mp3 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3 " />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -33,7 +39,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.89.4" />
+<meta name="generator" content="Hugo 0.115.1" />
 
 
 <link rel="canonical" href="https://pureage.info/2013/09/09/126.html" />
@@ -54,7 +60,9 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.d8d87b982993a745e5e7b6a6cbf257be8c3e82aab5e485f0908ad7e6c3501ab2.css" integrity="sha256-2Nh7mCmTp0Xl57amy/JXvow&#43;gqq15IXwkIrX5sNQGrI=" media="screen" crossorigin="anonymous">
+
+
 
 
 
@@ -63,20 +71,6 @@
 <meta property="og:title" content="uniq、sort 不得不注意的尾部空格（trailing whitespaces)" />
 <meta property="og:description" content="问题产生背景
 自己写的一个基于 FastDFS 的客户端程序的日志格式如下：
-
-
- 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-
-
 [2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
@@ -87,31 +81,14 @@
 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
-
-
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2013/09/09/126.html" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2013-09-09T13:38:00+00:00" />
 <meta property="article:modified_time" content="2013-09-09T13:38:00+00:00" />
-
 <meta itemprop="name" content="uniq、sort 不得不注意的尾部空格（trailing whitespaces)">
 <meta itemprop="description" content="问题产生背景
 自己写的一个基于 FastDFS 的客户端程序的日志格式如下：
-
-
- 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-
-
 [2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
@@ -122,29 +99,13 @@
 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
-
-
 "><meta itemprop="datePublished" content="2013-09-09T13:38:00+00:00" />
 <meta itemprop="dateModified" content="2013-09-09T13:38:00+00:00" />
-<meta itemprop="wordCount" content="1081">
+<meta itemprop="wordCount" content="1047">
 <meta itemprop="keywords" content="程序员,shell," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="uniq、sort 不得不注意的尾部空格（trailing whitespaces)"/>
 <meta name="twitter:description" content="问题产生背景
 自己写的一个基于 FastDFS 的客户端程序的日志格式如下：
-
-
- 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-
-
 [2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
@@ -155,8 +116,6 @@
 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
-
-
 "/>
 
 <!--[if lte IE 9]>
@@ -171,9 +130,11 @@
 
 
 
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
+  </head>
+  <body>
+    <div id="back-to-top"></div>
+
+    <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
     <a href="/" class="logo">纯真年代</a>
   </div>
@@ -235,8 +196,8 @@
 </nav>
 
 
-  
     
+      
 
 
 
@@ -293,14 +254,15 @@
     </div>
 </div>
 
-  
+    
 
-  
+    
 
-  
+    
 
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
+
+    <header id="header" class="header">
+      <div class="logo-wrapper">
   <a href="/" class="logo">
     
       纯真年代
@@ -386,54 +348,56 @@
   </ul>
 </nav>
 
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">uniq、sort 不得不注意的尾部空格（trailing whitespaces)</h1>
-      
-      <div class="post-meta">
-        <time datetime="2013-09-09" class="post-time">
-          2013-09-09
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
     </header>
 
+    <div id="mobile-panel">
+      <main id="main" class="main bg-llight wallpaper">
+        <div class="content-wrapper">
+    <div id="content" class="content">
+      <article class="post">
+        
+        <header class="post-header">
+          <h1 class="post-title">uniq、sort 不得不注意的尾部空格（trailing whitespaces)</h1>
+          
+
+          <div class="post-meta">
+  <div class="post-meta-author">
+    by
+      strider
     
+  </div>
+
+  <div class="post-meta-time">
+    <time datetime="2013-09-09">
+      2013-09-09
+    </time>
+  </div>
+
+  
+
+
+  <div class="post-meta__right">
     
 
     
-    <div class="post-content">
-      <h2 id="问题产生背景">问题产生背景</h2>
+
+
+    
+    
+
+
+    
+    
+  </div>
+</div>
+
+        </header>
+
+        
+        <div class="post-content">
+          <h2 id="问题产生背景">问题产生背景</h2>
 <p>自己写的一个基于 FastDFS 的客户端程序的日志格式如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
+<pre tabindex="0"><code>[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
 [2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
@@ -443,163 +407,59 @@
 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
-</code></pre></td></tr></table>
-</div>
-</div><p>每一行中用分号开始的域是 url，且有可能会存在该 url 域相同的行，现在要做的是在一个有 13635 条记录的日志中找出这些重复的 url。</p>
+</code></pre><p>每一行中用分号开始的域是 url，且有可能会存在该 url 域相同的行，现在要做的是在一个有 13635 条记录的日志中找出这些重复的 url。</p>
 <h2 id="awk">awk</h2>
 <p>接触过 shell 的童鞋可能都会马上想到用一条 awk 语句即可：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">awk <span class="s1">&#39;{print $5}&#39;</span> sum_stat.log <span class="p">|</span> sort <span class="p">|</span> uniq  -d  
-</code></pre></td></tr></table>
-</div>
-</div><p>结果在意料之中：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>awk <span style="color:#e6db74">&#39;{print $5}&#39;</span> sum_stat.log | sort | uniq  -d  
+</span></span></code></pre></div><p>结果在意料之中：</p>
+<pre tabindex="0"><code>;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
-</code></pre></td></tr></table>
-</div>
-</div><p>如果想算出对url去重后的行数，则是：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">awk <span class="s1">&#39;{print $5}&#39;</span> sum_stat.log <span class="p">|</span> sort <span class="p">|</span> uniq <span class="p">|</span> wc -l  
-</code></pre></td></tr></table>
-</div>
-</div><p>结果为：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">13632  
-</code></pre></td></tr></table>
-</div>
-</div><p>问题本身到这里其实就解决了，找到那些重复的 url。但如果仅仅这样，也没必要写篇文章记录一下了。 从上面的结果可知，虽然 url 域重复的行找出来了，但仅仅只是打印出了该域部分，而无法把整条记录打印出来。如果需要的话，该怎么做呢？</p>
+</code></pre><p>如果想算出对url去重后的行数，则是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>awk <span style="color:#e6db74">&#39;{print $5}&#39;</span> sum_stat.log | sort | uniq | wc -l  
+</span></span></code></pre></div><p>结果为：</p>
+<pre tabindex="0"><code>13632  
+</code></pre><p>问题本身到这里其实就解决了，找到那些重复的 url。但如果仅仅这样，也没必要写篇文章记录一下了。 从上面的结果可知，虽然 url 域重复的行找出来了，但仅仅只是打印出了该域部分，而无法把整条记录打印出来。如果需要的话，该怎么做呢？</p>
 <h2 id="sortuniq">sort、uniq</h2>
 <p>上面的需求用几个纯粹的 awk 语句就可以实现，可惜对于 awk 我只会简单的 print 以及利用几个常见的内置变量如 NR、NF 来做下最基本的处理，因此暂时考虑用 sort 和 uniq 来完成。</p>
 <p>由于平时这两个命令用的比较多，马上写出下面的语句来打印出 url 域重复的行的完整内容：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log <span class="p">|</span> uniq -f <span class="m">4</span>  -d  
-</code></pre></td></tr></table>
-</div>
-</div><p>但是执行后，结果却是为空，没有任何东西打印出来。也就是说，用上面的语句无法找出 url 域重复的那些行。 为了再次确认，试着用下面的语句打印出 sort 和 uniq 处理后的行数：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log <span class="p">|</span> uniq -f <span class="m">4</span> <span class="p">|</span> wc -l  
-</code></pre></td></tr></table>
-</div>
-</div><p>打印出：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">13635  
-</code></pre></td></tr></table>
-</div>
-</div><p>如前所属，本文件一共有 13635 行，url域重复的域一共有 3 行。显然，确实上面的 sort 和 uniq 语句没能找出 url 重复的行。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#ae81ff">4</span>  -d  
+</span></span></code></pre></div><p>但是执行后，结果却是为空，没有任何东西打印出来。也就是说，用上面的语句无法找出 url 域重复的那些行。 为了再次确认，试着用下面的语句打印出 sort 和 uniq 处理后的行数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#ae81ff">4</span> | wc -l  
+</span></span></code></pre></div><p>打印出：</p>
+<pre tabindex="0"><code>13635  
+</code></pre><p>如前所属，本文件一共有 13635 行，url域重复的域一共有 3 行。显然，确实上面的 sort 和 uniq 语句没能找出 url 重复的行。</p>
 <h2 id="罪魁祸首">罪魁祸首</h2>
 <p>反复确认脚本没有问题后，我猜可能是这些行中，有某些行的结尾有空格或 tab。用万能的 awk 找出结尾有 whtespace 的行：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">awk <span class="s1">&#39;/[[:space:]]$/  {print NR, $0}&#39;</span> sum_stat.log  
-</code></pre></td></tr></table>
-</div>
-</div><p>结果如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">1538 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>awk <span style="color:#e6db74">&#39;/[[:space:]]$/  {print NR, $0}&#39;</span> sum_stat.log  
+</span></span></code></pre></div><p>结果如下：</p>
+<pre tabindex="0"><code>1538 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3 
 1600 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3 
 1633 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
-</code></pre></td></tr></table>
-</div>
-</div><p>可见，第1538、1600、1633这三行的结尾有多余的空白符。其实也可以猜出，这三行中的 url 就是那三个重复的 url。</p>
+</code></pre><p>可见，第1538、1600、1633这三行的结尾有多余的空白符。其实也可以猜出，这三行中的 url 就是那三个重复的 url。</p>
 <p>把这三行的行末空白去掉后，再次运行：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log <span class="p">|</span> uniq -f <span class="m">4</span>  -d -c  
-</code></pre></td></tr></table>
-</div>
-</div><p>结果如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">2 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#ae81ff">4</span>  -d -c  
+</span></span></code></pre></div><p>结果如下：</p>
+<pre tabindex="0"><code>2 [2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 2 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
 2 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
-</code></pre></td></tr></table>
-</div>
-</div><p>这样就顺利完成任务了。 如果打印出 url 域重复，且没去重的所有行，只需把 uniq 参数的 <code>-d</code> 改成 <code>-D</code> 即可：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">sort  -k 5,5 sum_stat.log <span class="p">|</span> uniq -f <span class="m">4</span>  -D  
-</code></pre></td></tr></table>
-</div>
-</div><p>产生如下输出：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
+</code></pre><p>这样就顺利完成任务了。 如果打印出 url 域重复，且没去重的所有行，只需把 uniq 参数的 <code>-d</code> 改成 <code>-D</code> 即可：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sort  -k 5,5 sum_stat.log | uniq -f <span style="color:#ae81ff">4</span>  -D  
+</span></span></code></pre></div><p>产生如下输出：</p>
+<pre tabindex="0"><code>[2013-09-05 16:36:47] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 [2013-09-06 00:35:54] 2810048 group2/M00/00/0F/Kj4ZKlIos0uAfUd1ACrgwBB0ryQ704.mp3 ;fuckgfw.com/mp3k18/b0/18013_209637.mp3  
 [2013-09-05 16:41:47] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
 [2013-09-06 00:33:54] 2119808 group24/M00/00/25/Kj4ZLVIostOAXgGtACBYgFLrM6U318.mp3 ;fuckgfw.com/mp3k18/b4/20059_233023.mp3  
 [2013-09-05 16:43:47] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
 [2013-09-06 00:33:54] 2368640 group15/M00/00/2E/Kj4ZLFIostOAFvbKACQkgN9CyHU818.mp3 ;fuckgfw.com/mp3k18/b4/20421_237374.mp3  
-</code></pre></td></tr></table>
-</div>
-</div><p>这样就可以实现原来打算的功能了。</p>
+</code></pre><p>这样就可以实现原来打算的功能了。</p>
 <h2 id="原因">原因</h2>
 <p>为什么有行尾空格不行呢？</p>
 <p>因为 sort 不会去除行尾空格，即使你指定了 <code>-k</code> 选项，而行中间的空格则不会有此问题。而 uniq 用了 <code>-f</code> 选项来跳过前面的不许考虑的域，同样也只能把行中间的空格略过，不会处理行尾的空格，这样导致了行尾的空格参与了比较，因而 uniq 不会把与之内容除行尾空格外均相同的行视为相同的行来去重了。</p>
-    </div>
+        </div>
 
-    
-    
+        
+        
 <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
@@ -620,61 +480,66 @@
 </div>
 
 
-    
-    
 
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
-          <a href="https://pureage.info/tags/shell/">shell</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
         
-          <a class="prev" href="/2013/09/10/127.html">
+        
+
+
+        <footer class="post-footer">
+          <div class="post-tags">
+              <a href="https://pureage.info/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+                <a href="https://pureage.info/tags/shell/">shell</a>
+                
+            </div>
+
+
+          
+          <nav class="post-nav">
             
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="prev" href="/2013/09/10/127.html">
+                
+                <i class="iconfont">
+                  <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
 </svg>
 
-            </i>
-            <span class="prev-text nav-default">漫谈 logrotate 与 crond</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2013/09/02/125.html">
-            <span class="next-text nav-default">nil、null 与 ngx.null</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+                </i>
+                <span class="prev-text nav-default">漫谈 logrotate 与 crond</span>
+                <span class="prev-text nav-mobile">上一篇</span>
+              </a>
             
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="next" href="/2013/09/02/125.html">
+                <span class="next-text nav-default">nil、null 与 ngx.null</span>
+                <span class="prev-text nav-mobile">下一篇</span>
+                
+                <i class="iconfont">
+                  <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
 </svg>
 
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                </i>
+              </a>
+          </nav>
+        </footer>
+      </article>
+
+      
+      
+
+
+      
+      
+
+  
 
   
   
 
   
-  
-
-  
-
-  
-  
-
   
 
   
@@ -685,12 +550,21 @@
 
   
 
-        </div>
-      </div>
-    </main>
+  
 
-    <footer id="footer" class="footer">
-      <div class="icon-links">
+
+    </div>
+
+    
+    
+
+
+  </div>
+
+      </main>
+
+      <footer id="footer" class="footer">
+        <div class="icon-links">
   
 
 
@@ -703,7 +577,7 @@
 </svg>
 
   </a>
-   
+  
 </div>
 
 <div class="copyright">
@@ -719,7 +593,7 @@
     &copy;
     
       2011 -
-    2022
+    2023
     <span class="heart">
       
       <i class="iconfont">
@@ -742,28 +616,30 @@
   
 </div>
 
-    </footer>
+      </footer>
 
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+      <div class="button__back-to-top">
+        <a href="#back-to-top">
+          <i class="iconfont">
+            
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="35" height="35">
   <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
 </svg>
 
-      </i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div>
-  
+    
 <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
 
 
 
 
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/main.419d62fdd33d03e55ca7c874a720b9a5d8bc25d215992621f18eb9f8dad9ac3c.js" integrity="sha256-QZ1i/dM9A&#43;Vcp8h0pyC5pdi8JdIVmSYh8Y65&#43;NrZrDw=" crossorigin="anonymous"></script>
 
 
 
@@ -777,7 +653,6 @@
 
 
   
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
@@ -796,5 +671,7 @@
 
 
 
-</body>
+
+
+  </body>
 </html>

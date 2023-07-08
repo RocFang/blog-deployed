@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>尝鲜：Nginx-1.9.8 推出的切片模块 - 纯真年代</title>
-  
+<html
+  lang="zh-cn"
+  itemscope
+  itemtype="http://schema.org/WebPage"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+          尝鲜：Nginx-1.9.8 推出的切片模块 - 纯真年代
+        </title>
+    
 
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
@@ -24,7 +30,7 @@
 
 <meta name="author" content="strider" />
   <meta name="description" content="熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：
- 性能不好（相对于 ATS 等专业的 cache 软件） 不支持裸设备 大文件不会切片 大文件的 Range 请求表现不尽如人意 Nginx 自身不支持合并回源 " />
+性能不好（相对于 ATS 等专业的 cache 软件） 不支持裸设备 大文件不会切片 大文件的 Range 请求表现不尽如人意 Nginx 自身不支持合并回源 " />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
 
@@ -33,7 +39,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.89.4" />
+<meta name="generator" content="Hugo 0.115.1" />
 
 
 <link rel="canonical" href="https://pureage.info/2015/12/10/nginx-slice-module.html" />
@@ -54,7 +60,9 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.d8d87b982993a745e5e7b6a6cbf257be8c3e82aab5e485f0908ad7e6c3501ab2.css" integrity="sha256-2Nh7mCmTp0Xl57amy/JXvow&#43;gqq15IXwkIrX5sNQGrI=" media="screen" crossorigin="anonymous">
+
+
 
 
 
@@ -73,7 +81,6 @@ Nginx 自身不支持合并回源
 <meta property="og:url" content="https://pureage.info/2015/12/10/nginx-slice-module.html" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2015-12-10T06:12:00+00:00" />
 <meta property="article:modified_time" content="2015-12-10T06:12:00+00:00" />
-
 <meta itemprop="name" content="尝鲜：Nginx-1.9.8 推出的切片模块">
 <meta itemprop="description" content="熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：
 
@@ -84,7 +91,7 @@ Nginx 自身不支持合并回源
 Nginx 自身不支持合并回源
 "><meta itemprop="datePublished" content="2015-12-10T06:12:00+00:00" />
 <meta itemprop="dateModified" content="2015-12-10T06:12:00+00:00" />
-<meta itemprop="wordCount" content="2034">
+<meta itemprop="wordCount" content="1983">
 <meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="尝鲜：Nginx-1.9.8 推出的切片模块"/>
 <meta name="twitter:description" content="熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：
@@ -108,9 +115,11 @@ Nginx 自身不支持合并回源
 
 
 
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
+  </head>
+  <body>
+    <div id="back-to-top"></div>
+
+    <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
     <a href="/" class="logo">纯真年代</a>
   </div>
@@ -172,8 +181,8 @@ Nginx 自身不支持合并回源
 </nav>
 
 
-  
     
+      
 
 
 
@@ -230,14 +239,15 @@ Nginx 自身不支持合并回源
     </div>
 </div>
 
-  
+    
 
-  
+    
 
-  
+    
 
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
+
+    <header id="header" class="header">
+      <div class="logo-wrapper">
   <a href="/" class="logo">
     
       纯真年代
@@ -323,38 +333,54 @@ Nginx 自身不支持合并回源
   </ul>
 </nav>
 
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">尝鲜：Nginx-1.9.8 推出的切片模块</h1>
-      
-      <div class="post-meta">
-        <time datetime="2015-12-10" class="post-time">
-          2015-12-10
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
     </header>
 
+    <div id="mobile-panel">
+      <main id="main" class="main bg-llight wallpaper">
+        <div class="content-wrapper">
+    <div id="content" class="content">
+      <article class="post">
+        
+        <header class="post-header">
+          <h1 class="post-title">尝鲜：Nginx-1.9.8 推出的切片模块</h1>
+          
+
+          <div class="post-meta">
+  <div class="post-meta-author">
+    by
+      strider
     
+  </div>
+
+  <div class="post-meta-time">
+    <time datetime="2015-12-10">
+      2015-12-10
+    </time>
+  </div>
+
+  
+
+
+  <div class="post-meta__right">
     
 
     
-    <div class="post-content">
-      <p>熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：</p>
+
+
+    
+    
+
+
+    
+    
+  </div>
+</div>
+
+        </header>
+
+        
+        <div class="post-content">
+          <p>熟悉 CDN 行业主流技术的朋友应该都比较清楚，虽然 Nginx 近几年发展的如日中天，但是基本上没有直接使用它自带的 proxy_cache 模块来做缓存的，原因有很多，例如下面几个：</p>
 <ul>
 <li>性能不好（相对于 ATS 等专业的 cache 软件）</li>
 <li>不支持裸设备</li>
@@ -368,35 +394,7 @@ Nginx 自身不支持合并回源
 <p>首先，我们看看几个不同版本的 Nginx 的 proxy_cache 对 Range 的处理情况。</p>
 <h3 id="nginx-0815">Nginx-0.8.15</h3>
 <p>在 Nginx-0.8.15 中，使用如下配置文件做测试:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">http {  
+<pre tabindex="0"><code>http {  
     include       mime.types;  
     default_type  application/octet-stream;  
     sendfile        on;  
@@ -420,9 +418,7 @@ Nginx 自身不支持合并回源
   
     }  
 }  
-</code></pre></td></tr></table>
-</div>
-</div><p>重点说明以下两种情况：</p>
+</code></pre><p>重点说明以下两种情况：</p>
 <ul>
 <li>第一次 Range 请求（没有本地缓存），Nginx 会去后端将整个文件拉取下来（后端响应码是200）后，并且返回给客户端的是整个文件，响应状态码是 200，而非 206。后续的 Range 请求则都用缓存下来的本地文件提供服务，且响应状态码都是对应的206了。</li>
 <li>如果在上面的配置文件中，加上 <code>proxy_set_header Range $http_range;</code> 再进行测试(测试前先清空 Nginx 本地缓存)。则第一次 Range 请求（没有本地缓存），Nginx 会去后端用             Range 请求文件，而不会把整个文件拉下来，响应给客户端的也是 206。但问题在于，由于没有把 Range 请求加入到 cache key 中，会导致后续所有的请求，不管 Range 如何，只要 url 不变，都会直接用cache 的内容来返回给客户端，这肯定是不符合要求的。</li>
@@ -439,38 +435,7 @@ Nginx 自身不支持合并回源
 </blockquote>
 <h3 id="nginx-198">Nginx-1.9.8</h3>
 <p>我们继续看看Nginx-1.9.8，当然，在编译时要加上参数 <code>--with-http_slice_module</code>，并作类似下面的配置：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">http {  
+<pre tabindex="0"><code>http {  
     include       mime.types;  
     default_type  application/octet-stream;  
     sendfile        on;  
@@ -497,9 +462,7 @@ Nginx 自身不支持合并回源
   
     }  
 }  
-</code></pre></td></tr></table>
-</div>
-</div><p>不测不知道，一侧吓一跳，这俨然是一个杀手级的特性。</p>
+</code></pre><p>不测不知道，一侧吓一跳，这俨然是一个杀手级的特性。</p>
 <p>首先，如果不带 Range 请求，后端大文件在本地 cache 时，会按照配置的 slice 大小进行切片存储。</p>
 <p>其次，如果带 Range 请求，则 Nginx 会用合适的 Range 大小（以 slice 为边界）去后端请求，这个大小跟客户端请求的 Range 可能不一样，并将以 slice 为大小的切片存储到本地，并以正确的 206 响应客户端。</p>
 <p>注意上面所说的，Nginx 到后端的 Range 并不一定等于客户端请求的 Range，因为无论你请求的Range 如何，Nginx 到后端总是以 slice 大小为边界，将客户端请求分割成若干个子请求到后端，假设配置的 slice 大小为1M，即1024字节，那么如果客户端请求 Range 为 0-1023 范围以内任何数字，均会落到第一个切片上，如果请求的 Range 横跨了几个 slice 大小，则nginx会向后端发起多个子请求，将这几个 slice 缓存下来。而对客户端，均以客户端请求的 Range 为准。如果一个请求中，有一部分文件之前没有缓存下来，则 Nginx 只会去向后端请求缺失的那些切片。</p>
@@ -534,10 +497,10 @@ Nginx 自身不支持合并回源
 <li>切片模块的 wiki<br>
 <a href="http://nginx.org/en/docs/http/ngx_http_slice_module.html">http://nginx.org/en/docs/http/ngx_http_slice_module.html</a></li>
 </ol>
-    </div>
+        </div>
 
-    
-    
+        
+        
 <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
@@ -558,60 +521,65 @@ Nginx 自身不支持合并回源
 </div>
 
 
-    
-    
 
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
         
-          <a class="prev" href="/2015/12/16/still-using-typecho.html">
+        
+
+
+        <footer class="post-footer">
+          <div class="post-tags">
+              <a href="https://pureage.info/tags/nginx/">nginx</a>
+                
+            </div>
+
+
+          
+          <nav class="post-nav">
             
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="prev" href="/2015/12/16/still-using-typecho.html">
+                
+                <i class="iconfont">
+                  <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
 </svg>
 
-            </i>
-            <span class="prev-text nav-default">继续留在 Typecho</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2015/12/10/bugfix-of-nginx.html">
-            <span class="next-text nav-default">Nginx 紧急发布 1.9.9 修复 bug</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+                </i>
+                <span class="prev-text nav-default">继续留在 Typecho</span>
+                <span class="prev-text nav-mobile">上一篇</span>
+              </a>
             
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="next" href="/2015/12/10/bugfix-of-nginx.html">
+                <span class="next-text nav-default">Nginx 紧急发布 1.9.9 修复 bug</span>
+                <span class="prev-text nav-mobile">下一篇</span>
+                
+                <i class="iconfont">
+                  <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
 </svg>
 
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                </i>
+              </a>
+          </nav>
+        </footer>
+      </article>
+
+      
+      
+
+
+      
+      
+
+  
 
   
   
 
   
-  
-
-  
-
-  
-  
-
   
 
   
@@ -622,12 +590,21 @@ Nginx 自身不支持合并回源
 
   
 
-        </div>
-      </div>
-    </main>
+  
 
-    <footer id="footer" class="footer">
-      <div class="icon-links">
+
+    </div>
+
+    
+    
+
+
+  </div>
+
+      </main>
+
+      <footer id="footer" class="footer">
+        <div class="icon-links">
   
 
 
@@ -640,7 +617,7 @@ Nginx 自身不支持合并回源
 </svg>
 
   </a>
-   
+  
 </div>
 
 <div class="copyright">
@@ -656,7 +633,7 @@ Nginx 自身不支持合并回源
     &copy;
     
       2011 -
-    2022
+    2023
     <span class="heart">
       
       <i class="iconfont">
@@ -679,28 +656,30 @@ Nginx 自身不支持合并回源
   
 </div>
 
-    </footer>
+      </footer>
 
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+      <div class="button__back-to-top">
+        <a href="#back-to-top">
+          <i class="iconfont">
+            
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="35" height="35">
   <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
 </svg>
 
-      </i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div>
-  
+    
 <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
 
 
 
 
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/main.419d62fdd33d03e55ca7c874a720b9a5d8bc25d215992621f18eb9f8dad9ac3c.js" integrity="sha256-QZ1i/dM9A&#43;Vcp8h0pyC5pdi8JdIVmSYh8Y65&#43;NrZrDw=" crossorigin="anonymous"></script>
 
 
 
@@ -714,7 +693,6 @@ Nginx 自身不支持合并回源
 
 
   
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
@@ -733,5 +711,7 @@ Nginx 自身不支持合并回源
 
 
 
-</body>
+
+
+  </body>
 </html>

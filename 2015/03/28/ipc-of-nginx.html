@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Nginx 中的进程间通信 - 纯真年代</title>
-  
+<html
+  lang="zh-cn"
+  itemscope
+  itemtype="http://schema.org/WebPage"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+          Nginx 中的进程间通信 - 纯真年代
+        </title>
+    
 
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
@@ -24,7 +30,7 @@
 
 <meta name="author" content="strider" />
   <meta name="description" content="我们知道，Linux 提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中 Nginx 主要使用了其中的三种方式：
- 套接字（匿名套接字对） 共享内存 信号  本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在 Nginx 中的使用。
+套接字（匿名套接字对） 共享内存 信号 本文主要结合代码讲一下前两种方式，匿名套接字对和共享内存在 Nginx 中的使用。
 1. Nginx 中的 channel 通信机制 1.1 概述 首先简单的说一下 Nginx 中 channel 通信的机制。
 Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接字(socketpair)对来进行通信。
 我们知道，socketpair 可以创建出一对套接字，在这两个套接字的任何一个上面进行写操作，在另一个套接字上就可以相应的进行读操作，而且这个管道是全双工的。
@@ -37,7 +43,7 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 
 
 
-<meta name="generator" content="Hugo 0.89.4" />
+<meta name="generator" content="Hugo 0.115.1" />
 
 
 <link rel="canonical" href="https://pureage.info/2015/03/28/ipc-of-nginx.html" />
@@ -58,7 +64,9 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.d8d87b982993a745e5e7b6a6cbf257be8c3e82aab5e485f0908ad7e6c3501ab2.css" integrity="sha256-2Nh7mCmTp0Xl57amy/JXvow&#43;gqq15IXwkIrX5sNQGrI=" media="screen" crossorigin="anonymous">
+
+
 
 
 
@@ -81,7 +89,6 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 <meta property="og:url" content="https://pureage.info/2015/03/28/ipc-of-nginx.html" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2015-03-28T12:39:00+00:00" />
 <meta property="article:modified_time" content="2015-03-28T12:39:00+00:00" />
-
 <meta itemprop="name" content="Nginx 中的进程间通信">
 <meta itemprop="description" content="我们知道，Linux 提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中 Nginx 主要使用了其中的三种方式：
 
@@ -96,7 +103,7 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接字(socketpair)对来进行通信。
 我们知道，socketpair 可以创建出一对套接字，在这两个套接字的任何一个上面进行写操作，在另一个套接字上就可以相应的进行读操作，而且这个管道是全双工的。"><meta itemprop="datePublished" content="2015-03-28T12:39:00+00:00" />
 <meta itemprop="dateModified" content="2015-03-28T12:39:00+00:00" />
-<meta itemprop="wordCount" content="7229">
+<meta itemprop="wordCount" content="6817">
 <meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Nginx 中的进程间通信"/>
 <meta name="twitter:description" content="我们知道，Linux 提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中 Nginx 主要使用了其中的三种方式：
@@ -124,9 +131,11 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 
 
 
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
+  </head>
+  <body>
+    <div id="back-to-top"></div>
+
+    <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
     <a href="/" class="logo">纯真年代</a>
   </div>
@@ -188,8 +197,8 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 </nav>
 
 
-  
     
+      
 
 
 
@@ -246,14 +255,15 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
     </div>
 </div>
 
-  
+    
 
-  
+    
 
-  
+    
 
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
+
+    <header id="header" class="header">
+      <div class="logo-wrapper">
   <a href="/" class="logo">
     
       纯真年代
@@ -339,38 +349,54 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
   </ul>
 </nav>
 
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">Nginx 中的进程间通信</h1>
-      
-      <div class="post-meta">
-        <time datetime="2015-03-28" class="post-time">
-          2015-03-28
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
     </header>
 
+    <div id="mobile-panel">
+      <main id="main" class="main bg-llight wallpaper">
+        <div class="content-wrapper">
+    <div id="content" class="content">
+      <article class="post">
+        
+        <header class="post-header">
+          <h1 class="post-title">Nginx 中的进程间通信</h1>
+          
+
+          <div class="post-meta">
+  <div class="post-meta-author">
+    by
+      strider
     
+  </div>
+
+  <div class="post-meta-time">
+    <time datetime="2015-03-28">
+      2015-03-28
+    </time>
+  </div>
+
+  
+
+
+  <div class="post-meta__right">
     
 
     
-    <div class="post-content">
-      <p>我们知道，Linux 提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中 Nginx 主要使用了其中的三种方式：</p>
+
+
+    
+    
+
+
+    
+    
+  </div>
+</div>
+
+        </header>
+
+        
+        <div class="post-content">
+          <p>我们知道，Linux 提供了多种进程间传递消息的方式，比如共享内存、套接字、管道、消息队列、信号等，每种方式都各有特点，各有优缺点。其中 Nginx 主要使用了其中的三种方式：</p>
 <ul>
 <li>套接字（匿名套接字对）</li>
 <li>共享内存</li>
@@ -396,52 +422,24 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 <p>Nginx 中也就是这么做的。</p>
 <h3 id="12-nginx-中的具体实现">1.2 Nginx 中的具体实现</h3>
 <p>在 ngx_process.c 中，定义了一个全局的数组 <code>ngx_processes</code>：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_process_t</span>    <span class="n">ngx_processes</span><span class="p">[</span><span class="n">NGX_MAX_PROCESSES</span><span class="p">];</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>其中，<code>ngx_process_t</code> 类型定义为：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
-    <span class="n">ngx_pid_t</span>           <span class="n">pid</span><span class="p">;</span>  
-    <span class="kt">int</span>                 <span class="n">status</span><span class="p">;</span>  
-    <span class="n">ngx_socket_t</span>        <span class="n">channel</span><span class="err">\</span><span class="p">[</span><span class="mi">2</span><span class="err">\</span><span class="p">];</span>  
-
-    <span class="n">ngx_spawn_proc_pt</span>   <span class="n">proc</span><span class="p">;</span>  
-    <span class="kt">void</span>               <span class="o">*</span><span class="n">data</span><span class="p">;</span>  
-    <span class="kt">char</span>               <span class="o">*</span><span class="n">name</span><span class="p">;</span>  
-  
-    <span class="kt">unsigned</span>            <span class="nl">respawn</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>  
-    <span class="kt">unsigned</span>            <span class="nl">just_spawn</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>  
-    <span class="kt">unsigned</span>            <span class="nl">detached</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>  
-    <span class="kt">unsigned</span>            <span class="nl">exiting</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>  
-    <span class="kt">unsigned</span>            <span class="nl">exited</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>  
-<span class="p">}</span> <span class="n">ngx_process_t</span><span class="p">;</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>在这里，我们只关心成员 channel 成员，这个两元素的数组即用来存放一个匿名套接字对。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">ngx_process_t</span>    ngx_processes[NGX_MAX_PROCESSES];  
+</span></span></code></pre></div><p>其中，<code>ngx_process_t</code> 类型定义为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_pid_t</span>           pid;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span>                 status;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_socket_t</span>        channel<span style="color:#960050;background-color:#1e0010">\</span>[<span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">\</span>];  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ngx_spawn_proc_pt   proc;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span>               <span style="color:#f92672">*</span>data;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span>               <span style="color:#f92672">*</span>name;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span>            respawn:<span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span>            just_spawn:<span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span>            detached:<span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span>            exiting:<span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span>            exited:<span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">ngx_process_t</span>;  
+</span></span></code></pre></div><p>在这里，我们只关心成员 channel 成员，这个两元素的数组即用来存放一个匿名套接字对。</p>
 <p>我们假设程序运行后，有 1 个 master 进程和 4 个 worker 进程。那么，对这 5 个进程而言，每个进程都有一个 4 元素的数组 <code>ngx_processes[4]</code>，数组中每个元素都是一个 <code>ngx_process_t</code> 类型的结构体，包含了相应的某个 worker 进程的相关信息。我们这里关心的是每个结构体的 channel 数组成员。</p>
 <p>绘制成表如下：
 <img src="/img/ipc-4.jpg" alt="ipc-4.jpg"></p>
@@ -457,642 +455,298 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 <p>再比如，<code>[-1，7]</code> 单元格表示如果 worker0 向 master 进程发送消息，需要使用 <code>channel[1]</code>，即描述符 7，它的 <code>channel[0]</code> 为 -1，表示已经 close() 关闭掉了（Nginx某些地方调用 close() 时并没有设置对应变量为 -1，这里只是为了更好的说明，将已经 close() 掉的描述符全部标记为 -1）。</p>
 <p>越是后生成的 worker 进程，其 <code>ngx_processes</code> 数组的元素中，<code>channel[0]</code> 与父进程对应的 <code>ngx_processes</code> 数组的元素中的 <code>channel[0]</code> 值相同的越多，因为基本都是继承而来，但前面生成的 worker 进程，其 <code>channel[0]</code> 是通过进程间调用 sendmsg 传递获得的，所以与父进程对应的 <code>channel[0]</code> 不一定相等。比如，如果 worker0 向 worker3 发送消息，需要使用worker0 进程的 <code>ngx_processes[3]</code> 元素的 <code>channel[0]</code>，即描述符 10，而对应 master 进程的 <code>ngx_processes[3]</code> 元素的 <code>channel[0]</code> 却是 12。虽然它们在各自进程里表现为不同的整型数字，但在内核里表示同一个描述符结构，即不管是 worker0 往描述符 10 写数据，还是master 往描述符 12 写数据，worker3 都能通过描述符 13 正确读取到这些数据，至于 worker3 怎么识别它读到的数据是来自 worker0，还是 master，就得靠其他收到的数据特征，比如pid，来做标记区分。</p>
 <p>关于上段讲的，一个子进程如何区分接收到的数据是来自哪一个进程，我们可以看一下 Nginx-1.6.2中的一段代码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_int_t</span>  
-<span class="nf">ngx_write_channel</span><span class="p">(</span><span class="n">ngx_socket_t</span> <span class="n">s</span><span class="p">,</span> <span class="n">ngx_channel_t</span> <span class="o">*</span><span class="n">ch</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span>  
-    <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">ssize_t</span>             <span class="n">n</span><span class="p">;</span>  
-    <span class="n">ngx_err_t</span>           <span class="n">err</span><span class="p">;</span>  
-    <span class="k">struct</span> <span class="n">iovec</span>        <span class="n">iov</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>  
-    <span class="k">struct</span> <span class="n">msghdr</span>       <span class="n">msg</span><span class="p">;</span>  
-  
-<span class="cp">#if (NGX_HAVE_MSGHDR_MSG_CONTROL)  
-</span><span class="cp"></span>  
-    <span class="k">union</span> <span class="p">{</span>  
-        <span class="k">struct</span> <span class="n">cmsghdr</span>  <span class="n">cm</span><span class="p">;</span>  
-        <span class="kt">char</span>            <span class="n">space</span><span class="p">[</span><span class="n">CMSG_SPACE</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">))];</span>  
-    <span class="p">}</span> <span class="n">cmsg</span><span class="p">;</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">ch</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_control</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_controllen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
-  
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_control</span> <span class="o">=</span> <span class="p">(</span><span class="n">caddr_t</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">cmsg</span><span class="p">;</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_controllen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cmsg</span><span class="p">);</span>  
-  
-        <span class="n">ngx_memzero</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cmsg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cmsg</span><span class="p">));</span>  
-  
-        <span class="n">cmsg</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="n">cmsg_len</span> <span class="o">=</span> <span class="n">CMSG_LEN</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>  
-        <span class="n">cmsg</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="n">cmsg_level</span> <span class="o">=</span> <span class="n">SOL_SOCKET</span><span class="p">;</span>  
-        <span class="n">cmsg</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="n">cmsg_type</span> <span class="o">=</span> <span class="n">SCM_RIGHTS</span><span class="p">;</span>  
-  
-        <span class="cm">/*  
-</span><span class="cm">         * We have to use ngx_memcpy() instead of simple  
-</span><span class="cm">         *   *(int *) CMSG_DATA(&amp;cmsg.cm) = ch-&gt;fd;  
-</span><span class="cm">         * because some gcc 4.4 with -O2/3/s optimization issues the warning:  
-</span><span class="cm">         *   dereferencing type-punned pointer will break strict-aliasing rules  
-</span><span class="cm">         *  
-</span><span class="cm">         * Fortunately, gcc with -O1 compiles this ngx_memcpy()  
-</span><span class="cm">         * in the same simple assignment as in the code above  
-</span><span class="cm">         */</span>  
-  
-        <span class="n">ngx_memcpy</span><span class="p">(</span><span class="n">CMSG_DATA</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cmsg</span><span class="p">.</span><span class="n">cm</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">ch</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>  
-    <span class="p">}</span>  
-  
-    <span class="n">msg</span><span class="p">.</span><span class="n">msg_flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
-  
-<span class="cp">#else  
-</span><span class="cp"></span>  
-    <span class="k">if</span> <span class="p">(</span><span class="n">ch</span><span class="o">-&gt;</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_accrights</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_accrightslen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
-  
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_accrights</span> <span class="o">=</span> <span class="p">(</span><span class="n">caddr_t</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">ch</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">;</span>  
-        <span class="n">msg</span><span class="p">.</span><span class="n">msg_accrightslen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>  
-    <span class="p">}</span>  
-  
-<span class="cp">#endif  
-</span><span class="cp"></span>  
-    <span class="n">iov</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">iov_base</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">ch</span><span class="p">;</span>  
-    <span class="n">iov</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">iov_len</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>  
-  
-    <span class="n">msg</span><span class="p">.</span><span class="n">msg_name</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  
-    <span class="n">msg</span><span class="p">.</span><span class="n">msg_namelen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
-    <span class="n">msg</span><span class="p">.</span><span class="n">msg_iov</span> <span class="o">=</span> <span class="n">iov</span><span class="p">;</span>  
-    <span class="n">msg</span><span class="p">.</span><span class="n">msg_iovlen</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
-  
-    <span class="n">n</span> <span class="o">=</span> <span class="n">sendmsg</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">err</span> <span class="o">=</span> <span class="n">ngx_errno</span><span class="p">;</span>  
-        <span class="k">if</span> <span class="p">(</span><span class="n">err</span> <span class="o">==</span> <span class="n">NGX_EAGAIN</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="k">return</span> <span class="n">NGX_AGAIN</span><span class="p">;</span>  
-        <span class="p">}</span>  
-  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="s">&#34;sendmsg() failed&#34;</span><span class="p">);</span>  
-        <span class="k">return</span> <span class="n">NGX_ERROR</span><span class="p">;</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">return</span> <span class="n">NGX_OK</span><span class="p">;</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>在调用时，参数 ch 即为发送的数据部分，其类型定义如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>  
-     <span class="n">ngx_uint_t</span>  <span class="n">command</span><span class="p">;</span>  
-     <span class="n">ngx_pid_t</span>   <span class="n">pid</span><span class="p">;</span>  
-     <span class="n">ngx_int_t</span>   <span class="n">slot</span><span class="p">;</span>  
-     <span class="n">ngx_fd_t</span>    <span class="n">fd</span><span class="p">;</span>  
-<span class="p">}</span> <span class="n">ngx_channel_t</span><span class="p">;</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>可见，其中就包含了发送方的pid。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">ngx_int_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_write_channel</span>(<span style="color:#66d9ef">ngx_socket_t</span> s, <span style="color:#66d9ef">ngx_channel_t</span> <span style="color:#f92672">*</span>ch, <span style="color:#66d9ef">size_t</span> size,  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_log_t</span> <span style="color:#f92672">*</span>log)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ssize_t</span>             n;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_err_t</span>           err;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> iovec        iov[<span style="color:#ae81ff">1</span>];  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> msghdr       msg;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if (NGX_HAVE_MSGHDR_MSG_CONTROL)  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">union</span> {  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">struct</span> cmsghdr  cm;  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">char</span>            space[<span style="color:#a6e22e">CMSG_SPACE</span>(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>))];  
+</span></span><span style="display:flex;"><span>    } cmsg;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (ch<span style="color:#f92672">-&gt;</span>fd <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        msg.msg_control <span style="color:#f92672">=</span> NULL;  
+</span></span><span style="display:flex;"><span>        msg.msg_controllen <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {  
+</span></span><span style="display:flex;"><span>        msg.msg_control <span style="color:#f92672">=</span> (<span style="color:#66d9ef">caddr_t</span>) <span style="color:#f92672">&amp;</span>cmsg;  
+</span></span><span style="display:flex;"><span>        msg.msg_controllen <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(cmsg);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_memzero</span>(<span style="color:#f92672">&amp;</span>cmsg, <span style="color:#66d9ef">sizeof</span>(cmsg));  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        cmsg.cm.cmsg_len <span style="color:#f92672">=</span> <span style="color:#a6e22e">CMSG_LEN</span>(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>));  
+</span></span><span style="display:flex;"><span>        cmsg.cm.cmsg_level <span style="color:#f92672">=</span> SOL_SOCKET;  
+</span></span><span style="display:flex;"><span>        cmsg.cm.cmsg_type <span style="color:#f92672">=</span> SCM_RIGHTS;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/*  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         * We have to use ngx_memcpy() instead of simple  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         *   *(int *) CMSG_DATA(&amp;cmsg.cm) = ch-&gt;fd;  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         * because some gcc 4.4 with -O2/3/s optimization issues the warning:  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         *   dereferencing type-punned pointer will break strict-aliasing rules  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         *  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         * Fortunately, gcc with -O1 compiles this ngx_memcpy()  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         * in the same simple assignment as in the code above  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">         */</span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_memcpy</span>(<span style="color:#a6e22e">CMSG_DATA</span>(<span style="color:#f92672">&amp;</span>cmsg.cm), <span style="color:#f92672">&amp;</span>ch<span style="color:#f92672">-&gt;</span>fd, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>));  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    msg.msg_flags <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#else  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (ch<span style="color:#f92672">-&gt;</span>fd <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        msg.msg_accrights <span style="color:#f92672">=</span> NULL;  
+</span></span><span style="display:flex;"><span>        msg.msg_accrightslen <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {  
+</span></span><span style="display:flex;"><span>        msg.msg_accrights <span style="color:#f92672">=</span> (<span style="color:#66d9ef">caddr_t</span>) <span style="color:#f92672">&amp;</span>ch<span style="color:#f92672">-&gt;</span>fd;  
+</span></span><span style="display:flex;"><span>        msg.msg_accrightslen <span style="color:#f92672">=</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">int</span>);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span>    iov[<span style="color:#ae81ff">0</span>].iov_base <span style="color:#f92672">=</span> (<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>) ch;  
+</span></span><span style="display:flex;"><span>    iov[<span style="color:#ae81ff">0</span>].iov_len <span style="color:#f92672">=</span> size;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    msg.msg_name <span style="color:#f92672">=</span> NULL;  
+</span></span><span style="display:flex;"><span>    msg.msg_namelen <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;  
+</span></span><span style="display:flex;"><span>    msg.msg_iov <span style="color:#f92672">=</span> iov;  
+</span></span><span style="display:flex;"><span>    msg.msg_iovlen <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    n <span style="color:#f92672">=</span> <span style="color:#a6e22e">sendmsg</span>(s, <span style="color:#f92672">&amp;</span>msg, <span style="color:#ae81ff">0</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (n <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        err <span style="color:#f92672">=</span> ngx_errno;  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (err <span style="color:#f92672">==</span> NGX_EAGAIN) {  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NGX_AGAIN;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, log, err, <span style="color:#e6db74">&#34;sendmsg() failed&#34;</span>);  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_ERROR;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NGX_OK;  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>在调用时，参数 ch 即为发送的数据部分，其类型定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_uint_t</span>  command;  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_pid_t</span>   pid;  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_int_t</span>   slot;  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_fd_t</span>    fd;  
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">ngx_channel_t</span>;  
+</span></span></code></pre></div><p>可见，其中就包含了发送方的pid。</p>
 <p>最后，就目前 Nginx 代码来看，子进程并没有往父进程发送任何消息，子进程之间也没有相互通信的逻辑。也许是因为 Nginx 有其他一些更好的进程通信方式，比如共享内存等，所以这种 channel 通信目前仅作为父进程往子进程发送消息使用。但由于有这个架构在，可以很轻松使用 channel 机制来完成各进程间的通信任务。</p>
 <h3 id="13-nginx-中的相关代码流程">1.3 Nginx 中的相关代码流程</h3>
 <p>下面，将上面所讲的内容，在 Nginx 代码中的流程，大概梳理一遍。本文所有代码片段，均来自于nginx-1.6.2。</p>
 <p>首先是 main 函数调用 <code>ngx_master_process_cycle</code>：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c">    <span class="k">if</span> <span class="p">(</span><span class="n">ngx_process</span> <span class="o">==</span> <span class="n">NGX_PROCESS_SINGLE</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_single_process_cycle</span><span class="p">(</span><span class="n">cycle</span><span class="p">);</span>  
-  
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>  
-        <span class="n">ngx_master_process_cycle</span><span class="p">(</span><span class="n">cycle</span><span class="p">);</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>ngx_master_process_cycle<code>调用</code>ngx_start_worker_processes`：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ccf</span> <span class="o">=</span> <span class="p">(</span><span class="n">ngx_core_conf_t</span> <span class="o">*</span><span class="p">)</span> <span class="n">ngx_get_conf</span><span class="p">(</span><span class="n">cycle</span><span class="o">-&gt;</span><span class="n">conf_ctx</span><span class="p">,</span> <span class="n">ngx_core_module</span><span class="p">);</span>  
-  
-<span class="n">ngx_start_worker_processes</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ccf</span><span class="o">-&gt;</span><span class="n">worker_processes</span><span class="p">,</span>  
-                           <span class="n">NGX_PROCESS_RESPAWN</span><span class="p">);</span>  
-<span class="n">ngx_start_cache_manager_processes</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>在 <code>ngx_start_worker_processes</code> 函数中，完成对所有 worker 进程的 fork 操作：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">void</span>  
-<span class="nf">ngx_start_worker_processes</span><span class="p">(</span><span class="n">ngx_cycle_t</span> <span class="o">*</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_int_t</span> <span class="n">n</span><span class="p">,</span> <span class="n">ngx_int_t</span> <span class="n">type</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">ngx_int_t</span>      <span class="n">i</span><span class="p">;</span>  
-    <span class="n">ngx_channel_t</span>  <span class="n">ch</span><span class="p">;</span>  
-  
-    <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_NOTICE</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;start worker processes&#34;</span><span class="p">);</span>  
-  
-    <span class="n">ngx_memzero</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ch</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ngx_channel_t</span><span class="p">));</span>  
-  
-    <span class="n">ch</span><span class="p">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">NGX_CMD_OPEN_CHANNEL</span><span class="p">;</span>  
-  
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  
-  
-        <span class="n">ngx_spawn_process</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_worker_process_cycle</span><span class="p">,</span>  
-                          <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="p">(</span><span class="n">intptr_t</span><span class="p">)</span> <span class="n">i</span><span class="p">,</span> <span class="s">&#34;worker process&#34;</span><span class="p">,</span> <span class="n">type</span><span class="p">);</span>  
-  
-        <span class="n">ch</span><span class="p">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">ngx_process_slot</span><span class="p">].</span><span class="n">pid</span><span class="p">;</span>  
-        <span class="n">ch</span><span class="p">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">ngx_process_slot</span><span class="p">;</span>  
-        <span class="n">ch</span><span class="p">.</span><span class="n">fd</span> <span class="o">=</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">ngx_process_slot</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  
-  
-        <span class="n">ngx_pass_open_channel</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ch</span><span class="p">);</span>  
-    <span class="p">}</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>上述代码调用的 <code>ngx_spawn_process</code> 即完成具体的 <code>socketpair()</code> 操作和 fork 操作：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_pid_t</span>  
-<span class="nf">ngx_spawn_process</span><span class="p">(</span><span class="n">ngx_cycle_t</span> <span class="o">*</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_spawn_proc_pt</span> <span class="n">proc</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span>  
-     <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">ngx_int_t</span> <span class="n">respawn</span><span class="p">)</span>  
-<span class="p">{</span>  
-       <span class="p">......</span>  
-       <span class="k">if</span> <span class="p">(</span><span class="n">socketpair</span><span class="p">(</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">channel</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
-        <span class="p">{</span>  
-            <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                          <span class="s">&#34;socketpair() failed while spawning </span><span class="se">\&#34;</span><span class="s">%s</span><span class="se">\&#34;</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>  
-            <span class="k">return</span> <span class="n">NGX_INVALID_PID</span><span class="p">;</span>  
-        <span class="p">}</span>  
-        <span class="p">......</span>  
-        <span class="n">ngx_channel</span> <span class="o">=</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>  
-        <span class="p">......</span>  
-        <span class="n">ngx_process_slot</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>  
-        <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>  
-        <span class="p">......</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>在上一段代码中可以看到，master 进程在调用 socketpair 后，将生成的 <code>channel[1]</code> 保存在全局变量 <code>ngx_channel</code> 中，<code>ngx_channel</code> 全局变量的作用是，子进程中会使用该全局变量，并加入到自己的事件集中，达到的效果即是子进程将 <code>channel[1]</code> 加入到自己的事件集中。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (ngx_process <span style="color:#f92672">==</span> NGX_PROCESS_SINGLE) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_single_process_cycle</span>(cycle);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_master_process_cycle</span>(cycle);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;  
+</span></span></code></pre></div><p>ngx_master_process_cycle<code>调用</code>ngx_start_worker_processes`：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>ccf <span style="color:#f92672">=</span> (<span style="color:#66d9ef">ngx_core_conf_t</span> <span style="color:#f92672">*</span>) <span style="color:#a6e22e">ngx_get_conf</span>(cycle<span style="color:#f92672">-&gt;</span>conf_ctx, ngx_core_module);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_start_worker_processes</span>(cycle, ccf<span style="color:#f92672">-&gt;</span>worker_processes,  
+</span></span><span style="display:flex;"><span>                           NGX_PROCESS_RESPAWN);  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_start_cache_manager_processes</span>(cycle, <span style="color:#ae81ff">0</span>);  
+</span></span></code></pre></div><p>在 <code>ngx_start_worker_processes</code> 函数中，完成对所有 worker 进程的 fork 操作：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_start_worker_processes</span>(<span style="color:#66d9ef">ngx_cycle_t</span> <span style="color:#f92672">*</span>cycle, <span style="color:#66d9ef">ngx_int_t</span> n, <span style="color:#66d9ef">ngx_int_t</span> type)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_int_t</span>      i;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_channel_t</span>  ch;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_NOTICE, cycle<span style="color:#f92672">-&gt;</span>log, <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;start worker processes&#34;</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ngx_memzero</span>(<span style="color:#f92672">&amp;</span>ch, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">ngx_channel_t</span>));  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    ch.command <span style="color:#f92672">=</span> NGX_CMD_OPEN_CHANNEL;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_spawn_process</span>(cycle, ngx_worker_process_cycle,  
+</span></span><span style="display:flex;"><span>                          (<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>) (<span style="color:#66d9ef">intptr_t</span>) i, <span style="color:#e6db74">&#34;worker process&#34;</span>, type);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        ch.pid <span style="color:#f92672">=</span> ngx_processes[ngx_process_slot].pid;  
+</span></span><span style="display:flex;"><span>        ch.slot <span style="color:#f92672">=</span> ngx_process_slot;  
+</span></span><span style="display:flex;"><span>        ch.fd <span style="color:#f92672">=</span> ngx_processes[ngx_process_slot].channel[<span style="color:#ae81ff">0</span>];  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_pass_open_channel</span>(cycle, <span style="color:#f92672">&amp;</span>ch);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>上述代码调用的 <code>ngx_spawn_process</code> 即完成具体的 <code>socketpair()</code> 操作和 fork 操作：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">ngx_pid_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_spawn_process</span>(<span style="color:#66d9ef">ngx_cycle_t</span> <span style="color:#f92672">*</span>cycle, ngx_spawn_proc_pt proc, <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>data,  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>name, <span style="color:#66d9ef">ngx_int_t</span> respawn)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>       ......  
+</span></span><span style="display:flex;"><span>       <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">socketpair</span>(AF_UNIX, SOCK_STREAM, <span style="color:#ae81ff">0</span>, ngx_processes[s].channel) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)  
+</span></span><span style="display:flex;"><span>        {  
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, cycle<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                          <span style="color:#e6db74">&#34;socketpair() failed while spawning </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>, name);  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NGX_INVALID_PID;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>        ......  
+</span></span><span style="display:flex;"><span>        ngx_channel <span style="color:#f92672">=</span> ngx_processes[s].channel[<span style="color:#ae81ff">1</span>];  
+</span></span><span style="display:flex;"><span>        ......  
+</span></span><span style="display:flex;"><span>        ngx_process_slot <span style="color:#f92672">=</span> s;  
+</span></span><span style="display:flex;"><span>        pid <span style="color:#f92672">=</span> <span style="color:#a6e22e">fork</span>();  
+</span></span><span style="display:flex;"><span>        ......  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>在上一段代码中可以看到，master 进程在调用 socketpair 后，将生成的 <code>channel[1]</code> 保存在全局变量 <code>ngx_channel</code> 中，<code>ngx_channel</code> 全局变量的作用是，子进程中会使用该全局变量，并加入到自己的事件集中，达到的效果即是子进程将 <code>channel[1]</code> 加入到自己的事件集中。</p>
 <p>话分两头，我们先来具体看看子进程的流程。</p>
 <p>在主进程执行完 fork 之后，<code>ngx_start_worker_processes</code> 会调用 proc 回调：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c">   <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>  
-  
-    <span class="k">switch</span> <span class="p">(</span><span class="n">pid</span><span class="p">)</span> <span class="p">{</span>  
-  
-    <span class="k">case</span> <span class="o">-</span><span class="mi">1</span><span class="o">:</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;fork() failed while spawning </span><span class="se">\&#34;</span><span class="s">%s</span><span class="se">\&#34;</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>  
-        <span class="n">ngx_close_channel</span><span class="p">(</span><span class="n">ngx_processes</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">channel</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">);</span>  
-        <span class="k">return</span> <span class="n">NGX_INVALID_PID</span><span class="p">;</span>  
-  
-    <span class="k">case</span> <span class="mi">0</span><span class="o">:</span>  
-        <span class="n">ngx_pid</span> <span class="o">=</span> <span class="n">ngx_getpid</span><span class="p">();</span>  
-        <span class="n">proc</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>  
-        <span class="k">break</span><span class="p">;</span>  
-  
-    <span class="k">default</span><span class="o">:</span>  
-        <span class="k">break</span><span class="p">;</span>  
-    <span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>其中，proc 即为 <code>ngx_worker_process_cycle</code>。<code>ngx_worker_process_cycle</code> 会调用<code>ngx_worker_process_init</code> 函数，子进程将从父进程处继承到的 <code>channel[1]</code> 加入到自己的事件集中，就是在这个函数中完成的：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">void</span>  
-<span class="nf">ngx_worker_process_init</span><span class="p">(</span><span class="n">ngx_cycle_t</span> <span class="o">*</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_int_t</span> <span class="n">worker</span><span class="p">)</span>  
-<span class="p">{</span>  
-<span class="p">......</span>  
-   <span class="k">for</span> <span class="p">(</span><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">ngx_last_process</span><span class="p">;</span> <span class="n">n</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  
-  
-        <span class="k">if</span> <span class="p">(</span><span class="n">ngx_processes</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="k">continue</span><span class="p">;</span>  
-        <span class="p">}</span>  
-  
-        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="n">ngx_process_slot</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="k">continue</span><span class="p">;</span>  
-        <span class="p">}</span>  
-  
-        <span class="k">if</span> <span class="p">(</span><span class="n">ngx_processes</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="k">continue</span><span class="p">;</span>  
-        <span class="p">}</span>  
-  
-        <span class="k">if</span> <span class="p">(</span><span class="n">close</span><span class="p">(</span><span class="n">ngx_processes</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                          <span class="s">&#34;close() channel failed&#34;</span><span class="p">);</span>  
-        <span class="p">}</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">close</span><span class="p">(</span><span class="n">ngx_processes</span><span class="p">[</span><span class="n">ngx_process_slot</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;close() channel failed&#34;</span><span class="p">);</span>  
-    <span class="p">}</span>  
-  
-<span class="cp">#if 0</span><span class="c">  
-</span><span class="c">    ngx_last_process = 0;  
-</span><span class="c"></span><span class="cp">#endif  
-</span><span class="cp"></span>  
-    <span class="k">if</span> <span class="p">(</span><span class="n">ngx_add_channel_event</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_channel</span><span class="p">,</span> <span class="n">NGX_READ_EVENT</span><span class="p">,</span>  
-                              <span class="n">ngx_channel_handler</span><span class="p">)</span>  
-        <span class="o">==</span> <span class="n">NGX_ERROR</span><span class="p">)</span>  
-    <span class="p">{</span>  
-        <span class="cm">/* fatal */</span>  
-        <span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>  
-    <span class="p">}</span>  
-<span class="p">......</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>具体的将 <code>channel[1]</code> 添加到事件集中的操作，是由 <code>ngx_add_channel_event</code> 来完成的，对应的回调处理函数为 <code>ngx_channel_handler</code>，同时我们看到，在添加之前，还进行了很多 close 的工作，这就于之前的示例表里，那些描述符为 -1 的表项相对应了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>   pid <span style="color:#f92672">=</span> <span style="color:#a6e22e">fork</span>();  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> (pid) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, cycle<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;fork() failed while spawning </span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">&#34;</span>, name);  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_close_channel</span>(ngx_processes[s].channel, cycle<span style="color:#f92672">-&gt;</span>log);  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_INVALID_PID;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span>  
+</span></span><span style="display:flex;"><span>        ngx_pid <span style="color:#f92672">=</span> <span style="color:#a6e22e">ngx_getpid</span>();  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">proc</span>(cycle, data);  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span></code></pre></div><p>其中，proc 即为 <code>ngx_worker_process_cycle</code>。<code>ngx_worker_process_cycle</code> 会调用<code>ngx_worker_process_init</code> 函数，子进程将从父进程处继承到的 <code>channel[1]</code> 加入到自己的事件集中，就是在这个函数中完成的：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_worker_process_init</span>(<span style="color:#66d9ef">ngx_cycle_t</span> <span style="color:#f92672">*</span>cycle, <span style="color:#66d9ef">ngx_int_t</span> worker)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>......  
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">for</span> (n <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; n <span style="color:#f92672">&lt;</span> ngx_last_process; n<span style="color:#f92672">++</span>) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (ngx_processes[n].pid <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (n <span style="color:#f92672">==</span> ngx_process_slot) {  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (ngx_processes[n].channel[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">close</span>(ngx_processes[n].channel[<span style="color:#ae81ff">1</span>]) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, cycle<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                          <span style="color:#e6db74">&#34;close() channel failed&#34;</span>);  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">close</span>(ngx_processes[ngx_process_slot].channel[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, cycle<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;close() channel failed&#34;</span>);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if 0</span><span style="color:#75715e">  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    ngx_last_process = 0;  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#endif  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">ngx_add_channel_event</span>(cycle, ngx_channel, NGX_READ_EVENT,  
+</span></span><span style="display:flex;"><span>                              ngx_channel_handler)  
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">==</span> NGX_ERROR)  
+</span></span><span style="display:flex;"><span>    {  
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* fatal */</span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exit</span>(<span style="color:#ae81ff">2</span>);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>......  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>具体的将 <code>channel[1]</code> 添加到事件集中的操作，是由 <code>ngx_add_channel_event</code> 来完成的，对应的回调处理函数为 <code>ngx_channel_handler</code>，同时我们看到，在添加之前，还进行了很多 close 的工作，这就于之前的示例表里，那些描述符为 -1 的表项相对应了。</p>
 <p>此时，子进程已经将从父进程那里继承来的 <code>channel[1]</code> 加入到了自己的监听事件集中，这样，一个子进程从自己的 <code>ngx_processses</code> 数组中，对应本进程的那一个元素中的 <code>channel[1]</code> 中，即可读取来自其他进程的消息。收到消息时，将执行设置好的回调函数<code>ngx_channel_handler</code>，把接收到的新子进程的相关信息存储在自己的全局变量<code>ngx_processes</code> 数组内。见下面的代码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">void</span>  
-<span class="nf">ngx_channel_handler</span><span class="p">(</span><span class="n">ngx_event_t</span> <span class="o">*</span><span class="n">ev</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="p">......</span>  
-          <span class="k">case</span> <span class="nl">NGX_CMD_OPEN_CHANNEL</span><span class="p">:</span>  
-  
-            <span class="n">ngx_log_debug3</span><span class="p">(</span><span class="n">NGX_LOG_DEBUG_CORE</span><span class="p">,</span> <span class="n">ev</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  
-                           <span class="s">&#34;get channel s:%i pid:%P fd:%d&#34;</span><span class="p">,</span>  
-                           <span class="n">ch</span><span class="p">.</span><span class="n">slot</span><span class="p">,</span> <span class="n">ch</span><span class="p">.</span><span class="n">pid</span><span class="p">,</span> <span class="n">ch</span><span class="p">.</span><span class="n">fd</span><span class="p">);</span>  
-  
-            <span class="n">ngx_processes</span><span class="p">[</span><span class="n">ch</span><span class="p">.</span><span class="n">slot</span><span class="p">].</span><span class="n">pid</span> <span class="o">=</span> <span class="n">ch</span><span class="p">.</span><span class="n">pid</span><span class="p">;</span>  
-            <span class="n">ngx_processes</span><span class="p">[</span><span class="n">ch</span><span class="p">.</span><span class="n">slot</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ch</span><span class="p">.</span><span class="n">fd</span><span class="p">;</span>  
-            <span class="k">break</span><span class="p">;</span>  
-    <span class="p">......</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>我们再回到父进程中。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_channel_handler</span>(<span style="color:#66d9ef">ngx_event_t</span> <span style="color:#f92672">*</span>ev)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    ......  
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">case</span> NGX_CMD_OPEN_CHANNEL:  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">ngx_log_debug3</span>(NGX_LOG_DEBUG_CORE, ev<span style="color:#f92672">-&gt;</span>log, <span style="color:#ae81ff">0</span>,  
+</span></span><span style="display:flex;"><span>                           <span style="color:#e6db74">&#34;get channel s:%i pid:%P fd:%d&#34;</span>,  
+</span></span><span style="display:flex;"><span>                           ch.slot, ch.pid, ch.fd);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>            ngx_processes[ch.slot].pid <span style="color:#f92672">=</span> ch.pid;  
+</span></span><span style="display:flex;"><span>            ngx_processes[ch.slot].channel[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> ch.fd;  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>;  
+</span></span><span style="display:flex;"><span>    ......  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>我们再回到父进程中。</p>
 <p>父进程在从 <code>ngx_spawn_process</code> 返回后，回来继续执行 <code>ngx_start_worker_processes</code>：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">void</span>  
-<span class="nf">ngx_start_worker_processes</span><span class="p">(</span><span class="n">ngx_cycle_t</span> <span class="o">*</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_int_t</span> <span class="n">n</span><span class="p">,</span> <span class="n">ngx_int_t</span> <span class="n">type</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">ngx_int_t</span>      <span class="n">i</span><span class="p">;</span>  
-    <span class="n">ngx_channel_t</span>  <span class="n">ch</span><span class="p">;</span>  
-  
-    <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_NOTICE</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;start worker processes&#34;</span><span class="p">);</span>  
-  
-    <span class="n">ngx_memzero</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ch</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ngx_channel_t</span><span class="p">));</span>  
-  
-    <span class="n">ch</span><span class="p">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">NGX_CMD_OPEN_CHANNEL</span><span class="p">;</span>  
-  
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  
-  
-        <span class="n">ngx_spawn_process</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_worker_process_cycle</span><span class="p">,</span>  
-                          <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="p">(</span><span class="n">intptr_t</span><span class="p">)</span> <span class="n">i</span><span class="p">,</span> <span class="s">&#34;worker process&#34;</span><span class="p">,</span> <span class="n">type</span><span class="p">);</span>  
-  
-        <span class="n">ch</span><span class="p">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">ngx_process_slot</span><span class="p">].</span><span class="n">pid</span><span class="p">;</span>  
-        <span class="n">ch</span><span class="p">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">ngx_process_slot</span><span class="p">;</span>  
-        <span class="n">ch</span><span class="p">.</span><span class="n">fd</span> <span class="o">=</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">ngx_process_slot</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  
-  
-        <span class="n">ngx_pass_open_channel</span><span class="p">(</span><span class="n">cycle</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ch</span><span class="p">);</span>  
-    <span class="p">}</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>其中的 for 循环即表示，父进程会把刚刚生成的子进程的 <code>channel[0]</code>，放在一条<strong>消息</strong>的内容中发送给之前生成的子进程。<strong>消息</strong>的格式定义为：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>  
-     <span class="n">ngx_uint_t</span>  <span class="n">command</span><span class="p">;</span>  
-     <span class="n">ngx_pid_t</span>   <span class="n">pid</span><span class="p">;</span>  
-     <span class="n">ngx_int_t</span>   <span class="n">slot</span><span class="p">;</span>  
-     <span class="n">ngx_fd_t</span>    <span class="n">fd</span><span class="p">;</span>  
-<span class="p">}</span> <span class="n">ngx_channel_t</span><span class="p">;</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>我们看下 <code>ngx_pass_open_channel</code> 函数：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">void</span>  
-<span class="nf">ngx_pass_open_channel</span><span class="p">(</span><span class="n">ngx_cycle_t</span> <span class="o">*</span><span class="n">cycle</span><span class="p">,</span> <span class="n">ngx_channel_t</span> <span class="o">*</span><span class="n">ch</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">ngx_int_t</span>  <span class="n">i</span><span class="p">;</span>  
-  
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">ngx_last_process</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  
-  
-        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">ngx_process_slot</span>  
-            <span class="o">||</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>  
-            <span class="o">||</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  
-        <span class="p">{</span>  
-            <span class="k">continue</span><span class="p">;</span>  
-        <span class="p">}</span>  
-  
-        <span class="n">ngx_log_debug6</span><span class="p">(</span><span class="n">NGX_LOG_DEBUG_CORE</span><span class="p">,</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  
-                      <span class="s">&#34;pass channel s:%d pid:%P fd:%d to s:%i pid:%P fd:%d&#34;</span><span class="p">,</span>  
-                      <span class="n">ch</span><span class="o">-&gt;</span><span class="n">slot</span><span class="p">,</span> <span class="n">ch</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">,</span> <span class="n">ch</span><span class="o">-&gt;</span><span class="n">fd</span><span class="p">,</span>  
-                      <span class="n">i</span><span class="p">,</span> <span class="n">ngx_processes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">pid</span><span class="p">,</span>  
-                      <span class="n">ngx_processes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>  
-  
-        <span class="cm">/* TODO: NGX_AGAIN */</span>  
-  
-        <span class="n">ngx_write_channel</span><span class="p">(</span><span class="n">ngx_processes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>  
-                          <span class="n">ch</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ngx_channel_t</span><span class="p">),</span> <span class="n">cycle</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">);</span>  
-    <span class="p">}</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>从该函数定义中，可以很清晰的看到“往之前生成的每个进程发送消息”。对之前的每个子进程，具体消息发送工作，是由函数 <code>ngx_write_channel</code> 完成的。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_start_worker_processes</span>(<span style="color:#66d9ef">ngx_cycle_t</span> <span style="color:#f92672">*</span>cycle, <span style="color:#66d9ef">ngx_int_t</span> n, <span style="color:#66d9ef">ngx_int_t</span> type)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_int_t</span>      i;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_channel_t</span>  ch;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_NOTICE, cycle<span style="color:#f92672">-&gt;</span>log, <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;start worker processes&#34;</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ngx_memzero</span>(<span style="color:#f92672">&amp;</span>ch, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">ngx_channel_t</span>));  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    ch.command <span style="color:#f92672">=</span> NGX_CMD_OPEN_CHANNEL;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> n; i<span style="color:#f92672">++</span>) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_spawn_process</span>(cycle, ngx_worker_process_cycle,  
+</span></span><span style="display:flex;"><span>                          (<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>) (<span style="color:#66d9ef">intptr_t</span>) i, <span style="color:#e6db74">&#34;worker process&#34;</span>, type);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        ch.pid <span style="color:#f92672">=</span> ngx_processes[ngx_process_slot].pid;  
+</span></span><span style="display:flex;"><span>        ch.slot <span style="color:#f92672">=</span> ngx_process_slot;  
+</span></span><span style="display:flex;"><span>        ch.fd <span style="color:#f92672">=</span> ngx_processes[ngx_process_slot].channel[<span style="color:#ae81ff">0</span>];  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_pass_open_channel</span>(cycle, <span style="color:#f92672">&amp;</span>ch);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>其中的 for 循环即表示，父进程会把刚刚生成的子进程的 <code>channel[0]</code>，放在一条<strong>消息</strong>的内容中发送给之前生成的子进程。<strong>消息</strong>的格式定义为：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_uint_t</span>  command;  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_pid_t</span>   pid;  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_int_t</span>   slot;  
+</span></span><span style="display:flex;"><span>     <span style="color:#66d9ef">ngx_fd_t</span>    fd;  
+</span></span><span style="display:flex;"><span>} <span style="color:#66d9ef">ngx_channel_t</span>;  
+</span></span></code></pre></div><p>我们看下 <code>ngx_pass_open_channel</code> 函数：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_pass_open_channel</span>(<span style="color:#66d9ef">ngx_cycle_t</span> <span style="color:#f92672">*</span>cycle, <span style="color:#66d9ef">ngx_channel_t</span> <span style="color:#f92672">*</span>ch)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_int_t</span>  i;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> ngx_last_process; i<span style="color:#f92672">++</span>) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (i <span style="color:#f92672">==</span> ngx_process_slot  
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">||</span> ngx_processes[i].pid <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>  
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">||</span> ngx_processes[i].channel[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)  
+</span></span><span style="display:flex;"><span>        {  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_debug6</span>(NGX_LOG_DEBUG_CORE, cycle<span style="color:#f92672">-&gt;</span>log, <span style="color:#ae81ff">0</span>,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;pass channel s:%d pid:%P fd:%d to s:%i pid:%P fd:%d&#34;</span>,  
+</span></span><span style="display:flex;"><span>                      ch<span style="color:#f92672">-&gt;</span>slot, ch<span style="color:#f92672">-&gt;</span>pid, ch<span style="color:#f92672">-&gt;</span>fd,  
+</span></span><span style="display:flex;"><span>                      i, ngx_processes[i].pid,  
+</span></span><span style="display:flex;"><span>                      ngx_processes[i].channel[<span style="color:#ae81ff">0</span>]);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* TODO: NGX_AGAIN */</span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_write_channel</span>(ngx_processes[i].channel[<span style="color:#ae81ff">0</span>],  
+</span></span><span style="display:flex;"><span>                          ch, <span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">ngx_channel_t</span>), cycle<span style="color:#f92672">-&gt;</span>log);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div><p>从该函数定义中，可以很清晰的看到“往之前生成的每个进程发送消息”。对之前的每个子进程，具体消息发送工作，是由函数 <code>ngx_write_channel</code> 完成的。</p>
 <p><code>ngx_write_channel</code> 函数的第一个参数是之前某个进程从 master 进程继承来的 <code>channel[0]</code>，第二个参数是发送的内容。其中包含了当前进程的 pid、slot号、command 等信息，最重要的是，包含了当前子进程的 <code>channel[0]</code>，其实是实现了一个简单的协议。注意，当前子进程的 <code>channel[0]</code> 虽然存在 <code>ngx_channel_t</code> 类型的消息体中，但真正文件描述符的传递操作，是 <code>ngx_write_channel</code> 通过发送控制信息来完成的。接收进程虽然在接收到的消息体中获得了发送进程的 <code>channel[0]</code> 这个值，但并不能直接使用，必须根据控制信息来获取一个新的文件描述符。参看<a href="jin_cheng_jian_chuan_di_wen_jian_miao_shu_fu.md">进程间传递文件描述符</a>。</p>
 <p>至此，父子进程间的配合，使得所有的子进程均拥有了其他子进程的 <code>channel[0]</code>，而另一方面，由于所有子进程的 <code>channel[1]</code> 已加入到自己的监听事件集，所以子进程之间的通信通道即被建立起来。</p>
 <p>值得一提的是，父进程在调用 socketpair() 产生一个匿名套接字对后，再 fork 出一个子进程，那么现在有 4 个文件描述符了。其实对这 4 个文件描述符中的任何一个进行写入，从其他3个描述符中的任何一个均可以进行读取操作。</p>
@@ -1119,263 +773,132 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 </ol>
 <h3 id="22-nginx-中的实现">2.2 Nginx 中的实现</h3>
 <p>那么，在 Nginx 中，到底是选用 mmap 映射到 /dev/null，还是使用 MAP_ANON 选项调用mmap，或者是使用 shmget 呢？看相关实现的代码就会一目了然：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cm">/*  
-</span><span class="cm"> * Copyright (C) Igor Sysoev  
-</span><span class="cm"> * Copyright (C) Nginx, Inc.  
-</span><span class="cm"> */</span>  
-  
-  
-<span class="cp">#include</span> <span class="cpf">&lt;ngx_config.h&gt;  </span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;ngx_core.h&gt;  </span><span class="cp">
-</span><span class="cp"></span>  
-  
-<span class="cp">#if (NGX_HAVE_MAP_ANON)  
-</span><span class="cp"></span>  
-<span class="n">ngx_int_t</span>  
-<span class="nf">ngx_shm_alloc</span><span class="p">(</span><span class="n">ngx_shm_t</span> <span class="o">*</span><span class="n">shm</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_char</span> <span class="o">*</span><span class="p">)</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">,</span>  
-                                <span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">,</span>  
-                                <span class="n">MAP_ANON</span><span class="o">|</span><span class="n">MAP_SHARED</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">==</span> <span class="n">MAP_FAILED</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;mmap(MAP_ANON|MAP_SHARED, %uz) failed&#34;</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>  
-        <span class="k">return</span> <span class="n">NGX_ERROR</span><span class="p">;</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">return</span> <span class="n">NGX_OK</span><span class="p">;</span>  
-<span class="p">}</span>  
-  
-  
-<span class="kt">void</span>  
-<span class="nf">ngx_shm_free</span><span class="p">(</span><span class="n">ngx_shm_t</span> <span class="o">*</span><span class="n">shm</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="k">if</span> <span class="p">(</span><span class="n">munmap</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;munmap(%p, %uz) failed&#34;</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>  
-    <span class="p">}</span>  
-<span class="p">}</span>  
-  
-<span class="cp">#elif (NGX_HAVE_MAP_DEVZERO)  
-</span><span class="cp"></span>  
-<span class="n">ngx_int_t</span>  
-<span class="nf">ngx_shm_alloc</span><span class="p">(</span><span class="n">ngx_shm_t</span> <span class="o">*</span><span class="n">shm</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">ngx_fd_t</span>  <span class="n">fd</span><span class="p">;</span>  
-  
-    <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">&#34;/dev/zero&#34;</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">);</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;open(</span><span class="se">\&#34;</span><span class="s">/dev/zero</span><span class="se">\&#34;</span><span class="s">) failed&#34;</span><span class="p">);</span>  
-        <span class="k">return</span> <span class="n">NGX_ERROR</span><span class="p">;</span>  
-    <span class="p">}</span>  
-  
-    <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_char</span> <span class="o">*</span><span class="p">)</span> <span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">,</span> <span class="n">PROT_READ</span><span class="o">|</span><span class="n">PROT_WRITE</span><span class="p">,</span>  
-                                <span class="n">MAP_SHARED</span><span class="p">,</span> <span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">==</span> <span class="n">MAP_FAILED</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;mmap(/dev/zero, MAP_SHARED, %uz) failed&#34;</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;close(</span><span class="se">\&#34;</span><span class="s">/dev/zero</span><span class="se">\&#34;</span><span class="s">) failed&#34;</span><span class="p">);</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">return</span> <span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">==</span> <span class="n">MAP_FAILED</span><span class="p">)</span> <span class="o">?</span> <span class="nl">NGX_ERROR</span> <span class="p">:</span> <span class="n">NGX_OK</span><span class="p">;</span>  
-<span class="p">}</span>  
-  
-  
-<span class="kt">void</span>  
-<span class="nf">ngx_shm_free</span><span class="p">(</span><span class="n">ngx_shm_t</span> <span class="o">*</span><span class="n">shm</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="k">if</span> <span class="p">(</span><span class="n">munmap</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;munmap(%p, %uz) failed&#34;</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>  
-    <span class="p">}</span>  
-<span class="p">}</span>  
-  
-<span class="cp">#elif (NGX_HAVE_SYSVSHM)  
-</span><span class="cp"></span>  
-<span class="cp">#include</span> <span class="cpf">&lt;sys/ipc.h&gt;  </span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;sys/shm.h&gt;  </span><span class="cp">
-</span><span class="cp"></span>  
-  
-<span class="n">ngx_int_t</span>  
-<span class="nf">ngx_shm_alloc</span><span class="p">(</span><span class="n">ngx_shm_t</span> <span class="o">*</span><span class="n">shm</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="kt">int</span>  <span class="n">id</span><span class="p">;</span>  
-  
-    <span class="n">id</span> <span class="o">=</span> <span class="n">shmget</span><span class="p">(</span><span class="n">IPC_PRIVATE</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">,</span> <span class="p">(</span><span class="n">SHM_R</span><span class="o">|</span><span class="n">SHM_W</span><span class="o">|</span><span class="n">IPC_CREAT</span><span class="p">));</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;shmget(%uz) failed&#34;</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>  
-        <span class="k">return</span> <span class="n">NGX_ERROR</span><span class="p">;</span>  
-    <span class="p">}</span>  
-  
-    <span class="n">ngx_log_debug1</span><span class="p">(</span><span class="n">NGX_LOG_DEBUG_CORE</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#34;shmget id: %d&#34;</span><span class="p">,</span> <span class="n">id</span><span class="p">);</span>  
-  
-    <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">=</span> <span class="n">shmat</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">==</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span> <span class="s">&#34;shmat() failed&#34;</span><span class="p">);</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">shmctl</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">IPC_RMID</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;shmctl(IPC_RMID) failed&#34;</span><span class="p">);</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">return</span> <span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span> <span class="o">==</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">?</span> <span class="nl">NGX_ERROR</span> <span class="p">:</span> <span class="n">NGX_OK</span><span class="p">;</span>  
-<span class="p">}</span>  
-  
-  
-<span class="kt">void</span>  
-<span class="nf">ngx_shm_free</span><span class="p">(</span><span class="n">ngx_shm_t</span> <span class="o">*</span><span class="n">shm</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="k">if</span> <span class="p">(</span><span class="n">shmdt</span><span class="p">(</span><span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_ALERT</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;shmdt(%p) failed&#34;</span><span class="p">,</span> <span class="n">shm</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">);</span>  
-    <span class="p">}</span>  
-<span class="p">}</span>  
-  
-<span class="cp">#endif  
-</span></code></pre></td></tr></table>
-</div>
-</div><p>上面的代码即是 Nginx 源代码中的 src/os/unix/ngx_shemem.c 的全部内容。可见，整个文件只是为了提供两个接口：ngx_shm_alloc 和ngx_shm_free。而这两个接口的实现，按如下逻辑来决定：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">/*  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Copyright (C) Igor Sysoev  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> * Copyright (C) Nginx, Inc.  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ngx_config.h&gt;  </span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;ngx_core.h&gt;  </span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if (NGX_HAVE_MAP_ANON)  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ngx_int_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_shm_alloc</span>(<span style="color:#66d9ef">ngx_shm_t</span> <span style="color:#f92672">*</span>shm)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">=</span> (u_char <span style="color:#f92672">*</span>) <span style="color:#a6e22e">mmap</span>(NULL, shm<span style="color:#f92672">-&gt;</span>size,  
+</span></span><span style="display:flex;"><span>                                PROT_READ<span style="color:#f92672">|</span>PROT_WRITE,  
+</span></span><span style="display:flex;"><span>                                MAP_ANON<span style="color:#f92672">|</span>MAP_SHARED, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">==</span> MAP_FAILED) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;mmap(MAP_ANON|MAP_SHARED, %uz) failed&#34;</span>, shm<span style="color:#f92672">-&gt;</span>size);  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_ERROR;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NGX_OK;  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_shm_free</span>(<span style="color:#66d9ef">ngx_shm_t</span> <span style="color:#f92672">*</span>shm)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">munmap</span>((<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>) shm<span style="color:#f92672">-&gt;</span>addr, shm<span style="color:#f92672">-&gt;</span>size) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;munmap(%p, %uz) failed&#34;</span>, shm<span style="color:#f92672">-&gt;</span>addr, shm<span style="color:#f92672">-&gt;</span>size);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#elif (NGX_HAVE_MAP_DEVZERO)  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ngx_int_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_shm_alloc</span>(<span style="color:#66d9ef">ngx_shm_t</span> <span style="color:#f92672">*</span>shm)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_fd_t</span>  fd;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    fd <span style="color:#f92672">=</span> <span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;/dev/zero&#34;</span>, O_RDWR);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (fd <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;open(</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">/dev/zero</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">) failed&#34;</span>);  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_ERROR;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">=</span> (u_char <span style="color:#f92672">*</span>) <span style="color:#a6e22e">mmap</span>(NULL, shm<span style="color:#f92672">-&gt;</span>size, PROT_READ<span style="color:#f92672">|</span>PROT_WRITE,  
+</span></span><span style="display:flex;"><span>                                MAP_SHARED, fd, <span style="color:#ae81ff">0</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">==</span> MAP_FAILED) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;mmap(/dev/zero, MAP_SHARED, %uz) failed&#34;</span>, shm<span style="color:#f92672">-&gt;</span>size);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">close</span>(fd) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;close(</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">/dev/zero</span><span style="color:#ae81ff">\&#34;</span><span style="color:#e6db74">) failed&#34;</span>);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">==</span> MAP_FAILED) <span style="color:#f92672">?</span> NGX_ERROR : NGX_OK;  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_shm_free</span>(<span style="color:#66d9ef">ngx_shm_t</span> <span style="color:#f92672">*</span>shm)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">munmap</span>((<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>) shm<span style="color:#f92672">-&gt;</span>addr, shm<span style="color:#f92672">-&gt;</span>size) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;munmap(%p, %uz) failed&#34;</span>, shm<span style="color:#f92672">-&gt;</span>addr, shm<span style="color:#f92672">-&gt;</span>size);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#elif (NGX_HAVE_SYSVSHM)  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/ipc.h&gt;  </span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/shm.h&gt;  </span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ngx_int_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_shm_alloc</span>(<span style="color:#66d9ef">ngx_shm_t</span> <span style="color:#f92672">*</span>shm)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span>  id;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    id <span style="color:#f92672">=</span> <span style="color:#a6e22e">shmget</span>(IPC_PRIVATE, shm<span style="color:#f92672">-&gt;</span>size, (SHM_R<span style="color:#f92672">|</span>SHM_W<span style="color:#f92672">|</span>IPC_CREAT));  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (id <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;shmget(%uz) failed&#34;</span>, shm<span style="color:#f92672">-&gt;</span>size);  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_ERROR;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ngx_log_debug1</span>(NGX_LOG_DEBUG_CORE, shm<span style="color:#f92672">-&gt;</span>log, <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;shmget id: %d&#34;</span>, id);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">=</span> <span style="color:#a6e22e">shmat</span>(id, NULL, <span style="color:#ae81ff">0</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">==</span> (<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>) <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno, <span style="color:#e6db74">&#34;shmat() failed&#34;</span>);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">shmctl</span>(id, IPC_RMID, NULL) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;shmctl(IPC_RMID) failed&#34;</span>);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> (shm<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">==</span> (<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>) <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">?</span> NGX_ERROR : NGX_OK;  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_shm_free</span>(<span style="color:#66d9ef">ngx_shm_t</span> <span style="color:#f92672">*</span>shm)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">shmdt</span>(shm<span style="color:#f92672">-&gt;</span>addr) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_ALERT, shm<span style="color:#f92672">-&gt;</span>log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;shmdt(%p) failed&#34;</span>, shm<span style="color:#f92672">-&gt;</span>addr);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif  
+</span></span></span></code></pre></div><p>上面的代码即是 Nginx 源代码中的 src/os/unix/ngx_shemem.c 的全部内容。可见，整个文件只是为了提供两个接口：ngx_shm_alloc 和ngx_shm_free。而这两个接口的实现，按如下逻辑来决定：</p>
 <ol>
 <li>如果当前系统的 mmap 系统调用支持 MAP_ANON 选项，则使用带 MAP_ANON 选项的mmap。</li>
 <li>如果 1 不满足，则如果当前系统 mmap 系统调用支持映射 /dev/zero 设备，则使用 mmap 映射 /dev/zero 的方式来实现。</li>
@@ -1385,10 +908,10 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 <p>另外，关于上面三种情况的判断，都是通过相应的宏是否定义来进行的，而相应的宏的定义，是在auto/unix 脚本中进行的，该脚本会写一端测试程序来判断相应的系统调用是否支持，如果支持，则在 configure 后自动生成的 objs/ngx_auto_config.h 文件中定义对应的宏。</p>
 <h2 id="3-channel-机制和共享内存在-nginx-中的使用情况">3. channel 机制和共享内存在 Nginx 中的使用情况</h2>
 <p>前面讲 Nginx 中的 channel 机制时提到，Nginx 虽然提供了这种机制，但目前很少用到，而共享内存却相对用的比较多了。例如，为了统计 Nginx 总体的 http 请求处理情况，需要跨越多个 worker 来计算，Nginx 自带的 http 模块 ngx_http_stub_status_module 即主要依赖共享内存的方式。</p>
-    </div>
+        </div>
 
-    
-    
+        
+        
 <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
@@ -1409,60 +932,65 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 </div>
 
 
-    
-    
 
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
         
-          <a class="prev" href="/2015/06/25/nginx-proxy-cache-and-etag.html">
+        
+
+
+        <footer class="post-footer">
+          <div class="post-tags">
+              <a href="https://pureage.info/tags/nginx/">nginx</a>
+                
+            </div>
+
+
+          
+          <nav class="post-nav">
             
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="prev" href="/2015/06/25/nginx-proxy-cache-and-etag.html">
+                
+                <i class="iconfont">
+                  <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
 </svg>
 
-            </i>
-            <span class="prev-text nav-default">nginx proxy_cache 与 etag 配合的问题</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2015/03/19/passing-file-descriptors.html">
-            <span class="next-text nav-default">进程间传递文件描述符</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+                </i>
+                <span class="prev-text nav-default">nginx proxy_cache 与 etag 配合的问题</span>
+                <span class="prev-text nav-mobile">上一篇</span>
+              </a>
             
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="next" href="/2015/03/19/passing-file-descriptors.html">
+                <span class="next-text nav-default">进程间传递文件描述符</span>
+                <span class="prev-text nav-mobile">下一篇</span>
+                
+                <i class="iconfont">
+                  <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
 </svg>
 
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                </i>
+              </a>
+          </nav>
+        </footer>
+      </article>
+
+      
+      
+
+
+      
+      
+
+  
 
   
   
 
   
-  
-
-  
-
-  
-  
-
   
 
   
@@ -1473,12 +1001,21 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 
   
 
-        </div>
-      </div>
-    </main>
+  
 
-    <footer id="footer" class="footer">
-      <div class="icon-links">
+
+    </div>
+
+    
+    
+
+
+  </div>
+
+      </main>
+
+      <footer id="footer" class="footer">
+        <div class="icon-links">
   
 
 
@@ -1491,7 +1028,7 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 </svg>
 
   </a>
-   
+  
 </div>
 
 <div class="copyright">
@@ -1507,7 +1044,7 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
     &copy;
     
       2011 -
-    2022
+    2023
     <span class="heart">
       
       <i class="iconfont">
@@ -1530,28 +1067,30 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
   
 </div>
 
-    </footer>
+      </footer>
 
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+      <div class="button__back-to-top">
+        <a href="#back-to-top">
+          <i class="iconfont">
+            
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="35" height="35">
   <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
 </svg>
 
-      </i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div>
-  
+    
 <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
 
 
 
 
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/main.419d62fdd33d03e55ca7c874a720b9a5d8bc25d215992621f18eb9f8dad9ac3c.js" integrity="sha256-QZ1i/dM9A&#43;Vcp8h0pyC5pdi8JdIVmSYh8Y65&#43;NrZrDw=" crossorigin="anonymous"></script>
 
 
 
@@ -1565,7 +1104,6 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 
 
   
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
@@ -1584,5 +1122,7 @@ Nginx中的 channel 通信，本质上是多个进程之间，利用匿名套接
 
 
 
-</body>
+
+
+  </body>
 </html>

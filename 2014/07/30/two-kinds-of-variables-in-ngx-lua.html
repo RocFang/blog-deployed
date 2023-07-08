@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ngx.var.arg 与 ngx.req.get_uri_args 的区别 - 纯真年代</title>
-  
+<html
+  lang="zh-cn"
+  itemscope
+  itemtype="http://schema.org/WebPage"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+          ngx.var.arg 与 ngx.req.get_uri_args 的区别 - 纯真年代
+        </title>
+    
 
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
@@ -24,9 +30,9 @@
 
 <meta name="author" content="strider" />
   <meta name="description" content="ngx.var.arg_xx 与 ngx.req.get_uri_args[&amp;quot;xx&amp;quot;] 两者都是为了获取请求 uri 中的参数，例如对于 url：
-1  http://pureage.info?strider=1   为了获取输入参数 strider，以下两种方法都可以：
-1  local strider = ngx.var.arg_strider   1  local strider = ngx.req.get_uri_args[&amp;#34;strider&amp;#34;]   差别在于，当请求 uri 中有多个同名参数时，ngx.var.arg_xx 的做法是取第一个出现的值，ngx.req_get_uri_args[&amp;quot;xx&amp;quot;] 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：
-1  http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4   此时，ngx.var.arg_strider 的值为“1”，而 ngx.req.get_uri_args[&amp;quot;strider&amp;quot;] 的值为 table [&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;, &amp;quot;3&amp;quot;, &amp;quot;4&amp;quot;]。因此，ngx.req.get_uri_args 属于ngx.var.arg_ 的增强。
+http://pureage.info?strider=1 为了获取输入参数 strider，以下两种方法都可以：
+local strider = ngx.var.arg_strider local strider = ngx.req.get_uri_args[&amp;#34;strider&amp;#34;] 差别在于，当请求 uri 中有多个同名参数时，ngx.var.arg_xx 的做法是取第一个出现的值，ngx.req_get_uri_args[&amp;quot;xx&amp;quot;] 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：
+http://pureage.info?strider=1&amp;amp;strider=2&amp;amp;strider=3&amp;amp;strider=4 此时，ngx.var.arg_strider 的值为“1”，而 ngx.req.get_uri_args[&amp;quot;strider&amp;quot;] 的值为 table [&amp;quot;1&amp;quot;, &amp;quot;2&amp;quot;, &amp;quot;3&amp;quot;, &amp;quot;4&amp;quot;]。因此，ngx.req.get_uri_args 属于ngx.var.arg_ 的增强。
 " />
 
   <meta name="keywords" content="程序员, 文学, 生活" />
@@ -36,7 +42,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.89.4" />
+<meta name="generator" content="Hugo 0.115.1" />
 
 
 <link rel="canonical" href="https://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html" />
@@ -57,7 +63,9 @@
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.d8d87b982993a745e5e7b6a6cbf257be8c3e82aab5e485f0908ad7e6c3501ab2.css" integrity="sha256-2Nh7mCmTp0Xl57amy/JXvow&#43;gqq15IXwkIrX5sNQGrI=" media="screen" crossorigin="anonymous">
+
+
 
 
 
@@ -65,122 +73,37 @@
 
 <meta property="og:title" content="ngx.var.arg 与 ngx.req.get_uri_args 的区别" />
 <meta property="og:description" content="ngx.var.arg_xx 与 ngx.req.get_uri_args[&quot;xx&quot;] 两者都是为了获取请求 uri 中的参数，例如对于 url：
-
-
-1
-
-
 http://pureage.info?strider=1  
-
-
 为了获取输入参数 strider，以下两种方法都可以：
-
-
-1
-
-
 local strider = ngx.var.arg_strider
-
-
-
-
-1
-
-
 local strider = ngx.req.get_uri_args[&#34;strider&#34;]
-
-
 差别在于，当请求 uri 中有多个同名参数时，ngx.var.arg_xx 的做法是取第一个出现的值，ngx.req_get_uri_args[&quot;xx&quot;] 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：
-
-
-1
-
-
 http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
-
-
 此时，ngx.var.arg_strider 的值为“1”，而 ngx.req.get_uri_args[&quot;strider&quot;] 的值为 table [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]。因此，ngx.req.get_uri_args 属于ngx.var.arg_ 的增强。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://pureage.info/2014/07/30/two-kinds-of-variables-in-ngx-lua.html" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2014-07-30T10:30:00+00:00" />
 <meta property="article:modified_time" content="2014-07-30T10:30:00+00:00" />
-
 <meta itemprop="name" content="ngx.var.arg 与 ngx.req.get_uri_args 的区别">
 <meta itemprop="description" content="ngx.var.arg_xx 与 ngx.req.get_uri_args[&quot;xx&quot;] 两者都是为了获取请求 uri 中的参数，例如对于 url：
-
-
-1
-
-
 http://pureage.info?strider=1  
-
-
 为了获取输入参数 strider，以下两种方法都可以：
-
-
-1
-
-
 local strider = ngx.var.arg_strider
-
-
-
-
-1
-
-
 local strider = ngx.req.get_uri_args[&#34;strider&#34;]
-
-
 差别在于，当请求 uri 中有多个同名参数时，ngx.var.arg_xx 的做法是取第一个出现的值，ngx.req_get_uri_args[&quot;xx&quot;] 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：
-
-
-1
-
-
 http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
-
-
 此时，ngx.var.arg_strider 的值为“1”，而 ngx.req.get_uri_args[&quot;strider&quot;] 的值为 table [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]。因此，ngx.req.get_uri_args 属于ngx.var.arg_ 的增强。"><meta itemprop="datePublished" content="2014-07-30T10:30:00+00:00" />
 <meta itemprop="dateModified" content="2014-07-30T10:30:00+00:00" />
-<meta itemprop="wordCount" content="631">
+<meta itemprop="wordCount" content="542">
 <meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ngx.var.arg 与 ngx.req.get_uri_args 的区别"/>
 <meta name="twitter:description" content="ngx.var.arg_xx 与 ngx.req.get_uri_args[&quot;xx&quot;] 两者都是为了获取请求 uri 中的参数，例如对于 url：
-
-
-1
-
-
 http://pureage.info?strider=1  
-
-
 为了获取输入参数 strider，以下两种方法都可以：
-
-
-1
-
-
 local strider = ngx.var.arg_strider
-
-
-
-
-1
-
-
 local strider = ngx.req.get_uri_args[&#34;strider&#34;]
-
-
 差别在于，当请求 uri 中有多个同名参数时，ngx.var.arg_xx 的做法是取第一个出现的值，ngx.req_get_uri_args[&quot;xx&quot;] 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：
-
-
-1
-
-
 http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
-
-
 此时，ngx.var.arg_strider 的值为“1”，而 ngx.req.get_uri_args[&quot;strider&quot;] 的值为 table [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]。因此，ngx.req.get_uri_args 属于ngx.var.arg_ 的增强。"/>
 
 <!--[if lte IE 9]>
@@ -195,9 +118,11 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
 
 
 
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
+  </head>
+  <body>
+    <div id="back-to-top"></div>
+
+    <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
     <a href="/" class="logo">纯真年代</a>
   </div>
@@ -259,8 +184,8 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
 </nav>
 
 
-  
     
+      
 
 
 
@@ -317,14 +242,15 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
     </div>
 </div>
 
-  
+    
 
-  
+    
 
-  
+    
 
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
+
+    <header id="header" class="header">
+      <div class="logo-wrapper">
   <a href="/" class="logo">
     
       纯真年代
@@ -410,255 +336,152 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
   </ul>
 </nav>
 
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">ngx.var.arg 与 ngx.req.get_uri_args 的区别</h1>
-      
-      <div class="post-meta">
-        <time datetime="2014-07-30" class="post-time">
-          2014-07-30
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
     </header>
 
+    <div id="mobile-panel">
+      <main id="main" class="main bg-llight wallpaper">
+        <div class="content-wrapper">
+    <div id="content" class="content">
+      <article class="post">
+        
+        <header class="post-header">
+          <h1 class="post-title">ngx.var.arg 与 ngx.req.get_uri_args 的区别</h1>
+          
+
+          <div class="post-meta">
+  <div class="post-meta-author">
+    by
+      strider
     
+  </div>
+
+  <div class="post-meta-time">
+    <time datetime="2014-07-30">
+      2014-07-30
+    </time>
+  </div>
+
+  
+
+
+  <div class="post-meta__right">
     
 
     
-    <div class="post-content">
-      <p><code>ngx.var.arg_xx</code> 与 <code>ngx.req.get_uri_args[&quot;xx&quot;]</code> 两者都是为了获取请求 uri 中的参数，例如对于 url：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">http://pureage.info?strider=1  
-</code></pre></td></tr></table>
+
+
+    
+    
+
+
+    
+    
+  </div>
 </div>
-</div><p>为了获取输入参数 strider，以下两种方法都可以：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">strider</span> <span class="o">=</span> <span class="n">ngx.var</span><span class="p">.</span><span class="n">arg_strider</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-lua" data-lang="lua"><span class="kd">local</span> <span class="n">strider</span> <span class="o">=</span> <span class="n">ngx.req</span><span class="p">.</span><span class="n">get_uri_args</span><span class="p">[</span><span class="s2">&#34;strider&#34;</span><span class="p">]</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>差别在于，当请求 uri 中有多个同名参数时，<code>ngx.var.arg_xx</code> 的做法是取第一个出现的值，<code>ngx.req_get_uri_args[&quot;xx&quot;]</code> 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
-</code></pre></td></tr></table>
-</div>
-</div><p>此时，<code>ngx.var.arg_strider</code> 的值为“1”，而 <code>ngx.req.get_uri_args[&quot;strider&quot;]</code> 的值为 <code>table [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]</code>。因此，<code>ngx.req.get_uri_args</code> 属于<code>ngx.var.arg_</code> 的增强。</p>
+
+        </header>
+
+        
+        <div class="post-content">
+          <p><code>ngx.var.arg_xx</code> 与 <code>ngx.req.get_uri_args[&quot;xx&quot;]</code> 两者都是为了获取请求 uri 中的参数，例如对于 url：</p>
+<pre tabindex="0"><code>http://pureage.info?strider=1  
+</code></pre><p>为了获取输入参数 strider，以下两种方法都可以：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">local</span> strider <span style="color:#f92672">=</span> ngx.var.arg_strider
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#66d9ef">local</span> strider <span style="color:#f92672">=</span> ngx.req.get_uri_args[<span style="color:#e6db74">&#34;strider&#34;</span>]
+</span></span></code></pre></div><p>差别在于，当请求 uri 中有多个同名参数时，<code>ngx.var.arg_xx</code> 的做法是取第一个出现的值，<code>ngx.req_get_uri_args[&quot;xx&quot;]</code> 的做法是返回一个 table，该 table 里存放了该参数的所有值，例如,当请求 uri 为：</p>
+<pre tabindex="0"><code>http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4  
+</code></pre><p>此时，<code>ngx.var.arg_strider</code> 的值为“1”，而 <code>ngx.req.get_uri_args[&quot;strider&quot;]</code> 的值为 <code>table [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;]</code>。因此，<code>ngx.req.get_uri_args</code> 属于<code>ngx.var.arg_</code> 的增强。</p>
 <p><code>ngx.var.arg_</code> 的实现是直接使用 Nginx 原生的变量支持，Nginx 相关代码为：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">ngx_http_variable_value_t</span> <span class="o">*</span>  
-<span class="nf">ngx_http_get_variable</span><span class="p">(</span><span class="n">ngx_http_request_t</span> <span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">ngx_str_t</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">ngx_uint_t</span> <span class="n">key</span><span class="p">)</span>  
-<span class="p">{</span>  
-<span class="p">....(</span><span class="err">略）</span><span class="p">....</span>  
-<span class="k">if</span> <span class="p">(</span><span class="n">ngx_strncmp</span><span class="p">(</span><span class="n">name</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">,</span> <span class="s">&#34;arg_&#34;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  
-  
-        <span class="k">if</span> <span class="p">(</span><span class="n">ngx_http_variable_argument</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">vv</span><span class="p">,</span> <span class="p">(</span><span class="n">uintptr_t</span><span class="p">)</span> <span class="n">name</span><span class="p">)</span> <span class="o">==</span> <span class="n">NGX_OK</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="k">return</span> <span class="n">vv</span><span class="p">;</span>  
-        <span class="p">}</span>  
-  
-        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>  
-    <span class="p">}</span>  
-  
-    <span class="n">vv</span><span class="o">-&gt;</span><span class="n">not_found</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
-  
-    <span class="k">return</span> <span class="n">vv</span><span class="p">;</span>  
-<span class="p">}</span>  
-  
-<span class="k">static</span> <span class="n">ngx_int_t</span>  
-<span class="nf">ngx_http_variable_argument</span><span class="p">(</span><span class="n">ngx_http_request_t</span> <span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">ngx_http_variable_value_t</span> <span class="o">*</span><span class="n">v</span><span class="p">,</span>  
-    <span class="n">uintptr_t</span> <span class="n">data</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">ngx_str_t</span> <span class="o">*</span><span class="n">name</span> <span class="o">=</span> <span class="p">(</span><span class="n">ngx_str_t</span> <span class="o">*</span><span class="p">)</span> <span class="n">data</span><span class="p">;</span>  
-  
-    <span class="n">u_char</span> <span class="o">*</span><span class="n">arg</span><span class="p">;</span>  
-    <span class="n">size_t</span> <span class="n">len</span><span class="p">;</span>  
-    <span class="n">ngx_str_t</span> <span class="n">value</span><span class="p">;</span>  
-  
-    <span class="n">len</span> <span class="o">=</span> <span class="n">name</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">-</span> <span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="s">&#34;arg_&#34;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>  
-    <span class="n">arg</span> <span class="o">=</span> <span class="n">name</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="s">&#34;arg_&#34;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">ngx_http_arg</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="n">NGX_OK</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">v</span><span class="o">-&gt;</span><span class="n">not_found</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
-        <span class="k">return</span> <span class="n">NGX_OK</span><span class="p">;</span>  
-    <span class="p">}</span>  
-  
-    <span class="n">v</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>  
-    <span class="n">v</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="n">len</span><span class="p">;</span>  
-    <span class="n">v</span><span class="o">-&gt;</span><span class="n">valid</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
-    <span class="n">v</span><span class="o">-&gt;</span><span class="n">no_cacheable</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
-    <span class="n">v</span><span class="o">-&gt;</span><span class="n">not_found</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  
-  
-    <span class="k">return</span> <span class="n">NGX_OK</span><span class="p">;</span>  
-<span class="p">}</span>  
-  
-<span class="n">ngx_int_t</span>  
-<span class="nf">ngx_http_arg</span><span class="p">(</span><span class="n">ngx_http_request_t</span> <span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">u_char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="n">ngx_str_t</span> <span class="o">*</span><span class="n">value</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="n">u_char</span> <span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">last</span><span class="p">;</span>  
-  
-    <span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="o">-&gt;</span><span class="n">args</span><span class="p">.</span><span class="n">len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="k">return</span> <span class="n">NGX_DECLINED</span><span class="p">;</span>  
-    <span class="p">}</span>  
-  
-    <span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">args</span><span class="p">.</span><span class="n">data</span><span class="p">;</span>  
-    <span class="n">last</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">args</span><span class="p">.</span><span class="n">len</span><span class="p">;</span>  
-  
-    <span class="k">for</span> <span class="p">(</span> <span class="cm">/* void */</span> <span class="p">;</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">;</span> <span class="n">p</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>  
-  
-        <span class="cm">/* we need &#39;=&#39; after name, so drop one char from last */</span>  
-  
-        <span class="n">p</span> <span class="o">=</span> <span class="n">ngx_strlcasestrn</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">last</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>  
-  
-        <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  
-            <span class="k">return</span> <span class="n">NGX_DECLINED</span><span class="p">;</span>  
-        <span class="p">}</span>  
-  
-        <span class="k">if</span> <span class="p">((</span><span class="n">p</span> <span class="o">==</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">args</span><span class="p">.</span><span class="n">data</span> <span class="o">||</span> <span class="o">*</span><span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;&amp;&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="n">len</span><span class="p">)</span> <span class="o">==</span> <span class="sc">&#39;=&#39;</span><span class="p">)</span> <span class="p">{</span>  
-  
-            <span class="n">value</span><span class="o">-&gt;</span><span class="n">data</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>  
-  
-            <span class="n">p</span> <span class="o">=</span> <span class="n">ngx_strlchr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">last</span><span class="p">,</span> <span class="sc">&#39;&amp;&#39;</span><span class="p">);</span>  
-  
-            <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  
-                <span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">args</span><span class="p">.</span><span class="n">data</span> <span class="o">+</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">args</span><span class="p">.</span><span class="n">len</span><span class="p">;</span>  
-            <span class="p">}</span>  
-  
-            <span class="n">value</span><span class="o">-&gt;</span><span class="n">len</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-</span> <span class="n">value</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>  
-  
-            <span class="k">return</span> <span class="n">NGX_OK</span><span class="p">;</span>  
-        <span class="p">}</span>  
-    <span class="p">}</span>  
-  
-    <span class="k">return</span> <span class="n">NGX_DECLINED</span><span class="p">;</span>  
-<span class="p">}</span>  
-</code></pre></td></tr></table>
-</div>
-</div>
-    </div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">ngx_http_variable_value_t</span> <span style="color:#f92672">*</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_http_get_variable</span>(<span style="color:#66d9ef">ngx_http_request_t</span> <span style="color:#f92672">*</span>r, <span style="color:#66d9ef">ngx_str_t</span> <span style="color:#f92672">*</span>name, <span style="color:#66d9ef">ngx_uint_t</span> key)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>....(<span style="color:#960050;background-color:#1e0010">略）</span>....  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">ngx_strncmp</span>(name<span style="color:#f92672">-&gt;</span>data, <span style="color:#e6db74">&#34;arg_&#34;</span>, <span style="color:#ae81ff">4</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">ngx_http_variable_argument</span>(r, vv, (<span style="color:#66d9ef">uintptr_t</span>) name) <span style="color:#f92672">==</span> NGX_OK) {  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> vv;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NULL;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    vv<span style="color:#f92672">-&gt;</span>not_found <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> vv;  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">ngx_int_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_http_variable_argument</span>(<span style="color:#66d9ef">ngx_http_request_t</span> <span style="color:#f92672">*</span>r, <span style="color:#66d9ef">ngx_http_variable_value_t</span> <span style="color:#f92672">*</span>v,  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uintptr_t</span> data)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_str_t</span> <span style="color:#f92672">*</span>name <span style="color:#f92672">=</span> (<span style="color:#66d9ef">ngx_str_t</span> <span style="color:#f92672">*</span>) data;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    u_char <span style="color:#f92672">*</span>arg;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">size_t</span> len;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">ngx_str_t</span> value;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    len <span style="color:#f92672">=</span> name<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">-</span> (<span style="color:#66d9ef">sizeof</span>(<span style="color:#e6db74">&#34;arg_&#34;</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);  
+</span></span><span style="display:flex;"><span>    arg <span style="color:#f92672">=</span> name<span style="color:#f92672">-&gt;</span>data <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(<span style="color:#e6db74">&#34;arg_&#34;</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">ngx_http_arg</span>(r, arg, len, <span style="color:#f92672">&amp;</span>value) <span style="color:#f92672">!=</span> NGX_OK) {  
+</span></span><span style="display:flex;"><span>        v<span style="color:#f92672">-&gt;</span>not_found <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_OK;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    v<span style="color:#f92672">-&gt;</span>data <span style="color:#f92672">=</span> value.data;  
+</span></span><span style="display:flex;"><span>    v<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">=</span> value.len;  
+</span></span><span style="display:flex;"><span>    v<span style="color:#f92672">-&gt;</span>valid <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>    v<span style="color:#f92672">-&gt;</span>no_cacheable <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;  
+</span></span><span style="display:flex;"><span>    v<span style="color:#f92672">-&gt;</span>not_found <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NGX_OK;  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ngx_int_t</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_http_arg</span>(<span style="color:#66d9ef">ngx_http_request_t</span> <span style="color:#f92672">*</span>r, u_char <span style="color:#f92672">*</span>name, <span style="color:#66d9ef">size_t</span> len, <span style="color:#66d9ef">ngx_str_t</span> <span style="color:#f92672">*</span>value)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    u_char <span style="color:#f92672">*</span>p, <span style="color:#f92672">*</span>last;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (r<span style="color:#f92672">-&gt;</span>args.len <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> NGX_DECLINED;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> r<span style="color:#f92672">-&gt;</span>args.data;  
+</span></span><span style="display:flex;"><span>    last <span style="color:#f92672">=</span> p <span style="color:#f92672">+</span> r<span style="color:#f92672">-&gt;</span>args.len;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> ( <span style="color:#75715e">/* void */</span> ; p <span style="color:#f92672">&lt;</span> last; p<span style="color:#f92672">++</span>) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* we need &#39;=&#39; after name, so drop one char from last */</span>  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ngx_strlcasestrn</span>(p, last <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, name, len <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (p <span style="color:#f92672">==</span> NULL) {  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NGX_DECLINED;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ((p <span style="color:#f92672">==</span> r<span style="color:#f92672">-&gt;</span>args.data <span style="color:#f92672">||</span> <span style="color:#f92672">*</span>(p <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;&amp;&#39;</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">*</span>(p <span style="color:#f92672">+</span> len) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;=&#39;</span>) {  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>            value<span style="color:#f92672">-&gt;</span>data <span style="color:#f92672">=</span> p <span style="color:#f92672">+</span> len <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>            p <span style="color:#f92672">=</span> <span style="color:#a6e22e">ngx_strlchr</span>(p, last, <span style="color:#e6db74">&#39;&amp;&#39;</span>);  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (p <span style="color:#f92672">==</span> NULL) {  
+</span></span><span style="display:flex;"><span>                p <span style="color:#f92672">=</span> r<span style="color:#f92672">-&gt;</span>args.data <span style="color:#f92672">+</span> r<span style="color:#f92672">-&gt;</span>args.len;  
+</span></span><span style="display:flex;"><span>            }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>            value<span style="color:#f92672">-&gt;</span>len <span style="color:#f92672">=</span> p <span style="color:#f92672">-</span> value<span style="color:#f92672">-&gt;</span>data;  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NGX_OK;  
+</span></span><span style="display:flex;"><span>        }  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NGX_DECLINED;  
+</span></span><span style="display:flex;"><span>}  
+</span></span></code></pre></div>
+        </div>
 
-    
-    
+        
+        
 <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
@@ -679,60 +502,65 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
 </div>
 
 
-    
-    
 
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
         
-          <a class="prev" href="/2014/08/14/local-backup-using-git.html">
+        
+
+
+        <footer class="post-footer">
+          <div class="post-tags">
+              <a href="https://pureage.info/tags/nginx/">nginx</a>
+                
+            </div>
+
+
+          
+          <nav class="post-nav">
             
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="prev" href="/2014/08/14/local-backup-using-git.html">
+                
+                <i class="iconfont">
+                  <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
 </svg>
 
-            </i>
-            <span class="prev-text nav-default">用 git 做本地备份</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2014/07/12/movie-cannot-be-shared.html">
-            <span class="next-text nav-default">电影，其实是一件非常私人的东西</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+                </i>
+                <span class="prev-text nav-default">用 git 做本地备份</span>
+                <span class="prev-text nav-mobile">上一篇</span>
+              </a>
             
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="next" href="/2014/07/12/movie-cannot-be-shared.html">
+                <span class="next-text nav-default">电影，其实是一件非常私人的东西</span>
+                <span class="prev-text nav-mobile">下一篇</span>
+                
+                <i class="iconfont">
+                  <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
 </svg>
 
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                </i>
+              </a>
+          </nav>
+        </footer>
+      </article>
+
+      
+      
+
+
+      
+      
+
+  
 
   
   
 
   
-  
-
-  
-
-  
-  
-
   
 
   
@@ -743,12 +571,21 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
 
   
 
-        </div>
-      </div>
-    </main>
+  
 
-    <footer id="footer" class="footer">
-      <div class="icon-links">
+
+    </div>
+
+    
+    
+
+
+  </div>
+
+      </main>
+
+      <footer id="footer" class="footer">
+        <div class="icon-links">
   
 
 
@@ -761,7 +598,7 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
 </svg>
 
   </a>
-   
+  
 </div>
 
 <div class="copyright">
@@ -777,7 +614,7 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
     &copy;
     
       2011 -
-    2022
+    2023
     <span class="heart">
       
       <i class="iconfont">
@@ -800,28 +637,30 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
   
 </div>
 
-    </footer>
+      </footer>
 
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+      <div class="button__back-to-top">
+        <a href="#back-to-top">
+          <i class="iconfont">
+            
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="35" height="35">
   <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
 </svg>
 
-      </i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div>
-  
+    
 <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
 
 
 
 
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/main.419d62fdd33d03e55ca7c874a720b9a5d8bc25d215992621f18eb9f8dad9ac3c.js" integrity="sha256-QZ1i/dM9A&#43;Vcp8h0pyC5pdi8JdIVmSYh8Y65&#43;NrZrDw=" crossorigin="anonymous"></script>
 
 
 
@@ -835,7 +674,6 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
 
 
   
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
@@ -854,5 +692,7 @@ http://pureage.info?strider=1&amp;strider=2&amp;strider=3&amp;strider=4
 
 
 
-</body>
+
+
+  </body>
 </html>

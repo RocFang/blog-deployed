@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh-cn" itemscope itemtype="http://schema.org/WebPage">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Nginx 如何控制某个特性是否打开 - 纯真年代</title>
-  
+<html
+  lang="zh-cn"
+  itemscope
+  itemtype="http://schema.org/WebPage"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+          Nginx 如何控制某个特性是否打开 - 纯真年代
+        </title>
+    
 
 <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/>
@@ -35,7 +41,7 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 
 
 
-<meta name="generator" content="Hugo 0.89.4" />
+<meta name="generator" content="Hugo 0.115.1" />
 
 
 <link rel="canonical" href="https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html" />
@@ -56,7 +62,9 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 
 
 
-<link rel="stylesheet" href="/sass/jane.min.fa4b2b9f31b5c6d0b683db81157a9226e17b06e61911791ab547242a4a0556f2.css" integrity="sha256-&#43;ksrnzG1xtC2g9uBFXqSJuF7BuYZEXkatUckKkoFVvI=" media="screen" crossorigin="anonymous">
+<link rel="stylesheet" href="/sass/jane.min.d8d87b982993a745e5e7b6a6cbf257be8c3e82aab5e485f0908ad7e6c3501ab2.css" integrity="sha256-2Nh7mCmTp0Xl57amy/JXvow&#43;gqq15IXwkIrX5sNQGrI=" media="screen" crossorigin="anonymous">
+
+
 
 
 
@@ -70,13 +78,12 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 <meta property="og:url" content="https://pureage.info/2014/10/17/nginx-configure-of-define-and-have.html" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2014-10-17T09:31:00+00:00" />
 <meta property="article:modified_time" content="2014-10-17T09:31:00+00:00" />
-
 <meta itemprop="name" content="Nginx 如何控制某个特性是否打开">
 <meta itemprop="description" content="提到 Nginx，大家首先会想到它的高性能、事件框架、模块化、upstream 等耳熟能详的技术实现。这些确实也是 Nginx 的核心，但作为一个优秀的开源项目，Nginx 可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？
 我们知道，在 Linux 下用源码安装方式编译安装一个软件时，标准情况下是有一个 configure 的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。
 Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    auto 目录下。本文重点涉及其中两个脚本：auto/have 和 auto/define。"><meta itemprop="datePublished" content="2014-10-17T09:31:00+00:00" />
 <meta itemprop="dateModified" content="2014-10-17T09:31:00+00:00" />
-<meta itemprop="wordCount" content="1423">
+<meta itemprop="wordCount" content="1349">
 <meta itemprop="keywords" content="nginx," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Nginx 如何控制某个特性是否打开"/>
 <meta name="twitter:description" content="提到 Nginx，大家首先会想到它的高性能、事件框架、模块化、upstream 等耳熟能详的技术实现。这些确实也是 Nginx 的核心，但作为一个优秀的开源项目，Nginx 可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？
@@ -95,9 +102,11 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 
 
 
-</head>
-<body>
-  <div id="mobile-navbar" class="mobile-navbar">
+  </head>
+  <body>
+    <div id="back-to-top"></div>
+
+    <div id="mobile-navbar" class="mobile-navbar">
   <div class="mobile-header-logo">
     <a href="/" class="logo">纯真年代</a>
   </div>
@@ -159,8 +168,8 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
 </nav>
 
 
-  
     
+      
 
 
 
@@ -217,14 +226,15 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
     </div>
 </div>
 
-  
+    
 
-  
+    
 
-  
+    
 
-  <header id="header" class="header container">
-    <div class="logo-wrapper">
+
+    <header id="header" class="header">
+      <div class="logo-wrapper">
   <a href="/" class="logo">
     
       纯真年代
@@ -310,251 +320,151 @@ Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本
   </ul>
 </nav>
 
-  </header>
-
-  <div id="mobile-panel">
-    <main id="main" class="main bg-llight">
-      <div class="content-wrapper">
-        <div id="content" class="content container">
-          <article class="post bg-white">
-    
-    <header class="post-header">
-      <h1 class="post-title">Nginx 如何控制某个特性是否打开</h1>
-      
-      <div class="post-meta">
-        <time datetime="2014-10-17" class="post-time">
-          2014-10-17
-        </time>
-        
-        
-
-        
-        
-
-        
-        
-      </div>
     </header>
 
+    <div id="mobile-panel">
+      <main id="main" class="main bg-llight wallpaper">
+        <div class="content-wrapper">
+    <div id="content" class="content">
+      <article class="post">
+        
+        <header class="post-header">
+          <h1 class="post-title">Nginx 如何控制某个特性是否打开</h1>
+          
+
+          <div class="post-meta">
+  <div class="post-meta-author">
+    by
+      strider
     
+  </div>
+
+  <div class="post-meta-time">
+    <time datetime="2014-10-17">
+      2014-10-17
+    </time>
+  </div>
+
+  
+
+
+  <div class="post-meta__right">
     
 
     
-    <div class="post-content">
-      <p>提到 Nginx，大家首先会想到它的高性能、事件框架、模块化、upstream 等耳熟能详的技术实现。这些确实也是 Nginx 的核心，但作为一个优秀的开源项目，Nginx 可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
+
+
+    
+    
+
+
+    
+    
+  </div>
+</div>
+
+        </header>
+
+        
+        <div class="post-content">
+          <p>提到 Nginx，大家首先会想到它的高性能、事件框架、模块化、upstream 等耳熟能详的技术实现。这些确实也是 Nginx 的核心，但作为一个优秀的开源项目，Nginx 可以供我们借鉴的远不止这些，例如本文的话题：如何控制某个特性是否打开？</p>
 <p>我们知道，在 Linux 下用源码安装方式编译安装一个软件时，标准情况下是有一个 configure 的动作，这个动作即是在编译前对环境进行检查，服务于后面的编译和安装，Nginx当然也不例外。</p>
 <p>Nginx 的 configure 文件是一个入口，在里面调用了很多其他脚本，这些脚本都位于源代码的    <code>auto</code> 目录下。本文重点涉及其中两个脚本：<code>auto/have</code> 和 <code>auto/define</code>。</p>
 <p>它们的内容极其简单，分别如下：</p>
 <ol>
 <li>auto/have:</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Copyright (C) Igor Sysoev</span>
-<span class="c1"># Copyright (C) Nginx, Inc.  </span>
-
-
-cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
-</span><span class="s">   
-</span><span class="s">#ifndef $have  
-</span><span class="s">#define $have 1  
-</span><span class="s">#endif  
-</span><span class="s">
-</span><span class="s">END</span>
-</code></pre></td></tr></table>
-</div>
-</div><ol start="2">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Copyright (C) Igor Sysoev</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Copyright (C) Nginx, Inc.  </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#ifndef $have  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define $have 1  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#endif  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">END</span>
+</span></span></code></pre></div><ol start="2">
 <li>auto/define</li>
 </ol>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Copyright (C) Igor Sysoev  </span>
-<span class="c1"># Copyright (C) Nginx, Inc.  </span>
-
-
-cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
-</span><span class="s">   
-</span><span class="s">#ifndef $have  
-</span><span class="s">#define $have $value  
-</span><span class="s">#endif  
-</span><span class="s">
-</span><span class="s">END</span>  
-</code></pre></td></tr></table>
-</div>
-</div><p>可见，两个脚本只有一处不同，是将 <code>have</code> 变量定义成 <code>value</code> 变量还是将其定义为 1，所以后面仅仅以 <code>have</code> 脚本为例进行说明。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Copyright (C) Igor Sysoev  </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Copyright (C) Nginx, Inc.  </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cat <span style="color:#e6db74">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">   
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#ifndef $have  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#define $have $value  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">#endif  
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">END</span>  
+</span></span></code></pre></div><p>可见，两个脚本只有一处不同，是将 <code>have</code> 变量定义成 <code>value</code> 变量还是将其定义为 1，所以后面仅仅以 <code>have</code> 脚本为例进行说明。</p>
 <p><code>have</code> 脚本的用法：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">have</span><span class="o">=</span>XXXX  . auto/have
-</code></pre></td></tr></table>
-</div>
-</div><p>就会在 <code>$NGX_AUTO_CONFIG_H</code> 所代表的文件里（默认为 <code>objs/ngx_auto_config.h</code>)追加如下内容：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#ifndef XXXX  </span>
-<span class="c1">#define XXXX 1  </span>
-<span class="c1">#endif  </span>
-</code></pre></td></tr></table>
-</div>
-</div><p>这样，就可以用 XXXX 宏是否定义来控制编译的过程。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>have<span style="color:#f92672">=</span>XXXX  . auto/have
+</span></span></code></pre></div><p>就会在 <code>$NGX_AUTO_CONFIG_H</code> 所代表的文件里（默认为 <code>objs/ngx_auto_config.h</code>)追加如下内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#ifndef XXXX  </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define XXXX 1  </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif  </span>
+</span></span></code></pre></div><p>这样，就可以用 XXXX 宏是否定义来控制编译的过程。</p>
 <p>下面以 <code>ngx_memalign</code> 这个 Nginx 内部接口为例来进行详细的说明。</p>
 <p><code>ngx_memalign</code> 是 Nginx 里最基本的接口之一，经常会被调用。从接口的名字就可以看出，这个接口是用来处理内存分配和对齐的。其定义在 <code>ngx_alloc.h</code> 中：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
-</span><span class="cp"></span><span class="kt">void</span> <span class="o">*</span><span class="nf">ngx_memalign</span><span class="p">(</span><span class="n">size_t</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">);</span> 
-<span class="cp">#else 
-</span><span class="cp">#define ngx_memalign(alignment, size, log) ngx_alloc(size, log) 
-</span><span class="cp">#endif  
-</span></code></pre></td></tr></table>
-</div>
-</div><p>上面代码的意图是，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code> 宏或 <code>NGX_HAVE_MEMALIGN</code>     宏，则声明函数 <code>ngx_memalign</code>，否则，简单的对 <code>ngx_alloc</code> 进行一下封装（<code>ngx_alloc</code> 是对 <code>malloc</code> 的简单封装）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#if (NGX_HAVE_POSIX_MEMALIGN || NGX_HAVE_MEMALIGN)  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ngx_memalign</span>(<span style="color:#66d9ef">size_t</span> alignment, <span style="color:#66d9ef">size_t</span> size, <span style="color:#66d9ef">ngx_log_t</span> <span style="color:#f92672">*</span>log); 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#else 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define ngx_memalign(alignment, size, log) ngx_alloc(size, log) 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#endif  
+</span></span></span></code></pre></div><p>上面代码的意图是，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code> 宏或 <code>NGX_HAVE_MEMALIGN</code>     宏，则声明函数 <code>ngx_memalign</code>，否则，简单的对 <code>ngx_alloc</code> 进行一下封装（<code>ngx_alloc</code> 是对 <code>malloc</code> 的简单封装）。</p>
 <p>我们在来看函数 <code>ngx_memalign</code> 在 <code>ngx_alloc.c</code> 中的定义：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#if (NGX_HAVE_POSIX_MEMALIGN)  
-</span><span class="cp"></span>
-<span class="kt">void</span> <span class="o">*</span>  
-<span class="nf">ngx_memalign</span><span class="p">(</span><span class="n">size_t</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="kt">void</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>  
-    <span class="kt">int</span> <span class="n">err</span><span class="p">;</span>  
-
-    <span class="n">err</span> <span class="o">=</span> <span class="n">posix_memalign</span><span class="p">(</span><span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>  
-      
-    <span class="k">if</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_EMERG</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span>  
-                      <span class="s">&#34;posix_memalign(%uz, %uz) failed&#34;</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>  
-        <span class="n">p</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>  
-    <span class="p">}</span>  
-      
-    <span class="n">ngx_log_debug3</span><span class="p">(</span><span class="n">NGX_LOG_DEBUG_ALLOC</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  
-                   <span class="s">&#34;posix_memalign: %p:%uz @%uz&#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">alignment</span><span class="p">);</span>  
-      
-    <span class="k">return</span> <span class="n">p</span><span class="p">;</span>  
-<span class="p">}</span>  
-
-<span class="cp">#elif (NGX_HAVE_MEMALIGN)  
-</span><span class="cp"></span>
-<span class="kt">void</span> <span class="o">*</span>  
-<span class="nf">ngx_memalign</span><span class="p">(</span><span class="n">size_t</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="n">ngx_log_t</span> <span class="o">*</span><span class="n">log</span><span class="p">)</span>  
-<span class="p">{</span>  
-    <span class="kt">void</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>  
-
-    <span class="n">p</span> <span class="o">=</span> <span class="n">memalign</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>  
-    <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>  
-        <span class="n">ngx_log_error</span><span class="p">(</span><span class="n">NGX_LOG_EMERG</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">ngx_errno</span><span class="p">,</span>  
-                      <span class="s">&#34;memalign(%uz, %uz) failed&#34;</span><span class="p">,</span> <span class="n">alignment</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>  
-    <span class="p">}</span>  
-      
-    <span class="n">ngx_log_debug3</span><span class="p">(</span><span class="n">NGX_LOG_DEBUG_ALLOC</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  
-                   <span class="s">&#34;memalign: %p:%uz @%uz&#34;</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">alignment</span><span class="p">);</span>  
-      
-    <span class="k">return</span> <span class="n">p</span><span class="p">;</span>  
-<span class="p">}</span>  
-
-<span class="cp">#endif  
-</span></code></pre></td></tr></table>
-</div>
-</div><p>上面代码的意图为，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code>，那么 <code>ngx_memalign</code> 就是对 <code>posix_memalign</code> 的简单封装，否则，如果定义了 <code>NGX_HAVE_MEMALIGN</code>，则                     <code>ngx_memalign</code> 是对 <code>memalign</code> 的简单封装。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#if (NGX_HAVE_POSIX_MEMALIGN)  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_memalign</span>(<span style="color:#66d9ef">size_t</span> alignment, <span style="color:#66d9ef">size_t</span> size, <span style="color:#66d9ef">ngx_log_t</span> <span style="color:#f92672">*</span>log)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>p;  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> err;  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">posix_memalign</span>(<span style="color:#f92672">&amp;</span>p, alignment, size);  
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_EMERG, log, err,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;posix_memalign(%uz, %uz) failed&#34;</span>, alignment, size);  
+</span></span><span style="display:flex;"><span>        p <span style="color:#f92672">=</span> NULL;  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ngx_log_debug3</span>(NGX_LOG_DEBUG_ALLOC, log, <span style="color:#ae81ff">0</span>,  
+</span></span><span style="display:flex;"><span>                   <span style="color:#e6db74">&#34;posix_memalign: %p:%uz @%uz&#34;</span>, p, size, alignment);  
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> p;  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#elif (NGX_HAVE_MEMALIGN)  
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>  
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">ngx_memalign</span>(<span style="color:#66d9ef">size_t</span> alignment, <span style="color:#66d9ef">size_t</span> size, <span style="color:#66d9ef">ngx_log_t</span> <span style="color:#f92672">*</span>log)  
+</span></span><span style="display:flex;"><span>{  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>p;  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> <span style="color:#a6e22e">memalign</span>(alignment, size);  
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (p <span style="color:#f92672">==</span> NULL) {  
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">ngx_log_error</span>(NGX_LOG_EMERG, log, ngx_errno,  
+</span></span><span style="display:flex;"><span>                      <span style="color:#e6db74">&#34;memalign(%uz, %uz) failed&#34;</span>, alignment, size);  
+</span></span><span style="display:flex;"><span>    }  
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">ngx_log_debug3</span>(NGX_LOG_DEBUG_ALLOC, log, <span style="color:#ae81ff">0</span>,  
+</span></span><span style="display:flex;"><span>                   <span style="color:#e6db74">&#34;memalign: %p:%uz @%uz&#34;</span>, p, size, alignment);  
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> p;  
+</span></span><span style="display:flex;"><span>}  
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif  
+</span></span></span></code></pre></div><p>上面代码的意图为，如果定义了 <code>NGX_HAVE_POSIX_MEMALIGN</code>，那么 <code>ngx_memalign</code> 就是对 <code>posix_memalign</code> 的简单封装，否则，如果定义了 <code>NGX_HAVE_MEMALIGN</code>，则                     <code>ngx_memalign</code> 是对 <code>memalign</code> 的简单封装。</p>
 <p>那么 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和 <code>NGX_HAVE_MEMALIGN</code> 又是什么时候被定义呢？</p>
 <p>过程如下：</p>
 <p>在 <code>auto/unix</code> 脚本，列出需要检查的接口，这里就是 <code>memalign</code> 和 <code>posix_memalign</code> 了，交给 <code>auto/feature</code> 脚本来逐一处理，<code>auto/feature</code> 脚本会对针对每一个带检查的接口，生成一个最基本的临时 c 源文件，该源文件会调用该接口。<code>feature</code> 脚本然后对该源文件进行编译并判断最终生成的目标文件的可执行性。用这种动态检测的方法来判断该接口在当前系统中是否支持。</p>
 <p>如果 <code>feature</code> 脚本验证出 <code>posix_memalign</code> 和 <code>memalign</code> 接口在当前系统中都可用后，则会逐一调用 <code>have</code> 脚本：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">have</span><span class="o">=</span><span class="nv">$ngx_have_feature</span> . auto/have  
-</code></pre></td></tr></table>
-</div>
-</div><p>这里，变量 <code>ngx_have_feature</code> 即是 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和  <code>NGX_HAVE_MEMALIGN</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>have<span style="color:#f92672">=</span>$ngx_have_feature . auto/have  
+</span></span></code></pre></div><p>这里，变量 <code>ngx_have_feature</code> 即是 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和  <code>NGX_HAVE_MEMALIGN</code>。</p>
 <p>最终在 configure、auto/unix、auto/feature、auto/have 各个脚本的通力合作下，在  <code>objs/ngx_auto_config.h</code> 中就有了对 <code>NGX_HAVE_POSIX_MEMALIGN</code> 和  <code>NGX_HAVE_MEMALIGN</code> 的定义，进而影响到 <code>ngx_memalign</code> 接口的实现。</p>
 <p>让我们从需求出发，将接口 <code>ngx_memalign</code> 的需求描述一遍：</p>
 <ol>
@@ -563,10 +473,10 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 <li>如果系统竟然对 <code>posix_memalign</code> 和 <code>memalign</code> 都不支持，则 <code>ngx_memalign</code> 是对   <code>malloc</code> 的简单封装。</li>
 </ol>
 <p>实现需求很简单，但如何实现的优雅，则是另一回事。Nginx 向我们展示了，一个在 C 上尽力把服务器性能做到极致的项目，是如何在脚本上也尽最大努力做得漂亮。</p>
-    </div>
+        </div>
 
-    
-    
+        
+        
 <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
@@ -587,60 +497,65 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 </div>
 
 
-    
-    
 
-    <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://pureage.info/tags/nginx/">nginx</a>
-          
-        </div>
-
-      
-      <nav class="post-nav">
         
-          <a class="prev" href="/2014/11/11/running-report-1.html">
+        
+
+
+        <footer class="post-footer">
+          <div class="post-tags">
+              <a href="https://pureage.info/tags/nginx/">nginx</a>
+                
+            </div>
+
+
+          
+          <nav class="post-nav">
             
-            <i class="iconfont">
-              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="prev" href="/2014/11/11/running-report-1.html">
+                
+                <i class="iconfont">
+                  <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
 </svg>
 
-            </i>
-            <span class="prev-text nav-default">跑步阶段性总结（一）</span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        
-          <a class="next" href="/2014/09/28/running-is-a-happy-sport.html">
-            <span class="next-text nav-default">跑步是一件快乐的事情</span>
-            <span class="prev-text nav-mobile">下一篇</span>
+                </i>
+                <span class="prev-text nav-default">跑步阶段性总结（一）</span>
+                <span class="prev-text nav-mobile">上一篇</span>
+              </a>
             
-            <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <a class="next" href="/2014/09/28/running-is-a-happy-sport.html">
+                <span class="next-text nav-default">跑步是一件快乐的事情</span>
+                <span class="prev-text nav-mobile">下一篇</span>
+                
+                <i class="iconfont">
+                  <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
   <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
 </svg>
 
-            </i>
-          </a>
-      </nav>
-    </footer>
-  </article>
+                </i>
+              </a>
+          </nav>
+        </footer>
+      </article>
+
+      
+      
+
+
+      
+      
+
+  
 
   
   
 
   
-  
-
-  
-
-  
-  
-
   
 
   
@@ -651,12 +566,21 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 
   
 
-        </div>
-      </div>
-    </main>
+  
 
-    <footer id="footer" class="footer">
-      <div class="icon-links">
+
+    </div>
+
+    
+    
+
+
+  </div>
+
+      </main>
+
+      <footer id="footer" class="footer">
+        <div class="icon-links">
   
 
 
@@ -669,7 +593,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 </svg>
 
   </a>
-   
+  
 </div>
 
 <div class="copyright">
@@ -685,7 +609,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
     &copy;
     
       2011 -
-    2022
+    2023
     <span class="heart">
       
       <i class="iconfont">
@@ -708,28 +632,30 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
   
 </div>
 
-    </footer>
+      </footer>
 
-    <div class="back-to-top" id="back-to-top">
-      <i class="iconfont">
-        
-        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+      <div class="button__back-to-top">
+        <a href="#back-to-top">
+          <i class="iconfont">
+            
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="35" height="35">
   <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
 </svg>
 
-      </i>
+          </i>
+        </a>
+      </div>
     </div>
-  </div>
-  
+    
 <script type="text/javascript" src="/lib/jquery/jquery-3.2.1.min.js"></script>
   <script type="text/javascript" src="/lib/slideout/slideout-1.0.1.min.js"></script>
 
 
 
 
-<script type="text/javascript" src="/js/main.638251f4230630f0335d8c6748e53a96f94b72670920b60c09a56fdc8bece214.js" integrity="sha256-Y4JR9CMGMPAzXYxnSOU6lvlLcmcJILYMCaVv3Ivs4hQ=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/main.419d62fdd33d03e55ca7c874a720b9a5d8bc25d215992621f18eb9f8dad9ac3c.js" integrity="sha256-QZ1i/dM9A&#43;Vcp8h0pyC5pdi8JdIVmSYh8Y65&#43;NrZrDw=" crossorigin="anonymous"></script>
 
 
 
@@ -743,7 +669,6 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 
 
   
-    <script type="text/javascript" src="/js/load-photoswipe.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe.min.js"></script>
     <script type="text/javascript" src="/lib/photoswipe/photoswipe-ui-default.min.js"></script>
   
@@ -762,5 +687,7 @@ cat <span class="s">&lt;&lt; END &gt;&gt; $NGX_AUTO_CONFIG_H
 
 
 
-</body>
+
+
+  </body>
 </html>

@@ -41,7 +41,7 @@
       <pubDate>Tue, 08 Oct 2013 03:23:00 +0000</pubDate>
       
       <guid>https://pureage.info/2013/10/08/129.html</guid>
-      <description>假设你想通过一段脚本调用 make 来编译代码，并且在脚本中将一些编译需要的系统信息传递给 makefile，可以通过 bash 的 here document 来实现。例如： 1 2 3 4 5 6</description>
+      <description>假设你想通过一段脚本调用 make 来编译代码，并且在脚本中将一些编译需要的系统信息传递给 makefile，可以通过 bash 的 here document 来实现。例如： tmp_src_filename=fdfs_check_bits.c cat &amp;lt;&amp;lt;EOF &amp;gt; $tmp_src_filename #include</description>
     </item>
     
     <item>
@@ -80,21 +80,7 @@
       <guid>https://pureage.info/2013/09/09/126.html</guid>
       <description>&lt;h2 id=&#34;问题产生背景&#34;&gt;问题产生背景&lt;/h2&gt;
 &lt;p&gt;自己写的一个基于 FastDFS 的客户端程序的日志格式如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[2013-09-06 08:57:01] 1884096 group6/M00/00/2D/Kj4ZKlIpKL6Actm8ABy_wPYwpa8782.mp3 ;fuckgfw.com/mp3k18/a2/1375_8767.mp3  
 [2013-09-06 08:57:01] 1932032 group6/M00/00/2D/Kj4ZKlIpKL6APMlMAB17AFl-Zaw344.mp3 ;fuckgfw.com/mp3k18/a2/1390_20402.mp3
 [2013-09-06 08:57:01] 2115392 group6/M00/00/28/Kj4ZK1IpKL6AUW6WACBHQHAveu0805.mp3 ;fuckgfw.com/mp3k18/a2/1381_8842.mp3  
 [2013-09-06 08:57:01] 2340800 group6/M00/00/28/Kj4ZK1IpKL-ABGh8ACO3wLWZNXA955.mp3 ;fuckgfw.com/mp3k18/a2/1395_9009.mp3  
@@ -104,9 +90,7 @@
 [2013-09-06 08:58:01] 3095808 group14/M00/00/0F/Kj4ZLFIpKPqAC73LAC89ACy9iyo432.mp3 ;fuckgfw.com/mp3k18/a2/1470_10017.mp3  
 [2013-09-06 08:58:01] 2378240 group14/M00/00/0F/Kj4ZLFIpKPqADabyACRKANFt20E358.mp3 ;fuckgfw.com/mp3k18/a2/1471_10021.mp3  
 [2013-09-06 08:58:01] 2102144 group14/M00/00/0C/Kj4ZLVIpKPqAOF32ACATgJsIdR0090.mp3 ;fuckgfw.com/mp3k18/a2/1465_9961.mp3  
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;</description>
     </item>
     
     <item>
@@ -127,29 +111,13 @@
       <guid>https://pureage.info/2013/08/05/120.html</guid>
       <description>&lt;h2 id=&#34;需求&#34;&gt;需求&lt;/h2&gt;
 &lt;p&gt;假设有个 result_test_upload.log 的文件，里面存放着一些 FastDFS 系统中的 fileid。文本内容如下：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;group1/M00/04/08/wKhwglHq1rqAYO2oAAAoAChSBpE0502682  
 group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977  
 ......(略）......  
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;如何统计出分配到每个 group 的文件的总和并将其按 group1、group2、group3 的顺序列出来，以方便观察是否所有的 fileid 均匀的分配到 FastDFS 的 group 中？&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如何统计出分配到每个 group 的文件的总和并将其按 group1、group2、group3 的顺序列出来，以方便观察是否所有的 fileid 均匀的分配到 FastDFS 的 group 中？&lt;/p&gt;
 &lt;h2 id=&#34;方法&#34;&gt;方法&lt;/h2&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;cat result_test_upload.log  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -o group&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;0-9&lt;span class=&#34;o&#34;&gt;][&lt;/span&gt;0-9&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;*  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sort -n -t p -k 2&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; uniq -c  
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;p&gt;其中，&lt;code&gt;grep -o group-0-9][0-9].*&lt;/code&gt; 已经把每个 group 名截取出来了，&lt;code&gt;sort -t p&lt;/code&gt; 表示以 p 为分隔，&lt;code&gt;-k 2&lt;/code&gt; 表示按以 p 为分隔的第二个域来排序，也就是 group1、group2、group3&amp;hellip;中的1、2、3。-n 选项则很简单，表示按照group1、group2、group3&amp;hellip;groupn 的顺序排列。&lt;/p&gt;</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat result_test_upload.log  | grep -o group&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;0-9&lt;span style=&#34;color:#f92672&#34;&gt;][&lt;/span&gt;0-9&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;*  | sort -n -t p -k 2| uniq -c  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其中，&lt;code&gt;grep -o group-0-9][0-9].*&lt;/code&gt; 已经把每个 group 名截取出来了，&lt;code&gt;sort -t p&lt;/code&gt; 表示以 p 为分隔，&lt;code&gt;-k 2&lt;/code&gt; 表示按以 p 为分隔的第二个域来排序，也就是 group1、group2、group3&amp;hellip;中的1、2、3。-n 选项则很简单，表示按照group1、group2、group3&amp;hellip;groupn 的顺序排列。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -171,27 +139,14 @@ group2/M00/05/06/wKhwglHq2CGAIs8AAAAoAChSBpE9287977
       <guid>https://pureage.info/2013/05/24/115.html</guid>
       <description>&lt;h2 id=&#34;1-here-document&#34;&gt;1. here document&lt;/h2&gt;
 &lt;p&gt;在 bash 中，here document 经常用于一些需要交互性输入指令的程序中，例如登陆 ftp。例如：&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
-&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
-&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
-&lt;td class=&#34;lntd&#34;&gt;
-&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ftp -n &lt;span class=&#34;nv&#34;&gt;$HOST&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;lt;&amp;lt;EOF
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;quote USER $USER  
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;quote PASS $PASS  
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;binary  
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;put $FileName  
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;quit  
-&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;EOF&lt;/span&gt;  
-&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;h2 id=&#34;2-踩到的坑&#34;&gt;2. 踩到的坑&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ftp -n $HOST &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;quote USER $USER  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;quote PASS $PASS  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;binary  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;put $FileName  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;quit  
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;EOF&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-踩到的坑&#34;&gt;2. 踩到的坑&lt;/h2&gt;
 &lt;p&gt;在工作中，涉及到很多对 redis 的操作，先简单的用 shell 脚本实现了一下。大概流程是这样的：shell 脚本调用 C 语言程序，根据 C 程序的输出，来操作 redis。因此主要涉及两件事：shell 脚本获取 C 程序输出，shell 脚本用 here document 操作 redis。&lt;/p&gt;</description>
     </item>
     
